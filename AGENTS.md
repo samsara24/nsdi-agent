@@ -202,6 +202,10 @@ python -m rca_framework.cli train-evaluate \
 - 逐 case prediction 与 `artifacts/organized_rca_v2_60_40_seed42_baseline/predictions.json` 一致
 - `label_leakage == false`
 
+从阶段 0 起，上述门禁已由 `tests/test_baseline_lock.py` 自动化，`python -m pytest -q` 即可复核。该测试失败一律视为 legacy 行为漂移，不允许通过修改断言来消除。
+
+阶段 0 同时固定了 `idf` 键序与检索的浮点求和顺序，因此同一份数据在任意 `PYTHONHASHSEED` 下都会产出字节一致的 artifacts。基线目录 `model/model.json` 是修正前生成的，`idf` 键序与新产物不同，但两者数值与 schema 完全一致，比对模型文件时按 JSON 结构比而不是按字节比。
+
 有 GPU 与本地模型时，DeepSeek-32B vLLM legacy 基线应保持 59/85，但无 GPU 环境下该项可以延后。
 
 ### 5.3 不做清单

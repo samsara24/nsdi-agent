@@ -22,24 +22,25 @@
 
 ## 2. 当前阶段指针
 
-当前阶段：`阶段 0 - 基线锁定与装配去重`
+当前阶段：`阶段 1 - 观测字段扩展`
 
 当前状态：`未开始`
 
+阶段 0 已于 2026-08-06 完成，基线锁定已自动化，可以进入阶段 1。
+
 下一步：
 
-1. 新增基线锁定测试，固定 organized 60/40 deterministic baseline 的 58/85 与逐 case prediction。
-2. 引入 `RuntimeConfig`，先只做参数对象化，不改变默认值。
-3. 抽出 `build_case_context`，消除 `infer` / `evaluate` 中重复装配逻辑。
-4. 验证 `--backend none` 逐 case 输出与复制时 baseline 完全一致。
-
-阶段 0 是后续所有 Agent 化改造的前置门禁。没有自动化基线锁定，不允许进入阶段 1。
+1. `types.py` 增加 `EvidenceItem`、`Verdict` 等协议类型，只增不改。
+2. 新建 `evidence.py`，把 `EvidenceItem` 聚合为独立互证 / 同源一致 / 冲突 / 无证据四类。
+3. `graph.py` 增加 `prior_only`、`score_composition`、`classify_coverage`，并把 IDF 检索拆到 `retrieval.py`。
+4. `rules.py` 增加 `support_tier` 与 `evidence_items`，用于回答 fiber 的 28 条规则里有多少来自 `minority_fallback`。
+5. 每步都必须让 `tests/test_baseline_lock.py` 保持全绿，即 legacy 分数逐 case 不变。
 
 ## 3. 阶段进度表
 
 | 阶段 | 内容 | 是否允许改变 legacy 结果 | 依赖 | 状态 | 验收 |
 | --- | --- | --- | --- | --- | --- |
-| 0 | `RuntimeConfig` + `build_case_context` 去重 + 基线锁定测试 | 否，必须逐 case 一致 | 无 | 未开始 | pytest 全绿；58/85；逐 case prediction 一致 |
+| 0 | `RuntimeConfig` + `build_case_context` 去重 + 基线锁定测试 | 否，必须逐 case 一致 | 无 | 已完成 | pytest 15 passed；58/85；`predictions.json` 与基线字节一致 |
 | 1 | `types` 扩展、`EvidenceItem.origin_anomalies`、`evidence.aggregate_evidence`、`graph.classify_coverage` / `prior_only`、`rules.support_tier` | 否，只增加观测字段 | 阶段 0 | 未开始 | legacy 分数逐 case 一致；新增字段可统计 |
 | 2 | `anomaly.evidence_status`、`lane_pairs`、`lane_directional_loss` | 可能改变，只能先影子模式运行 | 阶段 1 | 未开始 | 旧 `anomaly_id` 集合不变；lane signature 单独报触发数 |
 | 3 | `rca_framework/agent/` + `agent-diagnose`，`backend=none` 的确定性 Agent | 否，legacy 默认不变 | 阶段 1 | 未开始 | Agent 控制流跑通；legacy 仍默认；trace 可写 |
@@ -56,17 +57,22 @@
 | `rca_framework/data.py` | 332 | 数据清单、脱敏、L1/L2 归一化、数据集加载 | 补 `case_side_mapping` 与 `evidence_manifest` 元数据 | 1 | 未开始 | 现有数据集无需重生成；旧 loader 签名不变 |
 | `rca_framework/anomaly.py` | 262 | 阈值拟合、异常提取、方向性损耗 | 增加 `evidence_status`、lane pair、lane directional signature | 2 | 未开始 | 旧 `anomaly_id` 逐 case 不变；新 signature 影子统计 |
 | `rca_framework/graph.py` | 334 | KG 学习、路径评分、feature rules、RAG 检索 | 增加 `prior_only`、`score_composition`、`classify_coverage`，拆检索 | 1 | 未开始 | 旧 `scores` 数值逐 case 一致；`prior_only` 可统计 |
+| `rca_framework/graph.py` 确定性修正 | 336 | 同上 | 固定 `idf` 键序与检索求和顺序 | 0 | 已完成 | 不同 `PYTHONHASHSEED` 下 artifacts 字节一致 |
 | `rca_framework/rules.py` | 182 | 互斥符号规则学习与匹配 | 增加 `support_tier` 与 `evidence_items` | 1 | 未开始 | `rule_overlap` 仍为 0；旧 match 分数一致 |
 | `rca_framework/llm.py` | 218 | prompt、schema、解析、后端、LLM 路打分 | 拆为 `llm/` 子包，LLM 只输出结构化推理和动作 | 4 | 未开始 | legacy import 与 `reason_many` 兼容；59/85 可回归 |
 | `rca_framework/fusion.py` | 100 | legacy 两路融合与冲突仲裁 | 冻结 `fuse_results`，新增证据聚合另放 `evidence.py` | 1 | 已冻结 | `fuse_results` 不改；legacy 58/85 不漂移 |
-| `rca_framework/pipeline.py` | 233 | fit / infer / evaluate / save / load、reasoner 缓存 | 拆出 `KnowledgeBundle`、`RuntimeConfig`、`RCASession`、`Evaluator` | 0 | 未开始 | `RCAPipeline.load` 兼容；legacy 输出逐 case 一致 |
+| `rca_framework/pipeline.py` | 233 | fit / infer / evaluate / save / load、reasoner 缓存 | 拆出 `KnowledgeBundle`、`RuntimeConfig`、`RCASession`、`Evaluator` | 0 | 已完成 | `RCAPipeline.load` 兼容；legacy 输出逐 case 一致 |
 | `rca_framework/cli.py` | 169 | `prepare` / `train-evaluate` / `infer` 入口 | 新增 Agent 入口与 `--policy`，默认 `legacy` | 3 | 未开始 | 旧参数、默认值和命令行为不变 |
 | `rca_framework/__init__.py` | 5 | 包初始化 | 必要时只做兼容导出 | 4 | 未开始 | 旧 import 不破 |
+
+阶段 0 完成后 `pipeline.py` 为 235 行，新增 `CaseContext`、`build_case_context`、`finalize_prediction` 三个装配单元，`infer` 与 `evaluate` 不再各自复制一份装配代码。`cli.py` 改为通过 `runtime_from_args` 传 `RuntimeConfig`，命令行参数、默认值与 `run_manifest.json` 内容均未变。
 
 ### 4.2 待建模块
 
 | 目标路径 | 目标职责 | 所属阶段 | 状态 | 验收标准 |
 | --- | --- | --- | --- | --- |
+| `rca_framework/runtime.py` | `RuntimeConfig`：推理期运行参数对象，不进入 `model.json` | 0 | 已完成 | 旧 kwargs 调用等价；未知参数报错 |
+| `tests/test_baseline_lock.py` | deterministic 基线锁定，逐 case prediction / 分数 / anomaly_id / 模型产物 | 0 | 已完成 | 8 个测试，缺数据集时自动 skip |
 | `rca_framework/evidence.py` | 聚合 `EvidenceItem`，区分独立互证、同源一致、冲突、无证据 | 1 | 未开始 | `same_source_agreement` 可统计 |
 | `rca_framework/retrieval.py` | 从 `graph.py` 拆出 IDF 加权 Jaccard 检索，支持 `hide_labels` | 1 | 未开始 | legacy 检索结果兼容；`hide_labels=True` 不泄漏标签 |
 | `rca_framework/agent/protocol.py` | AgentAction、ToolCall、ToolResult、Verdict 控制流协议 | 3 | 未开始 | 输入输出可 JSON 序列化 |
@@ -88,20 +94,25 @@
 
 每次阶段完成前必须检查：
 
-- [ ] `python -m pytest -q` 全绿，包含基线锁定测试。
-- [ ] `--policy legacy --backend none` 或默认 legacy `--backend none` 输出 58/85。
-- [ ] 逐 case prediction 与 `artifacts/organized_rca_v2_60_40_seed42_baseline/predictions.json` 完全一致。
+- [x] `python -m pytest -q` 全绿，包含基线锁定测试。
+- [x] `--policy legacy --backend none` 或默认 legacy `--backend none` 输出 58/85。
+- [x] 逐 case prediction 与 `artifacts/organized_rca_v2_60_40_seed42_baseline/predictions.json` 完全一致。
 - [ ] 有 GPU 时，DeepSeek-32B vLLM legacy 结果保持 59/85。
-- [ ] `RCAPipeline.load` 可读取现有 `artifacts/*/model`。
-- [ ] `rules.overlap_audit` 的 total overlap 仍为 0。
+- [x] `RCAPipeline.load` 可读取现有 `artifacts/*/model`。
+- [x] `rules.overlap_audit` 的 total overlap 仍为 0。
 - [ ] `run_manifest.json` 在引入 policy / skill 后记录 `policy`、`skill_versions`、`trace_path`、`coverage_policy`。
+
+前 6 项中除 GPU 项外都已由 `tests/test_baseline_lock.py` 自动覆盖，直接 `python -m pytest -q` 即可复核，不必手工跑 CLI 再肉眼比对。勾选状态代表阶段 0 收尾时的复核结果，进入新阶段后应重新执行。
 
 ### 门禁运行记录
 
 | 日期 | 阶段 | 命令 | 结果 | 产物 | 备注 |
 | --- | --- | --- | --- | --- | --- |
 | 2026-08-06 | 初始化 | `python -m pytest -q` | 7 passed | 无 | 复制后基础测试通过 |
-| 2026-08-06 | 初始化 | `python -m rca_framework.cli train-evaluate --data-dir datasets/organized_rca_v2_stratified_60_40_seed42 --train-size 126 --output-dir artifacts/copy_verify --backend none` | 58/85，accuracy 68.24%，`rule_overlap=0`，`label_leakage=false` | `artifacts/copy_verify/` | 逐 case prediction 与复制基线完全一致 |
+| 2026-08-06 | 初始化 | `python -m rca_framework.cli train-evaluate --data-dir datasets/organized_rca_v2_stratified_60_40_seed42 --train-size 126 --output-dir artifacts/copy_verify --backend none` | 58/85，accuracy 68.24%，`rule_overlap=0`，`label_leakage=false` | `artifacts/copy_verify/`（已删除，不入库） | 逐 case prediction 与复制基线完全一致 |
+| 2026-08-06 | 0 | `python -m pytest -q` | 15 passed（原 7 + 基线锁定 8） | 无 | 基线锁定测试首次全绿 |
+| 2026-08-06 | 0 | `python -m rca_framework.cli train-evaluate ... --output-dir artifacts/gate_stage0 --backend none` | 58/85，accuracy 68.24%，`rule_overlap=0`，`label_leakage=false` | `artifacts/gate_stage0/`（不入库） | `predictions.json`、`evaluation_summary.json`、`run_manifest.json` 与基线字节一致 |
+| 2026-08-06 | 0 | 同一命令分别用 `PYTHONHASHSEED=1` 与 `PYTHONHASHSEED=98765` 各跑一次后 `diff -rq` | 两次产物全部字节一致 | 无 | 修正前 `model.json` 的 `idf` 键序每次都不同 |
 
 ## 6. 不可变基线数字
 
@@ -135,3 +146,7 @@
 | 日期 | 修改人 | 阶段 | 文件 / 模块 | 变更摘要 | 验证结果 |
 | --- | --- | --- | --- | --- | --- |
 | 2026-08-06 | AI | 初始化 | 仓库复制、`AGENTS.md`、`Progress.md` | 从 `nsdi/` 复制轻量活动树；写入开发说明与进度台账 | 7 passed；58/85；逐 case prediction 一致 |
+| 2026-08-06 | AI | 初始化 | `.gitignore`、git 仓库 | `nsdi-agent/` 建为独立 git 仓库并提交初始基线，只跟踪两个回归 artifacts；`/home/chenziang/.gitignore` 不再跟踪本目录 | 807 文件入库，`.git` 5.1M |
+| 2026-08-06 | AI | 0 | `runtime.py`、`pipeline.py`、`cli.py`、`__init__.py` | 新增 `RuntimeConfig`（推理期参数对象化，默认值不变，旧 kwargs 仍可用）；抽出 `CaseContext` / `build_case_context` / `finalize_prediction`，`infer` 与 `evaluate` 共用同一套装配；reasoner 缓存改用 `RuntimeConfig` 做键 | 15 passed；58/85；`predictions.json` 与基线字节一致 |
+| 2026-08-06 | AI | 0 | `tests/test_baseline_lock.py` | 新增 8 个基线锁定测试：切分、summary、逐 case prediction / confidence / 两路分数 / anomaly_id、模型产物可加载且等价、规则互斥、`idf` 键序确定 | 15 passed |
+| 2026-08-06 | AI | 0 | `graph.py` | 固定 `idf` 键序与 `retrieve` 的 IDF 求和顺序，消除集合迭代顺序带来的不可复现；`scores` 与 legacy 逐 case 一致，`model.json` 的 `idf` 键序由随机变为排序，schema 与数值不变 | 不同 `PYTHONHASHSEED` 下产物字节一致；58/85 不变 |

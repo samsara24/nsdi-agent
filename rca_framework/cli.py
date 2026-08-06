@@ -9,11 +9,27 @@ from typing import Any, Dict
 
 from .data import load_cases, prepare_dataset
 from .pipeline import PipelineConfig, RCAPipeline
+from .runtime import RuntimeConfig
 
 
 def dump_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def runtime_from_args(args: argparse.Namespace) -> RuntimeConfig:
+    return RuntimeConfig(
+        llm_backend=args.backend,
+        model_path=args.model_path,
+        max_new_tokens=args.max_new_tokens,
+        tensor_parallel_size=args.tensor_parallel_size,
+        gpu_memory_utilization=args.gpu_memory_utilization,
+        max_model_len=args.max_model_len,
+        dtype=args.dtype,
+        enforce_eager=args.enforce_eager,
+        guided_json=not args.disable_guided_json,
+        disable_custom_all_reduce=args.disable_custom_all_reduce,
+    )
 
 
 def prepare_command(args: argparse.Namespace) -> Dict[str, Any]:
@@ -46,19 +62,7 @@ def train_command(args: argparse.Namespace) -> Dict[str, Any]:
         raise FileExistsError(f"refusing to overwrite non-empty run directory: {output}")
     model_dir = output / "model"
     pipeline.save(model_dir)
-    evaluation = pipeline.evaluate(
-        cases[args.train_size:],
-        llm_backend=args.backend,
-        model_path=args.model_path,
-        max_new_tokens=args.max_new_tokens,
-        tensor_parallel_size=args.tensor_parallel_size,
-        gpu_memory_utilization=args.gpu_memory_utilization,
-        max_model_len=args.max_model_len,
-        dtype=args.dtype,
-        enforce_eager=args.enforce_eager,
-        guided_json=not args.disable_guided_json,
-        disable_custom_all_reduce=args.disable_custom_all_reduce,
-    )
+    evaluation = pipeline.evaluate(cases[args.train_size:], runtime=runtime_from_args(args))
     dump_json(output / "evaluation_summary.json", evaluation["summary"])
     dump_json(output / "predictions.json", evaluation["predictions"])
     run_manifest = {
@@ -95,19 +99,7 @@ def train_command(args: argparse.Namespace) -> Dict[str, Any]:
 def infer_command(args: argparse.Namespace) -> Dict[str, Any]:
     pipeline = RCAPipeline.load(Path(args.model))
     case = json.loads(Path(args.case).read_text(encoding="utf-8"))
-    result = pipeline.infer(
-        case,
-        llm_backend=args.backend,
-        model_path=args.model_path,
-        max_new_tokens=args.max_new_tokens,
-        tensor_parallel_size=args.tensor_parallel_size,
-        gpu_memory_utilization=args.gpu_memory_utilization,
-        max_model_len=args.max_model_len,
-        dtype=args.dtype,
-        enforce_eager=args.enforce_eager,
-        guided_json=not args.disable_guided_json,
-        disable_custom_all_reduce=args.disable_custom_all_reduce,
-    )
+    result = pipeline.infer(case, runtime=runtime_from_args(args))
     if args.output:
         dump_json(Path(args.output), result)
     return result

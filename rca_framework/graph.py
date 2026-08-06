@@ -128,8 +128,9 @@ class AnomalyKnowledgeGraph:
                 )
                 self.edges.append(edge)
                 self.edge_index[anomaly_id].append(edge)
-        document_frequency = Counter(anomaly_id for case in labeled for anomaly_id in case.anomaly_ids)
-        self.idf = {key: math.log((total + 1) / (count + 1)) + 1.0 for key, count in document_frequency.items()}
+        document_frequency = Counter(anomaly_id for case in labeled for anomaly_id in sorted(case.anomaly_ids))
+        # 按 anomaly_id 排序落库，使导出的 idf 键序不依赖集合迭代顺序。
+        self.idf = {key: math.log((total + 1) / (count + 1)) + 1.0 for key, count in sorted(document_frequency.items())}
         self._fit_feature_rules(labeled, class_counts, anomaly_counts, joint_counts, exemplar, min_edge_count)
         return self
 
@@ -290,8 +291,9 @@ class AnomalyKnowledgeGraph:
             candidate_ids = case.anomaly_ids
             union = query_ids | candidate_ids
             overlap = query_ids & candidate_ids
-            numerator = sum(self.idf.get(item, 1.0) for item in overlap)
-            denominator = sum(self.idf.get(item, 1.0) for item in union)
+            # 固定求和顺序，否则集合迭代顺序会让相似度出现浮点级抖动，artifacts 不可复现。
+            numerator = sum(self.idf.get(item, 1.0) for item in sorted(overlap))
+            denominator = sum(self.idf.get(item, 1.0) for item in sorted(union))
             similarity = numerator / denominator if denominator else 0.0
             rows.append({
                 "case_id": case.case_id,
