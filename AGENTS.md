@@ -167,6 +167,14 @@ skills/
 - `fiber` 在 `organized_data` 中只有 14 条有效 case，60/40 切分下训练集只有 8 条。
 - 当前系统不应被描述为解决了 fiber RCA；它只是略高于 L2 多数类基线。
 
+阶段 1 观测后新增的三条可复核事实（数字见 `Progress.md` 第 7 节，由测试锁定）：
+
+- 82 条 `agreement` 中只有 2 条是独立互证，58 条同源一致，22 条没有 case 特异证据。
+  不要再把 `decision_status == "agreement"` 当作两路互相确认的依据。
+- 22 条 case 的 `score_composition.prior_floor` 精确等于 1.0，它们的"候选分布"就是训练集类别先验。
+- `fiber` 的 28 条符号规则每条只有 2 个训练 case 支持，全部为 `low_support`；它们不是
+  `minority_fallback` 产生的，而是达标规则本身就只有这个支持度。
+
 ## 5. 开发铁律
 
 ### 5.1 必须冻结
@@ -203,6 +211,10 @@ python -m rca_framework.cli train-evaluate \
 - `label_leakage == false`
 
 从阶段 0 起，上述门禁已由 `tests/test_baseline_lock.py` 自动化，`python -m pytest -q` 即可复核。该测试失败一律视为 legacy 行为漂移，不允许通过修改断言来消除。
+
+从阶段 1 起，观测字段会以新增键的形式出现在 `predictions.json` 与 `evaluation_summary.json` 里，
+因此产物不再与基线逐字节相同。门禁改为"只增不改"：递归比对整份产物，任何 legacy 值改变或键消失
+都会让测试失败，新增键集合也被断言住。新增观测字段时要同步更新该断言，不要放宽它。
 
 阶段 0 同时固定了 `idf` 键序与检索的浮点求和顺序，因此同一份数据在任意 `PYTHONHASHSEED` 下都会产出字节一致的 artifacts。基线目录 `model/model.json` 是修正前生成的，`idf` 键序与新产物不同，但两者数值与 schema 完全一致，比对模型文件时按 JSON 结构比而不是按字节比。
 

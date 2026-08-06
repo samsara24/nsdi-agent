@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import json
+from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -55,7 +56,17 @@ def test_dataset_split_is_unchanged(baseline_run: Dict[str, Any]) -> None:
 
 
 def test_summary_matches_baseline(baseline_run: Dict[str, Any]) -> None:
-    assert baseline_run["evaluation"]["summary"] == read_json(BASELINE_DIR / "evaluation_summary.json")
+    """legacy summary 的每个键都必须逐值复现基线。
+
+    从阶段 1 起 summary 会追加纯观测键（`observations`），因此这里按键比对而不是
+    整字典比对，但基线里出现过的键一个都不许漂移，也不许消失。
+    """
+    expected = read_json(BASELINE_DIR / "evaluation_summary.json")
+    actual = baseline_run["evaluation"]["summary"]
+    assert set(expected) <= set(actual)
+    for key, value in expected.items():
+        assert actual[key] == value, f"legacy summary 键 {key} 发生漂移"
+    assert set(actual) - set(expected) == {"observations"}
 
 
 def test_per_case_prediction_matches_baseline(
@@ -103,6 +114,98 @@ def test_model_artifact_stays_loadable_and_identical(baseline_run: Dict[str, Any
 
 def test_symbolic_rules_stay_mutually_exclusive(baseline_run: Dict[str, Any]) -> None:
     assert baseline_run["pipeline"].rules.overlap_audit()["total_overlap_count"] == 0
+
+
+def assert_additive(actual: Any, expected: Any, path: str, added: List[str]) -> None:
+    """递归断言 `actual` 相对 `expected` 只新增键，不改值、不删键。"""
+    if isinstance(expected, dict):
+        assert isinstance(actual, dict), f"{path} 的类型发生变化"
+        missing = set(expected) - set(actual)
+        assert not missing, f"{path} 丢失了 legacy 键 {sorted(missing)}"
+        added.extend(f"{path}.{key}" for key in set(actual) - set(expected))
+        for key in expected:
+            assert_additive(actual[key], expected[key], f"{path}.{key}", added)
+    elif isinstance(expected, list):
+        assert isinstance(actual, list) and len(actual) == len(expected), f"{path} 的长度发生变化"
+        for index, (left, right) in enumerate(zip(actual, expected)):
+            assert_additive(left, right, f"{path}[{index}]", added)
+    else:
+        assert actual == expected, f"{path} 的值发生漂移: {actual!r} != {expected!r}"
+
+
+def test_predictions_only_add_observation_fields(
+    baseline_run: Dict[str, Any], expected_predictions: List[Dict[str, Any]]
+) -> None:
+    """阶段 1 起的核心门禁：新增观测字段只能是附加的。
+
+    逐层比对整份 `predictions.json`，任何 legacy 值改变或键消失都会失败。
+    新增键会被收集起来并断言其集合，避免无意中往产物里塞字段。
+    """
+    added: List[str] = []
+    assert_additive(as_serialized(baseline_run["evaluation"]["predictions"]), expected_predictions, "predictions", added)
+    assert {item.split(".")[-1] for item in added} == {"observation", "support_tier", "support_tier_counts"}
+
+
+def test_prediction_record_only_gains_observation_key(
+    baseline_run: Dict[str, Any], expected_predictions: List[Dict[str, Any]]
+) -> None:
+    actual_keys = set(baseline_run["evaluation"]["predictions"][0])
+    baseline_keys = set(expected_predictions[0])
+    assert baseline_keys <= actual_keys
+    assert actual_keys - baseline_keys == {"observation"}
+
+
+def test_observation_numbers_match_stage1_measurement(baseline_run: Dict[str, Any]) -> None:
+    """锁定阶段 1 实测的观测数字。
+
+    与 legacy 断言的区别：这些数字允许随观测口径演进而改变，但必须是有意改变，
+    并同步更新 `Progress.md`。它们目前是"双路架构是否真的提供两路证据"的唯一证据。
+    """
+    observations = baseline_run["evaluation"]["summary"]["observations"]
+    assert observations["coverage_state"] == {
+        "covered_pair": 47,
+        "covered_singleton": 5,
+        "covered_exemplar": 10,
+        "partial": 1,
+        "uncovered": 22,
+    }
+    assert observations["prior_only_cases"] == 22
+    assert observations["agreement_type"] == {
+        "independent_agreement": 4,
+        "same_source_agreement": 58,
+        "conflict": 1,
+        "no_evidence": 22,
+    }
+    assert observations["rule_support_audit"]["fiber"] == {
+        "rule_count": 28,
+        "support_tier": {"strong": 0, "moderate": 0, "low_support": 28},
+        "selection": {"strict": 28},
+    }
+
+
+def test_legacy_agreement_is_mostly_same_source(baseline_run: Dict[str, Any]) -> None:
+    """82 条 legacy `agreement` 里真正的独立互证只有 2 条。
+
+    legacy 把 `agreement` 解释为"两条独立推理链结论一致"，这条测试固定住反例：
+    绝大多数是同源一致，还有 22 条根本没有 case 特异证据。
+    """
+    rows = [
+        row for row in baseline_run["evaluation"]["predictions"]
+        if row["decision_status"] == "agreement"
+    ]
+    assert len(rows) == 82
+    kinds = Counter(row["observation"]["evidence"]["agreement_type"] for row in rows)
+    assert kinds == {"same_source_agreement": 58, "no_evidence": 22, "independent_agreement": 2}
+
+
+def test_prior_only_cases_all_fall_back_to_majority_class(baseline_run: Dict[str, Any]) -> None:
+    rows = [
+        row for row in baseline_run["evaluation"]["predictions"]
+        if row["observation"]["coverage"]["prior_only"]
+    ]
+    assert len(rows) == 22
+    assert {row["prediction"] for row in rows} == {"L2"}
+    assert all(row["observation"]["score_composition"]["prior_floor"] == 1.0 for row in rows)
 
 
 def test_model_serialization_is_hash_seed_independent(baseline_run: Dict[str, Any]) -> None:

@@ -82,3 +82,80 @@ def normalize_scores(scores: Dict[str, float]) -> Dict[str, float]:
 def rank_scores(scores: Dict[str, float]) -> List[Tuple[str, float]]:
     normalized = normalize_scores(scores)
     return sorted(normalized.items(), key=lambda item: (-item[1], ROOT_CAUSES.index(item[0])))
+
+
+# 以下为 Agent 化协议类型，只增不改：legacy 路径不读取它们，因此不影响 58/85。
+
+DECISIONS: Tuple[str, ...] = ROOT_CAUSES + ("abstain",)
+SUFFICIENCY: Tuple[str, ...] = ("sufficient", "weak", "insufficient")
+EVIDENCE_SOURCES: Tuple[str, ...] = (
+    "anomaly",
+    "lane_loss",
+    "kg_path",
+    "kg_feature_rule",
+    "symbolic_rule",
+    "retrieval",
+    "playbook",
+)
+NO_SUPPORT = "none"
+
+
+@dataclass(frozen=True)
+class EvidenceItem:
+    """一条带来源的证据。
+
+    `origin_anomalies` 是同源判定的唯一依据：两条证据只要引用同一批 anomaly，
+    就不能算作互相独立的确认。`is_prior_only` 标记那些只反映训练集类别先验、
+    不含 case 特异信息的"证据"，它们不得参与充分性判定。
+    """
+
+    evidence_id: str
+    source: str
+    supports: str
+    strength: float
+    origin_anomalies: Tuple[str, ...] = ()
+    is_prior_only: bool = False
+    detail: Dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.source not in EVIDENCE_SOURCES:
+            raise ValueError(f"unknown evidence source: {self.source}")
+        if self.supports not in ROOT_CAUSES + (NO_SUPPORT,):
+            raise ValueError(f"evidence must support a root cause or '{NO_SUPPORT}': {self.supports}")
+
+    def to_dict(self) -> Dict[str, Any]:
+        value = asdict(self)
+        value["origin_anomalies"] = list(self.origin_anomalies)
+        return value
+
+
+@dataclass
+class Verdict:
+    """诊断出口。与 legacy 的三分类不同，`decision` 允许取 `abstain`。"""
+
+    decision: str
+    confidence: float
+    sufficiency: str
+    supporting: List[EvidenceItem] = field(default_factory=list)
+    conflicting: List[EvidenceItem] = field(default_factory=list)
+    requested_evidence: List[Dict[str, Any]] = field(default_factory=list)
+    abstain_reason: str = ""
+    trace_id: str = ""
+
+    def __post_init__(self) -> None:
+        if self.decision not in DECISIONS:
+            raise ValueError(f"decision must be one of {DECISIONS}: {self.decision}")
+        if self.sufficiency not in SUFFICIENCY:
+            raise ValueError(f"sufficiency must be one of {SUFFICIENCY}: {self.sufficiency}")
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "decision": self.decision,
+            "confidence": self.confidence,
+            "sufficiency": self.sufficiency,
+            "supporting": [item.to_dict() for item in self.supporting],
+            "conflicting": [item.to_dict() for item in self.conflicting],
+            "requested_evidence": list(self.requested_evidence),
+            "abstain_reason": self.abstain_reason,
+            "trace_id": self.trace_id,
+        }

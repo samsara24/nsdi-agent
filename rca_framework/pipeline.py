@@ -6,9 +6,12 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
+from . import graph as graph_module
+from . import rules as rules_module
 from .anomaly import ThresholdModel, extract_evidence, fit_thresholds
+from .evidence import AGREEMENT_TYPES, EvidenceView, aggregate_evidence
 from .fusion import fuse_results
-from .graph import AnomalyKnowledgeGraph
+from .graph import AnomalyKnowledgeGraph, CoverageReport
 from .llm import PathLLMReasoner
 from .rules import SymbolicRuleEngine
 from .runtime import RuntimeConfig
@@ -36,13 +39,27 @@ class PipelineConfig:
 
 @dataclass
 class CaseContext:
-    """单个 case 在调用 LLM 之前已经装配好的确定性上下文。"""
+    """单个 case 在调用 LLM 之前已经装配好的确定性上下文。
+
+    `coverage` 与 `evidence_view` 是阶段 1 引入的观测量，legacy 决策不读取它们。
+    """
 
     case_id: str
     actual_label: str
     evidence: CaseEvidence
     graph_result: Dict[str, Any]
     symbolic_result: Dict[str, Any]
+    coverage: CoverageReport
+    evidence_view: EvidenceView
+
+    def observation(self) -> Dict[str, Any]:
+        """纯观测字段。改变这里不会改变 legacy 的 prediction 与 scores。"""
+        return {
+            "coverage": self.coverage.to_dict(),
+            "score_composition": self.graph_result.get("score_composition", {}),
+            "evidence": self.evidence_view.to_dict(),
+            "support_tier_counts": self.symbolic_result.get("support_tier_counts", {}),
+        }
 
 
 def build_case_context(
@@ -57,12 +74,17 @@ def build_case_context(
     actual_label = str(target.pop("label", ""))
     evidence = extract_evidence(target, thresholds)
     graph_result = graph.query(evidence, config.top_k_paths, config.top_k_cases)
+    symbolic_result = rules.match(evidence)
     return CaseContext(
         case_id=evidence.case_id,
         actual_label=actual_label,
         evidence=evidence,
         graph_result=graph_result,
-        symbolic_result=rules.match(evidence),
+        symbolic_result=symbolic_result,
+        coverage=graph_module.classify_coverage(evidence, graph_result),
+        evidence_view=aggregate_evidence(
+            graph_module.evidence_items(graph_result) + rules_module.evidence_items(symbolic_result)
+        ),
     )
 
 
@@ -93,6 +115,7 @@ def finalize_prediction(context: CaseContext, llm_result: Dict[str, Any], config
         "KG_RCA": context.symbolic_result,
         "extracted_anomalies": [item.to_dict() for item in context.evidence.anomalies],
         "leakage_guard": LEAKAGE_GUARD_NOTE,
+        "observation": context.observation(),
     }
 
 
@@ -197,8 +220,43 @@ class RCAPipeline:
                 "llm_reasoning_mode": dict(llm_mode_counts),
                 "valid_llm_outputs": llm_mode_counts["llm_path_reasoning"],
                 "label_leakage": False,
+                # 阶段 1 观测量。legacy 键的值不受它影响，可直接与历史 summary 比对。
+                "observations": self.observation_summary(contexts),
             },
             "predictions": rows,
+        }
+
+    def observation_summary(self, contexts: Sequence[CaseContext]) -> Dict[str, Any]:
+        """把逐 case 观测量汇总成可直接引用的统计口径。"""
+        coverage_states: Counter[str] = Counter()
+        agreement_types: Counter[str] = Counter()
+        independent_counts: Counter[int] = Counter()
+        support_tiers: Counter[str] = Counter()
+        prior_only = 0
+        exemplar_reachable = 0
+        for context in contexts:
+            coverage_states[context.coverage.state] += 1
+            agreement_types[context.evidence_view.agreement_type] += 1
+            independent_counts[context.evidence_view.independent_evidence_count] += 1
+            prior_only += int(context.coverage.prior_only)
+            exemplar_reachable += int(
+                context.coverage.max_retrieval_similarity >= graph_module.EXEMPLAR_SIMILARITY_THRESHOLD
+            )
+            for tier, count in (context.symbolic_result.get("support_tier_counts") or {}).items():
+                support_tiers[tier] += count
+        return {
+            "coverage_state": {state: coverage_states[state] for state in graph_module.COVERAGE_STATES},
+            "prior_only_cases": prior_only,
+            "agreement_type": {name: agreement_types[name] for name in AGREEMENT_TYPES},
+            "independent_evidence_count": {
+                str(key): independent_counts[key] for key in sorted(independent_counts)
+            },
+            "matched_rule_support_tier": {tier: support_tiers[tier] for tier in rules_module.SUPPORT_TIERS},
+            "rule_support_audit": self.rules.support_audit(),
+            "retrieval": {
+                "exemplar_similarity_threshold": graph_module.EXEMPLAR_SIMILARITY_THRESHOLD,
+                "cases_at_or_above_threshold": exemplar_reachable,
+            },
         }
 
     def to_dict(self) -> Dict[str, Any]:
