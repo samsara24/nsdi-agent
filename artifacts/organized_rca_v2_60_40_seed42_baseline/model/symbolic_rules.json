@@ -1,0 +1,1495 @@
+{
+  "schema": "exclusive-symbolic-rules-v2",
+  "training_case_count": 126,
+  "priors": {
+    "L1": 0.2777777777777778,
+    "L2": 0.6587301587301587,
+    "fiber": 0.06349206349206349
+  },
+  "rule_sets": {
+    "L1": [
+      {
+        "rule_id": "RULE_L1_0001",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.06349206,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 8,
+        "strength": 3.35308842,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0002",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "low_outlier:L2:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.03968254,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 5,
+        "strength": 3.14447471,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0003",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.03968254,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 5,
+        "strength": 2.73432583,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0004",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:media_snr",
+          "low_outlier:L2:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.43289774,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0005",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "low_outlier:L2:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.43289774,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0006",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.43289774,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0007",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.43289774,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0008",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:rxpower",
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.43289774,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0009",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:rxpower",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.43289774,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0010",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.02380952,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 3,
+        "strength": 2.11556325,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0011",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:media_snr",
+          "lane_imbalance:L2:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0012",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "lane_imbalance:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0013",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "low_outlier:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0014",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:rxpower",
+          "signal_drop:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0015",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:serdes_snr",
+          "low_outlier:L2:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0016",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:rxpower",
+          "low_outlier:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0017",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:rxpower",
+          "signal_drop:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 3.6,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.5260563,
+        "matched_training_cases": 2,
+        "strength": 1.92802584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0018",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:media_snr"
+        ],
+        "confidence": 0.8,
+        "lift": 2.88,
+        "support": 0.03174603,
+        "exclusivity_margin": 1.03163997,
+        "matched_training_cases": 4,
+        "strength": 1.745706,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0019",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:serdes_snr",
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 0.44444444,
+        "lift": 1.6,
+        "support": 0.06349206,
+        "exclusivity_margin": 0.08489547,
+        "matched_training_cases": 8,
+        "strength": 1.0730641,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0020",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:serdes_snr",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.44444444,
+        "lift": 1.6,
+        "support": 0.06349206,
+        "exclusivity_margin": 0.08489547,
+        "matched_training_cases": 8,
+        "strength": 1.0730641,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0021",
+        "root_cause": "L1",
+        "all_of": [
+          "signal_drop:L2:media_snr",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.41666667,
+        "lift": 1.5,
+        "support": 0.07936508,
+        "exclusivity_margin": 0.0994048,
+        "matched_training_cases": 10,
+        "strength": 1.05281025,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0022",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:serdes_snr",
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 0.42105263,
+        "lift": 1.51578947,
+        "support": 0.06349206,
+        "exclusivity_margin": 0.07939288,
+        "matched_training_cases": 8,
+        "strength": 0.98155773,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0023",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:serdes_snr",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.42105263,
+        "lift": 1.51578947,
+        "support": 0.06349206,
+        "exclusivity_margin": 0.07939288,
+        "matched_training_cases": 8,
+        "strength": 0.98155773,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0024",
+        "root_cause": "L1",
+        "all_of": [
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 0.41666667,
+        "lift": 1.5,
+        "support": 0.07936508,
+        "exclusivity_margin": 0.0994048,
+        "matched_training_cases": 10,
+        "strength": 0.91548717,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0025",
+        "root_cause": "L1",
+        "all_of": [
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.41666667,
+        "lift": 1.5,
+        "support": 0.07936508,
+        "exclusivity_margin": 0.0994048,
+        "matched_training_cases": 10,
+        "strength": 0.91548717,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0026",
+        "root_cause": "L1",
+        "all_of": [
+          "signal_drop:L2:media_snr",
+          "signal_drop:L2:serdes_snr"
+        ],
+        "confidence": 0.5,
+        "lift": 1.8,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.2324267,
+        "matched_training_cases": 2,
+        "strength": 0.65041271,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0027",
+        "root_cause": "L1",
+        "all_of": [
+          "signal_drop:L2:serdes_snr",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.5,
+        "lift": 1.8,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.2324267,
+        "matched_training_cases": 2,
+        "strength": 0.65041271,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0028",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:serdes_snr",
+          "signal_drop:L2:rxpower"
+        ],
+        "confidence": 0.42857143,
+        "lift": 1.54285714,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.04307527,
+        "matched_training_cases": 3,
+        "strength": 0.63766464,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0029",
+        "root_cause": "L1",
+        "all_of": [
+          "lane_imbalance:L2:serdes_snr",
+          "status_fault:L2:RxLOS"
+        ],
+        "confidence": 0.42857143,
+        "lift": 1.54285714,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.04307527,
+        "matched_training_cases": 3,
+        "strength": 0.63766464,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0030",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:serdes_snr",
+          "signal_drop:L2:rxpower"
+        ],
+        "confidence": 0.375,
+        "lift": 1.35,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.03802274,
+        "matched_training_cases": 3,
+        "strength": 0.51080318,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L1_0031",
+        "root_cause": "L1",
+        "all_of": [
+          "low_outlier:L2:serdes_snr",
+          "status_fault:L2:RxLOS"
+        ],
+        "confidence": 0.375,
+        "lift": 1.35,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.03802274,
+        "matched_training_cases": 3,
+        "strength": 0.51080318,
+        "selection": "strict"
+      }
+    ],
+    "L2": [
+      {
+        "rule_id": "RULE_L2_0001",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:media_snr",
+          "status_fault:L1:RxLOS"
+        ],
+        "confidence": 0.81818182,
+        "lift": 1.24205915,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.53116044,
+        "matched_training_cases": 27,
+        "strength": 2.53142584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0002",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:rxpower",
+          "status_fault:L1:RxLOS"
+        ],
+        "confidence": 0.81818182,
+        "lift": 1.24205915,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.53116044,
+        "matched_training_cases": 27,
+        "strength": 2.53142584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0003",
+        "root_cause": "L2",
+        "all_of": [
+          "status_fault:L1:RxLOL",
+          "status_fault:L1:RxLOS"
+        ],
+        "confidence": 0.81818182,
+        "lift": 1.24205915,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.53116044,
+        "matched_training_cases": 27,
+        "strength": 2.53142584,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0004",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "status_fault:L1:RxLOS"
+        ],
+        "confidence": 0.82142857,
+        "lift": 1.24698795,
+        "support": 0.18253968,
+        "exclusivity_margin": 0.49664159,
+        "matched_training_cases": 23,
+        "strength": 2.43049296,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0005",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:media_snr",
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 0.75,
+        "lift": 1.13855422,
+        "support": 0.30952381,
+        "exclusivity_margin": 0.48143948,
+        "matched_training_cases": 39,
+        "strength": 2.4184741,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0006",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:media_snr",
+          "signal_drop:L1:rxpower"
+        ],
+        "confidence": 0.79411765,
+        "lift": 1.20552799,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.45182485,
+        "matched_training_cases": 27,
+        "strength": 2.40698101,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0007",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:rxpower",
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 0.79411765,
+        "lift": 1.20552799,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.45182485,
+        "matched_training_cases": 27,
+        "strength": 2.40698101,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0008",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 0.75,
+        "lift": 1.13855422,
+        "support": 0.28571429,
+        "exclusivity_margin": 0.46895004,
+        "matched_training_cases": 36,
+        "strength": 2.36736157,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0009",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L1:media_snr"
+        ],
+        "confidence": 0.74468085,
+        "lift": 1.13047936,
+        "support": 0.27777778,
+        "exclusivity_margin": 0.45854052,
+        "matched_training_cases": 35,
+        "strength": 2.32112658,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0010",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L1:rxpower"
+        ],
+        "confidence": 0.79310345,
+        "lift": 1.20398837,
+        "support": 0.18253968,
+        "exclusivity_margin": 0.40046857,
+        "matched_training_cases": 23,
+        "strength": 2.29067598,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0011",
+        "root_cause": "L2",
+        "all_of": [
+          "status_fault:L1:RxLOS"
+        ],
+        "confidence": 0.81818182,
+        "lift": 1.24205915,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.53116044,
+        "matched_training_cases": 27,
+        "strength": 2.20123986,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0012",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:media_snr"
+        ],
+        "confidence": 0.75,
+        "lift": 1.13855422,
+        "support": 0.30952381,
+        "exclusivity_margin": 0.48143948,
+        "matched_training_cases": 39,
+        "strength": 2.10302096,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0013",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:rxpower"
+        ],
+        "confidence": 0.79411765,
+        "lift": 1.20552799,
+        "support": 0.21428571,
+        "exclusivity_margin": 0.45182485,
+        "matched_training_cases": 27,
+        "strength": 2.09302696,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0014",
+        "root_cause": "L2",
+        "all_of": [
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 0.74074074,
+        "lift": 1.12449799,
+        "support": 0.31746032,
+        "exclusivity_margin": 0.44577437,
+        "matched_training_cases": 40,
+        "strength": 2.07282112,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0015",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr"
+        ],
+        "confidence": 0.74,
+        "lift": 1.12337349,
+        "support": 0.29365079,
+        "exclusivity_margin": 0.46263956,
+        "matched_training_cases": 37,
+        "strength": 2.02695217,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0016",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:rxpower"
+        ],
+        "confidence": 0.9,
+        "lift": 1.36626506,
+        "support": 0.07142857,
+        "exclusivity_margin": 0.74443304,
+        "matched_training_cases": 9,
+        "strength": 1.78492139,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0017",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:rxpower",
+          "low_outlier:L1:rxpower"
+        ],
+        "confidence": 0.875,
+        "lift": 1.32831325,
+        "support": 0.05555556,
+        "exclusivity_margin": 0.69305563,
+        "matched_training_cases": 7,
+        "strength": 1.76841163,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0018",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:media_snr",
+          "lane_imbalance:L1:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.70925154,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0019",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:media_snr",
+          "low_outlier:L1:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.70925154,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0020",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:media_snr",
+          "low_outlier:L1:rxpower"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.70925154,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0021",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:rxpower",
+          "low_outlier:L1:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.70925154,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0022",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:rxpower",
+          "signal_drop:L1:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.70925154,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0023",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:rxpower",
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.70925154,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0024",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:rxpower"
+        ],
+        "confidence": 0.875,
+        "lift": 1.32831325,
+        "support": 0.05555556,
+        "exclusivity_margin": 0.69305563,
+        "matched_training_cases": 7,
+        "strength": 1.53774924,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0025",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 4,
+        "strength": 1.48630568,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0026",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:rxpower",
+          "low_outlier:L1:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 3,
+        "strength": 1.47226914,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0027",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:rxpower",
+          "signal_drop:L1:media_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 3,
+        "strength": 1.47226914,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0028",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:rxpower",
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.02380952,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 3,
+        "strength": 1.47226914,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0029",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:media_snr"
+        ],
+        "confidence": 0.85714286,
+        "lift": 1.30120482,
+        "support": 0.04761905,
+        "exclusivity_margin": 0.6550933,
+        "matched_training_cases": 6,
+        "strength": 1.39010176,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0030",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L1:rxpower",
+          "low_outlier:L1:media_snr"
+        ],
+        "confidence": 0.8,
+        "lift": 1.21445783,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.52754122,
+        "matched_training_cases": 4,
+        "strength": 1.17715415,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0031",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:media_snr",
+          "low_outlier:L1:rxpower"
+        ],
+        "confidence": 0.8,
+        "lift": 1.21445783,
+        "support": 0.03174603,
+        "exclusivity_margin": 0.52754122,
+        "matched_training_cases": 4,
+        "strength": 1.17715415,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0032",
+        "root_cause": "L2",
+        "all_of": [
+          "coupled_fault:L1_to_L2:tx_rx",
+          "signal_drop:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0033",
+        "root_cause": "L2",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "signal_drop:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0034",
+        "root_cause": "L2",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "status_fault:L2:TxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0035",
+        "root_cause": "L2",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "status_fault:L2:TxLOS"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0036",
+        "root_cause": "L2",
+        "all_of": [
+          "lane_imbalance:L2:serdes_snr",
+          "signal_drop:L1:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0037",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "status_fault:L2:TxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0038",
+        "root_cause": "L2",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "status_fault:L2:TxLOS"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0039",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:media_snr",
+          "signal_drop:L2:serdes_snr"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_L2_0040",
+        "root_cause": "L2",
+        "all_of": [
+          "signal_drop:L1:media_snr",
+          "status_fault:L2:TxLOL"
+        ],
+        "confidence": 1.0,
+        "lift": 1.51807229,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.92349364,
+        "matched_training_cases": 2,
+        "strength": 1.16674569,
+        "selection": "strict"
+      }
+    ],
+    "fiber": [
+      {
+        "rule_id": "RULE_fiber_0001",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L1_to_L2:tx_rx",
+          "low_outlier:L1:serdes_snr"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0002",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L1:serdes_snr"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0003",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L1:txpower"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0004",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0005",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L2:rxpower"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0006",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0007",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "status_fault:L2:RxLOS"
+        ],
+        "confidence": 0.66666667,
+        "lift": 10.5,
+        "support": 0.01587302,
+        "exclusivity_margin": 1.49174031,
+        "matched_training_cases": 2,
+        "strength": 2.05711422,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0008",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L1_to_L2:tx_rx",
+          "coupled_fault:L2_to_L1:tx_rx"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0009",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L1_to_L2:tx_rx",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0010",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "signal_drop:L1:serdes_snr"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0011",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "signal_drop:L1:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0012",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "signal_drop:L2:media_snr"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0013",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "signal_drop:L2:rxpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0014",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0015",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "status_fault:L2:RxLOS"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0016",
+        "root_cause": "fiber",
+        "all_of": [
+          "low_outlier:L1:serdes_snr",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0017",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L1:serdes_snr",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0018",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L1:txpower",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0019",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:media_snr",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0020",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:rxpower",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0021",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:txpower",
+          "status_fault:L2:RxLOL"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0022",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:txpower",
+          "status_fault:L2:RxLOS"
+        ],
+        "confidence": 0.5,
+        "lift": 7.875,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.80923616,
+        "matched_training_cases": 2,
+        "strength": 1.37915617,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0023",
+        "root_cause": "fiber",
+        "all_of": [
+          "coupled_fault:L2_to_L1:tx_rx",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.4,
+        "lift": 6.3,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.40662292,
+        "matched_training_cases": 2,
+        "strength": 1.00459547,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0024",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L1:media_snr",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.4,
+        "lift": 6.3,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.40662292,
+        "matched_training_cases": 2,
+        "strength": 1.00459547,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0025",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L1:rxpower",
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.4,
+        "lift": 6.3,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.40662292,
+        "matched_training_cases": 2,
+        "strength": 1.00459547,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0026",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:txpower",
+          "status_fault:L1:RxLOL"
+        ],
+        "confidence": 0.4,
+        "lift": 6.3,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.40662292,
+        "matched_training_cases": 2,
+        "strength": 1.00459547,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0027",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:txpower",
+          "status_fault:L1:RxLOS"
+        ],
+        "confidence": 0.4,
+        "lift": 6.3,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.40662292,
+        "matched_training_cases": 2,
+        "strength": 1.00459547,
+        "selection": "strict"
+      },
+      {
+        "rule_id": "RULE_fiber_0028",
+        "root_cause": "fiber",
+        "all_of": [
+          "signal_drop:L2:txpower"
+        ],
+        "confidence": 0.4,
+        "lift": 6.3,
+        "support": 0.01587302,
+        "exclusivity_margin": 0.40662292,
+        "matched_training_cases": 2,
+        "strength": 0.87356127,
+        "selection": "strict"
+      }
+    ]
+  },
+  "overlap_audit": {
+    "pairwise_overlap": {
+      "L1__L2": [],
+      "L1__fiber": [],
+      "L2__fiber": []
+    },
+    "total_overlap_count": 0,
+    "invariant": "An antecedent is owned by at most one root-cause rule set."
+  }
+}

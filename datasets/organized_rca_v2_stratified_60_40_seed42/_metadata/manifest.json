@@ -1,0 +1,2077 @@
+{
+  "schema_version": "2.0",
+  "source_manifest": "archive/organized_data_source_manifest_seed42.json",
+  "source_manifest_sha256": "6fd71b987d6f1e3de7f3ef10ebe86e1fa4520122bee2de3ab692b5de0668adbf",
+  "source_file_count": 231,
+  "output_file_count": 211,
+  "skipped_file_count": 20,
+  "label_distribution": {
+    "fiber": 14,
+    "L2": 138,
+    "L1": 59
+  },
+  "input_speed_patterns": {
+    "200G-400G": 211,
+    "400G-400G": 20
+  },
+  "split": {
+    "method": "per-class deterministic shuffle; train cases are written before test cases",
+    "seed": 42,
+    "train_ratio": 0.6,
+    "train_size": 126,
+    "test_size": 85,
+    "class_counts": {
+      "L1": {
+        "total": 59,
+        "train": 35,
+        "test": 24
+      },
+      "L2": {
+        "total": 138,
+        "train": 83,
+        "test": 55
+      },
+      "fiber": {
+        "total": 14,
+        "train": 8,
+        "test": 6
+      }
+    }
+  },
+  "policy": {
+    "side": "L1 is always 400G; L2 is always 200G. All side-scoped values move with their endpoint.",
+    "privacy": "IPs, interfaces, serials, vendors, regions, topology locations and time origins are pseudonymized.",
+    "source": "Source files are never modified or overwritten."
+  },
+  "secret_fingerprint": "4ea89461188b",
+  "residual_sensitive_patterns": {
+    "ipv4": 0,
+    "email": 0,
+    "phone": 0,
+    "raw_interface": 0,
+    "legacy_side_token": 0
+  },
+  "cases": [
+    {
+      "output_file": "case_000001.json",
+      "case_id": "case_1599b1646dfc",
+      "source_hash": "source_0b1fd852ee22",
+      "source_order": 226,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000002.json",
+      "case_id": "case_7e8cf3645c2c",
+      "source_hash": "source_9263c70483d6",
+      "source_order": 21,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000003.json",
+      "case_id": "case_7b53e01bad2e",
+      "source_hash": "source_235eef6daf7a",
+      "source_order": 162,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000004.json",
+      "case_id": "case_12a49a384364",
+      "source_hash": "source_329fd732d172",
+      "source_order": 98,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000005.json",
+      "case_id": "case_738418a3246a",
+      "source_hash": "source_7f161c597aed",
+      "source_order": 173,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000006.json",
+      "case_id": "case_c72abbaf13ce",
+      "source_hash": "source_a001268c30ba",
+      "source_order": 61,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000007.json",
+      "case_id": "case_6cc8e0b5c296",
+      "source_hash": "source_dcea15809e84",
+      "source_order": 29,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000008.json",
+      "case_id": "case_f6386118214f",
+      "source_hash": "source_54ebcc383ce7",
+      "source_order": 103,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000009.json",
+      "case_id": "case_cf6817438a4e",
+      "source_hash": "source_a4cb69106b05",
+      "source_order": 55,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000010.json",
+      "case_id": "case_e7f2b980e7b8",
+      "source_hash": "source_2cc85b299e27",
+      "source_order": 116,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000011.json",
+      "case_id": "case_a9c984018b6b",
+      "source_hash": "source_ccfcde46e1a2",
+      "source_order": 38,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000012.json",
+      "case_id": "case_6e6c1a46b55b",
+      "source_hash": "source_03faa6a6a9b6",
+      "source_order": 75,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000013.json",
+      "case_id": "case_7f71188264e3",
+      "source_hash": "source_51ad19c2fd20",
+      "source_order": 178,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000014.json",
+      "case_id": "case_81fc9e6f5846",
+      "source_hash": "source_8c0703945e7e",
+      "source_order": 171,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000015.json",
+      "case_id": "case_e2b25c843f5c",
+      "source_hash": "source_40b2b1d71ecd",
+      "source_order": 118,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000016.json",
+      "case_id": "case_0f83d063efa5",
+      "source_hash": "source_d6165f93c596",
+      "source_order": 104,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000017.json",
+      "case_id": "case_0e736ff14570",
+      "source_hash": "source_54bf5c902e75",
+      "source_order": 142,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000018.json",
+      "case_id": "case_788f6d78ed15",
+      "source_hash": "source_1b0929e2ead8",
+      "source_order": 133,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000019.json",
+      "case_id": "case_66966b5b9b5e",
+      "source_hash": "source_c1be554b62e1",
+      "source_order": 204,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000020.json",
+      "case_id": "case_e93ac6fd06b5",
+      "source_hash": "source_c7772d991133",
+      "source_order": 77,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000021.json",
+      "case_id": "case_dfb49c620afb",
+      "source_hash": "source_e17404a056c3",
+      "source_order": 39,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000022.json",
+      "case_id": "case_09824ff2fad8",
+      "source_hash": "source_12b376a37100",
+      "source_order": 54,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000023.json",
+      "case_id": "case_1fc24b82a165",
+      "source_hash": "source_a8cbfd32f414",
+      "source_order": 9,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000024.json",
+      "case_id": "case_f4c72ead0a91",
+      "source_hash": "source_a548fcc0db10",
+      "source_order": 31,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000025.json",
+      "case_id": "case_aa307cc7c7db",
+      "source_hash": "source_74ab2c21dbc2",
+      "source_order": 177,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000026.json",
+      "case_id": "case_2e803793a53b",
+      "source_hash": "source_5c116c0746f5",
+      "source_order": 207,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000027.json",
+      "case_id": "case_6fd458311d2d",
+      "source_hash": "source_e24cf5df4c15",
+      "source_order": 0,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000028.json",
+      "case_id": "case_a10200250709",
+      "source_hash": "source_f7805f392f35",
+      "source_order": 10,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000029.json",
+      "case_id": "case_5c642b4fd386",
+      "source_hash": "source_ce6173a5d510",
+      "source_order": 225,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000030.json",
+      "case_id": "case_ab3716cc3fb1",
+      "source_hash": "source_7d8f90de4054",
+      "source_order": 214,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000031.json",
+      "case_id": "case_47d6f1c1a8e0",
+      "source_hash": "source_bb6291b56407",
+      "source_order": 95,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000032.json",
+      "case_id": "case_d65c644541f0",
+      "source_hash": "source_80297ddf4dbf",
+      "source_order": 216,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000033.json",
+      "case_id": "case_3249789a848c",
+      "source_hash": "source_6326e0201c14",
+      "source_order": 121,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000034.json",
+      "case_id": "case_bc74c762e016",
+      "source_hash": "source_055efd4afbd1",
+      "source_order": 70,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000035.json",
+      "case_id": "case_8421e9b9109d",
+      "source_hash": "source_34262c69bac6",
+      "source_order": 122,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000036.json",
+      "case_id": "case_05383df7a576",
+      "source_hash": "source_d498909bd767",
+      "source_order": 4,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000037.json",
+      "case_id": "case_fe84c7367f48",
+      "source_hash": "source_d753eb76a67e",
+      "source_order": 150,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000038.json",
+      "case_id": "case_114e59515432",
+      "source_hash": "source_bc3bbcbbc635",
+      "source_order": 35,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000039.json",
+      "case_id": "case_5739c9defc70",
+      "source_hash": "source_16c9753e85a0",
+      "source_order": 109,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000040.json",
+      "case_id": "case_71ad8ff8c178",
+      "source_hash": "source_31106b7dacdd",
+      "source_order": 176,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000041.json",
+      "case_id": "case_3b443783c492",
+      "source_hash": "source_dbc47129a1fc",
+      "source_order": 37,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000042.json",
+      "case_id": "case_ad8b5bbb7438",
+      "source_hash": "source_ae62ee082603",
+      "source_order": 58,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000043.json",
+      "case_id": "case_d8c6ba13faee",
+      "source_hash": "source_65b598cbd2d9",
+      "source_order": 113,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000044.json",
+      "case_id": "case_007b3e28a693",
+      "source_hash": "source_3977f57f5087",
+      "source_order": 189,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000045.json",
+      "case_id": "case_29654329b886",
+      "source_hash": "source_cf2e08b65ff2",
+      "source_order": 175,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000046.json",
+      "case_id": "case_06e5b850f945",
+      "source_hash": "source_98d49b0120a6",
+      "source_order": 30,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000047.json",
+      "case_id": "case_562ecf612b4e",
+      "source_hash": "source_10d5da8a4fe8",
+      "source_order": 185,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000048.json",
+      "case_id": "case_9ead3670daca",
+      "source_hash": "source_3d0b4cc29f75",
+      "source_order": 129,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000049.json",
+      "case_id": "case_30504fb8d7cb",
+      "source_hash": "source_3b3c26276677",
+      "source_order": 198,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000050.json",
+      "case_id": "case_228af8c9beb2",
+      "source_hash": "source_afce63f816da",
+      "source_order": 33,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000051.json",
+      "case_id": "case_302d8bb1d8ff",
+      "source_hash": "source_e36e73380ee3",
+      "source_order": 217,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000052.json",
+      "case_id": "case_c5aa04fdb998",
+      "source_hash": "source_a6e88c6bf8ce",
+      "source_order": 88,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000053.json",
+      "case_id": "case_48fd5b6579c8",
+      "source_hash": "source_06277ad39849",
+      "source_order": 102,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000054.json",
+      "case_id": "case_6f8b6f6a4b28",
+      "source_hash": "source_5444a502eab9",
+      "source_order": 67,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000055.json",
+      "case_id": "case_c04218755df9",
+      "source_hash": "source_ecb0d3ddc951",
+      "source_order": 40,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000056.json",
+      "case_id": "case_bdb5cac58bf2",
+      "source_hash": "source_3aa29e72b43f",
+      "source_order": 114,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000057.json",
+      "case_id": "case_93059fa8118b",
+      "source_hash": "source_0f7ed53c99df",
+      "source_order": 57,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000058.json",
+      "case_id": "case_c336c13babd7",
+      "source_hash": "source_b6e4d4178bac",
+      "source_order": 7,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000059.json",
+      "case_id": "case_12947b553ebe",
+      "source_hash": "source_7605f622598d",
+      "source_order": 163,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000060.json",
+      "case_id": "case_5b5d2352824e",
+      "source_hash": "source_bb7570b9d21d",
+      "source_order": 227,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000061.json",
+      "case_id": "case_c99aaca7f8ab",
+      "source_hash": "source_437925f41d43",
+      "source_order": 210,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000062.json",
+      "case_id": "case_6e874e950485",
+      "source_hash": "source_4843a484b1c2",
+      "source_order": 138,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000063.json",
+      "case_id": "case_1fb51085e85f",
+      "source_hash": "source_7f9a7f0d293e",
+      "source_order": 131,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000064.json",
+      "case_id": "case_ec4874b59bb3",
+      "source_hash": "source_088dd2e81f23",
+      "source_order": 126,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000065.json",
+      "case_id": "case_560e0436c55d",
+      "source_hash": "source_ee3e27ffd946",
+      "source_order": 147,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000066.json",
+      "case_id": "case_fa577a195d9c",
+      "source_hash": "source_36dadca478d1",
+      "source_order": 94,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000067.json",
+      "case_id": "case_1b62581dc2b3",
+      "source_hash": "source_6e052c76819f",
+      "source_order": 13,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000068.json",
+      "case_id": "case_94ddf3d3ffba",
+      "source_hash": "source_54a3859d2cb1",
+      "source_order": 174,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000069.json",
+      "case_id": "case_c3bb60521200",
+      "source_hash": "source_67017b376508",
+      "source_order": 36,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000070.json",
+      "case_id": "case_1dda3cf529f2",
+      "source_hash": "source_ff41a22d859e",
+      "source_order": 16,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000071.json",
+      "case_id": "case_0a8ca046b410",
+      "source_hash": "source_e444dd377fbd",
+      "source_order": 135,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000072.json",
+      "case_id": "case_b36db0c3adc6",
+      "source_hash": "source_d63b9194cb0e",
+      "source_order": 59,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000073.json",
+      "case_id": "case_f25c8aa9a536",
+      "source_hash": "source_05f82476deb8",
+      "source_order": 199,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000074.json",
+      "case_id": "case_e21282fb5baa",
+      "source_hash": "source_453eaae9b9b9",
+      "source_order": 26,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000075.json",
+      "case_id": "case_9ba3504dcd92",
+      "source_hash": "source_28d5b6ec48c8",
+      "source_order": 32,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000076.json",
+      "case_id": "case_d43262276d3e",
+      "source_hash": "source_afbd3df08fee",
+      "source_order": 146,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000077.json",
+      "case_id": "case_02ea646989f5",
+      "source_hash": "source_55f72e837aec",
+      "source_order": 23,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000078.json",
+      "case_id": "case_6f00e799b547",
+      "source_hash": "source_3858fb24889e",
+      "source_order": 72,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000079.json",
+      "case_id": "case_e3e756de7831",
+      "source_hash": "source_35910ec3c748",
+      "source_order": 46,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000080.json",
+      "case_id": "case_89fff4b3876e",
+      "source_hash": "source_511a18b421cb",
+      "source_order": 215,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000081.json",
+      "case_id": "case_fc9a4e4ec2a4",
+      "source_hash": "source_b2801abb5dc6",
+      "source_order": 170,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000082.json",
+      "case_id": "case_5307251b26c0",
+      "source_hash": "source_47bd9d2e6c31",
+      "source_order": 159,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000083.json",
+      "case_id": "case_451529828130",
+      "source_hash": "source_ff4983b140e1",
+      "source_order": 51,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000084.json",
+      "case_id": "case_43bd5d7a12d0",
+      "source_hash": "source_048e82fbc545",
+      "source_order": 137,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000085.json",
+      "case_id": "case_d55f837265d7",
+      "source_hash": "source_b29f69fa2901",
+      "source_order": 139,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000086.json",
+      "case_id": "case_f9e287d18750",
+      "source_hash": "source_3a5c10579032",
+      "source_order": 73,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000087.json",
+      "case_id": "case_a26a44212aee",
+      "source_hash": "source_655a9dc3db2d",
+      "source_order": 136,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000088.json",
+      "case_id": "case_116fb0105807",
+      "source_hash": "source_a2173715f138",
+      "source_order": 186,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000089.json",
+      "case_id": "case_c6ee818c4add",
+      "source_hash": "source_059c3ca9a286",
+      "source_order": 89,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000090.json",
+      "case_id": "case_cd7b080d7ee1",
+      "source_hash": "source_5476a363e1d9",
+      "source_order": 202,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000091.json",
+      "case_id": "case_486c397106ea",
+      "source_hash": "source_ff7ea68ad71f",
+      "source_order": 74,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000092.json",
+      "case_id": "case_1f3ba75aec95",
+      "source_hash": "source_e673ff89353c",
+      "source_order": 12,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000093.json",
+      "case_id": "case_050848cd7692",
+      "source_hash": "source_0ff3aee6937f",
+      "source_order": 76,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000094.json",
+      "case_id": "case_47d8670ff6f7",
+      "source_hash": "source_67cdf7d30fab",
+      "source_order": 206,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000095.json",
+      "case_id": "case_c3d4f347b125",
+      "source_hash": "source_c5dfac934518",
+      "source_order": 153,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000096.json",
+      "case_id": "case_88704a66f3dd",
+      "source_hash": "source_2aa2a4b0306a",
+      "source_order": 82,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000097.json",
+      "case_id": "case_976628d4f366",
+      "source_hash": "source_2b11223e3891",
+      "source_order": 156,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000098.json",
+      "case_id": "case_3fcb5c9e2b00",
+      "source_hash": "source_f19ca9916381",
+      "source_order": 196,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000099.json",
+      "case_id": "case_cbb8f446ce3d",
+      "source_hash": "source_72fefecd43b6",
+      "source_order": 50,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000100.json",
+      "case_id": "case_ff8b24820cef",
+      "source_hash": "source_0ab8ab7fef5d",
+      "source_order": 56,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000101.json",
+      "case_id": "case_f4fe4e1c529b",
+      "source_hash": "source_77fd13ec586e",
+      "source_order": 221,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000102.json",
+      "case_id": "case_bd0ae0a4284f",
+      "source_hash": "source_f164d6c35bbc",
+      "source_order": 24,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000103.json",
+      "case_id": "case_2476b6b15fde",
+      "source_hash": "source_7f59b3da8f44",
+      "source_order": 108,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000104.json",
+      "case_id": "case_524e0cb0700d",
+      "source_hash": "source_7b0d29ed93d7",
+      "source_order": 168,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000105.json",
+      "case_id": "case_c2dd01348eaf",
+      "source_hash": "source_8ac170f0427b",
+      "source_order": 224,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000106.json",
+      "case_id": "case_fab28de182fb",
+      "source_hash": "source_839e04381d44",
+      "source_order": 19,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000107.json",
+      "case_id": "case_9fe5cd420468",
+      "source_hash": "source_93901beb644f",
+      "source_order": 127,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000108.json",
+      "case_id": "case_dc2d68f3368d",
+      "source_hash": "source_0618e2d904c1",
+      "source_order": 219,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000109.json",
+      "case_id": "case_67e8f6db34f8",
+      "source_hash": "source_72d855f2c915",
+      "source_order": 99,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000110.json",
+      "case_id": "case_d10f0d58dd08",
+      "source_hash": "source_b668b8654adf",
+      "source_order": 154,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000111.json",
+      "case_id": "case_ed51785b2d33",
+      "source_hash": "source_170745b938a4",
+      "source_order": 213,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000112.json",
+      "case_id": "case_9a205a0a580e",
+      "source_hash": "source_208b96603ddd",
+      "source_order": 44,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000113.json",
+      "case_id": "case_8f59df361fb2",
+      "source_hash": "source_e862b674d8d5",
+      "source_order": 167,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000114.json",
+      "case_id": "case_71c618b566d7",
+      "source_hash": "source_a343f4dad30e",
+      "source_order": 172,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000115.json",
+      "case_id": "case_7ba159a429eb",
+      "source_hash": "source_a907efe5d89d",
+      "source_order": 190,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000116.json",
+      "case_id": "case_b52ebf4170e2",
+      "source_hash": "source_e4091c71cc67",
+      "source_order": 209,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000117.json",
+      "case_id": "case_8dee5c3e3720",
+      "source_hash": "source_845dd6dca5a9",
+      "source_order": 68,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000118.json",
+      "case_id": "case_8a3a61b7b587",
+      "source_hash": "source_2cba6ec393cf",
+      "source_order": 43,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000119.json",
+      "case_id": "case_1eec0d20c187",
+      "source_hash": "source_6c6dd63484a2",
+      "source_order": 87,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000120.json",
+      "case_id": "case_9add72510658",
+      "source_hash": "source_bab05847d2d3",
+      "source_order": 52,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000121.json",
+      "case_id": "case_4a33c1e73758",
+      "source_hash": "source_697c0835e43b",
+      "source_order": 160,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000122.json",
+      "case_id": "case_00705d29ebac",
+      "source_hash": "source_1c8a4cb38117",
+      "source_order": 47,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000123.json",
+      "case_id": "case_13a2cb8b644c",
+      "source_hash": "source_44b2fc11f6af",
+      "source_order": 41,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000124.json",
+      "case_id": "case_2364d18e502f",
+      "source_hash": "source_729d3e4180cc",
+      "source_order": 157,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000125.json",
+      "case_id": "case_b35931bde6e9",
+      "source_hash": "source_d8c52b7d207f",
+      "source_order": 97,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000126.json",
+      "case_id": "case_bc16347963d5",
+      "source_hash": "source_40f6d44eaf35",
+      "source_order": 63,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "train"
+    },
+    {
+      "output_file": "case_000127.json",
+      "case_id": "case_af0a23d25838",
+      "source_hash": "source_c0a11fa611d0",
+      "source_order": 124,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000128.json",
+      "case_id": "case_bd860db3cc09",
+      "source_hash": "source_ef0c75a97ed3",
+      "source_order": 123,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000129.json",
+      "case_id": "case_dc1844257425",
+      "source_hash": "source_c2f4c640948b",
+      "source_order": 141,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000130.json",
+      "case_id": "case_630c84267302",
+      "source_hash": "source_7e32a66bfd88",
+      "source_order": 28,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000131.json",
+      "case_id": "case_8f70b31d636f",
+      "source_hash": "source_9e059d6a1496",
+      "source_order": 182,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000132.json",
+      "case_id": "case_8ef9859f030c",
+      "source_hash": "source_25127f4e181d",
+      "source_order": 218,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000133.json",
+      "case_id": "case_0c6bc24c3fe7",
+      "source_hash": "source_998e500aca95",
+      "source_order": 223,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000134.json",
+      "case_id": "case_d95088322c05",
+      "source_hash": "source_f331129c7fa6",
+      "source_order": 201,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000135.json",
+      "case_id": "case_80272e5bf02e",
+      "source_hash": "source_c5f0f1a5cfd6",
+      "source_order": 145,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000136.json",
+      "case_id": "case_f8705c01d631",
+      "source_hash": "source_e00bb93822f6",
+      "source_order": 85,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000137.json",
+      "case_id": "case_591a8de93e1e",
+      "source_hash": "source_e98c6e4f8074",
+      "source_order": 96,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000138.json",
+      "case_id": "case_aef76fdb4997",
+      "source_hash": "source_356a107776cb",
+      "source_order": 203,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000139.json",
+      "case_id": "case_0e0ee81d3c6d",
+      "source_hash": "source_e516a5d472c9",
+      "source_order": 144,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000140.json",
+      "case_id": "case_c7c3503adf4e",
+      "source_hash": "source_cac189a2551a",
+      "source_order": 48,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000141.json",
+      "case_id": "case_1a7431301717",
+      "source_hash": "source_3318cd562bac",
+      "source_order": 166,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000142.json",
+      "case_id": "case_b2c6d690e5e1",
+      "source_hash": "source_db1aaaef155d",
+      "source_order": 110,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000143.json",
+      "case_id": "case_df4699a6d75f",
+      "source_hash": "source_76a176f8e18f",
+      "source_order": 79,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000144.json",
+      "case_id": "case_82b181f7f216",
+      "source_hash": "source_d845065c7109",
+      "source_order": 3,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000145.json",
+      "case_id": "case_655362df439f",
+      "source_hash": "source_89ceac0f2e7c",
+      "source_order": 91,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000146.json",
+      "case_id": "case_0274892272e5",
+      "source_hash": "source_066fb08d2f16",
+      "source_order": 192,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000147.json",
+      "case_id": "case_f2c3ad1abb13",
+      "source_hash": "source_bee3f818c287",
+      "source_order": 62,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000148.json",
+      "case_id": "case_0ca97c6a425a",
+      "source_hash": "source_4d3b83f06faf",
+      "source_order": 151,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000149.json",
+      "case_id": "case_a5ece180b08f",
+      "source_hash": "source_e3082d2d004b",
+      "source_order": 92,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000150.json",
+      "case_id": "case_9ba5a2d6cb8e",
+      "source_hash": "source_02043eee79ed",
+      "source_order": 212,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000151.json",
+      "case_id": "case_bb7e9d07b8aa",
+      "source_hash": "source_8e129bd066ac",
+      "source_order": 25,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000152.json",
+      "case_id": "case_60a3d1b7bfa0",
+      "source_hash": "source_106712f00f1c",
+      "source_order": 65,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000153.json",
+      "case_id": "case_3e392e75f20c",
+      "source_hash": "source_ec7753d119f9",
+      "source_order": 211,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000154.json",
+      "case_id": "case_d3d5e5cbbaf4",
+      "source_hash": "source_197fff3b624a",
+      "source_order": 86,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000155.json",
+      "case_id": "case_f9f8c8441f86",
+      "source_hash": "source_ab1595f4f540",
+      "source_order": 107,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000156.json",
+      "case_id": "case_99dd8a24f695",
+      "source_hash": "source_42523bd05baf",
+      "source_order": 128,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000157.json",
+      "case_id": "case_dfdc19c27794",
+      "source_hash": "source_1bbc79f8fbaf",
+      "source_order": 183,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000158.json",
+      "case_id": "case_2977fa82229b",
+      "source_hash": "source_3ccab4b6670c",
+      "source_order": 71,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000159.json",
+      "case_id": "case_e6c83f5f9344",
+      "source_hash": "source_612d44bb90bb",
+      "source_order": 130,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000160.json",
+      "case_id": "case_0e9829a2061b",
+      "source_hash": "source_36c0d8f339cb",
+      "source_order": 149,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000161.json",
+      "case_id": "case_f92c3782baa7",
+      "source_hash": "source_25cf4af7e72a",
+      "source_order": 148,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000162.json",
+      "case_id": "case_072b79453724",
+      "source_hash": "source_e2d797bd980d",
+      "source_order": 155,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000163.json",
+      "case_id": "case_b3528d1c7d60",
+      "source_hash": "source_cf7161a63aef",
+      "source_order": 152,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000164.json",
+      "case_id": "case_9a6532971c2a",
+      "source_hash": "source_1cd565bb708b",
+      "source_order": 78,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000165.json",
+      "case_id": "case_41a9ba77d097",
+      "source_hash": "source_9c5e9a1ce2a0",
+      "source_order": 205,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000166.json",
+      "case_id": "case_0c88c31e492a",
+      "source_hash": "source_6c256954f897",
+      "source_order": 8,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000167.json",
+      "case_id": "case_cd45d32c98bb",
+      "source_hash": "source_5d424fc09d10",
+      "source_order": 34,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000168.json",
+      "case_id": "case_b81d18ac89b5",
+      "source_hash": "source_398263d6056b",
+      "source_order": 132,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000169.json",
+      "case_id": "case_3ef50bdf9ef9",
+      "source_hash": "source_ad685419948d",
+      "source_order": 197,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000170.json",
+      "case_id": "case_ad86230b68ab",
+      "source_hash": "source_59a2e487759f",
+      "source_order": 228,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000171.json",
+      "case_id": "case_650ef8f60c89",
+      "source_hash": "source_66e76385867e",
+      "source_order": 5,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000172.json",
+      "case_id": "case_eb8eb4c6e8f0",
+      "source_hash": "source_c0ee4084e319",
+      "source_order": 22,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000173.json",
+      "case_id": "case_285257aabbe8",
+      "source_hash": "source_b40d681d4370",
+      "source_order": 179,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000174.json",
+      "case_id": "case_791de44bafec",
+      "source_hash": "source_82bf3ccae80f",
+      "source_order": 191,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000175.json",
+      "case_id": "case_5af065c8baca",
+      "source_hash": "source_769d91e775cb",
+      "source_order": 60,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000176.json",
+      "case_id": "case_c6af08b64caf",
+      "source_hash": "source_d6d1d3315c18",
+      "source_order": 18,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000177.json",
+      "case_id": "case_bf363c1887d9",
+      "source_hash": "source_73cc72f8ce43",
+      "source_order": 200,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000178.json",
+      "case_id": "case_4ac5f2010107",
+      "source_hash": "source_c2e4968a8b3c",
+      "source_order": 80,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000179.json",
+      "case_id": "case_445518378681",
+      "source_hash": "source_0a1411f2a239",
+      "source_order": 120,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000180.json",
+      "case_id": "case_f4e5ca8c6a64",
+      "source_hash": "source_bf8701c23339",
+      "source_order": 194,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000181.json",
+      "case_id": "case_3134f91c8f33",
+      "source_hash": "source_738e361658af",
+      "source_order": 27,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000182.json",
+      "case_id": "case_da829dd0f857",
+      "source_hash": "source_46c744313086",
+      "source_order": 117,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000183.json",
+      "case_id": "case_5bd987fbfe68",
+      "source_hash": "source_ad1ccdc7b0bb",
+      "source_order": 134,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000184.json",
+      "case_id": "case_90aabef651ea",
+      "source_hash": "source_9d7926ed1876",
+      "source_order": 208,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000185.json",
+      "case_id": "case_3287f7b50c25",
+      "source_hash": "source_c48320742bb6",
+      "source_order": 222,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000186.json",
+      "case_id": "case_36433f95e23d",
+      "source_hash": "source_5170a23849ca",
+      "source_order": 143,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000187.json",
+      "case_id": "case_ab166db804f1",
+      "source_hash": "source_58ebc6649d6c",
+      "source_order": 140,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000188.json",
+      "case_id": "case_ca221b865f3b",
+      "source_hash": "source_25acd3b6b53f",
+      "source_order": 169,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000189.json",
+      "case_id": "case_9a00156e9c47",
+      "source_hash": "source_a4aa17d4062d",
+      "source_order": 45,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000190.json",
+      "case_id": "case_51ce76ed14a2",
+      "source_hash": "source_5a97e75c04d4",
+      "source_order": 125,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000191.json",
+      "case_id": "case_28fc74ff14ee",
+      "source_hash": "source_f33928a4a97e",
+      "source_order": 220,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000192.json",
+      "case_id": "case_91bc67dc9c03",
+      "source_hash": "source_8a78363258e8",
+      "source_order": 93,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000193.json",
+      "case_id": "case_27e7400e4d15",
+      "source_hash": "source_fec670d81abc",
+      "source_order": 119,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000194.json",
+      "case_id": "case_df528edb9f8e",
+      "source_hash": "source_68610de98b9a",
+      "source_order": 15,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000195.json",
+      "case_id": "case_785228ca333a",
+      "source_hash": "source_1bd81bddcd28",
+      "source_order": 100,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000196.json",
+      "case_id": "case_a94b35dbf591",
+      "source_hash": "source_4a2a5a77271f",
+      "source_order": 84,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000197.json",
+      "case_id": "case_66c8c52b94c2",
+      "source_hash": "source_38c1eb5eaa2b",
+      "source_order": 66,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000198.json",
+      "case_id": "case_2ee45a243992",
+      "source_hash": "source_8b6b69954d29",
+      "source_order": 105,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000199.json",
+      "case_id": "case_a367b82729d8",
+      "source_hash": "source_1e22e2b6e1d9",
+      "source_order": 64,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000200.json",
+      "case_id": "case_0e12ed53d250",
+      "source_hash": "source_d57a97c1292b",
+      "source_order": 11,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000201.json",
+      "case_id": "case_2d9248e1565e",
+      "source_hash": "source_f8aded2997f4",
+      "source_order": 14,
+      "endpoint_values_swapped": true,
+      "label": "fiber",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000202.json",
+      "case_id": "case_9c6cfe574a17",
+      "source_hash": "source_f84b3e154f75",
+      "source_order": 161,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000203.json",
+      "case_id": "case_1a61ead1d930",
+      "source_hash": "source_fb3efeb1aa01",
+      "source_order": 193,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000204.json",
+      "case_id": "case_c9685f253eba",
+      "source_hash": "source_4ec119fd3dd8",
+      "source_order": 187,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000205.json",
+      "case_id": "case_161c58d1c2dc",
+      "source_hash": "source_4362608808cd",
+      "source_order": 158,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000206.json",
+      "case_id": "case_77e4a6c58928",
+      "source_hash": "source_2810dcd5e1ad",
+      "source_order": 106,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000207.json",
+      "case_id": "case_0d380a152700",
+      "source_hash": "source_75b783129136",
+      "source_order": 42,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000208.json",
+      "case_id": "case_202f4415a485",
+      "source_hash": "source_99ddf3d4bd02",
+      "source_order": 81,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000209.json",
+      "case_id": "case_f2b0b7036ff4",
+      "source_hash": "source_c373adf913a0",
+      "source_order": 165,
+      "endpoint_values_swapped": true,
+      "label": "L1",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000210.json",
+      "case_id": "case_20f8c394c6fa",
+      "source_hash": "source_495c76ad6e3f",
+      "source_order": 115,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    },
+    {
+      "output_file": "case_000211.json",
+      "case_id": "case_2c931e879c5e",
+      "source_hash": "source_db145e4649bf",
+      "source_order": 20,
+      "endpoint_values_swapped": true,
+      "label": "L2",
+      "split": "test"
+    }
+  ],
+  "skipped": [
+    {
+      "source": "source_3b3ab0511517",
+      "source_order": 1,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_37c07d5c8a61",
+      "source_order": 2,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_af8b7f6faf34",
+      "source_order": 6,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_bcb6468512a5",
+      "source_order": 17,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_79984e63c655",
+      "source_order": 49,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_6f1c556255d1",
+      "source_order": 53,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_0fb85cbb25ab",
+      "source_order": 69,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_cb00907246f9",
+      "source_order": 83,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_7cde55f8aa96",
+      "source_order": 90,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_927cd935f67d",
+      "source_order": 101,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_8a469ef7eee3",
+      "source_order": 111,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_476ca23a3758",
+      "source_order": 112,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_5700e8f9b7d6",
+      "source_order": 164,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_d89380e7f538",
+      "source_order": 180,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_3ed32b8038ab",
+      "source_order": 181,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_162187715772",
+      "source_order": 184,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_360918c7ee91",
+      "source_order": 188,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_952f06595a40",
+      "source_order": 195,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_51c64c5d3bd8",
+      "source_order": 229,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    },
+    {
+      "source": "source_35c0942bcee7",
+      "source_order": 230,
+      "reason": "not_one_400G_one_200G",
+      "speed_pattern": "400G-400G"
+    }
+  ]
+}

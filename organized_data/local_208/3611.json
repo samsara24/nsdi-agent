@@ -1,0 +1,126 @@
+{
+    "alarm_ip_interface": "2409:27ff:101c:0000:004b:0000:0000:01b8--200GHL1/2/24",
+    "alarm_time": "2025-12-07 10:48:24",
+    "region": "cn-north-12",
+    "alarm_name": "DCN-AI超平面-频繁升降lane-网络侧",
+    "label": "local",
+    "bias": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        },
+        "remote": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        },
+        "remote": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "2409:27ff:101c:0000:004b:0000:0000:01b8--200GHL1/2/24",
+        "remote": "2409:27ff:101c:0000:0027:0000:0000:00ce--400GHL1/3/1:2"
+    },
+    "vendor": {
+        "local": "其他",
+        "remote": "华工光模块"
+    },
+    "vendor_sn": {
+        "local": "VZWF7W0027A",
+        "remote": "3000246901747"
+    },
+    "RxLOL": {
+        "local": "Abnormal",
+        "remote": "Abnormal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Abnormal",
+        "remote": "Abnormal"
+    },
+    "Temperature": {
+        "local": 52.76,
+        "remote": 46.19
+    },
+    "Voltage": {
+        "local": 3.35,
+        "remote": 3.29
+    },
+    "Lane number": {
+        "local": 0,
+        "remote": 0
+    },
+    "port_status": {
+        "local": 0,
+        "remote": 0
+    }
+}

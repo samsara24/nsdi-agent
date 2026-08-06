@@ -1,0 +1,118 @@
+{
+    "alarm_ip_interface": "29.78.208.22--400GE13/0/31:2",
+    "alarm_time": "2025-10-08 08:17:00",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN linkflap告警",
+    "label": "fiber",
+    "bias": {
+        "local": {
+            "0": 7.4,
+            "1": 7.4,
+            "2": 7.4,
+            "3": 7.4
+        },
+        "remote": {
+            "0": 6.82,
+            "1": 6.82,
+            "2": 7.35,
+            "3": 7.35
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 1.56,
+            "1": 1.65,
+            "2": 1.28,
+            "3": 2.13
+        },
+        "remote": {
+            "0": 0.42,
+            "1": 0.68,
+            "2": 0.31,
+            "3": 0.06
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": -0.08,
+            "1": 0.32,
+            "2": 0.19,
+            "3": -0.07
+        },
+        "remote": {
+            "0": 1.09,
+            "1": 1.02,
+            "2": 1.11,
+            "3": 1
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 25.96,
+            "1": 25.64,
+            "2": 25.34,
+            "3": 25.34
+        },
+        "remote": {
+            "0": 23.48,
+            "1": 25.64,
+            "2": 25.34,
+            "3": 25.06
+        }
+    },
+    "host_snr": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "serdes_snr": {
+        "local": {},
+        "remote": {}
+    },
+    "link_location": "参数面",
+    "link_side_ip_interface_map": {
+        "local": "29.78.208.22--400GE13/0/31:2",
+        "remote": "29.78.211.150--400GE1/1/10:1"
+    },
+    "vendor": {
+        "local": "华工光模块",
+        "remote": "华工光模块"
+    },
+    "vendor_sn": {
+        "local": "3000094160159",
+        "remote": "3000097230158"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 57.06,
+        "remote": 52.27
+    },
+    "Voltage": {
+        "local": 3.33,
+        "remote": 3.35
+    }
+}

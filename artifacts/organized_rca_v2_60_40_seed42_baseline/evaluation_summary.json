@@ -1,0 +1,33 @@
+{
+  "case_count": 85,
+  "correct": 58,
+  "accuracy": 0.6823529411764706,
+  "recall": {
+    "L1": 0.4583333333333333,
+    "L2": 0.8545454545454545,
+    "fiber": 0.0
+  },
+  "confusion_matrix": {
+    "L1": {
+      "L1": 11,
+      "L2": 13
+    },
+    "L2": {
+      "L2": 47,
+      "L1": 8
+    },
+    "fiber": {
+      "L1": 4,
+      "L2": 2
+    }
+  },
+  "decision_status": {
+    "agreement": 82,
+    "conflict_resolved_by_kg_rag_llm": 3
+  },
+  "llm_reasoning_mode": {
+    "deterministic_path_fallback": 85
+  },
+  "valid_llm_outputs": 0,
+  "label_leakage": false
+}

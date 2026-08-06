@@ -1,0 +1,364 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "RCA v2 代码详解与实现审计",
+    "description": "面向开发、研究和维护人员的 RCA v2 数据流、算法、运行方式、测试证据与实现边界说明。",
+    "generatedAt": "2026-07-19T19:28:22Z",
+    "cards": [
+      {
+        "id": "prepared_cases",
+        "description": "从 366 条原始数据中筛出的 400G–200G schema-v2 case。",
+        "dataset": "headline",
+        "sourceId": "dataset_manifest",
+        "metrics": [
+          {"label": "有效 schema-v2 case", "field": "prepared_cases", "format": "number"},
+          {"label": "跳过的 400G–400G", "field": "skipped_cases", "format": "number"}
+        ]
+      },
+      {
+        "id": "llm_outputs",
+        "description": "DeepSeek 32B 固定切分评估中的真实 LLM 输出有效率。",
+        "dataset": "headline",
+        "sourceId": "evaluation_summary",
+        "metrics": [
+          {"label": "有效 LLM 输出", "field": "valid_llm_outputs", "format": "number"},
+          {"label": "总评估 case", "field": "evaluation_cases", "format": "number"}
+        ]
+      },
+      {
+        "id": "accuracy",
+        "description": "前 200 条训练、后 68 条评估；测试标签仅在推理完成后用于计分。",
+        "dataset": "headline",
+        "sourceId": "evaluation_summary",
+        "metrics": [
+          {"label": "DeepSeek 32B accuracy", "field": "llm_accuracy", "format": "percent"},
+          {"label": "确定性基线", "field": "baseline_accuracy", "format": "percent"}
+        ]
+      },
+      {
+        "id": "tests",
+        "description": "覆盖数据保护、端点交换、图边、规则互斥、标签泄漏与融合行为。",
+        "dataset": "headline",
+        "sourceId": "tests_source",
+        "metrics": [
+          {"label": "自动化测试通过", "field": "tests_passed", "format": "number"}
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "class_recall_chart",
+        "title": "Recall by root-cause class",
+        "subtitle": "DeepSeek 32B；前 200 条训练、后 68 条评估，fiber 为 0/6。",
+        "type": "bar",
+        "dataset": "performance_class_rows",
+        "sourceId": "evaluation_summary",
+        "question": "三类根因中哪一类是当前分类瓶颈？",
+        "rationale": "三个离散类别共享同一 recall 单位，柱状图比精确表更快暴露 fiber 的零召回；分子和分母保留在源数据中用于审计。",
+        "encodings": {
+          "x": {"field": "class", "type": "nominal", "label": "Root-cause class"},
+          "y": {"field": "recall", "type": "quantitative", "label": "Recall", "format": "percent"},
+          "tooltip": [
+            {"field": "correct", "type": "quantitative", "label": "Correct"},
+            {"field": "total", "type": "quantitative", "label": "Total"},
+            {"field": "errors", "type": "quantitative", "label": "Errors"}
+          ]
+        },
+        "yAxisTitle": "Recall",
+        "valueFormat": "percent",
+        "layout": "full",
+        "maxRows": 3
+      }
+    ],
+    "tables": [
+      {
+        "id": "module_inventory",
+        "title": "源码模块与职责",
+        "subtitle": "rca_framework 共 1,755 行；按运行链路排列。",
+        "dataset": "modules",
+        "sourceId": "framework_source",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "顺序", "format": "number"},
+          {"field": "file", "label": "模块", "type": "text"},
+          {"field": "lines", "label": "行数", "format": "number"},
+          {"field": "responsibility", "label": "核心职责", "type": "text"},
+          {"field": "entry", "label": "关键入口", "type": "text"}
+        ]
+      },
+      {
+        "id": "dataset_composition",
+        "title": "数据进入 v2 后的组成",
+        "subtitle": "366 条原始 JSON；只接受一端 400G、一端 200G 的 case。",
+        "dataset": "dataset_stats",
+        "sourceId": "dataset_manifest",
+        "defaultSort": {"field": "count", "direction": "desc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "item", "label": "项目", "type": "text"},
+          {"field": "count", "label": "数量", "format": "number"},
+          {"field": "meaning", "label": "含义", "type": "text"}
+        ]
+      },
+      {
+        "id": "performance",
+        "title": "DeepSeek 32B 固定切分结果",
+        "subtitle": "前 200 条训练、后 68 条评估；精确分母用于识别少数类失效。",
+        "dataset": "performance_rows",
+        "sourceId": "evaluation_summary",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "顺序", "format": "number"},
+          {"field": "metric", "label": "指标", "type": "text"},
+          {"field": "numerator", "label": "命中/有效", "format": "number"},
+          {"field": "denominator", "label": "分母", "format": "number"},
+          {"field": "rate", "label": "比率", "format": "percent"},
+          {"field": "interpretation", "label": "解释", "type": "text"}
+        ]
+      },
+      {
+        "id": "cli_operations",
+        "title": "CLI 子命令与产物",
+        "subtitle": "prepare、train-evaluate 和 infer 是对外稳定入口。",
+        "dataset": "cli_rows",
+        "sourceId": "cli_source",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "顺序", "format": "number"},
+          {"field": "command", "label": "子命令", "type": "text"},
+          {"field": "purpose", "label": "用途", "type": "text"},
+          {"field": "reads", "label": "读取", "type": "text"},
+          {"field": "writes", "label": "写入", "type": "text"}
+        ]
+      },
+      {
+        "id": "test_coverage",
+        "title": "现有自动化测试覆盖",
+        "subtitle": "7 个测试聚焦框架不变量；真实 32B 集成由保存的实验产物证明。",
+        "dataset": "test_rows",
+        "sourceId": "tests_source",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "order", "label": "顺序", "format": "number"},
+          {"field": "test", "label": "测试", "type": "text"},
+          {"field": "invariant", "label": "验证内容", "type": "text"}
+        ]
+      },
+      {
+        "id": "risks",
+        "title": "实现边界与优先修复项",
+        "subtitle": "按对结果可信度和维护性的影响排序。",
+        "dataset": "risk_rows",
+        "sourceId": "framework_source",
+        "defaultSort": {"field": "priority", "direction": "asc"},
+        "density": "spacious",
+        "columns": [
+          {"field": "priority", "label": "优先级", "format": "number"},
+          {"field": "area", "label": "区域", "type": "text"},
+          {"field": "observation", "label": "当前实现", "type": "text"},
+          {"field": "impact", "label": "影响", "type": "text"},
+          {"field": "action", "label": "建议", "type": "text"}
+        ]
+      }
+    ],
+    "sources": [
+      {"id": "framework_source", "label": "RCA v2 Python 源码", "path": "rca_framework/", "query": {"engine": "duckdb", "language": "sql", "sql": "WITH files AS (SELECT filename, content FROM read_text('rca_framework/*.py')) SELECT filename, array_length(string_split(content, chr(10))) AS line_count FROM files ORDER BY filename", "description": "读取框架 Python 文件并统计模块行数；职责与入口由源码审阅补充。", "tables_used": ["rca_framework/*.py"]}},
+      {"id": "cli_source", "label": "RCA v2 CLI 实现", "path": "rca_framework/cli.py", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT * FROM (VALUES (1, 'prepare', '保护并转换原始数据'), (2, 'train-evaluate', '训练并评估'), (3, 'infer', '单 case 推理')) AS t(command_order, command_name, purpose) ORDER BY command_order", "description": "根据 cli.py 中注册的三个子命令构造可审计入口表。", "tables_used": ["rca_framework/cli.py"]}},
+      {"id": "tests_source", "label": "RCA v2 自动化测试", "path": "tests/", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT * FROM (VALUES (1, 'prepare_swaps_entire_case'), (2, 'prepare_refuses_to_overwrite'), (3, 'graph_anomaly_only_edges'), (4, 'symbolic_rule_sets_disjoint'), (5, 'target_label_cannot_change_inference'), (6, 'close_conflict_for_review'), (7, 'agreement_conflicting_evidence')) AS t(test_order, test_name) ORDER BY test_order", "description": "列出 pytest -q 已通过的七个框架不变量测试。", "tables_used": ["tests/*.py"]}},
+      {"id": "dataset_manifest", "label": "schema-v2 数据清单", "path": "datasets/rca_v2/_metadata/manifest.json", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT source_file_count, output_file_count, skipped_file_count, label_distribution, input_speed_patterns, residual_sensitive_patterns FROM read_json_auto('datasets/rca_v2/_metadata/manifest.json')", "description": "读取 schema-v2 数据数量、标签分布和脱敏质量清单。", "tables_used": ["datasets/rca_v2/_metadata/manifest.json"]}},
+      {"id": "evaluation_summary", "label": "DeepSeek 32B 评估摘要", "path": "artifacts/rca_v2_deepseek32b_vllm/evaluation_summary.json", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT case_count, correct, accuracy, recall, confusion_matrix, decision_status, llm_reasoning_mode, valid_llm_outputs, label_leakage FROM read_json_auto('artifacts/rca_v2_deepseek32b_vllm/evaluation_summary.json')", "description": "读取固定 200/68 切分的准确率、召回率、混淆矩阵和 LLM 输出模式。", "tables_used": ["artifacts/rca_v2_deepseek32b_vllm/evaluation_summary.json"], "filters": ["first 200 cases train; last 68 cases evaluation"], "metric_definitions": ["accuracy = correct / 68", "class recall = correctly predicted class cases / actual class cases"]}},
+      {"id": "run_manifest", "label": "DeepSeek 32B 运行清单", "path": "artifacts/rca_v2_deepseek32b_vllm/run_manifest.json", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT * FROM read_json_auto('artifacts/rca_v2_deepseek32b_vllm/run_manifest.json')", "description": "读取数据切分、模型路径和 vLLM 运行参数。", "tables_used": ["artifacts/rca_v2_deepseek32b_vllm/run_manifest.json"]}},
+      {"id": "architecture_doc", "label": "RCA v2 架构说明", "path": "docs/RCA_V2_ARCHITECTURE.md", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT filename, content FROM read_text('docs/RCA_V2_ARCHITECTURE.md')", "description": "读取框架不变量、方法和冲突策略说明。", "tables_used": ["docs/RCA_V2_ARCHITECTURE.md"]}}
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# RCA v2 代码详解与实现审计"
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "body": "## 框架已经端到端落地，但算法效果仍受 fiber 少数类限制\n\nRCA v2 是一个三分类光链路故障定界框架：`L1` 固定表示 400G 端设备侧，`L2` 固定表示 200G 端设备侧，`fiber` 表示两端之间的介质。代码把原始 case 先转换为统一异常语义，再并行执行 **KG + RAG + LLM** 与 **互斥符号规则** 两条推理链，最后通过显式冲突策略融合。\n\n工程链路已经过 DeepSeek-R1-Distill-Qwen-32B 验证：68/68 个评估 case 都产生了可解析的真实 LLM JSON，没有 fallback。不过最终 accuracy 为 54.41%，fiber recall 为 0，说明当前问题已经从“代码能否运行”转变为“异常表示、少数类学习和融合是否有效”。\n\n**阅读建议：**第一次接手代码时，先看 `types.py` 的数据契约，再依次阅读 `data.py → anomaly.py → graph.py/rules.py → llm.py → fusion.py → pipeline.py → cli.py`。"
+      },
+      {"id": "headline_metrics", "type": "metric-strip", "cardIds": ["prepared_cases", "llm_outputs", "accuracy", "tests"]},
+      {
+        "id": "scope",
+        "type": "markdown",
+        "body": "## 代码范围与判断口径\n\n本报告解释当前 `rca_framework/` 的 10 个 Python 文件、`tests/` 的 7 个自动化测试，以及已保存的 DeepSeek 32B 评估产物。主体源码共 1,755 行，测试代码 165 行。\n\n这里把“已实现”定义为：数据准备、训练、模型保存/加载、批量评估、单 case 推理、真实 LLM 输出解析和融合都能产生持久化结果；把“效果达标”定义为：三类均有可接受召回率且优于简单基线。按这个口径，工程实现通过，效果验证未通过。\n\n量化结果采用固定前缀切分：前 200 条训练，后 68 条评估。它是连通性和可复现性实验，不是交叉验证，也不能代表未来流量上的泛化性能。"
+      },
+      {"id": "module_table", "type": "table", "tableId": "module_inventory", "layout": "full"},
+      {
+        "id": "architecture",
+        "type": "markdown",
+        "body": "## 一条 case 如何穿过整个系统\n\n核心调用链由 `RCAPipeline` 组织，训练和推理共享同一异常语义层：\n\n```text\n原始 JSON\n  └─ prepare_dataset\n       ├─ SHA-256 清单\n       ├─ HMAC 脱敏\n       └─ local/remote → L1/L2 物理归一化\n            └─ schema-v2 case\n                 ├─ fit_thresholds（仅训练集）\n                 └─ extract_evidence\n                      └─ CaseEvidence + Anomaly[]\n                           ├─ AnomalyKnowledgeGraph.query\n                           │    ├─ 图路径评分\n                           │    ├─ IDF 加权相似 case 检索\n                           │    └─ PathLLMReasoner\n                           ├─ SymbolicRuleEngine.match\n                           └─ fuse_results\n                                └─ L1 | L2 | fiber + 证据 + 补采信息\n```\n\n训练阶段的 `fit()` 同时拟合阈值、知识图谱和规则；推理阶段先复制输入并删除 `label`，然后才提取异常。这一顺序是防止目标标签泄漏的关键。两条推理链共享异常节点和训练数据，因此是**算法分支独立**，不是统计意义上的完全独立证据源。"
+      },
+      {
+        "id": "contracts",
+        "type": "markdown",
+        "body": "## `types.py` 定义了全框架的数据契约\n\n`ROOT_CAUSES = (\"L1\", \"L2\", \"fiber\")` 同时定义合法标签和平分时的稳定排序；`SIDES = (\"L1\", \"L2\")` 限定端点作用域。\n\n`Anomaly` 是不可变 dataclass，字段包括稳定 ID、节点类型、中文名词、图关系、端点、指标、严重度和文本证据。稳定 ID 例如 `signal_drop:L2:rxpower`，同时被图、RAG、规则和 LLM path ID 复用。\n\n`CaseEvidence` 是推理中间表示：保存 case ID、训练时可见的标签、异常列表、已观测字段数、期望字段数、缺失字段和少量脱敏摘要。`coverage = observed_fields / expected_fields` 会进入图置信度和最终信息补全。\n\n`normalize_scores()` 把负值截断为 0 后归一化；若总分为 0，则返回三类均匀分布。`rank_scores()` 在分数相同时按 `ROOT_CAUSES` 顺序打破平局，因此完全无证据时可能稳定偏向 L1。"
+      },
+      {
+        "id": "data_pipeline",
+        "type": "markdown",
+        "body": "## `data.py` 同时解决物理语义、隐私和原始数据保护\n\n`side_mapping()` 从接口字符串识别端点速率，并建立固定映射：400G → L1、200G → L2。如果 case 是 local=200G/remote=400G，代码不是只改标签，而是在递归标准化时把所有 local/remote 作用域字段整体换到 L2/L1。\n\n`Anonymizer` 使用带密钥 HMAC 生成稳定假名；IP、邮箱、手机号在自由文本中被替换，厂商、序列号、区域、位置、任务和设备字段按类别 token 化，时间相对最早时间整体平移到 2024-01-01。端口只保留 `L1_ENDPOINT--400G_PORT` 或 `L2_ENDPOINT--200G_PORT`。\n\n`prepare_dataset()` 的保护策略是“拒绝覆盖”：输出目录只要已存在就抛出 `FileExistsError`。处理前为原始 JSON 写入文件名、大小和 SHA-256；只接受一端 400G、一端 200G 的 case，其他 case 写入 skipped 清单。\n\n需要注意：若未设置 `RCA_ANONYMIZATION_SECRET`，CLI 会每次随机生成密钥，因此不同 prepare 运行之间的假名和 case ID 不稳定。需要跨实验对齐时必须显式设置该环境变量。"
+      },
+      {"id": "dataset_table", "type": "table", "tableId": "dataset_composition", "layout": "full"},
+      {
+        "id": "anomaly_layer",
+        "type": "markdown",
+        "body": "## `anomaly.py` 把连续指标压缩成可审计异常名词\n\n阈值模型只在训练 case 上拟合。对每个端点和指标，代码先排除 down sentinel，再使用四分位数构造稳健围栏：\n\n```text\nlow  = Q1 - 3 × IQR\nhigh = Q3 + 3 × IQR\n```\n\n同样的方法学习 lane spread 上界；方向光损耗用发送端平均 TX 与接收端平均 RX 的绝对差，并按 L1→L2、L2→L1 分别学习上界。\n\n`extract_evidence()` 生成七类主要语义：SignalDrop、LowSignal、HighSignal、LaneImbalance、DeviceStatusFault、DirectionalLoss、CoupledTxRxFault，并在双向损耗同时异常时增加 BidirectionalLoss。缺失字段不会变成异常，而是进入 coverage 和补采列表。\n\n这里的“稳健”不等于“健康基线”：训练集合本身是故障 case，只是 down sentinel 被排除。因而围栏描述的是训练故障样本中的非 sentinel 分布，而不是经过确认的正常运行分布。这会直接影响低/高异常和方向损耗的物理解释。"
+      },
+      {
+        "id": "graph_rag",
+        "type": "markdown",
+        "body": "## `graph.py` 用标签中心图做关联路径评分和 RAG\n\n训练时，图为三个根因建立中心节点，并统计每个 `root cause × anomaly` 组合。每条边保存 count、根因内频率、异常精度、lift 和综合权重：\n\n```text\nroot_frequency = count(root, anomaly) / count(root)\nprecision      = count(root, anomaly) / count(anomaly)\nlift           = precision / P(root)\nweight         = root_frequency × precision\n                 × max(0.1, log(1 + lift)) × log(1 + count)\n```\n\n查询时，case 中每个异常只匹配训练图已有边，路径分数为 `edge.weight × clamp(severity, 0.25, 3.0)`。所有路径累加后归一化，并加入很小的类别先验。输出路径形如 `query → EXHIBITS → anomaly → INDICATES → root cause`。\n\nRAG 不使用向量模型，而是基于异常 ID 的 IDF 加权 Jaccard：`IDF=log((N+1)/(df+1))+1`，相似度为交集 IDF 总和除以并集 IDF 总和。检索结果携带训练 case 标签和重叠证据，默认返回 5 条。\n\n因此这里的 KG 本质是**标签—异常关联图**，不是包含设备拓扑、时间因果或故障传播机制的通用知识图谱；RAG 也是离散异常集合检索，不是语义 embedding 检索。"
+      },
+      {
+        "id": "llm_reasoner",
+        "type": "markdown",
+        "body": "## `llm.py` 把图与检索证据约束成结构化 LLM 决策\n\n`build_path_prompt()` 只发送脱敏摘要、异常、三类候选路径分数、图路径、训练相似 case、覆盖率和缺失字段。目标标签在进入该函数前已经删除。输出 schema 强制包含 prediction、confidence、path_ids、reasoning 和 missing_information。\n\n`PathLLMReasoner` 支持三种运行方式：`none` 使用确定性图分数；`vllm` 批量生成并可用 guided JSON；`transformers` 逐条生成。vLLM 模型按首次请求懒加载，并以全部运行参数组成缓存键，避免在同一 pipeline 中错误复用不同配置的 reasoner。\n\n合法 LLM 输出不会完全替代图分数，而是再次融合：所有类别保留 35% 图分数，LLM 预测类别额外得到 `65% × LLM confidence`，随后归一化。解析失败则自动回退图路径，并标记 `deterministic_path_fallback`。\n\n当前 schema 只约束 `path_ids` 是字符串数组，没有在在线推理时验证这些 ID 必须属于目标异常或候选路径。本次 68 条实验事后审计全部合法，但生产化时仍应在解析后过滤或拒绝幻觉 path ID。"
+      },
+      {
+        "id": "symbolic_rules",
+        "type": "markdown",
+        "body": "## `rules.py` 学习前件互斥的单异常与双异常规则\n\n规则学习器为每个训练 case 枚举所有单异常，以及排序后前 24 个异常的两两组合。对每个前件计算三类 confidence、lift 和判别强度：\n\n```text\ndiscriminative = confidence × log(1 + lift)\nmargin         = best_discriminative - second_best\nstrength       = discriminative × log(1 + hit_count)\n                 × (1.15 if two-anomaly rule else 1.0)\n```\n\n前件只有同时满足最小命中数、confidence、lift 和 margin，才进入严格候选；随后只分配给判别最强的一个根因，并通过全局 `claimed` 集合确保三套规则零重叠。每类默认最多保留 40 条。\n\n推理时，规则的全部 `all_of` 异常都出现才匹配，强度累加后归一化。置信度还会乘以匹配规则数量和异常覆盖率。若某类没有严格候选，代码会选择最多 5 条 relaxed rule，标记为 `minority_fallback`；这保证规则集非空，但会削弱“所有规则都通过严格阈值”的含义。\n\n该模块是关联规则分类器，不是严格的结构因果模型。名称中的 RCA 表示可解释根因匹配，而不是从干预或时间序列中识别因果效应。"
+      },
+      {
+        "id": "fusion",
+        "type": "markdown",
+        "body": "## `fusion.py` 用显式策略处理一致、冲突和低分差\n\n融合先把两路类别分数归一化，再按以下启发式合成：\n\n```text\nblended[label] = 0.55 × method1_score[label] × (0.5 + method1_conf)\n               + 0.45 × method2_score[label] × (0.5 + method2_conf)\n```\n\n若两路标签一致，状态为 `agreement`；若置信度差至少 0.20，采用明显更强的一路；否则使用 blended 第一名。融合第一、第二名差小于 0.10 时标记 `manual_review_recommended`。结果同时保存支持证据、其他类别的冲突证据、缺失字段和建议补采项。\n\n这里的 confidence 是由路径分数、margin、覆盖率、规则数量和 LLM 自报 confidence 组合出的启发式数值，目前没有 reliability diagram、温度缩放或 isotonic regression 等校准过程。因此代码和文档中的“校准置信度”应理解为“可比较的内部置信评分”，不应直接解释为真实正确概率。"
+      },
+      {
+        "id": "pipeline",
+        "type": "markdown",
+        "body": "## `pipeline.py` 负责无泄漏编排、批处理和模型序列化\n\n`fit()` 过滤合法标签，依次拟合训练阈值、训练异常视图、图和规则，并保存训练 case ID。`infer()` 的第一步是浅复制 case 并 `pop(\"label\")`，然后才提取证据、查询图、调用 LLM、匹配规则和融合。\n\n`evaluate()` 为避免逐条重复初始化大模型，先为所有评估 case 预计算异常、图结果和规则结果，再调用一次 `reason_many()` 批量生成，最后逐条融合和构造 confusion matrix。真实标签只在推理前从目标副本中移出并单独保存，完成预测后才用于 `correct` 和 recall。\n\n`save()` 同样拒绝覆盖非空模型目录，并同时写出总模型、知识图谱、规则和阈值 JSON。`load()` 通过各模块的 `from_dict()` 恢复，不需要重新训练。保存模型包含训练异常索引，因而可恢复 RAG；这也意味着模型产物仍带有脱敏训练证据，应按内部数据资产管理。"
+      },
+      {
+        "id": "cli",
+        "type": "markdown",
+        "body": "## `cli.py` 把框架收敛为三个可复现入口\n\n`prepare` 生成新数据集和质量清单；`train-evaluate` 使用固定前缀训练并评估，同时保存模型、逐条预测、摘要和运行清单；`infer` 加载冻结模型推理一个 schema-v2 case。\n\n真实 32B LLM 在当前无 NVLink 的纯 PCIe 机器上需要两张 A6000，并使用 `--disable-custom-all-reduce`。推荐命令：\n\n```bash\nCUDA_VISIBLE_DEVICES=4,5 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 \\\n/home/shibinpeng/anaconda3/envs/vllm2/bin/python -m rca_framework.cli train-evaluate \\\n  --data-dir datasets/rca_v2 \\\n  --train-size 200 \\\n  --output-dir artifacts/rca_v2_deepseek32b_vllm_rerun \\\n  --backend vllm \\\n  --model-path /home/shibinpeng/pretrained_models/DeepSeek-R1-Distill-Qwen-32B \\\n  --tensor-parallel-size 2 --gpu-memory-utilization 0.85 \\\n  --max-model-len 8192 --max-new-tokens 512 \\\n  --enforce-eager --disable-custom-all-reduce\n```\n\n输出目录必须使用新路径；框架有意拒绝覆盖已有实验。"
+      },
+      {"id": "cli_table", "type": "table", "tableId": "cli_operations", "layout": "full"},
+      {
+        "id": "validation",
+        "type": "markdown",
+        "body": "## 测试证明关键不变量成立，但还不是生产级测试矩阵\n\n自动化测试覆盖：端点整体交换、原始输入不变、拒绝覆盖、图中只有异常边、规则零重叠、修改目标标签不影响推理、低分差冲突触发人工复核，以及一致场景不重复冲突证据。\n\n真实 LLM 集成没有放进 pytest，因为每次需要加载约 61GB 权重；保存的 DeepSeek 32B 实验承担集成证据角色。该实验验证 68 个输出全部为 `llm_path_reasoning`、JSON 全部有效、path ID 全部属于实际异常、无标签泄漏标记，且模型能够重新加载。\n\n尚缺少的测试包括：异常边界值参数化、畸形 JSON/schema fuzz、LLM 超长 prompt、vLLM OOM/worker 失败恢复、Transformers 后端集成、模型版本兼容、prepare 中每类敏感字段的系统性攻击测试，以及真实数据上的时间切分和交叉验证。"
+      },
+      {"id": "test_table", "type": "table", "tableId": "test_coverage", "layout": "full"},
+      {
+        "id": "results",
+        "type": "markdown",
+        "body": "## 真实 LLM 已跑通，但没有改善分类效果\n\nDeepSeek 32B 的 68 个方法一预测分布为 L1=25、L2=43、fiber=0；最终融合分布为 L1=27、L2=41、fiber=0。符号规则一路虽产生 3 个 fiber 预测，但全部在融合中被覆盖。\n\n与 `backend=none` 基线相比，最终只有一个 case 改变：`case_3380daa891a5` 从正确 L2 变成错误 L1，总正确数由 38 降为 37。这个结果说明 LLM 接口、guided JSON 和批处理并不是当前瓶颈；方法一提供给 LLM 的异常关联证据本身没有形成可辨识的 fiber 模式。\n\n6 个评估 fiber case 全部错分为端点故障，不能用总体 54.41% 掩盖。任何后续优化都应在训练集内部新建验证集，不能读取这 68 条测试标签调融合权重或阈值。"
+      },
+      {"id": "class_recall_visual", "type": "chart", "chartId": "class_recall_chart", "layout": "full"},
+      {"id": "performance_table", "type": "table", "tableId": "performance", "layout": "full"},
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## 最重要的实现边界集中在数据、校准和失败处理\n\n当前代码适合作为可审计研究框架，但生产化之前必须正视以下问题：fiber 只有 20/268，训练固定切分中约 14 条；阈值从故障集合而非健康集合学习；方法一和方法二共享异常层，不是真正独立；置信度未做概率校准；无证据时仍会因先验和固定顺序给出类别；质量报告中的 `canonical_side_violations` 当前直接写为 0，没有实际扫描计算；运行清单未记录 Python/vLLM/PyTorch/CUDA 版本和 NCCL 环境变量；项目也没有统一依赖锁文件。\n\n此外，规则学习器的 minority fallback、LLM path ID 未在线校验、Transformers 后端逐条推理、模型 JSON 携带训练检索证据，都会影响可解释性、性能或资产安全。"
+      },
+      {"id": "risk_table", "type": "table", "tableId": "risks", "layout": "full"},
+      {
+        "id": "recommendations",
+        "type": "markdown",
+        "body": "## 下一步应先提高实验可信度，再优化模型\n\n1. **建立训练内验证协议。** 保留当前后 68 条为最终测试，在前 200 条内部做分层交叉验证或时间验证，用于阈值、规则和融合权重选择。\n2. **重建 fiber 证据。** 检查 20 条 fiber 的原始可观测模式，增加链路两端 TX/RX 配对、传播方向和时序特征；必要时补充数据，而不是仅做类别重采样。\n3. **把 confidence 变成可校准分数。** 分别保存图、规则、LLM 原始分数，在训练内验证集上做可靠性评估和校准，人工复核阈值也应由验证结果确定。\n4. **补强输入与 LLM 契约。** 在线验证 `path_ids`、限制 reasoning 长度、记录解析失败原因，并为 OOM、worker 退出和超长 prompt 增加明确错误状态。\n5. **提高可复现性。** 增加依赖锁文件；运行清单记录代码版本、Python、PyTorch、vLLM、CUDA、GPU、NCCL 环境变量和模型指纹。\n6. **把质量报告改成真实计算。** 动态扫描 canonical side、端点速率、标签合法性和脱敏残留，不要写入未经计算的常量 0。"
+      },
+      {
+        "id": "further_questions",
+        "type": "markdown",
+        "body": "## 仍需回答的研究问题\n\n- fiber 根因是否真的能从当前单时刻 lane 指标中辨识，还是需要告警前后时间窗？\n- 当前标签是否存在设备侧与链路侧定义不一致，尤其是端点 RX 异常被标为对端或 fiber 的情况？\n- 文件顺序是否近似时间顺序，固定前缀切分是否造成训练/测试分布漂移？\n- 相似 case 检索应继续使用离散异常 ID，还是引入数值距离、拓扑信息与时间相似度？\n- 两条方法应继续共享异常层以保持一致解释，还是需要独立特征以获得真正互补的错误模式？\n- 人工复核的业务成本和可接受召回率是多少？没有该目标，就无法合理选择 review margin 和类别阈值。"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-19T19:28:22Z",
+    "status": "ready",
+    "datasets": {
+      "headline": [
+        {
+          "prepared_cases": 268,
+          "skipped_cases": 98,
+          "valid_llm_outputs": 68,
+          "evaluation_cases": 68,
+          "llm_accuracy": 0.5441176470588235,
+          "baseline_accuracy": 0.5588235294117647,
+          "tests_passed": 7
+        }
+      ],
+      "modules": [
+        {"order": 1, "file": "types.py", "lines": 84, "responsibility": "核心数据契约、分数归一化与稳定排序", "entry": "Anomaly, CaseEvidence, normalize_scores"},
+        {"order": 2, "file": "data.py", "lines": 332, "responsibility": "原始数据保护、端点归一化、HMAC 脱敏与数据清单", "entry": "prepare_dataset, load_cases"},
+        {"order": 3, "file": "anomaly.py", "lines": 262, "responsibility": "训练阈值拟合与类型化异常提取", "entry": "fit_thresholds, extract_evidence"},
+        {"order": 4, "file": "graph.py", "lines": 178, "responsibility": "标签中心异常图、路径评分与 IDF-RAG", "entry": "AnomalyKnowledgeGraph"},
+        {"order": 5, "file": "rules.py", "lines": 182, "responsibility": "互斥关联规则学习、匹配与重叠审计", "entry": "SymbolicRuleEngine"},
+        {"order": 6, "file": "llm.py", "lines": 216, "responsibility": "Prompt、guided JSON、vLLM/Transformers 和 fallback", "entry": "PathLLMReasoner"},
+        {"order": 7, "file": "fusion.py", "lines": 98, "responsibility": "双路一致/冲突策略、证据和信息补全", "entry": "fuse_results"},
+        {"order": 8, "file": "pipeline.py", "lines": 229, "responsibility": "训练、批量评估、推理、保存与加载编排", "entry": "RCAPipeline"},
+        {"order": 9, "file": "cli.py", "lines": 169, "responsibility": "prepare、train-evaluate、infer 命令行入口", "entry": "build_parser, main"},
+        {"order": 10, "file": "__init__.py", "lines": 5, "responsibility": "导出框架公共类型", "entry": "RCAPipeline, PipelineConfig"}
+      ],
+      "dataset_stats": [
+        {"item": "原始 JSON", "count": 366, "meaning": "data/ 中受 SHA-256 清单保护的全部 case"},
+        {"item": "200G–400G", "count": 212, "meaning": "需要整体交换 local/remote 后进入 v2"},
+        {"item": "400G–200G", "count": 56, "meaning": "直接映射为 L1=local、L2=remote"},
+        {"item": "400G–400G", "count": 98, "meaning": "不满足固定 L1/L2 定义，被跳过"},
+        {"item": "L2 标签", "count": 167, "meaning": "schema-v2 中的 200G 端设备侧根因"},
+        {"item": "L1 标签", "count": 81, "meaning": "schema-v2 中的 400G 端设备侧根因"},
+        {"item": "fiber 标签", "count": 20, "meaning": "链路介质根因，仅占有效数据 7.46%"}
+      ],
+      "performance_rows": [
+        {"order": 1, "metric": "总体 accuracy", "numerator": 37, "denominator": 68, "rate": 0.5441176470588235, "interpretation": "略低于无 LLM 基线 38/68"},
+        {"order": 2, "metric": "L1 recall", "numerator": 11, "denominator": 24, "rate": 0.4583333333333333, "interpretation": "13 条 L1 被判为 L2"},
+        {"order": 3, "metric": "L2 recall", "numerator": 26, "denominator": 38, "rate": 0.6842105263157895, "interpretation": "12 条 L2 被判为 L1"},
+        {"order": 4, "metric": "fiber recall", "numerator": 0, "denominator": 6, "rate": 0.0, "interpretation": "6 条全部错分为端点故障"},
+        {"order": 5, "metric": "有效 LLM JSON", "numerator": 68, "denominator": 68, "rate": 1.0, "interpretation": "全部为 llm_path_reasoning，无 fallback"}
+      ],
+      "performance_class_rows": [
+        {"class": "L1", "recall": 0.4583333333333333, "correct": 11, "total": 24, "errors": 13, "train_size": 200, "evaluation_size": 68, "model": "DeepSeek-R1-Distill-Qwen-32B"},
+        {"class": "L2", "recall": 0.6842105263157895, "correct": 26, "total": 38, "errors": 12, "train_size": 200, "evaluation_size": 68, "model": "DeepSeek-R1-Distill-Qwen-32B"},
+        {"class": "fiber", "recall": 0.0, "correct": 0, "total": 6, "errors": 6, "train_size": 200, "evaluation_size": 68, "model": "DeepSeek-R1-Distill-Qwen-32B"}
+      ],
+      "cli_rows": [
+        {"order": 1, "command": "prepare", "purpose": "保护并转换原始数据", "reads": "data/*.json", "writes": "datasets/rca_v2 + archive manifest"},
+        {"order": 2, "command": "train-evaluate", "purpose": "训练冻结模型并评估后缀 case", "reads": "schema-v2 dataset + optional LLM", "writes": "model, predictions, summary, run manifest"},
+        {"order": 3, "command": "infer", "purpose": "推理一个新增 schema-v2 case", "reads": "saved model + one JSON + optional LLM", "writes": "stdout + optional result JSON"}
+      ],
+      "test_rows": [
+        {"order": 1, "test": "prepare_swaps_entire_case", "invariant": "反向 200G/400G case 的所有端点字段整体交换且原文件不变"},
+        {"order": 2, "test": "prepare_refuses_to_overwrite", "invariant": "已存在输出目录时拒绝覆盖"},
+        {"order": 3, "test": "graph_anomaly_only_edges", "invariant": "图包含三个根因中心，学习边只连接异常节点"},
+        {"order": 4, "test": "symbolic_rule_sets_disjoint", "invariant": "L1/L2/fiber 规则前件零重叠且可以匹配"},
+        {"order": 5, "test": "target_label_cannot_change_inference", "invariant": "篡改目标标签不改变两路预测分数"},
+        {"order": 6, "test": "close_conflict_for_review", "invariant": "低融合 margin 的冲突必须建议人工复核"},
+        {"order": 7, "test": "agreement_conflicting_evidence", "invariant": "一致结论不会把支持证据重复成冲突证据"}
+      ],
+      "risk_rows": [
+        {"priority": 1, "area": "fiber 数据", "observation": "有效数据 20/268，评估 6 条全部错分", "impact": "三分类目标未真正实现", "action": "训练内验证、补采和物理特征重建"},
+        {"priority": 2, "area": "阈值语义", "observation": "围栏从故障 case 的非 sentinel 值学习", "impact": "异常阈值未必代表健康边界", "action": "引入确认健康窗口或分层基线"},
+        {"priority": 3, "area": "置信度", "observation": "所有 confidence 都是启发式组合，未校准", "impact": "0.8 不能解释为 80% 正确概率", "action": "在训练内验证集上做可靠性评估与校准"},
+        {"priority": 4, "area": "质量报告", "observation": "canonical_side_violations 当前直接写 0", "impact": "清单可能给出未经验证的安全感", "action": "实现真实扫描并在异常时失败"},
+        {"priority": 5, "area": "LLM 契约", "observation": "path_ids 没有在线检查是否属于候选异常", "impact": "模型可返回可解析但不可追溯的路径", "action": "解析后校验、过滤或拒绝"},
+        {"priority": 6, "area": "可复现性", "observation": "无依赖锁；运行清单缺少软件/GPU/NCCL 版本", "impact": "跨机器复现实验困难", "action": "锁定环境并扩展 run manifest"},
+        {"priority": 7, "area": "无证据行为", "observation": "均匀分数按固定标签顺序打破平局", "impact": "空证据可能稳定输出 L1", "action": "显式 unknown/review 状态或最低证据门槛"},
+        {"priority": 8, "area": "模型资产", "observation": "保存的 graph train_index 含脱敏训练证据", "impact": "模型不是纯参数文件", "action": "按内部数据资产控制访问与留存"}
+      ]
+    }
+  },
+  "sources": [
+    {"id": "framework_source", "label": "RCA v2 Python 源码", "path": "rca_framework/", "query": {"engine": "duckdb", "language": "sql", "sql": "WITH files AS (SELECT filename, content FROM read_text('rca_framework/*.py')) SELECT filename, array_length(string_split(content, chr(10))) AS line_count FROM files ORDER BY filename", "description": "读取框架 Python 文件并统计模块行数；职责与入口由源码审阅补充。", "tables_used": ["rca_framework/*.py"]}},
+    {"id": "cli_source", "label": "RCA v2 CLI 实现", "path": "rca_framework/cli.py", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT * FROM (VALUES (1, 'prepare', '保护并转换原始数据'), (2, 'train-evaluate', '训练并评估'), (3, 'infer', '单 case 推理')) AS t(command_order, command_name, purpose) ORDER BY command_order", "description": "根据 cli.py 中注册的三个子命令构造可审计入口表。", "tables_used": ["rca_framework/cli.py"]}},
+    {"id": "tests_source", "label": "RCA v2 自动化测试", "path": "tests/", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT * FROM (VALUES (1, 'prepare_swaps_entire_case'), (2, 'prepare_refuses_to_overwrite'), (3, 'graph_anomaly_only_edges'), (4, 'symbolic_rule_sets_disjoint'), (5, 'target_label_cannot_change_inference'), (6, 'close_conflict_for_review'), (7, 'agreement_conflicting_evidence')) AS t(test_order, test_name) ORDER BY test_order", "description": "列出 pytest -q 已通过的七个框架不变量测试。", "tables_used": ["tests/*.py"]}},
+    {"id": "dataset_manifest", "label": "schema-v2 数据清单", "path": "datasets/rca_v2/_metadata/manifest.json", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT source_file_count, output_file_count, skipped_file_count, label_distribution, input_speed_patterns, residual_sensitive_patterns FROM read_json_auto('datasets/rca_v2/_metadata/manifest.json')", "description": "读取 schema-v2 数据数量、标签分布和脱敏质量清单。", "tables_used": ["datasets/rca_v2/_metadata/manifest.json"]}},
+    {"id": "evaluation_summary", "label": "DeepSeek 32B 评估摘要", "path": "artifacts/rca_v2_deepseek32b_vllm/evaluation_summary.json", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT case_count, correct, accuracy, recall, confusion_matrix, decision_status, llm_reasoning_mode, valid_llm_outputs, label_leakage FROM read_json_auto('artifacts/rca_v2_deepseek32b_vllm/evaluation_summary.json')", "description": "读取固定 200/68 切分的准确率、召回率、混淆矩阵和 LLM 输出模式。", "tables_used": ["artifacts/rca_v2_deepseek32b_vllm/evaluation_summary.json"], "filters": ["first 200 cases train; last 68 cases evaluation"], "metric_definitions": ["accuracy = correct / 68", "class recall = correctly predicted class cases / actual class cases"]}},
+    {"id": "run_manifest", "label": "DeepSeek 32B 运行清单", "path": "artifacts/rca_v2_deepseek32b_vllm/run_manifest.json", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT * FROM read_json_auto('artifacts/rca_v2_deepseek32b_vllm/run_manifest.json')", "description": "读取数据切分、模型路径和 vLLM 运行参数。", "tables_used": ["artifacts/rca_v2_deepseek32b_vllm/run_manifest.json"]}},
+    {"id": "architecture_doc", "label": "RCA v2 架构说明", "path": "docs/RCA_V2_ARCHITECTURE.md", "query": {"engine": "duckdb", "language": "sql", "sql": "SELECT filename, content FROM read_text('docs/RCA_V2_ARCHITECTURE.md')", "description": "读取框架不变量、方法和冲突策略说明。", "tables_used": ["docs/RCA_V2_ARCHITECTURE.md"]}}
+  ]
+}

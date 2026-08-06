@@ -1,0 +1,10 @@
+# Python 缓存与测试缓存
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# artifacts 只跟踪两个回归基线，其余实验产物不入库
+/artifacts/*
+!/artifacts/organized_rca_v2_60_40_seed42_baseline/
+!/artifacts/organized_rca_v2_60_40_seed42_deepseek32b_vllm/

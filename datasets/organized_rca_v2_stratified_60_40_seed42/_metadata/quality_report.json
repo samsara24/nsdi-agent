@@ -1,0 +1,15 @@
+{
+  "residual_sensitive_patterns": {
+    "ipv4": 0,
+    "email": 0,
+    "phone": 0,
+    "raw_interface": 0,
+    "legacy_side_token": 0
+  },
+  "canonical_side_violations": 0,
+  "expected_endpoints": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "output_file_count": 211
+}

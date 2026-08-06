@@ -1,0 +1,126 @@
+{
+    "alarm_ip_interface": "2409:27ff:1011:0000:004a:0000:0000:01b2--200GHL1/1/24",
+    "alarm_time": "2025-11-30 12:39:59",
+    "region": "cn-east-4",
+    "alarm_name": "DCN-AI超平面-频繁升降lane-网络侧",
+    "label": "local",
+    "bias": {
+        "local": {
+            "0": 7.67,
+            "1": 7.67,
+            "2": 7.67,
+            "3": 7.67
+        },
+        "remote": {
+            "0": 7.62,
+            "1": 7.61,
+            "2": 7.62,
+            "3": 7.62
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 1.68,
+            "1": 1.73,
+            "2": 1.8,
+            "3": 1.78
+        },
+        "remote": {
+            "0": 1.27,
+            "1": 0.63,
+            "2": 1.09,
+            "3": 1.35
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.98,
+            "1": 0.84,
+            "2": 0.97,
+            "3": 1.19
+        },
+        "remote": {
+            "0": 1.53,
+            "1": 1.83,
+            "2": 1.93,
+            "3": 1.7
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 26.69,
+            "1": 26.31,
+            "2": 25.64,
+            "3": 26.69
+        },
+        "remote": {
+            "0": 25.96,
+            "1": 25.64,
+            "2": 25.34,
+            "3": 25.96
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 728832,
+            "1": 690800,
+            "2": 707361,
+            "3": 686396
+        },
+        "remote": {
+            "0": 688429,
+            "1": 679744,
+            "2": 692509,
+            "3": 672982
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "2409:27ff:1011:0000:004a:0000:0000:01b2--200GHL1/1/24",
+        "remote": "2409:27ff:1011:0000:0043:0000:0000:0092--400GHL1/5/7:1"
+    },
+    "vendor": {
+        "local": "其他",
+        "remote": "其他"
+    },
+    "vendor_sn": {
+        "local": "VZWF2W009FH",
+        "remote": "VZWF2W00CQZ"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 52.14,
+        "remote": 43.52
+    },
+    "Voltage": {
+        "local": 3.33,
+        "remote": 3.29
+    },
+    "Lane number": {
+        "local": 4,
+        "remote": 4
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "alarm_ip_interface": "2409:27ff:101c:0000:0008:0000:0000:000b--400GE5/0/20",
+    "alarm_time": "2025-11-08 14:46:06",
+    "region": "cn-north-12",
+    "alarm_name": "DCN linkflap告警",
+    "label": "local",
+    "bias": {
+        "local": {
+            "0": 73,
+            "1": 71,
+            "2": 74,
+            "3": 57
+        },
+        "remote": {
+            "0": 61,
+            "1": 59,
+            "2": 56,
+            "3": 59
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 1.11,
+            "1": 1.16,
+            "2": 0.77,
+            "3": 0.76
+        },
+        "remote": {
+            "0": -0.12,
+            "1": 1.23,
+            "2": 1.26,
+            "3": 1.73
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 1.73,
+            "1": 1.73,
+            "2": 1.72,
+            "3": 2.16
+        },
+        "remote": {
+            "0": 1.73,
+            "1": 2.37,
+            "2": 2.06,
+            "3": 1.72
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 23.12,
+            "1": 22.95,
+            "2": 23.48,
+            "3": 23.88
+        },
+        "remote": {
+            "0": 23.3,
+            "1": 23.67,
+            "2": 23.88,
+            "3": 23.48
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {},
+        "remote": {}
+    },
+    "link_location": "参数面",
+    "link_side_ip_interface_map": {
+        "local": "2409:27ff:101c:0000:0008:0000:0000:000b--400GE5/0/20",
+        "remote": "2409:27ff:101c:0000:0009:0000:0000:002d--400GE3/0/26"
+    },
+    "vendor": {
+        "local": "其他",
+        "remote": "其他"
+    },
+    "vendor_sn": {
+        "local": "MF252665400352",
+        "remote": "MF252762920244"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 32.08,
+        "remote": 31.91
+    },
+    "Voltage": {
+        "local": 3.31,
+        "remote": 3.31
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    },
+    "task_id": "a03cab55-4526-450a-832e-83a79f72e1a7"
+}

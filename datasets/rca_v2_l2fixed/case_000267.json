@@ -1,0 +1,122 @@
+{
+  "alarm_ip_interface": "L1_ENDPOINT--400G_PORT",
+  "alarm_time": "2024-03-18 10:15:23",
+  "region": "region_1818599036bb",
+  "alarm_name": "频繁升降lane",
+  "label": "L1",
+  "link_location": "location_c662e3ed6f20",
+  "link_side_ip_interface_map": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "vender_sn": {
+    "L1": "serial_10503ce22608",
+    "L2": "serial_1cf3e0826aa5"
+  },
+  "RxLOL": {
+    "L1": null,
+    "L2": null
+  },
+  "TxLOL": {
+    "L1": null,
+    "L2": null
+  },
+  "TxLOS": {
+    "L1": null,
+    "L2": null
+  },
+  "RxLOS": {
+    "L1": null,
+    "L2": null
+  },
+  "Temperature": {
+    "L1": null,
+    "L2": null
+  },
+  "Voltage": {
+    "L1": null,
+    "L2": null
+  },
+  "bias": {
+    "L1": null,
+    "L2": null
+  },
+  "rxpower": {
+    "L1": {
+      "0": 1.04,
+      "1": 1.58,
+      "2": 1.28,
+      "3": 1.15
+    },
+    "L2": {
+      "0": 1.44,
+      "1": 1.44,
+      "2": 1.45,
+      "3": 1.45
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 0.7,
+      "1": 0.7,
+      "2": 0.69,
+      "3": 0.69
+    },
+    "L2": {
+      "0": 0.7,
+      "1": 0.7,
+      "2": 0.69,
+      "3": 0.69
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 25.05,
+      "1": 23.27,
+      "2": 0.0,
+      "3": 25.17
+    },
+    "L2": {
+      "0": 24.09,
+      "1": 23.67,
+      "2": 24.09,
+      "3": 24.79
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": 24.72,
+      "1": 25.07,
+      "2": 26.0,
+      "3": 24.46
+    },
+    "L2": null
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 710230,
+      "1": 760806,
+      "2": 126832,
+      "3": 749204
+    },
+    "L2": {
+      "0": 696104,
+      "1": 704628,
+      "2": 682525,
+      "3": 739081
+    }
+  },
+  "Lane number": {
+    "L1": null,
+    "L2": null
+  },
+  "case_id": "case_4b322d8486b5",
+  "_meta": {
+    "schema_version": "2.0",
+    "side_definition": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "endpoint_values_swapped": false
+  }
+}

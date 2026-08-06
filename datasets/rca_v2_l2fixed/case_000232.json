@@ -1,0 +1,230 @@
+{
+  "alarm_time": "2024-01-01 00:00:00",
+  "alarm_name": "频繁升降lane",
+  "region": "region_9af70e948c6d",
+  "label": "fiber",
+  "link_location": "location_c662e3ed6f20",
+  "timestamp": {
+    "L1": "2024-01-01 00:00:00",
+    "L2": "2024-01-01 00:00:00"
+  },
+  "link_side_ip_interface_map": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "chip": {
+    "L1": null,
+    "L2": null
+  },
+  "port": {
+    "L1": null,
+    "L2": null
+  },
+  "txpower": {
+    "L1": {
+      "0": 0.595634,
+      "1": 1.145776,
+      "2": 0.915614,
+      "3": 0.85576,
+      "4": 0.775859,
+      "5": 1.035643,
+      "6": 0.865734,
+      "7": 0.875685
+    },
+    "L2": {
+      "0": 0.697051,
+      "1": 0.669964,
+      "2": 0.682972,
+      "3": 0.682972
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 0.185757,
+      "1": 0.62582,
+      "2": 0.719556,
+      "3": 0.833951,
+      "4": 0.742677,
+      "5": 0.765676,
+      "6": 0.727277,
+      "7": 0.727277
+    },
+    "L2": {
+      "0": 1.209028,
+      "1": 1.424208,
+      "2": 0.948902,
+      "3": 1.617273
+    }
+  },
+  "bias": {
+    "L1": null,
+    "L2": null
+  },
+  "media_snr": {
+    "L1": {
+      "0": 25.48,
+      "1": 26.11,
+      "2": 25.91,
+      "3": 25.68,
+      "4": 25.42,
+      "5": 25.54,
+      "6": 25.05,
+      "7": 26.38
+    },
+    "L2": {
+      "0": 0,
+      "1": 0,
+      "2": 25.71,
+      "3": 24.84
+    }
+  },
+  "host_snr": {
+    "L1": null,
+    "L2": {
+      "0": 26.09,
+      "1": 24.72,
+      "2": 25.71,
+      "3": 24.96
+    }
+  },
+  "temperature": {
+    "L1": null,
+    "L2": null
+  },
+  "voltage": {
+    "L1": null,
+    "L2": null
+  },
+  "Tx Disable Status": {
+    "L1": null,
+    "L2": null
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Tx Status": {
+    "L1": null,
+    "L2": null
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Lpmode state": {
+    "L1": null,
+    "L2": null
+  },
+  "L2_fault": {
+    "L1": null,
+    "L2": null
+  },
+  "L1_fault": {
+    "L1": null,
+    "L2": null
+  },
+  "Rx Disable Status": {
+    "L1": null,
+    "L2": null
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "devm_picm_dt": {
+    "L1": null,
+    "L2": null
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 665173,
+      "1": 181262,
+      "2": 621702,
+      "3": 622925
+    },
+    "L2": {
+      "0": 628709,
+      "1": 756071,
+      "2": 693861,
+      "3": 760515
+    }
+  },
+  "fsm0": {
+    "L1": null,
+    "L2": null
+  },
+  "fsm1": {
+    "L1": null,
+    "L2": null
+  },
+  "phy_en": {
+    "L1": null,
+    "L2": null
+  },
+  "phy_fsm": {
+    "L1": null,
+    "L2": null
+  },
+  "phy_lock": {
+    "L1": null,
+    "L2": null
+  },
+  "lsm_cfg": {
+    "L1": null,
+    "L2": null
+  },
+  "crc_error": {
+    "L1": null,
+    "L2": null
+  },
+  "fec_error": {
+    "L1": null,
+    "L2": null
+  },
+  "port_down_dt": {
+    "L1": null,
+    "L2": null
+  },
+  "non_null_count": {
+    "L1": null,
+    "L2": null
+  },
+  "case_id": "case_ac436bbbc898",
+  "_meta": {
+    "schema_version": "2.0",
+    "side_definition": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "endpoint_values_swapped": false,
+    "l2_lane_repair": {
+      "rule": "retain L2 lane keys 0-3; remove excess keys",
+      "changed_fields": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    }
+  }
+}

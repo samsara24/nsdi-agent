@@ -1,0 +1,159 @@
+{
+  "alarm_ip_interface": "L1_ENDPOINT--400G_PORT",
+  "alarm_time": "2024-03-19 08:59:21",
+  "region": "region_26e6b453c3c8",
+  "alarm_name": "频繁升降lane",
+  "label": "L1",
+  "link_location": "location_c662e3ed6f20",
+  "link_side_ip_interface_map": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "vender_sn": {
+    "L1": "serial_57186fe0aaed",
+    "L2": "serial_f8ef3959e07f"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+  },
+  "Temperature": {
+    "L1": null,
+    "L2": null
+  },
+  "Voltage": {
+    "L1": null,
+    "L2": null
+  },
+  "bias": {
+    "L1": null,
+    "L2": null
+  },
+  "rxpower": {
+    "L1": {
+      "0": 1.231654,
+      "1": 1.197177,
+      "2": 0.848264,
+      "3": 1.204423,
+      "4": 1.082944,
+      "5": 1.316507,
+      "6": 1.091396,
+      "7": 1.007151
+    },
+    "L2": {
+      "0": 0.863598,
+      "1": 1.589954,
+      "2": 1.011626,
+      "3": -40.0
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 1.131743,
+      "1": 1.271048,
+      "2": 1.109935,
+      "3": 1.340496,
+      "4": 1.122362,
+      "5": 1.309446,
+      "6": 1.439823,
+      "7": 1.092072
+    },
+    "L2": {
+      "0": 0.36988,
+      "1": 0.377451,
+      "2": 0.377451,
+      "3": 0.36988
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 24.8,
+      "1": 25.06,
+      "2": 24.09,
+      "3": 24.55,
+      "4": 23.3,
+      "5": 24.55,
+      "6": 24.55,
+      "7": 25.34
+    },
+    "L2": {
+      "0": 26.32,
+      "1": 26.29,
+      "2": 25.97,
+      "3": 0.0
+    }
+  },
+  "host_snr": {
+    "L1": null,
+    "L2": {
+      "0": 25.71,
+      "1": 24.96,
+      "2": 25.51,
+      "3": 24.46
+    }
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 677811,
+      "1": 653997,
+      "2": 620620,
+      "3": 652442
+    },
+    "L2": {
+      "0": 707020,
+      "1": 764912,
+      "2": 707261,
+      "3": 0
+    }
+  },
+  "Lane number": {
+    "L1": null,
+    "L2": null
+  },
+  "case_id": "case_2ee657ca7489",
+  "_meta": {
+    "schema_version": "2.0",
+    "side_definition": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "endpoint_values_swapped": false,
+    "l2_lane_repair": {
+      "rule": "retain L2 lane keys 0-3; remove excess keys",
+      "changed_fields": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    }
+  }
+}

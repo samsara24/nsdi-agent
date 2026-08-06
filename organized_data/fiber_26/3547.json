@@ -1,0 +1,131 @@
+{
+    "alarm_ip_interface": "29.182.0.207--200GHL1/1/18",
+    "alarm_time": "2025-12-04 22:44:54",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN-AI超平面-接口降lane-网络侧",
+    "label": "fiber",
+    "bias": {
+        "local": {
+            "0": 7.78,
+            "1": 7.77,
+            "2": 7.77,
+            "3": 7.77
+        },
+        "remote": {
+            "0": 7.24,
+            "1": 7.23,
+            "2": 7.23,
+            "3": 7.24
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 0.96,
+            "1": 0.69,
+            "2": 0.87,
+            "3": -40
+        },
+        "remote": {
+            "0": 0.47,
+            "1": -0.19,
+            "2": 0.31,
+            "3": 0.31
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.61,
+            "1": 0.5,
+            "2": 0.66,
+            "3": 0.69
+        },
+        "remote": {
+            "0": 0.69,
+            "1": 0.69,
+            "2": 0.69,
+            "3": 0.69
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 25.06,
+            "1": 25.64,
+            "2": 24.8,
+            "3": 0
+        },
+        "remote": {
+            "0": 26.54,
+            "1": 26.57,
+            "2": 26.06,
+            "3": 26.25
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": {
+            "0": 24.72,
+            "1": 25.07,
+            "2": 25.4,
+            "3": 24.19
+        }
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 700627,
+            "1": 754983,
+            "2": 675534,
+            "3": 1
+        },
+        "remote": {
+            "0": 705802,
+            "1": 704738,
+            "2": 681767,
+            "3": 729605
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "29.182.0.207--200GHL1/1/18",
+        "remote": "29.97.253.200--400GHL1/3/8:1"
+    },
+    "vendor": {
+        "local": "其他",
+        "remote": "海思光模块"
+    },
+    "vendor_sn": {
+        "local": "VZWF7W001D4",
+        "remote": "035JUANMR5362114"
+    },
+    "RxLOL": {
+        "local": "Abnormal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Abnormal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 55.88,
+        "remote": 45.29
+    },
+    "Voltage": {
+        "local": 3.31,
+        "remote": 3.23
+    },
+    "Lane number": {
+        "local": 2,
+        "remote": 2
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    }
+}

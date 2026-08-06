@@ -1,0 +1,127 @@
+{
+    "alarm_ip_interface": "2409:27ff:1012:0000:0036:0000:0000:000b--200GHL1/2/6",
+    "alarm_time": "2025-11-06 11:40:33",
+    "region": "cn-east-4",
+    "alarm_name": "DCN linkflap告警",
+    "label": "local",
+    "bias": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        },
+        "remote": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        },
+        "remote": {
+            "0": -40,
+            "1": -40,
+            "2": -40,
+            "3": -40
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        },
+        "remote": {
+            "0": 1,
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "2409:27ff:1012:0000:0036:0000:0000:000b--200GHL1/2/6",
+        "remote": "2409:27ff:1012:0000:0034:0000:0000:0044--400GHL1/1/8:2"
+    },
+    "vendor": {
+        "local": "其他",
+        "remote": "华工光模块"
+    },
+    "vendor_sn": {
+        "local": "VZWF8W00A13",
+        "remote": "3000250131214"
+    },
+    "RxLOL": {
+        "local": "Abnormal",
+        "remote": "Abnormal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Abnormal",
+        "remote": "Abnormal"
+    },
+    "Temperature": {
+        "local": 47.75,
+        "remote": 41.53
+    },
+    "Voltage": {
+        "local": 3.39,
+        "remote": 3.24
+    },
+    "Lane number": {
+        "local": 0,
+        "remote": 0
+    },
+    "port_status": {
+        "local": 0,
+        "remote": 0
+    },
+    "task_id": "48500469-3499-432c-98e2-6b8f8d1a0703"
+}

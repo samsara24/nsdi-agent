@@ -1,0 +1,132 @@
+{
+    "alarm_ip_interface": "29.176.5.186--200GHL1/1/8",
+    "alarm_time": "2025-10-14 05:47:29",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN-AI超平面-接口降lane-网络侧",
+    "label": "remote",
+    "bias": {
+        "local": {
+            "0": 7.35,
+            "1": 7.35,
+            "2": 7.35,
+            "3": 7.35
+        },
+        "remote": {
+            "0": 7.67,
+            "1": 7.67,
+            "2": 7.67,
+            "3": 7.66
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 1.32,
+            "1": 1.3,
+            "2": -40,
+            "3": 1.2
+        },
+        "remote": {
+            "0": 2.36,
+            "1": 2.18,
+            "2": 2.41,
+            "3": 2.28
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.85,
+            "1": 0.21,
+            "2": 0.8,
+            "3": 0.69
+        },
+        "remote": {
+            "0": 1.32,
+            "1": 0.94,
+            "2": 1.09,
+            "3": 1.05
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 25.64,
+            "1": 24.55,
+            "2": 0,
+            "3": 25.64
+        },
+        "remote": {
+            "0": 26.31,
+            "1": 26.31,
+            "2": 25.96,
+            "3": 25.64
+        }
+    },
+    "host_snr": {
+        "local": {
+            "0": null,
+            "1": null,
+            "2": null,
+            "3": null
+        },
+        "remote": {
+            "0": null,
+            "1": null,
+            "2": null,
+            "3": null
+        }
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 668307,
+            "1": 759355,
+            "2": 102200,
+            "3": 678916
+        },
+        "remote": {
+            "0": 711867,
+            "1": 750204,
+            "2": 700783,
+            "3": 747830
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "29.176.5.186--200GHL1/1/8",
+        "remote": "29.182.55.190--400GHL1/3/3:1"
+    },
+    "vendor": {
+        "local": "华工光模块",
+        "remote": "其他"
+    },
+    "vendor_sn": {
+        "local": "3000188332747",
+        "remote": "VZWF5W00DY4"
+    },
+    "RxLOL": {
+        "local": "Abnormal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Abnormal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 50.62,
+        "remote": 49.18
+    },
+    "Voltage": {
+        "local": 3.32,
+        "remote": 3.24
+    },
+    "Lane number": {
+        "local": 4,
+        "remote": 4
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "alarm_ip_interface": "29.78.208.4--400GE8/0/29:1",
+    "alarm_time": "2025-11-20 06:04:04",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN linkflap告警",
+    "label": "local",
+    "bias": {
+        "local": {
+            "0": 7.35,
+            "1": 7.35,
+            "2": 7.35,
+            "3": 7.35
+        },
+        "remote": {
+            "0": 7.29,
+            "1": 7.29,
+            "2": 7.29,
+            "3": 7.29
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 0.05,
+            "1": 1.46,
+            "2": 1.67,
+            "3": 1.77
+        },
+        "remote": {
+            "0": 1.58,
+            "1": 1.44,
+            "2": 1.46,
+            "3": 1.42
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.67,
+            "1": 1.1,
+            "2": 1.17,
+            "3": 0.85
+        },
+        "remote": {
+            "0": 1.12,
+            "1": 0.82,
+            "2": 1.18,
+            "3": 1.15
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 24.55,
+            "1": 25.64,
+            "2": 24.79,
+            "3": 25.34
+        },
+        "remote": {
+            "0": 25.34,
+            "1": 25.96,
+            "2": 25.34,
+            "3": 25.34
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {},
+        "remote": {}
+    },
+    "link_location": "参数面",
+    "link_side_ip_interface_map": {
+        "local": "29.78.208.4--400GE8/0/29:1",
+        "remote": "29.78.210.34--400GE1/1/1:1"
+    },
+    "vendor": {
+        "local": "华工光模块",
+        "remote": "华工光模块"
+    },
+    "vendor_sn": {
+        "local": "3000098013809",
+        "remote": "3000095760888"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 50.52,
+        "remote": 48.17
+    },
+    "Voltage": {
+        "local": 3.35,
+        "remote": 3.34
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    },
+    "task_id": "ae9dfead-69a3-4993-9451-7823d13138b8"
+}

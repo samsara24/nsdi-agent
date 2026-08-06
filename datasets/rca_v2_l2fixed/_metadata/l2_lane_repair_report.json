@@ -1,0 +1,735 @@
+{
+  "source": "datasets/rca_v2",
+  "cases": 268,
+  "repaired_cases": 32,
+  "changed_fields": 107,
+  "details": [
+    {
+      "case_id": "case_ebc4aa121fed",
+      "file": "case_000214.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_03033c345fbf",
+      "file": "case_000220.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_ebbe29787a44",
+      "file": "case_000223.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_bc0bcdc8ad1d",
+      "file": "case_000224.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_0273d5d0a84b",
+      "file": "case_000231.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_ac436bbbc898",
+      "file": "case_000232.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_63c7bc42fccc",
+      "file": "case_000233.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_1d881d28d2a3",
+      "file": "case_000235.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_4cefd4612d68",
+      "file": "case_000237.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 7,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_3f7f13d8a938",
+      "file": "case_000239.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 7,
+          "after": 3
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_9c1d3e766e26",
+      "file": "case_000240.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_737362825627",
+      "file": "case_000241.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_788f63a0a0fc",
+      "file": "case_000242.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_c770294bd1f2",
+      "file": "case_000243.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_f0e7e10a16de",
+      "file": "case_000244.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_0dfe33886f06",
+      "file": "case_000245.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_60e62d6d1052",
+      "file": "case_000246.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_4e07d1148cfd",
+      "file": "case_000247.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_224ca4dd577c",
+      "file": "case_000248.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_80bc3687c4b7",
+      "file": "case_000249.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_62b8d2de6e0c",
+      "file": "case_000250.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_9daf397bb2f7",
+      "file": "case_000251.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_1a56f70e541c",
+      "file": "case_000252.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_8a9790a7e3ca",
+      "file": "case_000256.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_92919cfab57f",
+      "file": "case_000260.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_e168b4979b39",
+      "file": "case_000261.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_3380daa891a5",
+      "file": "case_000262.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_0df147c7f93f",
+      "file": "case_000263.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_f9a6059bb977",
+      "file": "case_000264.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_f7f2853723f2",
+      "file": "case_000265.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_102809177c6f",
+      "file": "case_000266.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    },
+    {
+      "case_id": "case_2ee657ca7489",
+      "file": "case_000268.json",
+      "changes": [
+        {
+          "field": "rxpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "txpower",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "media_snr",
+          "before": 8,
+          "after": 4
+        },
+        {
+          "field": "host_snr",
+          "before": 8,
+          "after": 4
+        }
+      ]
+    }
+  ]
+}

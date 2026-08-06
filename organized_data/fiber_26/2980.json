@@ -1,0 +1,127 @@
+{
+    "alarm_ip_interface": "29.182.2.110--200GHL1/1/45",
+    "alarm_time": "2025-11-15 20:16:47",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN-AI超平面-接口降lane-网络侧",
+    "label": "fiber",
+    "bias": {
+        "local": {
+            "0": 7.53,
+            "1": 7.53,
+            "2": 7.53,
+            "3": 7.53
+        },
+        "remote": {
+            "0": 7.48,
+            "1": 7.48,
+            "2": 7.48,
+            "3": 7.48
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": -0.32,
+            "1": -0.93,
+            "2": -0.77,
+            "3": -0.85
+        },
+        "remote": {
+            "0": -40,
+            "1": 0.63,
+            "2": 0.89,
+            "3": 1.03
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.28,
+            "1": 0.37,
+            "2": 0.18,
+            "3": 0.35
+        },
+        "remote": {
+            "0": -0.25,
+            "1": 0.13,
+            "2": -0.22,
+            "3": -0.05
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 26.3,
+            "1": 26.3,
+            "2": 25.64,
+            "3": 25.96
+        },
+        "remote": {
+            "0": 0,
+            "1": 25.96,
+            "2": 25.64,
+            "3": 25.64
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 738389,
+            "1": 765641,
+            "2": 754632,
+            "3": 748405
+        },
+        "remote": {
+            "0": 103224,
+            "1": 717212,
+            "2": 682364,
+            "3": 737055
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "29.182.2.110--200GHL1/1/45",
+        "remote": "29.97.252.171--400GHL1/3/3:1"
+    },
+    "vendor": {
+        "local": "光迅光模块",
+        "remote": "光迅光模块"
+    },
+    "vendor_sn": {
+        "local": "MH252603502962",
+        "remote": "MH252311111188"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Abnormal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Abnormal"
+    },
+    "Temperature": {
+        "local": 52.12,
+        "remote": 49.62
+    },
+    "Voltage": {
+        "local": 3.37,
+        "remote": 3.26
+    },
+    "Lane number": {
+        "local": 2,
+        "remote": 2
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    },
+    "task_id": "eae5c7e4-c270-423d-a617-05091f5e3ddb"
+}

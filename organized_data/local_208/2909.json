@@ -1,0 +1,127 @@
+{
+    "alarm_ip_interface": "29.182.17.18--200GHL1/1/27",
+    "alarm_time": "2025-11-13 00:02:58",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN-AI超平面-接口降lane-网络侧",
+    "label": "local",
+    "bias": {
+        "local": {
+            "0": 7.48,
+            "1": 7.48,
+            "2": 7.48,
+            "3": 7.48
+        },
+        "remote": {
+            "0": 7.62,
+            "1": 7.62,
+            "2": 7.62,
+            "3": 7.62
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 0.73,
+            "1": 1.58,
+            "2": 0.92,
+            "3": 0.83
+        },
+        "remote": {
+            "0": 0.95,
+            "1": 0.09,
+            "2": -0.33,
+            "3": -0.9
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": -0.23,
+            "1": -0.53,
+            "2": -0.43,
+            "3": -0.33
+        },
+        "remote": {
+            "0": 0.05,
+            "1": 0.17,
+            "2": 0.38,
+            "3": 0.86
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 26.3,
+            "1": 26.3,
+            "2": 25.96,
+            "3": 25.34
+        },
+        "remote": {
+            "0": 26.31,
+            "1": 26.69,
+            "2": 25.96,
+            "3": 25.96
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 744040,
+            "1": 724851,
+            "2": 758097,
+            "3": 746835
+        },
+        "remote": {
+            "0": 696550,
+            "1": 687528,
+            "2": 748926,
+            "3": 708359
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "29.182.17.18--200GHL1/1/27",
+        "remote": "29.176.57.89--400GHL1/4/7:1"
+    },
+    "vendor": {
+        "local": "光迅光模块",
+        "remote": "其他"
+    },
+    "vendor_sn": {
+        "local": "MH252304840013",
+        "remote": "VZWF8A2036N"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 49.48,
+        "remote": 47.45
+    },
+    "Voltage": {
+        "local": 3.34,
+        "remote": 3.28
+    },
+    "Lane number": {
+        "local": 2,
+        "remote": 2
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    },
+    "task_id": "f6107485-80dd-4fdc-ac9a-0f95115ae7de"
+}

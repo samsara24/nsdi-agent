@@ -1,0 +1,127 @@
+{
+    "alarm_ip_interface": "2409:27ff:101c:0000:004b:0000:0000:009e--200GHL1/1/27",
+    "alarm_time": "2025-11-20 15:05:44",
+    "region": "cn-north-12",
+    "alarm_name": "DCN-AI超平面-接口降lane-网络侧",
+    "label": "remote",
+    "bias": {
+        "local": {
+            "0": 7.29,
+            "1": 7.29,
+            "2": 7.29,
+            "3": 7.29
+        },
+        "remote": {
+            "0": 7.67,
+            "1": 7.66,
+            "2": 7.67,
+            "3": 7.67
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": -40,
+            "1": 1.38,
+            "2": 1.62,
+            "3": 1.45
+        },
+        "remote": {
+            "0": 1.81,
+            "1": 2.19,
+            "2": 1.4,
+            "3": 1.55
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.59,
+            "1": 0.66,
+            "2": 0.9,
+            "3": 0.68
+        },
+        "remote": {
+            "0": 1.29,
+            "1": 0.93,
+            "2": 1.07,
+            "3": 1.15
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 0,
+            "1": 25.96,
+            "2": 26.68,
+            "3": 26.3
+        },
+        "remote": {
+            "0": 26.31,
+            "1": 25.96,
+            "2": 25.64,
+            "3": 25.06
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 1,
+            "1": 666458,
+            "2": 663132,
+            "3": 640283
+        },
+        "remote": {
+            "0": 675132,
+            "1": 708038,
+            "2": 674743,
+            "3": 738849
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "2409:27ff:101c:0000:004b:0000:0000:009e--200GHL1/1/27",
+        "remote": "2409:27ff:101c:0000:0026:0000:0000:0095--400GHL1/5/3:1"
+    },
+    "vendor": {
+        "local": "华工光模块",
+        "remote": "其他"
+    },
+    "vendor_sn": {
+        "local": "3000193815054",
+        "remote": "VZWF6W01P3G"
+    },
+    "RxLOL": {
+        "local": "Abnormal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Abnormal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 49.56,
+        "remote": 50.54
+    },
+    "Voltage": {
+        "local": 3.29,
+        "remote": 3.27
+    },
+    "Lane number": {
+        "local": 2,
+        "remote": 2
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    },
+    "task_id": "32d49b4d-7f7f-431f-8fb8-72bc0d54f352"
+}

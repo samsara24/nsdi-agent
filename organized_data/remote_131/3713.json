@@ -1,0 +1,126 @@
+{
+    "alarm_ip_interface": "29.182.17.53--200GHL1/2/28",
+    "alarm_time": "2025-12-09 19:23:28",
+    "region": "cn-southwest-2",
+    "alarm_name": "DCN-AI超平面-频繁升降lane-网络侧",
+    "label": "remote",
+    "bias": {
+        "local": {
+            "0": 7.42,
+            "1": 7.42,
+            "2": 7.42,
+            "3": 7.42
+        },
+        "remote": {
+            "0": 6.77,
+            "1": 6.77,
+            "2": 6.3,
+            "3": 6.77
+        }
+    },
+    "rxpower": {
+        "local": {
+            "0": 1.16,
+            "1": -1.63,
+            "2": 0.07,
+            "3": 1.19
+        },
+        "remote": {
+            "0": -0.19,
+            "1": -0.46,
+            "2": -0.28,
+            "3": -0.63
+        }
+    },
+    "txpower": {
+        "local": {
+            "0": 0.42,
+            "1": 0.67,
+            "2": 0.46,
+            "3": 0.11
+        },
+        "remote": {
+            "0": 0.5,
+            "1": 0.99,
+            "2": 1.23,
+            "3": 1.15
+        }
+    },
+    "media_snr": {
+        "local": {
+            "0": 25.34,
+            "1": 24.55,
+            "2": 25.34,
+            "3": 25.34
+        },
+        "remote": {
+            "0": 26.68,
+            "1": 26.3,
+            "2": 26.3,
+            "3": 27.1
+        }
+    },
+    "host_snr": {
+        "local": null,
+        "remote": null
+    },
+    "serdes_snr": {
+        "local": {
+            "0": 697992,
+            "1": 762713,
+            "2": 706476,
+            "3": 706947
+        },
+        "remote": {
+            "0": 683113,
+            "1": 681162,
+            "2": 663570,
+            "3": 636211
+        }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+        "local": "29.182.17.53--200GHL1/2/28",
+        "remote": "29.176.57.150--400GHL1/1/6:2"
+    },
+    "vendor": {
+        "local": "光迅光模块",
+        "remote": "华工光模块"
+    },
+    "vendor_sn": {
+        "local": "MH252802390217",
+        "remote": "3000249170084"
+    },
+    "RxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOL": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "TxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "RxLOS": {
+        "local": "Normal",
+        "remote": "Normal"
+    },
+    "Temperature": {
+        "local": 45.84,
+        "remote": 46.11
+    },
+    "Voltage": {
+        "local": 3.17,
+        "remote": 3.24
+    },
+    "Lane number": {
+        "local": 4,
+        "remote": 4
+    },
+    "port_status": {
+        "local": 1,
+        "remote": 1
+    }
+}

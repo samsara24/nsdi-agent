@@ -1,0 +1,146 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "RCA v2 代码运行手册",
+    "description": "仅列出当前正式代码的运行命令、必要参数和执行顺序。",
+    "generatedAt": "2026-07-26T00:00:00Z",
+    "cards": [],
+    "charts": [],
+    "tables": [],
+    "sources": [
+      {
+        "id": "cli_source",
+        "label": "RCA v2 CLI",
+        "path": "rca_framework/cli.py"
+      },
+      {
+        "id": "script_source",
+        "label": "RCA v2 可执行脚本",
+        "path": "scripts/"
+      },
+      {
+        "id": "framework_source",
+        "label": "RCA v2 Python 包",
+        "path": "rca_framework/"
+      },
+      {
+        "id": "test_source",
+        "label": "RCA v2 自动化测试",
+        "path": "tests/"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# RCA v2 代码运行手册"
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "body": "## 所有命令都从项目根目录执行\n\n```bash\ncd /home/shibinpeng/luoyu/huangzeshun/nsdi27\n```\n\n查看 CLI 的全部命令：\n\n```bash\npython -m rca_framework.cli --help\n```"
+      },
+      {
+        "id": "prepare",
+        "type": "markdown",
+        "sourceId": "cli_source",
+        "body": "## `cli.py`：生成脱敏数据集\n\n```bash\npython -m rca_framework.cli prepare \\\n  --input-dir data \\\n  --output-dir datasets/rca_v2_new \\\n  --archive-manifest archive/legacy_exploration/source_data_manifest_new.json\n```\n\n需要让不同运行产生一致的匿名 ID 时：\n\n```bash\nRCA_ANONYMIZATION_SECRET='your-fixed-secret' \\\npython -m rca_framework.cli prepare \\\n  --input-dir data \\\n  --output-dir datasets/rca_v2_new \\\n  --archive-manifest archive/legacy_exploration/source_data_manifest_new.json\n```\n\n`--output-dir` 必须是尚不存在的新目录。"
+      },
+      {
+        "id": "train_none",
+        "type": "markdown",
+        "sourceId": "cli_source",
+        "body": "## `cli.py`：不使用大模型训练并评估\n\n```bash\npython -m rca_framework.cli train-evaluate \\\n  --data-dir datasets/rca_v2 \\\n  --train-size 200 \\\n  --output-dir artifacts/rca_v2_baseline_new \\\n  --backend none\n```\n\n`--output-dir` 必须为空或尚不存在。"
+      },
+      {
+        "id": "train_vllm",
+        "type": "markdown",
+        "sourceId": "cli_source",
+        "body": "## `cli.py`：使用 vLLM 训练并评估\n\n```bash\nCUDA_VISIBLE_DEVICES=0,1 \\\npython -m rca_framework.cli train-evaluate \\\n  --data-dir datasets/rca_v2 \\\n  --train-size 200 \\\n  --output-dir artifacts/rca_v2_vllm_new \\\n  --backend vllm \\\n  --model-path /path/to/local/model \\\n  --tensor-parallel-size 2 \\\n  --gpu-memory-utilization 0.85 \\\n  --max-model-len 8192 \\\n  --max-new-tokens 512\n```\n\n纯 PCIe 多卡环境如果 custom all-reduce 初始化失败，再增加：\n\n```bash\n  --enforce-eager \\\n  --disable-custom-all-reduce\n```"
+      },
+      {
+        "id": "train_transformers",
+        "type": "markdown",
+        "sourceId": "cli_source",
+        "body": "## `cli.py`：使用 Transformers 训练并评估\n\n```bash\nCUDA_VISIBLE_DEVICES=0 \\\npython -m rca_framework.cli train-evaluate \\\n  --data-dir datasets/rca_v2 \\\n  --train-size 200 \\\n  --output-dir artifacts/rca_v2_transformers_new \\\n  --backend transformers \\\n  --model-path /path/to/local/model \\\n  --max-new-tokens 512\n```"
+      },
+      {
+        "id": "infer",
+        "type": "markdown",
+        "sourceId": "cli_source",
+        "body": "## `cli.py`：推理一条 case\n\n不使用大模型：\n\n```bash\npython -m rca_framework.cli infer \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json \\\n  --output artifacts/single_case_result.json \\\n  --backend none\n```\n\n使用大模型：\n\n```bash\nCUDA_VISIBLE_DEVICES=0 \\\npython -m rca_framework.cli infer \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json \\\n  --output artifacts/single_case_llm_result.json \\\n  --backend vllm \\\n  --model-path /path/to/local/model\n```"
+      },
+      {
+        "id": "run_wrapper",
+        "type": "markdown",
+        "sourceId": "script_source",
+        "body": "## `scripts/run_rca_v2.py`：CLI 的脚本入口\n\n它与 `python -m rca_framework.cli` 等价。运行帮助：\n\n```bash\npython scripts/run_rca_v2.py --help\n```\n\n运行数据准备：\n\n```bash\npython scripts/run_rca_v2.py prepare \\\n  --input-dir data \\\n  --output-dir datasets/rca_v2_new \\\n  --archive-manifest archive/legacy_exploration/source_data_manifest_new.json\n```\n\n运行训练评估：\n\n```bash\npython scripts/run_rca_v2.py train-evaluate \\\n  --data-dir datasets/rca_v2 \\\n  --train-size 200 \\\n  --output-dir artifacts/rca_v2_baseline_new \\\n  --backend none\n```\n\n运行单条推理：\n\n```bash\npython scripts/run_rca_v2.py infer \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json\n```"
+      },
+      {
+        "id": "prepare_wrapper",
+        "type": "markdown",
+        "sourceId": "script_source",
+        "body": "## `scripts/prepare_rca_v2_dataset.py`：只运行数据准备\n\n```bash\npython scripts/prepare_rca_v2_dataset.py \\\n  --input-dir data \\\n  --output-dir datasets/rca_v2_new \\\n  --archive-manifest archive/legacy_exploration/source_data_manifest_new.json\n```"
+      },
+      {
+        "id": "debug",
+        "type": "markdown",
+        "sourceId": "script_source",
+        "body": "## `scripts/debug_rca_case.py`：逐阶段调试一条 case\n\n只查看异常提取：\n\n```bash\npython scripts/debug_rca_case.py \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json \\\n  --channel evidence\n```\n\n只查看 KG-RAG 路径：\n\n```bash\npython scripts/debug_rca_case.py \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json \\\n  --channel kg-rag \\\n  --backend none\n```\n\n只查看符号规则：\n\n```bash\npython scripts/debug_rca_case.py \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json \\\n  --channel kg-rca\n```\n\n运行完整双路推理与融合，并保存结果：\n\n```bash\npython scripts/debug_rca_case.py \\\n  --model artifacts/rca_v2_baseline/model \\\n  --case datasets/rca_v2/case_000268.json \\\n  --channel full \\\n  --backend none \\\n  --output artifacts/debug_case_result.json\n```"
+      },
+      {
+        "id": "repair",
+        "type": "markdown",
+        "sourceId": "script_source",
+        "body": "## `scripts/repair_l2_lane_width.py`：修复 L2 lane 数量\n\n```bash\npython scripts/repair_l2_lane_width.py \\\n  datasets/rca_v2 \\\n  datasets/rca_v2_l2_repaired\n```\n\n第二个位置参数是新输出目录，不能指向已经存在的目录。"
+      },
+      {
+        "id": "tests",
+        "type": "markdown",
+        "sourceId": "test_source",
+        "body": "## `tests/`：运行自动化测试\n\n运行全部测试：\n\n```bash\npytest -q\n```\n\n分别运行每个测试文件：\n\n```bash\npytest -q tests/test_data_pipeline.py\npytest -q tests/test_graph_rules.py\npytest -q tests/test_pipeline_and_fusion.py\n```\n\n运行单个测试函数：\n\n```bash\npytest -q tests/test_graph_rules.py::test_three_symbolic_rule_sets_are_disjoint\n```\n\n查看测试函数的准确名称：\n\n```bash\npytest --collect-only -q\n```"
+      },
+      {
+        "id": "library",
+        "type": "markdown",
+        "sourceId": "framework_source",
+        "body": "## `rca_framework` 其余模块：作为 Python 包调用\n\n`__init__.py`、`types.py`、`data.py`、`anomaly.py`、`graph.py`、`rules.py`、`llm.py`、`fusion.py` 和 `pipeline.py` 没有独立命令行入口，不要用 `python rca_framework/rules.py` 这类方式运行。\n\n在 Python 中运行完整 pipeline：\n\n```python\nfrom pathlib import Path\nfrom rca_framework.data import load_cases\nfrom rca_framework.pipeline import RCAPipeline\n\ncases = load_cases(Path(\"datasets/rca_v2\"))\npipeline = RCAPipeline().fit(cases[:200])\nresult = pipeline.infer(cases[200], llm_backend=\"none\")\nprint(result)\n```\n\n保存与重新加载模型：\n\n```python\nfrom pathlib import Path\nfrom rca_framework.pipeline import RCAPipeline\n\npipeline.save(Path(\"artifacts/my_model\"))\nloaded = RCAPipeline.load(Path(\"artifacts/my_model\"))\n```\n\n只导入某个模块进行开发或调试：\n\n```python\nfrom rca_framework.types import Anomaly, CaseEvidence\nfrom rca_framework.anomaly import fit_thresholds, extract_evidence\nfrom rca_framework.graph import AnomalyKnowledgeGraph\nfrom rca_framework.rules import SymbolicRuleEngine\nfrom rca_framework.llm import PathLLMReasoner\nfrom rca_framework.fusion import fuse_results\n```"
+      },
+      {
+        "id": "recommended_order",
+        "type": "markdown",
+        "body": "## 第一次完整运行的顺序\n\n```bash\n# 1. 测试\npytest -q\n\n# 2. 准备新数据目录\npython -m rca_framework.cli prepare \\\n  --input-dir data \\\n  --output-dir datasets/rca_v2_new \\\n  --archive-manifest archive/legacy_exploration/source_data_manifest_new.json\n\n# 3. 训练并评估\npython -m rca_framework.cli train-evaluate \\\n  --data-dir datasets/rca_v2_new \\\n  --train-size 200 \\\n  --output-dir artifacts/rca_v2_first_run \\\n  --backend none\n\n# 4. 单条推理\npython -m rca_framework.cli infer \\\n  --model artifacts/rca_v2_first_run/model \\\n  --case datasets/rca_v2_new/case_000268.json \\\n  --output artifacts/rca_v2_first_run/single_case_result.json\n```"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-26T00:00:00Z",
+    "status": "ready",
+    "datasets": {}
+  },
+  "sources": [
+    {
+      "id": "cli_source",
+      "label": "RCA v2 CLI",
+      "path": "rca_framework/cli.py"
+    },
+    {
+      "id": "script_source",
+      "label": "RCA v2 可执行脚本",
+      "path": "scripts/"
+    },
+    {
+      "id": "framework_source",
+      "label": "RCA v2 Python 包",
+      "path": "rca_framework/"
+    },
+    {
+      "id": "test_source",
+      "label": "RCA v2 自动化测试",
+      "path": "tests/"
+    }
+  ]
+}

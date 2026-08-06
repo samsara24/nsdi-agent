@@ -1,0 +1,580 @@
+--- archive/rca_framework_snapshot_20260805_pre_layered_injection/rca_framework/cli.py	2026-08-05 08:28:02.575037325 +0000
++++ rca_framework/cli.py	2026-08-06 02:48:22.595436697 +0000
+@@ -8,6 +8,7 @@
+ from typing import Any, Dict
+ 
+ from .data import load_cases, prepare_dataset
++from .llm import INJECTION_MODES, SCORE_MODES
+ from .pipeline import PipelineConfig, RCAPipeline
+ 
+ 
+@@ -58,6 +59,9 @@
+         enforce_eager=args.enforce_eager,
+         guided_json=not args.disable_guided_json,
+         disable_custom_all_reduce=args.disable_custom_all_reduce,
++        injection_mode=args.kg_injection,
++        score_mode=args.llm_score_mode,
++        insufficient_confidence_scale=args.insufficient_confidence_scale,
+     )
+     dump_json(output / "evaluation_summary.json", evaluation["summary"])
+     dump_json(output / "predictions.json", evaluation["predictions"])
+@@ -79,6 +83,11 @@
+             "guided_json": not args.disable_guided_json,
+             "disable_custom_all_reduce": args.disable_custom_all_reduce,
+         },
++        "kg_injection": {
++            "injection_mode": args.kg_injection,
++            "score_mode": args.llm_score_mode,
++            "insufficient_confidence_scale": args.insufficient_confidence_scale,
++        },
+         "leakage_policy": "All fitted artifacts use the first train-size cases only; test labels are read after inference solely for metrics.",
+     }
+     dump_json(output / "run_manifest.json", run_manifest)
+@@ -107,12 +116,33 @@
+         enforce_eager=args.enforce_eager,
+         guided_json=not args.disable_guided_json,
+         disable_custom_all_reduce=args.disable_custom_all_reduce,
++        injection_mode=args.kg_injection,
++        score_mode=args.llm_score_mode,
++        insufficient_confidence_scale=args.insufficient_confidence_scale,
+     )
+     if args.output:
+         dump_json(Path(args.output), result)
+     return result
+ 
+ 
++def add_injection_arguments(parser: argparse.ArgumentParser) -> None:
++    parser.add_argument(
++        "--kg-injection", choices=INJECTION_MODES, default="layered",
++        help="full replays the pre-2026-08 behaviour of injecting every KG field unconditionally; "
++             "layered withholds the aggregated KG score when the KG does not cover the case",
++    )
++    parser.add_argument(
++        "--llm-score-mode", choices=SCORE_MODES, default="llm_only",
++        help="legacy blends 35%% of the KG score back into the LLM route before fusion; "
++             "llm_only keeps the LLM route independent of the KG score",
++    )
++    parser.add_argument(
++        "--insufficient-confidence-scale", type=float, default=1.0,
++        help="multiplier applied to the fusion confidence when the LLM reports insufficient evidence; "
++             "1.0 records the signal without acting on it",
++    )
++
++
+ def build_parser() -> argparse.ArgumentParser:
+     parser = argparse.ArgumentParser(description="RCA v2: anonymization, anomaly KG-RAG-LLM, exclusive rules and conflict fusion")
+     sub = parser.add_subparsers(dest="command", required=True)
+@@ -139,6 +169,7 @@
+     train.add_argument("--enforce-eager", action="store_true")
+     train.add_argument("--disable-guided-json", action="store_true")
+     train.add_argument("--disable-custom-all-reduce", action="store_true")
++    add_injection_arguments(train)
+     train.set_defaults(handler=train_command)
+ 
+     infer = sub.add_parser("infer", help="infer one already-anonymized schema-v2 case")
+@@ -155,6 +186,7 @@
+     infer.add_argument("--enforce-eager", action="store_true")
+     infer.add_argument("--disable-guided-json", action="store_true")
+     infer.add_argument("--disable-custom-all-reduce", action="store_true")
++    add_injection_arguments(infer)
+     infer.set_defaults(handler=infer_command)
+     return parser
+ 
+--- archive/rca_framework_snapshot_20260805_pre_layered_injection/rca_framework/llm.py	2026-08-05 08:28:02.576037306 +0000
++++ rca_framework/llm.py	2026-08-06 02:48:22.926430941 +0000
+@@ -20,6 +20,103 @@
+     "additionalProperties": False,
+ }
+ 
++SUFFICIENCY_VALUES = ("sufficient", "insufficient")
++
++# The layered schema adds one field so the model can separate "this is my best
++# guess" from "the current telemetry supports this".  `prediction` stays
++# mandatory and three-way so accuracy remains comparable to earlier runs.
++LAYERED_OUTPUT_SCHEMA = {
++    "type": "object",
++    "properties": {
++        "prediction": {"type": "string", "enum": list(ROOT_CAUSES)},
++        "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
++        "evidence_sufficiency": {"type": "string", "enum": list(SUFFICIENCY_VALUES)},
++        "path_ids": {"type": "array", "items": {"type": "string"}},
++        "reasoning": {"type": "string"},
++        "missing_information": {"type": "array", "items": {"type": "string"}},
++    },
++    "required": [
++        "prediction", "confidence", "evidence_sufficiency",
++        "path_ids", "reasoning", "missing_information",
++    ],
++    "additionalProperties": False,
++}
++
++INJECTION_MODES = ("full", "layered")
++SCORE_MODES = ("legacy", "llm_only")
++
++ROOT_CAUSE_DEFINITIONS = {
++    "L1": "400G 端口或该端设备侧根因",
++    "L2": "200G 端口或该端设备侧根因",
++    "fiber": "L1 与 L2 之间的光纤/链路介质根因",
++}
++
++
++def classify_kg_coverage(case: CaseEvidence, graph_result: Dict[str, Any]) -> Dict[str, Any]:
++    """Decide whether the KG actually covers this case's anomaly combination.
++
++    The regime is defined purely by the structure of the KG response, so it is
++    reproducible and introduces no tuned threshold:
++
++    - ``covered``: at least one learned KG feature rule matches, so the KG has
++      seen this combination and its aggregated score is meaningful.
++    - ``partial``: individual anomaly edges fire but no rule matches, so only
++      atom-level statistics are transferable.
++    - ``uncovered``: nothing fires, and the aggregated KG score degenerates to
++      the training class prior.
++    """
++    paths = graph_result.get("paths") or []
++    matched_rules = graph_result.get("matched_feature_rules") or {}
++    matched_rule_count = sum(len(items) for items in matched_rules.values())
++    retrieved = graph_result.get("retrieved_cases") or []
++    max_similarity = max((float(row.get("similarity", 0.0)) for row in retrieved), default=0.0)
++    path_count = int(graph_result.get("path_count", len(paths)))
++    if matched_rule_count > 0:
++        regime = "covered"
++    elif path_count > 0:
++        regime = "partial"
++    else:
++        regime = "uncovered"
++    return {
++        "regime": regime,
++        "anomaly_count": len(case.anomalies),
++        "path_count": path_count,
++        "matched_rule_count": matched_rule_count,
++        "max_retrieval_similarity": round(max_similarity, 8),
++    }
++
++
++_REGIME_GUIDANCE = {
++    "covered": (
++        "知识图谱已覆盖该异常组合：至少一条学到的 KG 规则命中。"
++        "可以把匹配规则和候选路径分数作为主要依据。"
++    ),
++    "partial": (
++        "知识图谱只覆盖到单个异常原子，没有覆盖当前这个组合。"
++        "已屏蔽 KG 的聚合候选分数和 KG 结论，因为在组合未覆盖时该分数主要反映训练集类别先验。"
++        "请只把 root_cause_paths 里的 training_count、precision、lift 当作原子级证据强度，"
++        "组合层面的因果推理由你自己完成。"
++    ),
++    "uncovered": (
++        "知识图谱对该 case 没有任何结构证据：没有异常节点命中，也没有规则匹配。"
++        "已屏蔽 KG 的候选分数和 KG 结论，因为在无证据时它等于训练集类别先验，会把结论推向多数类。"
++        "请只依据 target_case 的原始遥测和根因物理定义推理，"
++        "并把 evidence_sufficiency 设为 insufficient，同时在 missing_information 中列出需要补采的测量。"
++    ),
++}
++
++_SHARED_CONSTRAINTS = (
++    "目标 case 的真实标签不可见，不得猜测或补造。",
++    "正常行为不会形成知识图谱边。",
++    "prediction 必须在 L1、L2、fiber 中选择一个，用于与既有评估口径对齐。",
++    "若现有证据不足以支撑该选择，必须把 evidence_sufficiency 设为 insufficient，而不是抬高 confidence。",
++)
++
++_UNCERTAIN_CONSTRAINTS = (
++    "字段缺失只代表未采集，不得当作该项正常。",
++    "不得因为某一类在历史数据中更常见而倾向该类；类别先验未提供，也不应被推测。",
++)
++
+ 
+ def build_path_prompt(case: CaseEvidence, graph_result: Dict[str, Any]) -> str:
+     payload = {
+@@ -58,6 +155,71 @@
+     return "你是光链路 RCA 专家。只输出一个合法 JSON 对象。\n" + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+ 
+ 
++def build_layered_prompt(case: CaseEvidence, graph_result: Dict[str, Any]) -> str:
++    """Inject only the KG evidence that is actually valid for this case.
++
++    Under ``uncovered`` and ``partial`` regimes the aggregated KG score carries
++    almost no case-specific signal and mostly restates the training class
++    prior, so it is withheld instead of presented as a candidate distribution.
++    """
++    coverage = classify_kg_coverage(case, graph_result)
++    regime = coverage["regime"]
++    constraints = list(_SHARED_CONSTRAINTS)
++    if regime == "covered":
++        constraints.append("优先使用训练统计强度高的匹配规则和候选路径。")
++    else:
++        constraints.extend(_UNCERTAIN_CONSTRAINTS)
++
++    payload: Dict[str, Any] = {
++        "task": "三分类光链路根因定界",
++        "root_cause_definitions": ROOT_CAUSE_DEFINITIONS,
++        "kg_coverage": coverage,
++        "kg_coverage_guidance": _REGIME_GUIDANCE[regime],
++        "constraints": constraints,
++        "target_case": {
++            "case_id": case.case_id,
++            "summary": case.summary,
++            "anomalies": [item.to_dict() for item in case.anomalies],
++            "data_coverage": case.coverage,
++            "missing_fields": case.missing_fields,
++        },
++    }
++
++    withheld: list[str] = []
++    if regime == "covered":
++        payload["candidate_path_scores"] = graph_result["scores"]
++        payload["candidate_feature_profile_scores"] = graph_result.get("feature_profile_scores", {})
++        payload["matched_kg_feature_rules"] = graph_result.get("matched_feature_rules", {})
++        payload["root_cause_paths"] = graph_result["paths"]
++    elif regime == "partial":
++        payload["root_cause_paths"] = graph_result["paths"]
++        withheld.append("candidate_path_scores：组合未被 KG 覆盖，聚合分数主要反映类别先验。")
++        withheld.append("candidate_feature_profile_scores 与 matched_kg_feature_rules：本 case 无规则命中。")
++    else:
++        withheld.append("candidate_path_scores：无任何异常节点命中，聚合分数等于类别先验。")
++        withheld.append("root_cause_paths 与 matched_kg_feature_rules：本 case 为空。")
++    if withheld:
++        payload["withheld_kg_fields"] = withheld
++
++    retrieved = graph_result.get("retrieved_cases") or []
++    payload["retrieved_training_cases"] = retrieved
++    if regime != "covered":
++        payload["retrieval_note"] = (
++            f"检索到的训练 case 最高相似度仅 {coverage['max_retrieval_similarity']}，"
++            "它们是当前训练集中最接近的样本，不代表同类，不得直接套用其标签。"
++        )
++
++    payload["output_schema"] = {
++        "prediction": "L1 | L2 | fiber",
++        "confidence": "0 到 1，表示你对该选择的把握",
++        "evidence_sufficiency": "sufficient | insufficient，表示现有遥测是否足以支撑定界",
++        "path_ids": ["使用的 anomaly_id，必须来自 target_case.anomalies"],
++        "reasoning": "简短因果解释",
++        "missing_information": ["需要补采、会改变结论的测量"],
++    }
++    return "你是光链路 RCA 专家。只输出一个合法 JSON 对象。\n" + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
++
++
+ def parse_llm_json(text: str) -> Optional[Dict[str, Any]]:
+     match = re.search(r"\{.*\}", text or "", flags=re.S)
+     if not match:
+@@ -73,9 +235,11 @@
+         confidence = min(1.0, max(0.0, float(value.get("confidence", 0.0))))
+     except (TypeError, ValueError):
+         confidence = 0.0
++    sufficiency = str(value.get("evidence_sufficiency", "")).strip()
+     return {
+         "prediction": prediction,
+         "confidence": confidence,
++        "evidence_sufficiency": sufficiency if sufficiency in SUFFICIENCY_VALUES else "unreported",
+         "path_ids": list(value.get("path_ids", [])),
+         "reasoning": str(value.get("reasoning", "")),
+         "missing_information": list(value.get("missing_information", [])),
+@@ -96,6 +260,9 @@
+         enforce_eager: bool = False,
+         guided_json: bool = True,
+         disable_custom_all_reduce: bool = False,
++        injection_mode: str = "layered",
++        score_mode: str = "llm_only",
++        insufficient_confidence_scale: float = 1.0,
+     ) -> None:
+         self.backend = backend
+         self.model_path = model_path
+@@ -107,49 +274,117 @@
+         self.enforce_eager = enforce_eager
+         self.guided_json = guided_json
+         self.disable_custom_all_reduce = disable_custom_all_reduce
++        self.injection_mode = injection_mode
++        self.score_mode = score_mode
++        self.insufficient_confidence_scale = insufficient_confidence_scale
++        self._validate_modes()
+         self._model: Any = None
+         self._tokenizer: Any = None
+ 
++    def _validate_modes(self) -> None:
++        if self.injection_mode not in INJECTION_MODES:
++            raise ValueError(f"unsupported injection mode: {self.injection_mode}")
++        if self.score_mode not in SCORE_MODES:
++            raise ValueError(f"unsupported score mode: {self.score_mode}")
++
++    def configure(self, **overrides: Any) -> "PathLLMReasoner":
++        """Change per-request settings without discarding the loaded model.
++
++        Only reasoning-time settings may be changed here; anything that affects
++        model loading must go through a new instance.
++        """
++        allowed = {"max_new_tokens", "guided_json", "injection_mode", "score_mode", "insufficient_confidence_scale"}
++        unknown = set(overrides) - allowed
++        if unknown:
++            raise ValueError(f"cannot reconfigure loading-time settings: {sorted(unknown)}")
++        for key, value in overrides.items():
++            setattr(self, key, value)
++        self._validate_modes()
++        return self
++
++    @property
++    def output_schema(self) -> Dict[str, Any]:
++        return LLM_OUTPUT_SCHEMA if self.injection_mode == "full" else LAYERED_OUTPUT_SCHEMA
++
++    def build_prompt(self, case: CaseEvidence, graph_result: Dict[str, Any]) -> str:
++        if self.injection_mode == "full":
++            return build_path_prompt(case, graph_result)
++        return build_layered_prompt(case, graph_result)
++
+     def reason(self, case: CaseEvidence, graph_result: Dict[str, Any]) -> Dict[str, Any]:
+         return self.reason_many([case], [graph_result])[0]
+ 
+     def reason_many(self, cases: list[CaseEvidence], graph_results: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+         if len(cases) != len(graph_results):
+             raise ValueError("cases and graph_results must have equal length")
+-        prompts = [build_path_prompt(case, graph_result) for case, graph_result in zip(cases, graph_results)]
++        prompts = [self.build_prompt(case, graph_result) for case, graph_result in zip(cases, graph_results)]
++        coverages = [classify_kg_coverage(case, graph_result) for case, graph_result in zip(cases, graph_results)]
+         if self.backend == "none":
+             return [
+-                self._fallback(graph_result, prompt, "LLM disabled; deterministic graph-path reasoning used")
+-                for graph_result, prompt in zip(graph_results, prompts)
++                self._fallback(graph_result, prompt, coverage, "LLM disabled; deterministic graph-path reasoning used")
++                for graph_result, prompt, coverage in zip(graph_results, prompts, coverages)
+             ]
+         raw_outputs = self._generate_many(prompts)
+         return [
+-            self._parse_or_fallback(graph_result, prompt, raw)
+-            for graph_result, prompt, raw in zip(graph_results, prompts, raw_outputs)
++            self._parse_or_fallback(graph_result, prompt, coverage, raw)
++            for graph_result, prompt, coverage, raw in zip(graph_results, prompts, coverages, raw_outputs)
+         ]
+ 
+-    def _parse_or_fallback(self, graph_result: Dict[str, Any], prompt: str, raw: str) -> Dict[str, Any]:
++    def _score_llm_result(self, graph_result: Dict[str, Any], parsed: Dict[str, Any]) -> Dict[str, float]:
++        prediction, confidence = parsed["prediction"], parsed["confidence"]
++        if self.score_mode == "legacy":
++            graph_scores = normalize_scores(graph_result["scores"])
++            scores = {label: graph_scores[label] * 0.35 for label in ROOT_CAUSES}
++            scores[prediction] += 0.65 * confidence
++            return normalize_scores(scores)
++        # Read the self-reported confidence as an interpolation coefficient
++        # between a uniform distribution and a one-hot vote, so the predicted
++        # class always stays the argmax and confidence 0 degrades to uniform.
++        # This keeps the LLM route independent of the KG score, which fusion
++        # already weighs separately.
++        uniform = 1.0 / len(ROOT_CAUSES)
++        residual = (1.0 - confidence) * uniform
++        scores = {label: residual for label in ROOT_CAUSES}
++        scores[prediction] += confidence
++        return normalize_scores(scores)
++
++    def _parse_or_fallback(
++        self, graph_result: Dict[str, Any], prompt: str, coverage: Dict[str, Any], raw: str,
++    ) -> Dict[str, Any]:
+         parsed = parse_llm_json(raw)
+         if parsed is None:
+-            return self._fallback(graph_result, prompt, "invalid LLM JSON; deterministic graph-path reasoning used", raw)
+-        graph_scores = normalize_scores(graph_result["scores"])
+-        llm_scores = {label: graph_scores[label] * 0.35 for label in ROOT_CAUSES}
+-        llm_scores[parsed["prediction"]] += 0.65 * parsed["confidence"]
++            return self._fallback(
++                graph_result, prompt, coverage,
++                "invalid LLM JSON; deterministic graph-path reasoning used", raw,
++            )
++        reported_confidence = parsed["confidence"]
++        fusion_confidence = reported_confidence
++        if parsed["evidence_sufficiency"] == "insufficient":
++            fusion_confidence = reported_confidence * self.insufficient_confidence_scale
+         parsed.update({
+-            "scores": normalize_scores(llm_scores),
++            "scores": self._score_llm_result(graph_result, parsed),
++            "reported_confidence": reported_confidence,
++            "confidence": fusion_confidence,
+             "prompt": prompt,
+             "raw_output": raw,
+             "reasoning_mode": "llm_path_reasoning",
+             "graph_prediction": graph_result["prediction"],
++            "kg_coverage": coverage,
++            "injection_mode": self.injection_mode,
++            "score_mode": self.score_mode,
+         })
+         return parsed
+ 
+-    def _fallback(self, graph_result: Dict[str, Any], prompt: str, note: str, raw: str = "") -> Dict[str, Any]:
++    def _fallback(
++        self, graph_result: Dict[str, Any], prompt: str, coverage: Dict[str, Any], note: str, raw: str = "",
++    ) -> Dict[str, Any]:
+         ranking = rank_scores(graph_result["scores"])
+         used_paths = [path["anomaly_id"] for path in graph_result["paths"] if path["root_cause"] == ranking[0][0]][:5]
+         return {
+             "prediction": graph_result["prediction"],
+             "confidence": graph_result["confidence"],
++            "reported_confidence": graph_result["confidence"],
++            "evidence_sufficiency": "insufficient" if coverage["regime"] == "uncovered" else "unreported",
+             "scores": graph_result["scores"],
+             "path_ids": used_paths,
+             "reasoning": note,
+@@ -158,6 +393,9 @@
+             "raw_output": raw,
+             "reasoning_mode": "deterministic_path_fallback",
+             "graph_prediction": graph_result["prediction"],
++            "kg_coverage": coverage,
++            "injection_mode": self.injection_mode,
++            "score_mode": self.score_mode,
+         }
+ 
+     def _render_prompt(self, prompt: str) -> str:
+@@ -193,7 +431,7 @@
+                     disable_custom_all_reduce=self.disable_custom_all_reduce,
+                 )
+             rendered = [self._render_prompt(prompt) for prompt in prompts]
+-            guided = GuidedDecodingParams(json=LLM_OUTPUT_SCHEMA) if self.guided_json else None
++            guided = GuidedDecodingParams(json=self.output_schema) if self.guided_json else None
+             outputs = self._model.generate(
+                 rendered,
+                 SamplingParams(temperature=0.0, max_tokens=self.max_new_tokens, guided_decoding=guided),
+--- archive/rca_framework_snapshot_20260805_pre_layered_injection/rca_framework/pipeline.py	2026-08-05 08:28:02.576037306 +0000
++++ rca_framework/pipeline.py	2026-08-06 02:48:22.371440592 +0000
+@@ -39,6 +39,33 @@
+         self.training_case_ids: List[str] = []
+         self._reasoners: Dict[tuple[Any, ...], PathLLMReasoner] = {}
+ 
++    def _get_reasoner(self, settings: Dict[str, Any]) -> PathLLMReasoner:
++        """Reuse one loaded model across reasoning-time configurations.
++
++        The cache key only covers settings that change how the model is loaded,
++        so switching injection or scoring mode does not reload a large model.
++        """
++        loading = {
++            "backend": str(settings.get("llm_backend", "none")),
++            "model_path": str(settings.get("model_path", "")),
++            "tensor_parallel_size": int(settings.get("tensor_parallel_size", 1)),
++            "gpu_memory_utilization": float(settings.get("gpu_memory_utilization", 0.90)),
++            "max_model_len": int(settings.get("max_model_len", 8192)),
++            "dtype": str(settings.get("dtype", "auto")),
++            "enforce_eager": bool(settings.get("enforce_eager", False)),
++            "disable_custom_all_reduce": bool(settings.get("disable_custom_all_reduce", False)),
++        }
++        key = tuple(sorted(loading.items()))
++        if key not in self._reasoners:
++            self._reasoners[key] = PathLLMReasoner(**loading)
++        return self._reasoners[key].configure(
++            max_new_tokens=int(settings.get("max_new_tokens", 512)),
++            guided_json=bool(settings.get("guided_json", True)),
++            injection_mode=str(settings.get("injection_mode", "layered")),
++            score_mode=str(settings.get("score_mode", "llm_only")),
++            insufficient_confidence_scale=float(settings.get("insufficient_confidence_scale", 1.0)),
++        )
++
+     def fit(self, cases: Sequence[Dict[str, Any]]) -> "RCAPipeline":
+         labeled = [case for case in cases if case.get("label") in ROOT_CAUSES]
+         if not labeled:
+@@ -71,6 +98,9 @@
+         enforce_eager: bool = False,
+         guided_json: bool = True,
+         disable_custom_all_reduce: bool = False,
++        injection_mode: str = "layered",
++        score_mode: str = "llm_only",
++        insufficient_confidence_scale: float = 1.0,
+     ) -> Dict[str, Any]:
+         if self.thresholds is None:
+             raise RuntimeError("pipeline is not fitted")
+@@ -78,14 +108,15 @@
+         target.pop("label", None)
+         evidence = extract_evidence(target, self.thresholds)
+         graph_result = self.graph.query(evidence, self.config.top_k_paths, self.config.top_k_cases)
+-        reasoner_key = (llm_backend, model_path, max_new_tokens, tensor_parallel_size, gpu_memory_utilization, max_model_len, dtype, enforce_eager, guided_json, disable_custom_all_reduce)
+-        if reasoner_key not in self._reasoners:
+-            self._reasoners[reasoner_key] = PathLLMReasoner(
+-                llm_backend, model_path, max_new_tokens, tensor_parallel_size,
+-                gpu_memory_utilization, max_model_len, dtype, enforce_eager, guided_json,
+-                disable_custom_all_reduce,
+-            )
+-        method1 = self._reasoners[reasoner_key].reason(evidence, graph_result)
++        reasoner = self._get_reasoner({
++            "llm_backend": llm_backend, "model_path": model_path, "max_new_tokens": max_new_tokens,
++            "tensor_parallel_size": tensor_parallel_size, "gpu_memory_utilization": gpu_memory_utilization,
++            "max_model_len": max_model_len, "dtype": dtype, "enforce_eager": enforce_eager,
++            "guided_json": guided_json, "disable_custom_all_reduce": disable_custom_all_reduce,
++            "injection_mode": injection_mode, "score_mode": score_mode,
++            "insufficient_confidence_scale": insufficient_confidence_scale,
++        })
++        method1 = reasoner.reason(evidence, graph_result)
+         method1["graph_paths"] = graph_result["paths"]
+         method1["matched_kg_feature_rules"] = graph_result.get("matched_feature_rules", {})
+         method1["feature_profile_scores"] = graph_result.get("feature_profile_scores", {})
+@@ -125,30 +156,18 @@
+             method2 = self.rules.match(evidence)
+             prepared.append((actual, evidence, graph_result, method2))
+ 
+-        llm_backend = infer_kwargs.get("llm_backend", "none")
+-        model_path = infer_kwargs.get("model_path", "")
+-        max_new_tokens = int(infer_kwargs.get("max_new_tokens", 512))
+-        tensor_parallel_size = int(infer_kwargs.get("tensor_parallel_size", 1))
+-        gpu_memory_utilization = float(infer_kwargs.get("gpu_memory_utilization", 0.90))
+-        max_model_len = int(infer_kwargs.get("max_model_len", 8192))
+-        dtype = str(infer_kwargs.get("dtype", "auto"))
+-        enforce_eager = bool(infer_kwargs.get("enforce_eager", False))
+-        guided_json = bool(infer_kwargs.get("guided_json", True))
+-        disable_custom_all_reduce = bool(infer_kwargs.get("disable_custom_all_reduce", False))
+-        reasoner_key = (llm_backend, model_path, max_new_tokens, tensor_parallel_size, gpu_memory_utilization, max_model_len, dtype, enforce_eager, guided_json, disable_custom_all_reduce)
+-        if reasoner_key not in self._reasoners:
+-            self._reasoners[reasoner_key] = PathLLMReasoner(
+-                llm_backend, model_path, max_new_tokens, tensor_parallel_size,
+-                gpu_memory_utilization, max_model_len, dtype, enforce_eager, guided_json,
+-                disable_custom_all_reduce,
+-            )
+-        method1_rows = self._reasoners[reasoner_key].reason_many(
++        reasoner = self._get_reasoner(infer_kwargs)
++        method1_rows = reasoner.reason_many(
+             [item[1] for item in prepared], [item[2] for item in prepared],
+         )
+ 
+         rows = []
+         confusion: Dict[str, Counter[str]] = defaultdict(Counter)
+         llm_mode_counts: Counter[str] = Counter()
++        regime_totals: Counter[str] = Counter()
++        regime_correct: Counter[str] = Counter()
++        sufficiency_totals: Counter[str] = Counter()
++        sufficiency_correct: Counter[str] = Counter()
+         for (actual, evidence, graph_result, method2), method1 in zip(prepared, method1_rows):
+             method1["graph_paths"] = graph_result["paths"]
+             method1["matched_kg_feature_rules"] = graph_result.get("matched_feature_rules", {})
+@@ -177,6 +196,13 @@
+             result["correct"] = result["prediction"] == actual
+             rows.append(result)
+             llm_mode_counts[method1.get("reasoning_mode", "unknown")] += 1
++            regime = str(method1.get("kg_coverage", {}).get("regime", "unknown"))
++            regime_totals[regime] += 1
++            sufficiency = str(method1.get("evidence_sufficiency", "unreported"))
++            sufficiency_totals[sufficiency] += 1
++            if result["correct"]:
++                regime_correct[regime] += 1
++                sufficiency_correct[sufficiency] += 1
+             if actual in ROOT_CAUSES:
+                 confusion[actual][result["prediction"]] += 1
+         correct = sum(bool(row["correct"]) for row in rows)
+@@ -194,6 +220,27 @@
+                 "decision_status": dict(Counter(row["decision_status"] for row in rows)),
+                 "llm_reasoning_mode": dict(llm_mode_counts),
+                 "valid_llm_outputs": llm_mode_counts["llm_path_reasoning"],
++                "kg_injection": {
++                    "injection_mode": reasoner.injection_mode,
++                    "score_mode": reasoner.score_mode,
++                    "insufficient_confidence_scale": reasoner.insufficient_confidence_scale,
++                },
++                "kg_coverage_regime": {
++                    regime: {
++                        "cases": count,
++                        "correct": regime_correct[regime],
++                        "accuracy": regime_correct[regime] / count if count else None,
++                    }
++                    for regime, count in sorted(regime_totals.items())
++                },
++                "evidence_sufficiency": {
++                    value: {
++                        "cases": count,
++                        "correct": sufficiency_correct[value],
++                        "accuracy": sufficiency_correct[value] / count if count else None,
++                    }
++                    for value, count in sorted(sufficiency_totals.items())
++                },
+                 "label_leakage": False,
+             },
+             "predictions": rows,
