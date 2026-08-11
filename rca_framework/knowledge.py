@@ -20,9 +20,12 @@ from .branches.base import BranchCalibration
 from .constraints.library import CONSTRAINT_LIBRARY
 from .decision import (
     DEFAULT_DECISION_POLICY,
+    DecisionPolicy,
     LLMCalibration,
     apply_llm_calibration,
+    build_candidates,
     decide_many,
+    fit_decision_policy,
 )
 from .evidence_graph import EvidenceGraph, RoutingPolicy, match_many
 from .evidence_pack import EvidencePack, build_packs, labels_of
@@ -56,6 +59,8 @@ class OfflineKnowledgeBundle:
     training_features: Tuple[CaseFeatures, ...]
     branch_calibrations: Mapping[str, BranchCalibration]
     llm_calibrations: Mapping[str, LLMCalibration] = field(default_factory=dict)
+    #: 每个路由策略在训练留一法上反解出的 M9 工作点。测试阶段只读加载，不重新拟合。
+    decision_policies: Mapping[str, DecisionPolicy] = field(default_factory=dict)
     build_metadata: Mapping[str, Any] = field(default_factory=dict)
 
     @property
@@ -86,6 +91,10 @@ class OfflineKnowledgeBundle:
             "llm_calibrations": {
                 name: calibration.to_dict()
                 for name, calibration in sorted(self.llm_calibrations.items())
+            },
+            "decision_policies": {
+                name: policy.to_dict()
+                for name, policy in sorted(self.decision_policies.items())
             },
             "build_metadata": dict(self.build_metadata),
         }
@@ -124,6 +133,22 @@ class OfflineKnowledgeBundle:
             llm_calibrations={
                 str(name): LLMCalibration.from_dict(item)
                 for name, item in value.get("llm_calibrations", {}).items()
+            },
+                decision_policies={
+                str(name): DecisionPolicy(
+                    version=str(item.get("version", DEFAULT_DECISION_POLICY.version)),
+                    final_lower_bound=float(item.get("final_lower_bound", 0.5)),
+                    minimum_support=int(item.get("minimum_support", 10)),
+                    candidate_order=tuple(item.get("candidate_order", ("branch",))),
+                    target_selective_risk=item.get("target_selective_risk"),
+                    fitted_on=str(item.get("fitted_on", "")),
+                    non_identifiable_labels=tuple(item.get("non_identifiable_labels", ())),
+                    non_identifiable_evidence={
+                        str(key): tuple(entry)
+                        for key, entry in item.get("non_identifiable_evidence", {}).items()
+                    },
+                )
+                for name, item in value.get("decision_policies", {}).items()
             },
             build_metadata=dict(value.get("build_metadata", {})),
         )
@@ -193,6 +218,38 @@ class OfflineKnowledgeBundle:
         return packs, features
 
 
+def _loo_sop_predictions(
+    features: Sequence[CaseFeatures],
+    labels: Sequence[str],
+    *,
+    sop: LearnedSOP,
+) -> Tuple[Optional[Dict[str, Any]], ...]:
+    """对每条训练 case 用「去掉它自己」重拟合的 SOP 给出预测。
+
+    树本身很浅，161 次重拟合的代价可以忽略。这一步不是形式主义：
+    叶节点的支持数与 Wilson 下界正是 M9 门禁要用的量，如果它包含被评估的
+    那条 case，反解出来的阈值在测试集上就会失效。
+    """
+    out: list[Optional[Dict[str, Any]]] = []
+    kept_features = list(features)
+    kept_labels = list(labels)
+    for index in range(len(kept_features)):
+        subset_features = kept_features[:index] + kept_features[index + 1 :]
+        subset_labels = kept_labels[:index] + kept_labels[index + 1 :]
+        if not subset_features:
+            out.append(None)
+            continue
+        model = learn_sop(
+            subset_features,
+            subset_labels,
+            max_depth=sop.max_depth,
+            min_leaf_size=sop.min_leaf_size,
+            source=f"{sop.source}:loo",
+        )
+        out.append(model.predict(kept_features[index]).to_dict())
+    return tuple(out)
+
+
 def fit_offline_knowledge(
     train_cases: Sequence[Dict[str, Any]],
     *,
@@ -203,6 +260,11 @@ def fit_offline_knowledge(
     reasoner: Optional[Any] = None,
     top_k: int = 0,
     build_metadata: Optional[Mapping[str, Any]] = None,
+    target_selective_risk: Optional[float] = None,
+    decision_minimum_support: int = 10,
+    decision_candidate_order: Tuple[str, ...] = ("branch", "sop"),
+    decision_non_identifiable_labels: Tuple[str, ...] = (),
+    decision_non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
 ) -> Tuple[OfflineKnowledgeBundle, TrainingKnowledgeArtifacts]:
     """Fit and optionally LLM-enrich all train-only artifacts.
 
@@ -236,6 +298,8 @@ def fit_offline_knowledge(
 
     branch_calibrations: Dict[str, BranchCalibration] = {}
     llm_calibrations: Dict[str, LLMCalibration] = {}
+    decision_policies: Dict[str, DecisionPolicy] = {}
+    decision_fits: Dict[str, Any] = {}
     trace_artifacts: Dict[str, Dict[str, Any]] = {}
     policy_summaries: Dict[str, Any] = {}
     diagnosis_by_case: MutableMapping[str, Any] = {}
@@ -274,7 +338,38 @@ def fit_offline_knowledge(
                 for outcome in outcomes
             ]
 
-        final_decisions = decide_many(outcomes, DEFAULT_DECISION_POLICY)
+        # SOP 候选必须用留一法重拟合。用全量训练树给训练 case 打分会把它自己
+        # 算进叶节点分布，拟合出来的阈值会系统性偏乐观。
+        loo_sop = _loo_sop_predictions(features, labels, sop=sop)
+        decision_policy = DEFAULT_DECISION_POLICY
+        decision_fit: Optional[Dict[str, Any]] = None
+        if target_selective_risk is not None:
+            probe_policy = DecisionPolicy(
+                final_lower_bound=0.0,
+                minimum_support=decision_minimum_support,
+                candidate_order=decision_candidate_order,
+                non_identifiable_labels=decision_non_identifiable_labels,
+                non_identifiable_evidence=dict(decision_non_identifiable_evidence or {}),
+            )
+            rows = [
+                (
+                    build_candidates(outcome, sop_prediction=sop_pred, policy=probe_policy),
+                    label,
+                )
+                for outcome, sop_pred, label in zip(outcomes, loo_sop, labels)
+            ]
+            decision_policy, decision_fit = fit_decision_policy(
+                rows,
+                target_selective_risk=target_selective_risk,
+                minimum_support=decision_minimum_support,
+                candidate_order=decision_candidate_order,
+                non_identifiable_labels=decision_non_identifiable_labels,
+                non_identifiable_evidence=decision_non_identifiable_evidence,
+                source=f"manifest-train-loo:{policy.name}",
+            )
+            decision_policies[policy.name] = decision_policy
+
+        final_decisions = decide_many(outcomes, decision_policy, sop_predictions=loo_sop)
         for pack, feature, outcome, final_decision, confirmed_label in zip(
             packs, features, outcomes, final_decisions, labels
         ):
@@ -307,7 +402,17 @@ def fit_offline_knowledge(
                 if policy.name in llm_calibrations
                 else None
             ),
+            "decision_policy": decision_policy.to_dict(),
+            "decision_policy_fit": decision_fit,
+            "loo_sop_answered": sum(
+                1 for item in loo_sop if item is not None and item.get("verdict") is not None
+            ),
+            "loo_sop_correct": sum(
+                (item or {}).get("verdict") == label for item, label in zip(loo_sop, labels)
+            ),
         }
+        if decision_fit is not None:
+            decision_fits[policy.name] = decision_fit
 
     if diagnosis_by_case:
         graph = graph.with_case_diagnoses(
@@ -326,6 +431,7 @@ def fit_offline_knowledge(
         training_features=features,
         branch_calibrations=branch_calibrations,
         llm_calibrations=llm_calibrations,
+        decision_policies=decision_policies,
         build_metadata=dict(build_metadata or {}),
     )
     bundle.validate()

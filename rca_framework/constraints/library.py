@@ -31,7 +31,19 @@ from typing import Any, Dict, Iterable, Sequence, Tuple
 #: v2 相对 v1 只增加了 `C15`。它是 T5 在跑「确定性排除是否排掉过真实标签」这项
 #: 全量校验时发现的：`C6` 在 14 次触发里排掉了 2 次真实的 fiber 标签，
 #: 追下去发现根因不是 `C6` 的物理表述有错，而是断光哨兵在全链路失效时含义会翻转。
-CONSTRAINT_LIBRARY_VERSION = "constraint-library-v3"
+#: v4 在 v3 的 15 条之上补 5 条，全部针对同一个结构性缺口：
+#: v3 里没有任何一条约束允许 `support` L1 或 L2。实测中 LLM 两轮累计 599 条违规里
+#: 最高频的一类正是「把 neutral 约束当 support」——模型想给设备侧根因找依据，
+#: 但库里根本没有可引的正向约束，于是只能违规。补的五条分成两组：
+#: C16/C18 提供可用的归因方向与波及范围推理；C17/C19/C20 是把实测到的**负结果**
+#: 写成禁止推断，防止模型在没有判别证据时硬猜。
+#: v5 补的两条来自一次候选知识审计（`scripts/mine_knowledge_candidates.py` 挖候选，
+#: `scripts/audit_candidate_confounding.py` 做共线性与形态偏差审计）。审计的 8 个候选里
+#: 7 个被否掉，剩下 1 个（两端发送功率相减）在控制共线 token 后增益消失。
+#: C21 把这个陷阱写成禁止推断——它是本数据集上最容易被误当成信号的量；
+#: C22 则是同一轮审计里唯一站得住的正向发现：同侧接收 lane 间不均衡，
+#: 是训练集上唯一一个 Wilson 下界超过 L1 先验的观测条件。
+CONSTRAINT_LIBRARY_VERSION = "constraint-library-v5"
 
 CONSTRAINT_KINDS: Tuple[str, ...] = ("invariant", "exclusion", "indicator", "caveat")
 PROVENANCES: Tuple[str, ...] = ("device_spec", "measured", "derived")
@@ -45,6 +57,8 @@ CATEGORIES: Tuple[str, ...] = (
     "signal_quality",
     "lane_directional_consistency",
     "measurement_validity",
+    "attribution_direction",
+    "identifiability",
 )
 
 #: 实测数据集口径。`measured` 类参数全部来自这一份切分，换数据集必须重测。
@@ -486,6 +500,11 @@ _CONSTRAINTS: Tuple[Constraint, ...] = (
             "按 lane 号配对后，L1->L2 方向的均值损耗中位数为 -0.285 dB，"
             "L2->L1 为 -0.227 dB，两个方向的中位数都是负值，物理上不可能。"
             "legacy `directional_loss` 学到的上界（3.11 / 3.42 dB）因此也不可信。"
+            "第二个更直观的证据（迭代 1 补测）：只看序不看数值，统计两端**最差 lane 的编号**"
+            "是否相同。若两端编号真的对应，故障 case 里这个比例应明显高于随机；"
+            "实测 rxpower 为 37/155 = 23.9%、media_snr 为 46/161 = 28.6%，"
+            "而 4 lane 下随机一致的概率就是 25%，两者都与随机无法区分。"
+            "这个检验只需要遥测本身，可以直接用来判断一份数据的两端 lane 是否对齐。"
         ),
         diagnostic_use=(
             "禁止在约束、规则或 prompt 中写绝对损耗门限。"
@@ -599,6 +618,328 @@ _CONSTRAINTS: Tuple[Constraint, ...] = (
         ),
         allowed_effects=("neutral",),
         allowed_targets=("",),
+    ),
+    Constraint(
+        constraint_id="C16_receive_symptom_constrains_far_transmit_chain",
+        category="attribution_direction",
+        kind="indicator",
+        title="接收侧症状把故障约束在对端发送链路、介质与本端接收链路三者之内",
+        physical_statement=(
+            "一侧的接收类读数（rxpower、media_snr、RxLOS / RxLOL）度量的是**对端发出、"
+            "穿过介质之后到达本端**的光。因此接收侧出现症状时，候选根因只能落在"
+            "「对端发送链路」「介质」「本端接收链路」这三段里，"
+            "在物理上不可能是本端自己的发送链路——本端发出的光根本不经过本端的接收器。"
+            "这条方向性是光链路 RCA 里最基本的归因约束：报症状的一端通常不是肇事的一端。"
+        ),
+        formal_expression=(
+            "receive_symptom(X)  =>  root_cause_chain in {tx_chain(Y), medium, rx_chain(X)}"
+            "  AND  root_cause_chain != tx_chain(X)"
+        ),
+        parameters=(("接收侧症状定义", "RxLOS / RxLOL 告警，或 rxpower / media_snr 存在断 lane"),),
+        provenance="derived",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split（161 条）按「只有哪一侧出现接收侧症状」分组："
+            "只有 L1 侧 63 条，其中根因为对端 L2 的 43 条 = 68.3%（Wilson 下界 56.0%，"
+            "L2 先验 62.1%）；只有 L2 侧 25 条，其中根因为对端 L1 的 12 条 = 48.0%"
+            "（Wilson 下界 30.0%，L1 先验 30.4%）。"
+            "**两个方向不对称：只有 L1 受害方向的下界超过其预测类别的先验。**"
+            "更细的口径同样如此：L1 侧 rx 只有单 lane 断（其余 lane 健康）37 条，"
+            "根因 L2 30 条 = 81.1%（下界 65.8%）；镜像条件 L2 侧 rx 单 lane 断只有 13 条，"
+            "根因 L1 仅 4 条 = 30.8%，与 L1 先验无法区分。"
+        ),
+        diagnostic_use=(
+            "只允许在 L1 侧为接收受害方时用它支持 L2；"
+            "L2 侧为受害方时按 C17 处理，不得镜像套用。"
+            "这条不对称本身是实测结果，不要为了对称性把它写成双向规则。"
+        ),
+        prompt_text=(
+            "接收侧读数描述的是对端发出、穿过光纤后到达本端的光，"
+            "因此接收侧异常不可能由本端自己的发送器造成，候选只能是对端发送链路、光纤介质或本端接收链路。"
+            "在本数据集上，当 L1（400G）侧是接收受害方时，根因落在对端 L2 的实测比例为 81.1%"
+            "（L1 侧 rx 单 lane 断，37 条支持），可以据此支持 L2。"
+            "反方向不成立，见 C17。"
+        ),
+        applies_to_token_prefixes=(
+            "drop:L1:rxpower:",
+            "drop:L1:media_snr:",
+            "status:L1:RxLOS",
+            "status:L1:RxLOL",
+            "level:L1:rxpower_mean:low_tail",
+            "level:L1:media_snr_min:low_tail",
+            "lane:L2_to_L1:tx_ok_rx_down",
+        ),
+        allowed_effects=("support",),
+        allowed_targets=("L2",),
+    ),
+    Constraint(
+        constraint_id="C17_l2_side_receive_symptom_is_not_discriminative",
+        category="attribution_direction",
+        kind="caveat",
+        title="L2 侧接收症状不足以支持 L1 根因",
+        physical_statement=(
+            "C16 的方向性在物理上是对称的，但在本数据集上只有一个方向具备统计判别力。"
+            "L2（200G）侧作为接收受害方时，对端归因的实测正确率与 L1 的类别先验没有区别，"
+            "说明现有遥测无法把「L1 发送链路劣化」与「L2 自身接收链路劣化」分开——"
+            "两者在 L2 侧看到的现象一样。"
+        ),
+        formal_expression=(
+            "receive_symptom(L2) AND NOT receive_symptom(L1)"
+            "  =>  P(L1) 与先验不可区分；不得据此断言 L1"
+        ),
+        parameters=(
+            ("训练集触发", "25/161"),
+            ("对端归因正确率", "12/25 = 48.0%"),
+            ("Wilson 95% 下界", "30.0%"),
+            ("L1 类别先验", "30.4%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split：只有 L2 侧出现接收症状的 25 条中，"
+            "标签为 L1 的 12 条、L2 的 10 条、fiber 的 3 条。"
+            "预测 L1 的 Wilson 下界 30.0% 恰好落在 L1 先验 30.4% 上，没有增益。"
+            "单 lane 口径更差：L2 侧 rx 单 lane 断 13 条中 L1 仅 4 条（30.8%）。"
+        ),
+        diagnostic_use=(
+            "命中本约束的 case 应输出「候选 L1，但当前证据不足以定论」并给出补采项"
+            "（L1 侧 host_snr / serdes 读数、L1 侧同 lane 的发送功率历史），"
+            "而不是给出 L1 结论。这是把一个实测负结果变成明确的补采动作。"
+            "唯一的例外是 C22：L2 侧各 lane 之间接收不齐（而不是整体偏低）"
+            "仍可作为 L1 的弱支持，两者的适用 token 不重叠。"
+        ),
+        prompt_text=(
+            "当只有 L2（200G）侧出现接收侧异常时，不要据此断定根因在 L1。"
+            "实测该条件下归因对端的正确率与 L1 的基础比例没有区别，"
+            "因为现有遥测分不开「L1 发送劣化」和「L2 自身接收劣化」。"
+            "此时应说明证据不足，并请求补采 L1 侧的电口读数与该 lane 的发送功率历史。"
+        ),
+        applies_to_token_prefixes=(
+            "drop:L2:rxpower:",
+            "drop:L2:media_snr:",
+            "status:L2:RxLOS",
+            "status:L2:RxLOL",
+            "level:L2:rxpower_mean:low_tail",
+            "level:L2:media_snr_min:low_tail",
+            "lane:L1_to_L2:tx_ok_rx_down",
+        ),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
+    ),
+    Constraint(
+        constraint_id="C18_single_lane_scope_does_not_exclude_fiber",
+        category="lane_directional_consistency",
+        kind="caveat",
+        title="单 lane 异常缩小的是共享层，不是介质本身",
+        physical_statement=(
+            "单条 lane 异常而同端口其余 lane 健康，可以排除所有 lane 共享的部分："
+            "模块供电、壳体温度、整束光纤被拔出、整个连接器脱落。"
+            "但**不能排除介质**：并行光模块的每条 lane 走独立纤芯，"
+            "单根纤芯断裂或单个 MPO 芯位脏污同样只影响一条 lane。"
+            "把「单 lane」直接推成「不是光纤」是一个很自然但错误的推理。"
+        ),
+        formal_expression=(
+            "down_lane_count == 1  =>  排除 port 级共享原因；"
+            "不得推出 root_cause != fiber"
+        ),
+        parameters=(("训练集单 lane 断 case 数", "50（L1 侧 37 + L2 侧 13）"),),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split 中 rx 恰好一条 lane 断的 case 共 50 条，"
+            "其中 fiber 标签 6 条 = 12.0%，**高于** fiber 全局先验 7.45%。"
+            "如果单 lane 能排除介质，这个比例应当低于先验。"
+        ),
+        diagnostic_use=(
+            "单 lane 结论只能写成「排除端口级共享原因」，"
+            "后续仍要在「对端该通道的激光器」「该 lane 的纤芯 / 芯位」「本端该通道的探测器」之间区分。"
+        ),
+        prompt_text=(
+            "只有一条 lane 异常时，可以排除模块供电、温度、整束光纤脱落这类所有 lane 共享的原因，"
+            "但不能排除光纤：并行模块每条 lane 走独立纤芯，单芯断裂或单个芯位脏污也只影响一条 lane。"
+            "实测单 lane 组里 fiber 占 12.0%，高于全局 7.45%。"
+        ),
+        applies_to_token_prefixes=("drop:",),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
+    ),
+    Constraint(
+        constraint_id="C19_population_prior_is_not_case_evidence",
+        category="measurement_validity",
+        kind="caveat",
+        title="类别先验与 SOP 叶节点分布不是本 case 的物理证据",
+        physical_statement=(
+            "learned SOP 的叶节点标签分布、历史候选的标签投票和类别先验都是**群体统计**。"
+            "它们可以决定在没有判别证据时的默认动作，但它们不描述当前这条链路发生了什么。"
+            "把它们当成证据会产生一种特别难发现的错误：结论看起来有依据，"
+            "实际上整条推理链没有引用任何一个当前 case 的观测。"
+        ),
+        formal_expression=(
+            "SOP_leaf_distribution, class_prior, history_label_vote"
+            "  NOT IN cited_evidence  AND  effect != support"
+        ),
+        parameters=(("训练集 L2 先验", "100/161 = 62.1%"),),
+        provenance="derived",
+        measured_evidence=(
+            "MVP 正式实验中 M9 前的 44 个候选有 23 个正确（52.3%），"
+            "而单纯预测多数类 L2 在同一测试集上是 62.6%。"
+            "也就是说，一条大量引用群体先验的推理链的表现低于直接报多数类，"
+            "它增加的只是解释的外观。"
+        ),
+        diagnostic_use=(
+            "M7 应拒绝把 SOP 路径、叶节点分布或历史标签投票写进 `cited_evidence` 的回答；"
+            "允许在自然语言里提到它是默认动作的来源，但不允许作为 support 步骤。"
+        ),
+        prompt_text=(
+            "learned SOP 的路径与叶节点标签分布、历史 case 的标签投票、类别先验都属于群体统计，"
+            "不是当前 case 的物理证据。不要把它们写进 cited_evidence，也不要用它们作为 support 步骤的依据。"
+            "每一个 support 步骤都必须引用当前证据包里真实存在的观测 token。"
+        ),
+        applies_to_token_prefixes=(),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
+    ),
+    Constraint(
+        constraint_id="C20_fiber_not_identifiable_from_current_telemetry",
+        category="identifiability",
+        kind="caveat",
+        title="现有遥测无法识别 fiber 根因",
+        physical_statement=(
+            "介质根因需要的证据是链路损耗、反射事件位置、端面污染或弯曲损耗，"
+            "这些都要靠 OTDR、端面镜检或双向功率标定获得。"
+            "本数据集的遥测只有两端模块的自报读数，且按 C12 连绝对损耗都算不出来。"
+            "因此 fiber 在信息层面就不可识别，这不是模型能力问题。"
+        ),
+        formal_expression=(
+            "max over observable conditions of P(fiber | condition) 的 Wilson 95% 下界"
+            " <= 0.082  =>  不得断言 fiber"
+        ),
+        parameters=(
+            ("fiber 全局先验", "12/161 = 7.45%"),
+            ("最强富集条件", "L2 侧 rx 单 lane 断：3/13 = 23.1%，Wilson 下界 8.2%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "在 rca_v2_l2fixed manifest train split 上穷举了断 lane 波及范围、"
+            "双向同 lane 断、两侧 media_snr 同时偏低、两侧收光同时偏弱等条件，"
+            "支持数 >= 6 的条件里 fiber 占比最高为 23.1%（n=13），Wilson 95% 下界 8.2%，"
+            "与 7.45% 的先验无法区分。MVP 正式实验的测试侧也一致："
+            "系统预测 fiber 10 次只对 1 次。"
+        ),
+        diagnostic_use=(
+            "禁止输出 fiber 结论。命中疑似介质模式时输出「候选 fiber，需现场确认」"
+            "并请求 OTDR 曲线、端面镜检或双向功率标定，"
+            "让 fiber 成为一个明确的补采分支而不是一个低精度的猜测。"
+        ),
+        prompt_text=(
+            "不要给出 fiber 结论。现有遥测只有两端模块自报读数，"
+            "缺少 OTDR、端面镜检和双向功率标定，在信息层面无法确认介质根因；"
+            "实测中 fiber 占比最高的观测条件也只有 23.1%（13 条支持，95% 下界 8.2%），"
+            "与 7.45% 的基础比例无法区分。"
+            "怀疑介质时请输出「候选 fiber，需现场确认」并列出需要补采的介质侧测量。"
+        ),
+        applies_to_token_prefixes=(),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
+    ),
+    Constraint(
+        constraint_id="C21_healthy_band_tx_level_is_not_attribution_evidence",
+        category="tx_power",
+        kind="caveat",
+        title="正常带内的发送功率高低不是归因证据，两端相减更不是",
+        physical_statement=(
+            "按 C5，发送功率只有「正常」与「无光」两态，正常带内的高低由激光器个体差异、"
+            "出厂标定和端口形态决定，不由链路故障决定。"
+            "在这样一个与根因几乎无关的连续量上取分布尾部，仍然会得到看起来偏斜的标签分布，"
+            "因为尾部样本少。这类关联是抽样波动，不是物理关系。"
+            "把两端的发送功率相减会同时踩上 C12 的坑：两端标定口径本来就不可比。"
+        ),
+        formal_expression=(
+            "txpower[side] > -39 dBm  =>  txpower 的具体数值不得进入 support 步骤；"
+            "禁止使用 mean(txpower[L1]) - mean(txpower[L2])"
+        ),
+        parameters=(
+            ("标签 L1 的 case", "L1 侧 tx 中位 +0.860 dBm / L2 侧 +0.863 dBm"),
+            ("标签 L2 的 case", "L1 侧 tx 中位 +0.835 dBm / L2 侧 +0.855 dBm"),
+            ("两端相减探针与 tx 低尾 token 的 Jaccard", "0.65"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split（161 条）三项实测："
+            "（1）按标签分层的健康 tx 均值中位数几乎相同（见 parameters），"
+            "即发送电平与根因基本无关；"
+            "（2）`level:L1:txpower_mean:low_tail` 命中 39 条且**无一条含断光哨兵**，"
+            "标签 L2 29 / L1 6 / fiber 4，precision 74.4% 但 Wilson 下界 58.9%，"
+            "低于 L2 先验 62.1%，因此没有增益；"
+            "（3）两端相减的探针 `probe:txpower_side_gap:L1_worse` 是唯一下界（65.8%）"
+            "超过 L2 先验的 tx 类信号，但它与上面那个低尾 token 的 Jaccard 达 0.65，"
+            "控制该 token 后剩余支持只有 7 条，增益消失。"
+        ),
+        diagnostic_use=(
+            "发送侧一律只做有光 / 无光判断（C5、C6）。"
+            "不允许出现「L1 侧发送功率偏低所以……」这类步骤，也不允许两端功率相减。"
+            "这条约束的作用是拦掉一条统计上很诱人、物理上站不住的捷径。"
+        ),
+        prompt_text=(
+            "发送光功率在正常带（-1.8~2.1 dBm）内的高低不是故障证据："
+            "实测按根因分层的发送功率中位数几乎相同，正常带内的差异来自器件个体与标定。"
+            "不要写「某侧发送功率偏低」，也不要把两端发送功率相减，"
+            "发送侧只判断有光还是无光。"
+        ),
+        applies_to_token_prefixes=(
+            "level:L1:txpower_mean:",
+            "level:L2:txpower_mean:",
+        ),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
+    ),
+    Constraint(
+        constraint_id="C22_receive_lane_imbalance_indicates_far_transmit_array",
+        category="lane_directional_consistency",
+        kind="indicator",
+        title="同侧接收 lane 间不均衡指向对端发送阵列的通道差异",
+        physical_statement=(
+            "并行光模块的每条 lane 有独立的激光器与探测器，但同一端口内所有 lane 共享"
+            "标定口径、整束光纤的共模损耗和接收侧的 AGC 配置。"
+            "因此同侧各 lane 接收功率之间的**极差**天然消掉了这些共模项，"
+            "剩下的差异只能来自对端各发送通道之间的不一致，即对端发送阵列的通道级劣化。"
+            "这使它比两端绝对电平相减可靠得多——后者按 C12 在本数据集上根本不成立。"
+            "「用同侧相对量做跨端归因」是这份数据里唯一站得住的跨端推理方式。"
+        ),
+        formal_expression=(
+            "spread(rxpower[X]) 显著大于同侧正常波动  =>  support tx_array(Y)，Y 为对端"
+        ),
+        parameters=(
+            ("L2 侧接收不均衡命中", "7/161"),
+            ("其中根因为对端 L1", "6/7 = 85.7%"),
+            ("Wilson 95% 下界", "48.7%"),
+            ("L1 类别先验", "30.4%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split：`imbalance:L2:rxpower` 命中 7 条，"
+            "标签为 L1 的 6 条、fiber 1 条，无一条含断光哨兵（即不均衡不是断 lane 造成的）。"
+            "Wilson 下界 48.7% 超过 L1 先验 30.4%，这是全训练集上**唯一**一个"
+            "下界超过 L1 先验的观测条件。"
+            "镜像方向 `imbalance:L1:rxpower` 命中 10 条、8 条为 L2（80.0%，下界 49.0%），"
+            "但 L2 先验是 62.1%，所以镜像方向不成立。"
+            "这个不对称主要来自两类先验相差一倍（30.4% vs 62.1%）——"
+            "支持少数类需要的证据强度本来就更低，不要读成物理上的不对称。"
+        ),
+        diagnostic_use=(
+            "只允许用它支持 L1，且必须标注为弱证据：支持数只有 7 条，下界 48.7% 意味着"
+            "「比先验强，但远达不到可以定论」。命中后应输出 L1 候选并请人工确认，"
+            "同时建议补采 L1 侧各发送通道的功率与偏置电流历史，用来确认是哪一路通道。"
+            "本条是 C17 的细化，不是推翻：C17 否掉的是「L2 侧整体收光低或告警」，"
+            "本条针对的是「L2 侧各 lane 之间不齐」，两者不可混用。"
+        ),
+        prompt_text=(
+            "同一侧各 lane 之间的接收功率不齐（极差偏大），指向对端发送阵列中某几路通道的差异，"
+            "因为同侧 lane 共享标定与整束光纤的共模损耗，极差把这些共模项消掉了。"
+            "实测中 L2 侧接收不均衡的 7 条里有 6 条根因在对端 L1（95% 下界 48.7%，L1 基础比例 30.4%），"
+            "可以据此支持 L1，但只能作为弱证据并请人工确认；"
+            "反方向（L1 侧不均衡支持 L2）不成立。"
+        ),
+        applies_to_token_prefixes=("imbalance:L2:rxpower",),
+        allowed_effects=("support",),
+        allowed_targets=("L1",),
     ),
 )
 

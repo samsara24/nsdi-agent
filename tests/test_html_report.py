@@ -116,7 +116,7 @@ def _inputs():
                             "kind": "physical_constraint",
                             "statement": "C8 supports medium <unsafe>",
                             "tokens": ["status:L1:RxLOS"],
-                            "source": "constraint-library-v3",
+                            "source": "constraint-library-v5",
                         },
                         {
                             "kind": "learned_sop",
@@ -155,7 +155,7 @@ def _inputs():
                 "diagnosis_graph": {
                     "case_id": "case-wrong",
                     "sop_version": "learned-sop-v1",
-                    "constraint_library_version": "constraint-library-v3",
+                    "constraint_library_version": "constraint-library-v5",
                     "nodes": [
                         {
                             "id": "feature:1",
@@ -211,7 +211,7 @@ def _inputs():
                 "case_id": "case-wrong",
                 "backend": "scripted",
                 "prompt_version": "prompt-v3",
-                "constraint_library_version": "constraint-library-v3",
+                "constraint_library_version": "constraint-library-v5",
                 "attempt_count": 1,
                 "rewrote": False,
                 "attempts": [

@@ -29,10 +29,14 @@ from rca_framework.branches.base import majority_label  # noqa: E402
 from rca_framework.constraints.library import CONSTRAINT_LIBRARY  # noqa: E402
 from rca_framework.data import cases_by_manifest_split, load_cases, load_split_manifest  # noqa: E402
 from rca_framework.decision import (  # noqa: E402
+    CANDIDATE_SOURCES,
     DEFAULT_DECISION_POLICY,
+    FIBER_EVIDENCE_REQUEST,
     DecisionPolicy,
     LLMCalibration,
+    build_candidates,
     decide_many,
+    fit_decision_policy,
 )
 from rca_framework.evidence_graph import (  # noqa: E402
     BOARD_POLICY,
@@ -43,6 +47,7 @@ from rca_framework.evidence_graph import (  # noqa: E402
 )
 from rca_framework.evidence_pack import build_packs, labels_of  # noqa: E402
 from rca_framework.feedback import build_case_diagnosis  # noqa: E402
+from rca_framework.knowledge import _loo_sop_predictions  # noqa: E402
 from rca_framework.report import build_report  # noqa: E402
 from rca_framework.sop import LEARNED_SOP_VERSION, learn_sop  # noqa: E402
 from rca_framework.features.dictionary import dictionary_for  # noqa: E402
@@ -176,12 +181,18 @@ def selective_risk_curve(
     return rows
 
 
-def decision_report(final_decisions, actual: Sequence[str]) -> Dict[str, Any]:
+def decision_report(
+    final_decisions,
+    actual: Sequence[str],
+    *,
+    sop_predictions: Optional[Sequence[Any]] = None,
+) -> Dict[str, Any]:
     counts = Counter(item.action for item in final_decisions)
     predictions = [item.verdict for item in final_decisions]
     answered = [(prediction, truth) for prediction, truth in zip(predictions, actual) if prediction is not None]
     correct = sum(prediction == truth for prediction, truth in answered)
     total = len(final_decisions)
+    classes = class_metrics(predictions, actual)
     return {
         "actions": {action: counts.get(action, 0) for action in ("final", "request_evidence", "human_review")},
         "answered": len(answered),
@@ -193,8 +204,168 @@ def decision_report(final_decisions, actual: Sequence[str]) -> Dict[str, Any]:
             (counts.get("request_evidence", 0) + counts.get("human_review", 0)) / total, 6
         ) if total else 0.0,
         "human_intervention_rate": round(counts.get("human_review", 0) / total, 6) if total else 0.0,
-        "class_metrics": class_metrics(predictions, actual),
+        "class_metrics": classes,
+        "by_candidate_source": candidate_source_report(final_decisions, actual),
+        "degeneracy_guard": degeneracy_guard(
+            final_decisions, actual, classes, sop_predictions=sop_predictions
+        ),
     }
+
+
+def _sop_verdict(prediction: Any) -> Optional[str]:
+    """SOP 预测在不同调用点分别是 dataclass 与 dict，这里统一取 verdict。"""
+    if prediction is None:
+        return None
+    if isinstance(prediction, Mapping):
+        return prediction.get("verdict")
+    return getattr(prediction, "verdict", None)
+
+
+def degeneracy_guard(
+    final_decisions,
+    actual: Sequence[str],
+    classes: Dict[str, Any],
+    *,
+    sop_predictions: Optional[Sequence[Any]] = None,
+) -> Dict[str, Any]:
+    """三个指标，专门用来识破「靠多数类蒙对」的退化解。
+
+    `coverage` 与 `precision_when_answered` 有个共同盲区：在 rca_v2_l2fixed 上
+    一律报 L2 就有 62.6% 的准确率和 0% 人工干预，两项都好看，但对 L1 与 fiber 毫无用处。
+    迭代 1 的嵌套验证进一步显示，把配置选择的代价算进去后 SOP 反而不如直接报多数类
+    （lift -2.58pp），所以这三项必须与覆盖率一起看：
+
+    - `lift_over_majority_on_kept`：只在**被保留的那批 case** 上和多数类比。
+      必须同子集比，否则测的只是「门限挑走了容易的 case」。
+    - `balanced_recall`：三类召回的算术平均，多数类蒙对拉不动它。
+    - `abstention_effectiveness`：被弃答的 case 里，若用 SOP 兜底会答错的比例。
+      它回答「人工是否被用在了对的地方」——降低人工比例只有在弃答仍然精准时才算改进。
+    """
+    truths = list(actual)
+    counts = Counter(truths)
+    majority = max(counts, key=lambda label: counts[label]) if counts else None
+    kept = [
+        (item, truth)
+        for item, truth in zip(final_decisions, truths)
+        if item.verdict is not None
+    ]
+    kept_correct = sum(1 for item, truth in kept if item.verdict == truth)
+    majority_on_kept = sum(1 for _, truth in kept if truth == majority)
+    recalls = [classes[label]["recall"] for label in ROOT_CAUSES if classes[label]["support"]]
+
+    abstained = [
+        index
+        for index, item in enumerate(final_decisions)
+        if item.verdict is None
+    ]
+    abstention: Dict[str, Any] = {"abstained": len(abstained)}
+    if sop_predictions is not None:
+        forced = [
+            (index, _sop_verdict(sop_predictions[index]))
+            for index in abstained
+            if index < len(sop_predictions) and _sop_verdict(sop_predictions[index])
+        ]
+        wrong = sum(1 for index, verdict in forced if verdict != truths[index])
+        abstention.update(
+            {
+                "with_sop_fallback": len(forced),
+                "sop_would_be_wrong": wrong,
+                "effectiveness": round(wrong / len(forced), 6) if forced else None,
+            }
+        )
+
+    return {
+        "majority_label": majority,
+        "majority_rate_over_all": round(counts.get(majority, 0) / len(truths), 6) if truths else None,
+        "majority_on_kept": round(majority_on_kept / len(kept), 6) if kept else None,
+        "lift_over_majority_on_kept": (
+            round((kept_correct - majority_on_kept) / len(kept), 6) if kept else None
+        ),
+        "balanced_recall": round(sum(recalls) / len(recalls), 6) if recalls else 0.0,
+        "abstention_effectiveness": abstention,
+    }
+
+
+def candidate_source_report(final_decisions, actual: Sequence[str]) -> Dict[str, Any]:
+    """按候选来源拆分自动结论。
+
+    没有这张表就无法回答「覆盖率的提升是来自 case 特异证据还是群体先验」，
+    而这正是审稿人与运维都会问的第一个问题。
+    """
+    tally: Dict[str, List[int]] = {}
+    for item, truth in zip(final_decisions, actual):
+        if item.action != "final" or item.verdict is None:
+            continue
+        row = tally.setdefault(item.candidate_source, [0, 0])
+        row[0] += int(item.verdict == truth)
+        row[1] += 1
+    return {
+        source: {
+            "answered": value[1],
+            "correct": value[0],
+            "precision_when_answered": round(value[0] / value[1], 6) if value[1] else None,
+        }
+        for source, value in sorted(tally.items())
+    }
+
+
+def fit_train_decision_policy(
+    policy,
+    graph,
+    train_results,
+    train_packs,
+    train_features,
+    train_labels: Sequence[str],
+    *,
+    sop_model=None,
+    target_selective_risk: float,
+    minimum_support: int,
+    candidate_order: Tuple[str, ...],
+    non_identifiable_labels: Tuple[str, ...] = (),
+    non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
+) -> Tuple[DecisionPolicy, Dict[str, Any]]:
+    """在训练留一法输出上反解 M9 工作点。
+
+    分支输出用留一法检索，SOP 候选用留一法重拟合的树，两者都不包含被评估的 case。
+    这里刻意不接 LLM：阈值应当由确定性证据链与统计先验定出来，
+    否则每次换模型或换 prompt 都要重新标定门禁。
+    """
+    calibration = fit_calibration(
+        train_results, train_packs, train_labels, policy=policy, source="manifest-train-loo"
+    )
+    paired = handle_many(
+        train_results,
+        train_packs,
+        calibration,
+        policy=policy,
+        reasoner=None,
+        features=train_features,
+        sop_model=sop_model,
+    )
+    outcomes = [item[1] for item in paired]
+    loo_sop = (
+        _loo_sop_predictions(train_features, train_labels, sop=sop_model)
+        if sop_model is not None
+        else [None] * len(outcomes)
+    )
+    probe = DecisionPolicy(
+        final_lower_bound=0.0,
+        minimum_support=minimum_support,
+        candidate_order=candidate_order,
+    )
+    rows = [
+        (build_candidates(outcome, sop_prediction=sop_pred, policy=probe), truth)
+        for outcome, sop_pred, truth in zip(outcomes, loo_sop, train_labels)
+    ]
+    return fit_decision_policy(
+        rows,
+        target_selective_risk=target_selective_risk,
+        minimum_support=minimum_support,
+        candidate_order=candidate_order,
+        non_identifiable_labels=non_identifiable_labels,
+        non_identifiable_evidence=non_identifiable_evidence,
+        source=f"manifest-train-loo:{policy.name}",
+    )
 
 
 def run_policy(policy, graph, train_results, train_packs, train_labels,
@@ -245,7 +416,15 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
     )
     decisions = [item[0] for item in paired]
     outcomes = [item[1] for item in paired]
-    final_decisions = decide_many(outcomes, decision_policy)
+    sop_predictions: List[Optional[Dict[str, Any]]] = [
+        sop_model.predict(test_features[index]).to_dict()
+        if sop_model is not None and test_features is not None
+        else None
+        for index in range(len(outcomes))
+    ]
+    final_decisions = decide_many(
+        outcomes, decision_policy, sop_predictions=sop_predictions
+    )
 
     answered = [(o, t) for o, t in zip(outcomes, test_labels) if o.verdict is not None]
     correct = sum(o.verdict == t for o, t in answered)
@@ -268,7 +447,9 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
         "selective_risk_curve": selective_risk_curve(
             outcomes, test_labels, minimum_support=decision_policy.minimum_support
         ),
-        "final_decisions": decision_report(final_decisions, test_labels),
+        "final_decisions": decision_report(
+            final_decisions, test_labels, sop_predictions=sop_predictions
+        ),
     }
     records = []
     for index, (result, routing, outcome, final_decision, truth) in enumerate(
@@ -286,11 +467,7 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
             )
         report_record = build_report(outcome, final_decision, diagnosis=diagnosis).to_dict()
         feature_record = test_features[index].to_dict() if test_features is not None else None
-        sop_prediction = (
-            sop_model.predict(test_features[index]).to_dict()
-            if sop_model is not None and test_features is not None
-            else None
-        )
+        sop_prediction = sop_predictions[index]
         records.append({
             "case_id": outcome.case_id,
             "actual": truth,
@@ -377,6 +554,29 @@ def main() -> None:
                         choices=(BOARD_POLICY.name, COVERAGE_POLICY.name))
     parser.add_argument("--decision-lower-bound", type=float, default=0.5)
     parser.add_argument("--decision-min-support", type=int, default=10)
+    parser.add_argument(
+        "--target-selective-risk",
+        type=float,
+        default=None,
+        help="给定时忽略 --decision-lower-bound，改为在训练留一法上反解出满足该风险的最大覆盖率工作点",
+    )
+    parser.add_argument(
+        "--decision-candidate-order",
+        nargs="+",
+        default=("branch",),
+        choices=CANDIDATE_SOURCES,
+        help="M9 候选级联顺序；加入 sop 表示分支不达标时允许退到 learned SOP 叶节点先验",
+    )
+    parser.add_argument(
+        "--non-identifiable-labels",
+        nargs="*",
+        default=(),
+        choices=ROOT_CAUSES,
+        help=(
+            "在现有遥测下不可识别的根因（见 C20）。命中的候选不输出结论，"
+            "改为带定向补采清单的 request_evidence"
+        ),
+    )
     parser.add_argument("--skip-llm-calibration", action="store_true",
                         help="仅用于工程冒烟；正式实验默认在训练集留一法输出上标定 LLM")
     parser.add_argument("--llm-backend", default="none", choices=("none", "vllm"),
@@ -447,15 +647,41 @@ def main() -> None:
           + ("（不执行 LLM 仲裁）" if args.llm_backend == "none" else f"，最多重写 {args.max_attempts} 次") + "\n")
 
     policy_by_name = {BOARD_POLICY.name: BOARD_POLICY, COVERAGE_POLICY.name: COVERAGE_POLICY}
-    decision_policy = DecisionPolicy(
-        final_lower_bound=args.decision_lower_bound,
-        minimum_support=args.decision_min_support,
-    )
+    candidate_order = tuple(args.decision_candidate_order)
+    non_identifiable = tuple(args.non_identifiable_labels)
+    non_identifiable_evidence = {
+        label: FIBER_EVIDENCE_REQUEST for label in non_identifiable if label == "fiber"
+    }
     reports: Dict[str, Any] = {}
     all_records: Dict[str, Any] = {}
     all_traces: Dict[str, Any] = {}
+    decision_fits: Dict[str, Any] = {}
     for policy_name in args.policies:
         policy = policy_by_name[policy_name]
+        decision_policy = DecisionPolicy(
+            final_lower_bound=args.decision_lower_bound,
+            minimum_support=args.decision_min_support,
+            candidate_order=candidate_order,
+            non_identifiable_labels=non_identifiable,
+            non_identifiable_evidence=non_identifiable_evidence,
+        )
+        if args.target_selective_risk is not None:
+            decision_policy, fit = fit_train_decision_policy(
+                policy,
+                graph,
+                train_results,
+                train_packs,
+                train_features,
+                labels_of(train_cases),
+                sop_model=sop_model,
+                target_selective_risk=args.target_selective_risk,
+                minimum_support=args.decision_min_support,
+                candidate_order=candidate_order,
+                non_identifiable_labels=non_identifiable,
+                non_identifiable_evidence=non_identifiable_evidence,
+            )
+            decision_fits[policy_name] = fit
+            print(f"decision fit  : {decision_policy.fitted_on}\n")
         report, records, traces = run_policy(
             policy, graph, train_results, train_packs, labels_of(train_cases),
             test_results, test_packs, labels_of(test_cases), reasoner=reasoner,

@@ -5,7 +5,7 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
 
 # 光模块物理约束库
 
-版本 `constraint-library-v3`，内容指纹 `c090f825efe2da67`，共 15 条。
+版本 `constraint-library-v5`，内容指纹 `6db9b1c80f98090d`，共 22 条。
 `measured` 类参数的实测口径：rca_v2_l2fixed manifest train split（seed=42，train_ratio=0.6）。
 
 ## 使用方式
@@ -35,6 +35,13 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
 | `C13_serdes_snr_unit_unknown` | measurement_validity | 禁止推断 | serdes_snr 不是 dB 量纲，不得按信噪比解释 | measured（健康区间=约 6.6e5 - 8.3e5（量纲未知）；失效哨兵=1） | pending_expert_review |
 | `C14_host_snr_mostly_missing` | measurement_validity | 禁止推断 | host_snr 在多数 case 上缺失，缺失不等于正常 | measured（训练集存在率=52/161（32.3%）） | pending_expert_review |
 | `C15_blackout_sentinel_is_not_laser_off` | measurement_validity | 禁止推断 | 全链路读数同时触底时，哨兵表示「未读到数」而不是「无光」 | measured（断光哨兵=-39 dBm；训练集命中=4/161） | pending_expert_review |
+| `C16_receive_symptom_constrains_far_transmit_chain` | attribution_direction | 倾向性线索 | 接收侧症状把故障约束在对端发送链路、介质与本端接收链路三者之内 | derived（接收侧症状定义=RxLOS / RxLOL 告警，或 rxpower / media_snr 存在断 lane） | pending_expert_review |
+| `C17_l2_side_receive_symptom_is_not_discriminative` | attribution_direction | 禁止推断 | L2 侧接收症状不足以支持 L1 根因 | measured（训练集触发=25/161；对端归因正确率=12/25 = 48.0%；Wilson 95% 下界=30.0%；L1 类别先验=30.4%） | pending_expert_review |
+| `C18_single_lane_scope_does_not_exclude_fiber` | lane_directional_consistency | 禁止推断 | 单 lane 异常缩小的是共享层，不是介质本身 | measured（训练集单 lane 断 case 数=50（L1 侧 37 + L2 侧 13）） | pending_expert_review |
+| `C19_population_prior_is_not_case_evidence` | measurement_validity | 禁止推断 | 类别先验与 SOP 叶节点分布不是本 case 的物理证据 | derived（训练集 L2 先验=100/161 = 62.1%） | pending_expert_review |
+| `C20_fiber_not_identifiable_from_current_telemetry` | identifiability | 禁止推断 | 现有遥测无法识别 fiber 根因 | measured（fiber 全局先验=12/161 = 7.45%；最强富集条件=L2 侧 rx 单 lane 断：3/13 = 23.1%，Wilson 下界 8.2%） | pending_expert_review |
+| `C21_healthy_band_tx_level_is_not_attribution_evidence` | tx_power | 禁止推断 | 正常带内的发送功率高低不是归因证据，两端相减更不是 | measured（标签 L1 的 case=L1 侧 tx 中位 +0.860 dBm / L2 侧 +0.863 dBm；标签 L2 的 case=L1 侧 tx 中位 +0.835 dBm / L2 侧 +0.855 dBm；两端相减探针与 tx 低尾 token 的 Jaccard=0.65） | pending_expert_review |
+| `C22_receive_lane_imbalance_indicates_far_transmit_array` | lane_directional_consistency | 倾向性线索 | 同侧接收 lane 间不均衡指向对端发送阵列的通道差异 | measured（L2 侧接收不均衡命中=7/161；其中根因为对端 L1=6/7 = 85.7%；Wilson 95% 下界=48.7%；L1 类别先验=30.4%） | pending_expert_review |
 
 ## 逐条说明
 
@@ -119,7 +126,7 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
 
 - **物理依据**：无源链路的损耗必然非负，即对端收到的功率不可能高于本端发出的功率。本数据集违反这一点，说明两端 lane 编号不对应，或收发功率的标定口径不同。
 - **形式表达**：`mean(txpower[near]) - mean(rxpower[far]) >= 0   # 本数据集不成立`
-- **实测证据**：按 lane 号配对后，L1->L2 方向的均值损耗中位数为 -0.285 dB，L2->L1 为 -0.227 dB，两个方向的中位数都是负值，物理上不可能。legacy `directional_loss` 学到的上界（3.11 / 3.42 dB）因此也不可信。
+- **实测证据**：按 lane 号配对后，L1->L2 方向的均值损耗中位数为 -0.285 dB，L2->L1 为 -0.227 dB，两个方向的中位数都是负值，物理上不可能。legacy `directional_loss` 学到的上界（3.11 / 3.42 dB）因此也不可信。第二个更直观的证据（迭代 1 补测）：只看序不看数值，统计两端**最差 lane 的编号**是否相同。若两端编号真的对应，故障 case 里这个比例应明显高于随机；实测 rxpower 为 37/155 = 23.9%、media_snr 为 46/161 = 28.6%，而 4 lane 下随机一致的概率就是 25%，两者都与随机无法区分。这个检验只需要遥测本身，可以直接用来判断一份数据的两端 lane 是否对齐。
 - **诊断用法**：禁止在约束、规则或 prompt 中写绝对损耗门限。只允许使用同侧内部的相对量（lane 间极差）与训练集分位分档。
 
 ### C13_serdes_snr_unit_unknown — serdes_snr 不是 dB 量纲，不得按信噪比解释
@@ -143,12 +150,61 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
 - **实测证据**：rca_v2_l2fixed manifest train split 的 161 条中有 4 条命中：两侧 4 个 lane 的 txpower / rxpower 全为 -40.0 dBm，状态位一律 TxLOS=Normal、TxLOL=Normal、RxLOS=Abnormal、RxLOL=Abnormal。4 条的标签为 L2 3 条、fiber 1 条：物理观测完全一致而根因不同，说明该状态下的遥测不足以区分根因。
 - **诊断用法**：这是 C6 的前置条件：只有在遥测确实有效（存在任一非哨兵读数）时，才允许用「本端未发光」去排除介质根因。命中本约束的 case 应直接转人工，不论它产出了多少个特征 token——token 多不等于证据强。
 
+### C16_receive_symptom_constrains_far_transmit_chain — 接收侧症状把故障约束在对端发送链路、介质与本端接收链路三者之内
+
+- **物理依据**：一侧的接收类读数（rxpower、media_snr、RxLOS / RxLOL）度量的是**对端发出、穿过介质之后到达本端**的光。因此接收侧出现症状时，候选根因只能落在「对端发送链路」「介质」「本端接收链路」这三段里，在物理上不可能是本端自己的发送链路——本端发出的光根本不经过本端的接收器。这条方向性是光链路 RCA 里最基本的归因约束：报症状的一端通常不是肇事的一端。
+- **形式表达**：`receive_symptom(X)  =>  root_cause_chain in {tx_chain(Y), medium, rx_chain(X)}  AND  root_cause_chain != tx_chain(X)`
+- **实测证据**：rca_v2_l2fixed manifest train split（161 条）按「只有哪一侧出现接收侧症状」分组：只有 L1 侧 63 条，其中根因为对端 L2 的 43 条 = 68.3%（Wilson 下界 56.0%，L2 先验 62.1%）；只有 L2 侧 25 条，其中根因为对端 L1 的 12 条 = 48.0%（Wilson 下界 30.0%，L1 先验 30.4%）。**两个方向不对称：只有 L1 受害方向的下界超过其预测类别的先验。**更细的口径同样如此：L1 侧 rx 只有单 lane 断（其余 lane 健康）37 条，根因 L2 30 条 = 81.1%（下界 65.8%）；镜像条件 L2 侧 rx 单 lane 断只有 13 条，根因 L1 仅 4 条 = 30.8%，与 L1 先验无法区分。
+- **诊断用法**：只允许在 L1 侧为接收受害方时用它支持 L2；L2 侧为受害方时按 C17 处理，不得镜像套用。这条不对称本身是实测结果，不要为了对称性把它写成双向规则。
+
+### C17_l2_side_receive_symptom_is_not_discriminative — L2 侧接收症状不足以支持 L1 根因
+
+- **物理依据**：C16 的方向性在物理上是对称的，但在本数据集上只有一个方向具备统计判别力。L2（200G）侧作为接收受害方时，对端归因的实测正确率与 L1 的类别先验没有区别，说明现有遥测无法把「L1 发送链路劣化」与「L2 自身接收链路劣化」分开——两者在 L2 侧看到的现象一样。
+- **形式表达**：`receive_symptom(L2) AND NOT receive_symptom(L1)  =>  P(L1) 与先验不可区分；不得据此断言 L1`
+- **实测证据**：rca_v2_l2fixed manifest train split：只有 L2 侧出现接收症状的 25 条中，标签为 L1 的 12 条、L2 的 10 条、fiber 的 3 条。预测 L1 的 Wilson 下界 30.0% 恰好落在 L1 先验 30.4% 上，没有增益。单 lane 口径更差：L2 侧 rx 单 lane 断 13 条中 L1 仅 4 条（30.8%）。
+- **诊断用法**：命中本约束的 case 应输出「候选 L1，但当前证据不足以定论」并给出补采项（L1 侧 host_snr / serdes 读数、L1 侧同 lane 的发送功率历史），而不是给出 L1 结论。这是把一个实测负结果变成明确的补采动作。唯一的例外是 C22：L2 侧各 lane 之间接收不齐（而不是整体偏低）仍可作为 L1 的弱支持，两者的适用 token 不重叠。
+
+### C18_single_lane_scope_does_not_exclude_fiber — 单 lane 异常缩小的是共享层，不是介质本身
+
+- **物理依据**：单条 lane 异常而同端口其余 lane 健康，可以排除所有 lane 共享的部分：模块供电、壳体温度、整束光纤被拔出、整个连接器脱落。但**不能排除介质**：并行光模块的每条 lane 走独立纤芯，单根纤芯断裂或单个 MPO 芯位脏污同样只影响一条 lane。把「单 lane」直接推成「不是光纤」是一个很自然但错误的推理。
+- **形式表达**：`down_lane_count == 1  =>  排除 port 级共享原因；不得推出 root_cause != fiber`
+- **实测证据**：rca_v2_l2fixed manifest train split 中 rx 恰好一条 lane 断的 case 共 50 条，其中 fiber 标签 6 条 = 12.0%，**高于** fiber 全局先验 7.45%。如果单 lane 能排除介质，这个比例应当低于先验。
+- **诊断用法**：单 lane 结论只能写成「排除端口级共享原因」，后续仍要在「对端该通道的激光器」「该 lane 的纤芯 / 芯位」「本端该通道的探测器」之间区分。
+
+### C19_population_prior_is_not_case_evidence — 类别先验与 SOP 叶节点分布不是本 case 的物理证据
+
+- **物理依据**：learned SOP 的叶节点标签分布、历史候选的标签投票和类别先验都是**群体统计**。它们可以决定在没有判别证据时的默认动作，但它们不描述当前这条链路发生了什么。把它们当成证据会产生一种特别难发现的错误：结论看起来有依据，实际上整条推理链没有引用任何一个当前 case 的观测。
+- **形式表达**：`SOP_leaf_distribution, class_prior, history_label_vote  NOT IN cited_evidence  AND  effect != support`
+- **实测证据**：MVP 正式实验中 M9 前的 44 个候选有 23 个正确（52.3%），而单纯预测多数类 L2 在同一测试集上是 62.6%。也就是说，一条大量引用群体先验的推理链的表现低于直接报多数类，它增加的只是解释的外观。
+- **诊断用法**：M7 应拒绝把 SOP 路径、叶节点分布或历史标签投票写进 `cited_evidence` 的回答；允许在自然语言里提到它是默认动作的来源，但不允许作为 support 步骤。
+
+### C20_fiber_not_identifiable_from_current_telemetry — 现有遥测无法识别 fiber 根因
+
+- **物理依据**：介质根因需要的证据是链路损耗、反射事件位置、端面污染或弯曲损耗，这些都要靠 OTDR、端面镜检或双向功率标定获得。本数据集的遥测只有两端模块的自报读数，且按 C12 连绝对损耗都算不出来。因此 fiber 在信息层面就不可识别，这不是模型能力问题。
+- **形式表达**：`max over observable conditions of P(fiber | condition) 的 Wilson 95% 下界 <= 0.082  =>  不得断言 fiber`
+- **实测证据**：在 rca_v2_l2fixed manifest train split 上穷举了断 lane 波及范围、双向同 lane 断、两侧 media_snr 同时偏低、两侧收光同时偏弱等条件，支持数 >= 6 的条件里 fiber 占比最高为 23.1%（n=13），Wilson 95% 下界 8.2%，与 7.45% 的先验无法区分。MVP 正式实验的测试侧也一致：系统预测 fiber 10 次只对 1 次。
+- **诊断用法**：禁止输出 fiber 结论。命中疑似介质模式时输出「候选 fiber，需现场确认」并请求 OTDR 曲线、端面镜检或双向功率标定，让 fiber 成为一个明确的补采分支而不是一个低精度的猜测。
+
+### C21_healthy_band_tx_level_is_not_attribution_evidence — 正常带内的发送功率高低不是归因证据，两端相减更不是
+
+- **物理依据**：按 C5，发送功率只有「正常」与「无光」两态，正常带内的高低由激光器个体差异、出厂标定和端口形态决定，不由链路故障决定。在这样一个与根因几乎无关的连续量上取分布尾部，仍然会得到看起来偏斜的标签分布，因为尾部样本少。这类关联是抽样波动，不是物理关系。把两端的发送功率相减会同时踩上 C12 的坑：两端标定口径本来就不可比。
+- **形式表达**：`txpower[side] > -39 dBm  =>  txpower 的具体数值不得进入 support 步骤；禁止使用 mean(txpower[L1]) - mean(txpower[L2])`
+- **实测证据**：rca_v2_l2fixed manifest train split（161 条）三项实测：（1）按标签分层的健康 tx 均值中位数几乎相同（见 parameters），即发送电平与根因基本无关；（2）`level:L1:txpower_mean:low_tail` 命中 39 条且**无一条含断光哨兵**，标签 L2 29 / L1 6 / fiber 4，precision 74.4% 但 Wilson 下界 58.9%，低于 L2 先验 62.1%，因此没有增益；（3）两端相减的探针 `probe:txpower_side_gap:L1_worse` 是唯一下界（65.8%）超过 L2 先验的 tx 类信号，但它与上面那个低尾 token 的 Jaccard 达 0.65，控制该 token 后剩余支持只有 7 条，增益消失。
+- **诊断用法**：发送侧一律只做有光 / 无光判断（C5、C6）。不允许出现「L1 侧发送功率偏低所以……」这类步骤，也不允许两端功率相减。这条约束的作用是拦掉一条统计上很诱人、物理上站不住的捷径。
+
+### C22_receive_lane_imbalance_indicates_far_transmit_array — 同侧接收 lane 间不均衡指向对端发送阵列的通道差异
+
+- **物理依据**：并行光模块的每条 lane 有独立的激光器与探测器，但同一端口内所有 lane 共享标定口径、整束光纤的共模损耗和接收侧的 AGC 配置。因此同侧各 lane 接收功率之间的**极差**天然消掉了这些共模项，剩下的差异只能来自对端各发送通道之间的不一致，即对端发送阵列的通道级劣化。这使它比两端绝对电平相减可靠得多——后者按 C12 在本数据集上根本不成立。「用同侧相对量做跨端归因」是这份数据里唯一站得住的跨端推理方式。
+- **形式表达**：`spread(rxpower[X]) 显著大于同侧正常波动  =>  support tx_array(Y)，Y 为对端`
+- **实测证据**：rca_v2_l2fixed manifest train split：`imbalance:L2:rxpower` 命中 7 条，标签为 L1 的 6 条、fiber 1 条，无一条含断光哨兵（即不均衡不是断 lane 造成的）。Wilson 下界 48.7% 超过 L1 先验 30.4%，这是全训练集上**唯一**一个下界超过 L1 先验的观测条件。镜像方向 `imbalance:L1:rxpower` 命中 10 条、8 条为 L2（80.0%，下界 49.0%），但 L2 先验是 62.1%，所以镜像方向不成立。这个不对称主要来自两类先验相差一倍（30.4% vs 62.1%）——支持少数类需要的证据强度本来就更低，不要读成物理上的不对称。
+- **诊断用法**：只允许用它支持 L1，且必须标注为弱证据：支持数只有 7 条，下界 48.7% 意味着「比先验强，但远达不到可以定论」。命中后应输出 L1 候选并请人工确认，同时建议补采 L1 侧各发送通道的功率与偏置电流历史，用来确认是哪一路通道。本条是 C17 的细化，不是推翻：C17 否掉的是「L2 侧整体收光低或告警」，本条针对的是「L2 侧各 lane 之间不齐」，两者不可混用。
+
 ## 注入 prompt 的文本块
 
 以下内容由 `render_prompt_block()` 产出，是真正进入 prompt 的原文。
 
 ```text
-# 光模块物理约束（constraint-library-v3，hash c090f825efe2da67）
+# 光模块物理约束（constraint-library-v5，hash 6db9b1c80f98090d）
 
 
 ## 排除条件：命中后可以直接排除对应根因
@@ -170,6 +226,16 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
   结构化引用契约：可用 token 前缀=telemetry:partial_telemetry、telemetry:no_telemetry；effect 只能为 neutral；target 只能为 空字符串。
 - [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）
   结构化引用契约：可用 token 前缀=drop:L1:txpower:all_lanes、drop:L2:txpower:all_lanes、drop:L1:rxpower:all_lanes、drop:L2:rxpower:all_lanes；effect 只能为 neutral；target 只能为 空字符串。
+- [C17_l2_side_receive_symptom_is_not_discriminative] 当只有 L2（200G）侧出现接收侧异常时，不要据此断定根因在 L1。实测该条件下归因对端的正确率与 L1 的基础比例没有区别，因为现有遥测分不开「L1 发送劣化」和「L2 自身接收劣化」。此时应说明证据不足，并请求补采 L1 侧的电口读数与该 lane 的发送功率历史。（待专家审核）
+  结构化引用契约：可用 token 前缀=drop:L2:rxpower:、drop:L2:media_snr:、status:L2:RxLOS、status:L2:RxLOL、level:L2:rxpower_mean:low_tail、level:L2:media_snr_min:low_tail、lane:L1_to_L2:tx_ok_rx_down；effect 只能为 neutral；target 只能为 空字符串。
+- [C18_single_lane_scope_does_not_exclude_fiber] 只有一条 lane 异常时，可以排除模块供电、温度、整束光纤脱落这类所有 lane 共享的原因，但不能排除光纤：并行模块每条 lane 走独立纤芯，单芯断裂或单个芯位脏污也只影响一条 lane。实测单 lane 组里 fiber 占 12.0%，高于全局 7.45%。（待专家审核）
+  结构化引用契约：可用 token 前缀=drop:；effect 只能为 neutral；target 只能为 空字符串。
+- [C19_population_prior_is_not_case_evidence] learned SOP 的路径与叶节点标签分布、历史 case 的标签投票、类别先验都属于群体统计，不是当前 case 的物理证据。不要把它们写进 cited_evidence，也不要用它们作为 support 步骤的依据。每一个 support 步骤都必须引用当前证据包里真实存在的观测 token。（待专家审核）
+  结构化引用契约：可用 token 前缀=无需绑定当前 token（仅作中性上下文）；effect 只能为 neutral；target 只能为 空字符串。
+- [C20_fiber_not_identifiable_from_current_telemetry] 不要给出 fiber 结论。现有遥测只有两端模块自报读数，缺少 OTDR、端面镜检和双向功率标定，在信息层面无法确认介质根因；实测中 fiber 占比最高的观测条件也只有 23.1%（13 条支持，95% 下界 8.2%），与 7.45% 的基础比例无法区分。怀疑介质时请输出「候选 fiber，需现场确认」并列出需要补采的介质侧测量。（待专家审核）
+  结构化引用契约：可用 token 前缀=无需绑定当前 token（仅作中性上下文）；effect 只能为 neutral；target 只能为 空字符串。
+- [C21_healthy_band_tx_level_is_not_attribution_evidence] 发送光功率在正常带（-1.8~2.1 dBm）内的高低不是故障证据：实测按根因分层的发送功率中位数几乎相同，正常带内的差异来自器件个体与标定。不要写「某侧发送功率偏低」，也不要把两端发送功率相减，发送侧只判断有光还是无光。（待专家审核）
+  结构化引用契约：可用 token 前缀=level:L1:txpower_mean:、level:L2:txpower_mean:；effect 只能为 neutral；target 只能为 空字符串。
 
 ## 物理恒等关系
 
@@ -186,6 +252,10 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
   结构化引用契约：可用 token 前缀=drop:；effect 只能为 neutral；target 只能为 空字符串。
 - [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）
   结构化引用契约：可用 token 前缀=level:L1:media_snr_min:low_tail、level:L2:media_snr_min:low_tail；effect 只能为 support；target 只能为 fiber。
+- [C16_receive_symptom_constrains_far_transmit_chain] 接收侧读数描述的是对端发出、穿过光纤后到达本端的光，因此接收侧异常不可能由本端自己的发送器造成，候选只能是对端发送链路、光纤介质或本端接收链路。在本数据集上，当 L1（400G）侧是接收受害方时，根因落在对端 L2 的实测比例为 81.1%（L1 侧 rx 单 lane 断，37 条支持），可以据此支持 L2。反方向不成立，见 C17。（待专家审核）
+  结构化引用契约：可用 token 前缀=drop:L1:rxpower:、drop:L1:media_snr:、status:L1:RxLOS、status:L1:RxLOL、level:L1:rxpower_mean:low_tail、level:L1:media_snr_min:low_tail、lane:L2_to_L1:tx_ok_rx_down；effect 只能为 support；target 只能为 L2。
+- [C22_receive_lane_imbalance_indicates_far_transmit_array] 同一侧各 lane 之间的接收功率不齐（极差偏大），指向对端发送阵列中某几路通道的差异，因为同侧 lane 共享标定与整束光纤的共模损耗，极差把这些共模项消掉了。实测中 L2 侧接收不均衡的 7 条里有 6 条根因在对端 L1（95% 下界 48.7%，L1 基础比例 30.4%），可以据此支持 L1，但只能作为弱证据并请人工确认；反方向（L1 侧不均衡支持 L2）不成立。（待专家审核）
+  结构化引用契约：可用 token 前缀=imbalance:L2:rxpower；effect 只能为 support；target 只能为 L1。
 - [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）
   结构化引用契约：可用 token 前缀=drop:L1:bias:、drop:L2:bias:；effect 只能为 neutral；target 只能为 空字符串。
 - [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）
@@ -196,6 +266,6 @@ description: 光链路 RCA 的物理约束库（M5）。在 N5b 补证据与 N5c
 
 ## 待办
 
-- 全部 15 条均为 `pending_expert_review`，需夏思博逐条确认后改为 `approved`。
+- 全部 22 条均为 `pending_expert_review`，需夏思博逐条确认后改为 `approved`。
 - `measured` 类参数绑定当前数据集切分，合并数据集到位后必须重测。
 - `C12` 与 `C13` 是数据质量问题，需要向厂商确认 lane 编号对应关系与 `serdes_snr` 量纲。

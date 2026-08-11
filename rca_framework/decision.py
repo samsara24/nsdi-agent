@@ -13,9 +13,18 @@ from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 from .branches.base import BranchOutcome, wilson_lower_bound
 
 
-DECISION_POLICY_VERSION = "decision-policy-v1"
+DECISION_POLICY_VERSION = "decision-policy-v2"
 LLM_CONFIDENCE_BINS: Tuple[float, ...] = (0.0, 0.5, 0.7, 0.9, 1.0)
 DECISION_ACTIONS: Tuple[str, ...] = ("final", "request_evidence", "human_review")
+
+#: M9 可用的候选来源，按可审计性排序。
+#:
+#: `branch` 是历史匹配或 LLM 得出的 case 特异结论；`sop` 是训练集归纳路径的叶节点先验。
+#: 两者的可靠性口径不同但都来自训练集：前者是 train-LOO 分组频率，
+#: 后者是叶节点自身的标签分布。把 SOP 列为合法候选而不是仅仅当 prompt 上下文，
+#: 是因为实测中分支路线在每一条分支上都不如 SOP 叶子；把它藏在 prompt 里
+#: 等于让系统在明明有更可靠的先验时仍然输出更差的结论。
+CANDIDATE_SOURCES: Tuple[str, ...] = ("branch", "sop")
 
 
 def llm_calibration_group(branch: str, confidence: float) -> str:
@@ -127,22 +136,268 @@ def apply_llm_calibration(
 
 
 @dataclass(frozen=True)
+class DecisionCandidate:
+    """M9 待评估的一个候选结论及其可靠性口径。"""
+
+    source: str
+    verdict: Optional[str]
+    confidence: float
+    confidence_lower_bound: float
+    support: int
+    group: str
+    reason: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "source": self.source,
+            "verdict": self.verdict,
+            "confidence": round(self.confidence, 6),
+            "confidence_lower_bound": round(self.confidence_lower_bound, 6),
+            "support": self.support,
+            "group": self.group,
+            "reason": self.reason,
+        }
+
+
+@dataclass(frozen=True)
 class DecisionPolicy:
-    """N6 统一出口策略。阈值保持可配置，便于 T10 做选择性风险消融。"""
+    """N6 统一出口策略。
+
+    `final_lower_bound` 的取值不应当靠拍板。v1 写死 0.5 与支持数 10，
+    在 161 条训练 case 分成 7 个标定组之后，任何组都不可能让 Wilson 95% 下界
+    达到 0.5——想在 p=0.63 处让下界过 0.5 需要约 50 个同组样本。
+    结果是安全门禁把 100% 的 case 挡在外面，系统不产出任何结论。
+
+    v2 把阈值改成「在训练留一法上按目标选择性风险反解出来的工作点」，
+    并允许在分支结论不可用时退到 SOP 叶子先验。`fitted_on` 记录这个工作点
+    是怎么定出来的；没有拟合过程时它为空，表示阈值是人工指定的。
+    """
 
     version: str = DECISION_POLICY_VERSION
     final_lower_bound: float = 0.5
     minimum_support: int = 10
+    candidate_order: Tuple[str, ...] = ("branch",)
+    target_selective_risk: Optional[float] = None
+    fitted_on: str = ""
+    #: 在信息层面不可识别的根因。落在这里的候选永远不能成为自动结论，
+    #: 而是转成带定向补采清单的 `request_evidence`。
+    #: 依据是 C20：现有遥测里 fiber 的最强富集条件 Wilson 下界只有 8.2%，
+    #: 与 7.45% 的先验无法区分，因此任何 fiber 结论都是在猜。
+    #: 这与「把 fiber 预测删掉提高准确率」不是一回事：候选与理由都保留在报告里，
+    #: 只是出口从「结论」改成「需要哪一项现场测量」。
+    non_identifiable_labels: Tuple[str, ...] = ()
+    #: 命中 `non_identifiable_labels` 时给出的定向补采项。
+    non_identifiable_evidence: Mapping[str, Tuple[str, ...]] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        unknown = sorted(set(self.candidate_order) - set(CANDIDATE_SOURCES))
+        if unknown:
+            raise ValueError(f"unknown candidate sources: {unknown}")
+        if not self.candidate_order:
+            raise ValueError("candidate_order must not be empty")
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "version": self.version,
-            "final_lower_bound": self.final_lower_bound,
+            "final_lower_bound": round(self.final_lower_bound, 6),
             "minimum_support": self.minimum_support,
+            "candidate_order": list(self.candidate_order),
+            "target_selective_risk": self.target_selective_risk,
+            "fitted_on": self.fitted_on,
+            "non_identifiable_labels": list(self.non_identifiable_labels),
+            "non_identifiable_evidence": {
+                key: list(value) for key, value in sorted(self.non_identifiable_evidence.items())
+            },
         }
 
 
+#: C20 认定 fiber 不可识别时需要补采的介质侧测量。这些都不在当前遥测里，
+#: 因此它同时是一份「要让 fiber 变得可判别，必须新增哪些采集」的需求清单。
+FIBER_EVIDENCE_REQUEST: Tuple[str, ...] = (
+    "OTDR 曲线（定位反射与损耗事件的距离）",
+    "两端 MPO / LC 端面镜检结果",
+    "同一 lane 的双向功率标定（用于替代不可信的功率相减）",
+    "光纤跳线更换后的复测结果",
+)
+
 DEFAULT_DECISION_POLICY = DecisionPolicy()
+
+
+def sop_candidate(sop_prediction: Optional[Mapping[str, Any]]) -> Optional[DecisionCandidate]:
+    """把 learned SOP 叶节点包装成候选。
+
+    叶节点的支持数与 Wilson 下界都来自训练集标签分布，因此与分支标定同源可比；
+    但它是**群体先验**而不是当前 case 的证据，报告里必须区分这两种来源。
+    """
+    if not sop_prediction or sop_prediction.get("verdict") is None:
+        return None
+    return DecisionCandidate(
+        source="sop",
+        verdict=str(sop_prediction["verdict"]),
+        confidence=float(sop_prediction.get("confidence", 0.0)),
+        confidence_lower_bound=float(sop_prediction.get("confidence_lower_bound", 0.0)),
+        support=int(sop_prediction.get("support", 0)),
+        group=f"sop_leaf:{sop_prediction.get('leaf_id', '')}",
+        reason=str(sop_prediction.get("reason", "")),
+    )
+
+
+def branch_candidate(outcome: BranchOutcome) -> Optional[DecisionCandidate]:
+    if outcome.verdict is None:
+        return None
+    return DecisionCandidate(
+        source="branch",
+        verdict=outcome.verdict,
+        confidence=outcome.confidence,
+        confidence_lower_bound=outcome.confidence_lower_bound,
+        support=outcome.calibration_support,
+        group=outcome.calibration_group,
+        reason=f"{outcome.branch} 分支结论",
+    )
+
+
+def build_candidates(
+    outcome: BranchOutcome,
+    *,
+    sop_prediction: Optional[Mapping[str, Any]] = None,
+    policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
+) -> Tuple[DecisionCandidate, ...]:
+    builders = {
+        "branch": lambda: branch_candidate(outcome),
+        "sop": lambda: sop_candidate(sop_prediction),
+    }
+    candidates = []
+    for source in policy.candidate_order:
+        candidate = builders[source]()
+        if candidate is not None:
+            candidates.append(candidate)
+    return tuple(candidates)
+
+
+def simulate_gate(
+    rows: Sequence[Tuple[Sequence[DecisionCandidate], str]],
+    policy: DecisionPolicy,
+) -> Dict[str, Any]:
+    """在给定策略下模拟一次门禁，返回覆盖率与选择性风险。
+
+    模拟必须走与 `decide` 完全相同的级联逻辑，否则拟合出来的阈值
+    在真实推理时会得到不同结果。
+    """
+    answered = 0
+    correct = 0
+    by_source: Dict[str, list[int]] = {}
+    for candidates, truth in rows:
+        for candidate in candidates:
+            if not passes_gate(candidate, policy):
+                continue
+            answered += 1
+            hit = int(candidate.verdict == truth)
+            correct += hit
+            entry = by_source.setdefault(candidate.source, [0, 0])
+            entry[0] += hit
+            entry[1] += 1
+            break
+    total = len(rows)
+    return {
+        "answered": answered,
+        "coverage": round(answered / total, 6) if total else 0.0,
+        "correct": correct,
+        "precision_when_answered": round(correct / answered, 6) if answered else None,
+        "selective_risk": round(1.0 - correct / answered, 6) if answered else None,
+        "by_source": {
+            source: {"correct": value[0], "answered": value[1]}
+            for source, value in sorted(by_source.items())
+        },
+    }
+
+
+def fit_decision_policy(
+    rows: Sequence[Tuple[Sequence[DecisionCandidate], str]],
+    *,
+    target_selective_risk: float = 0.30,
+    minimum_support: int = 10,
+    minimum_coverage: float = 0.0,
+    candidate_order: Tuple[str, ...] = ("branch", "sop"),
+    non_identifiable_labels: Tuple[str, ...] = (),
+    non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
+    source: str = "train-loo",
+) -> Tuple[DecisionPolicy, Dict[str, Any]]:
+    """在训练留一法结果上反解出 `final_lower_bound`。
+
+    `rows` 是每条训练 case 的 `(候选级联, 真值)`。目标写成
+    「在选择性风险不超过 `target_selective_risk` 的前提下取最大覆盖率」，
+    这是运维能直接理解的口径：允许多少比例的自动结论是错的。
+    v1 那个抽象的 0.5 下界没有对应任何可讨论的业务约束。
+
+    返回策略与整条阈值-覆盖率曲线。找不到满足目标的阈值时返回最严格阈值，
+    并在 `fitted_on` 里写明这件事，绝不悄悄放宽目标。
+    """
+    if not 0.0 < target_selective_risk < 1.0:
+        raise ValueError("target_selective_risk must be in (0, 1)")
+    blocked = tuple(non_identifiable_labels)
+    evidence_map = dict(non_identifiable_evidence or {})
+    thresholds = sorted(
+        {0.0}
+        | {
+            round(candidate.confidence_lower_bound, 6)
+            for candidates, _ in rows
+            for candidate in candidates
+            if candidate.support >= minimum_support and candidate.verdict not in blocked
+        }
+    )
+    curve = []
+    best: Optional[Tuple[float, float]] = None
+    for threshold in thresholds:
+        probe = DecisionPolicy(
+            final_lower_bound=threshold,
+            minimum_support=minimum_support,
+            candidate_order=candidate_order,
+            non_identifiable_labels=blocked,
+            non_identifiable_evidence=evidence_map,
+        )
+        stats = simulate_gate(rows, probe)
+        curve.append({"final_lower_bound": threshold, **stats})
+        risk = stats["selective_risk"]
+        if risk is None or stats["coverage"] < minimum_coverage:
+            continue
+        if risk <= target_selective_risk and (best is None or stats["coverage"] > best[1]):
+            best = (threshold, stats["coverage"])
+
+    if best is None:
+        chosen = thresholds[-1] if thresholds else 0.0
+        fitted_on = (
+            f"{source}: 目标选择性风险 {target_selective_risk:.2%} 在训练留一法上无可行阈值，"
+            f"退到最严格候选阈值 {chosen:.4f}"
+        )
+    else:
+        chosen = best[0]
+        matched = next(item for item in curve if item["final_lower_bound"] == chosen)
+        fitted_on = (
+            f"{source}: 目标选择性风险 <= {target_selective_risk:.2%}，"
+            f"取到最大覆盖率的阈值 {chosen:.4f}"
+            f"（训练留一法覆盖率 {matched['coverage']:.2%}，"
+            f"实测风险 {matched['selective_risk']:.2%}，支持数下限 {minimum_support}）"
+        )
+    policy = DecisionPolicy(
+        final_lower_bound=chosen,
+        minimum_support=minimum_support,
+        candidate_order=candidate_order,
+        target_selective_risk=target_selective_risk,
+        fitted_on=fitted_on,
+        non_identifiable_labels=blocked,
+        non_identifiable_evidence=evidence_map,
+    )
+    return policy, {
+        "source": source,
+        "target_selective_risk": target_selective_risk,
+        "minimum_support": minimum_support,
+        "minimum_coverage": minimum_coverage,
+        "candidate_order": list(candidate_order),
+        "non_identifiable_labels": list(blocked),
+        "chosen_lower_bound": chosen,
+        "feasible": best is not None,
+        "curve": curve,
+    }
 
 
 @dataclass(frozen=True)
@@ -158,6 +413,8 @@ class FinalDecision:
     calibration_support: int
     reason: str
     requested_evidence: Tuple[str, ...] = ()
+    candidate_source: str = "branch"
+    considered_candidates: Tuple[DecisionCandidate, ...] = ()
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -172,67 +429,131 @@ class FinalDecision:
             "calibration_support": self.calibration_support,
             "reason": self.reason,
             "requested_evidence": list(self.requested_evidence),
+            "candidate_source": self.candidate_source,
+            "considered_candidates": [item.to_dict() for item in self.considered_candidates],
         }
+
+
+def passes_gate(candidate: DecisionCandidate, policy: DecisionPolicy) -> bool:
+    return (
+        candidate.verdict is not None
+        and candidate.verdict not in policy.non_identifiable_labels
+        and candidate.support >= policy.minimum_support
+        and candidate.confidence_lower_bound >= policy.final_lower_bound
+    )
 
 
 def decide(
     outcome: BranchOutcome,
     policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
+    *,
+    sop_prediction: Optional[Mapping[str, Any]] = None,
 ) -> FinalDecision:
-    """把任意 N5 输出收敛成最终结论、补采请求或人工介入。"""
-    reliable = (
-        outcome.verdict is not None
-        and outcome.calibration_support >= policy.minimum_support
-        and outcome.confidence_lower_bound >= policy.final_lower_bound
-    )
-    if reliable:
+    """把任意 N5 输出收敛成最终结论、补采请求或人工介入。
+
+    候选按 `policy.candidate_order` 依次过门禁，第一个通过的胜出。
+    级联顺序是有意的：case 特异的分支证据链优先于群体先验，
+    只有分支不可用或不达标时才让 SOP 叶子接手。
+    """
+    candidates = build_candidates(outcome, sop_prediction=sop_prediction, policy=policy)
+    for candidate in candidates:
+        if not passes_gate(candidate, policy):
+            continue
+        origin = (
+            "分支证据链"
+            if candidate.source == "branch"
+            else "learned SOP 叶节点先验（群体统计，不是本 case 的物理证据）"
+        )
         return FinalDecision(
             case_id=outcome.case_id,
             branch=outcome.branch,
             action="final",
-            verdict=outcome.verdict,
-            proposed_verdict=outcome.verdict,
-            confidence=outcome.confidence,
-            confidence_lower_bound=outcome.confidence_lower_bound,
-            calibration_group=outcome.calibration_group,
-            calibration_support=outcome.calibration_support,
+            verdict=candidate.verdict,
+            proposed_verdict=candidate.verdict,
+            confidence=candidate.confidence,
+            confidence_lower_bound=candidate.confidence_lower_bound,
+            calibration_group=candidate.group,
+            calibration_support=candidate.support,
             reason=(
-                f"Wilson 95% 下界 {outcome.confidence_lower_bound:.2%} 达到"
-                f"阈值 {policy.final_lower_bound:.2%}，且标定支持数"
-                f" {outcome.calibration_support} >= {policy.minimum_support}"
+                f"采用{origin}：Wilson 95% 下界 {candidate.confidence_lower_bound:.2%} 达到"
+                f"阈值 {policy.final_lower_bound:.2%}，且支持数"
+                f" {candidate.support} >= {policy.minimum_support}"
             ),
+            candidate_source=candidate.source,
+            considered_candidates=candidates,
         )
 
+    best = candidates[0] if candidates else None
+    blocked = next(
+        (item for item in candidates if item.verdict in policy.non_identifiable_labels),
+        None,
+    )
+    if blocked is not None:
+        requested = tuple(policy.non_identifiable_evidence.get(str(blocked.verdict), ()))
+        return FinalDecision(
+            case_id=outcome.case_id,
+            branch=outcome.branch,
+            action="request_evidence",
+            verdict=None,
+            proposed_verdict=blocked.verdict,
+            confidence=blocked.confidence,
+            confidence_lower_bound=blocked.confidence_lower_bound,
+            calibration_group=blocked.group,
+            calibration_support=blocked.support,
+            reason=(
+                f"候选根因 {blocked.verdict} 在现有遥测下不可识别（见 C20）："
+                "最强富集条件的 Wilson 下界与类别先验无法区分，"
+                "因此不输出结论，改为请求可判别该根因的定向测量"
+            ),
+            requested_evidence=requested or outcome.missing_evidence,
+            candidate_source=blocked.source,
+            considered_candidates=candidates,
+        )
     if outcome.missing_evidence:
         action = "request_evidence"
-        reason = "当前结论未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+        reason = "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
     else:
         action = "human_review"
-        if outcome.verdict is None:
+        if best is None:
             reason = "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
         else:
             reason = (
-                f"候选结论未通过可靠性门槛（Wilson 下界 {outcome.confidence_lower_bound:.2%}，"
-                f"支持数 {outcome.calibration_support}），转人工复核"
+                f"最优候选（来源 {best.source}）未通过可靠性门槛"
+                f"（Wilson 下界 {best.confidence_lower_bound:.2%}，支持数 {best.support}），转人工复核"
             )
     return FinalDecision(
         case_id=outcome.case_id,
         branch=outcome.branch,
         action=action,
         verdict=None,
-        proposed_verdict=outcome.verdict,
-        confidence=outcome.confidence,
-        confidence_lower_bound=outcome.confidence_lower_bound,
-        calibration_group=outcome.calibration_group,
-        calibration_support=outcome.calibration_support,
+        proposed_verdict=best.verdict if best is not None else None,
+        confidence=best.confidence if best is not None else outcome.confidence,
+        confidence_lower_bound=(
+            best.confidence_lower_bound if best is not None else outcome.confidence_lower_bound
+        ),
+        calibration_group=best.group if best is not None else outcome.calibration_group,
+        calibration_support=best.support if best is not None else outcome.calibration_support,
         reason=reason,
         requested_evidence=outcome.missing_evidence if action == "request_evidence" else (),
+        candidate_source=best.source if best is not None else "none",
+        considered_candidates=candidates,
     )
 
 
 def decide_many(
     outcomes: Sequence[BranchOutcome],
     policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
+    *,
+    sop_predictions: Optional[Sequence[Optional[Mapping[str, Any]]]] = None,
 ) -> Tuple[FinalDecision, ...]:
-    return tuple(decide(outcome, policy) for outcome in outcomes)
+    if sop_predictions is not None and len(sop_predictions) != len(outcomes):
+        raise ValueError("sop_predictions must be the same length as outcomes")
+    return tuple(
+        decide(
+            outcome,
+            policy,
+            sop_prediction=None if sop_predictions is None else sop_predictions[index],
+        )
+        for index, outcome in enumerate(outcomes)
+    )
 

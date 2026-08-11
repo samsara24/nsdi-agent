@@ -27,7 +27,11 @@ from rca_framework.data import (  # noqa: E402
     cases_by_manifest_split,
     load_split_manifest,
 )
-from rca_framework.decision import DecisionPolicy  # noqa: E402
+from rca_framework.decision import (  # noqa: E402
+    CANDIDATE_SOURCES,
+    FIBER_EVIDENCE_REQUEST,
+    DecisionPolicy,
+)
 from rca_framework.evidence_graph import (  # noqa: E402
     BOARD_POLICY,
     COVERAGE_POLICY,
@@ -46,6 +50,7 @@ from rca_framework.llm import (  # noqa: E402
     backend_for,
     prompt_template_hash,
 )
+from rca_framework.types import ROOT_CAUSES  # noqa: E402
 from scripts.evaluate_routing import run_policy, show  # noqa: E402
 
 
@@ -219,6 +224,29 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-attempts", type=int, default=2)
     parser.add_argument("--decision-lower-bound", type=float, default=0.5)
     parser.add_argument("--decision-min-support", type=int, default=10)
+    parser.add_argument(
+        "--target-selective-risk",
+        type=float,
+        default=None,
+        help=(
+            "给定时忽略 --decision-lower-bound，改为在训练留一法上反解出"
+            "满足该选择性风险的最大覆盖率工作点，并把工作点写进知识包与 manifest"
+        ),
+    )
+    parser.add_argument(
+        "--decision-candidate-order",
+        nargs="+",
+        default=("branch",),
+        choices=CANDIDATE_SOURCES,
+        help="M9 候选级联；加入 sop 表示分支不达标时允许退到 learned SOP 叶节点先验",
+    )
+    parser.add_argument(
+        "--non-identifiable-labels",
+        nargs="*",
+        default=(),
+        choices=ROOT_CAUSES,
+        help="在现有遥测下不可识别的根因（C20）。命中候选转成带定向补采清单的 request_evidence",
+    )
     return parser
 
 
@@ -283,9 +311,17 @@ def main() -> None:
             BOARD_POLICY.name: BOARD_POLICY,
             COVERAGE_POLICY.name: COVERAGE_POLICY,
         }[args.policy]
+        candidate_order = tuple(args.decision_candidate_order)
+        non_identifiable = tuple(args.non_identifiable_labels)
+        non_identifiable_evidence = {
+            label: FIBER_EVIDENCE_REQUEST for label in non_identifiable if label == "fiber"
+        }
         decision_policy = DecisionPolicy(
             final_lower_bound=args.decision_lower_bound,
             minimum_support=args.decision_min_support,
+            candidate_order=candidate_order,
+            non_identifiable_labels=non_identifiable,
+            non_identifiable_evidence=non_identifiable_evidence,
         )
 
         bundle, training_artifacts = fit_offline_knowledge(
@@ -296,6 +332,11 @@ def main() -> None:
             policies=(policy,),
             reasoner=reasoner,
             top_k=args.top_k,
+            target_selective_risk=args.target_selective_risk,
+            decision_minimum_support=args.decision_min_support,
+            decision_candidate_order=candidate_order,
+            decision_non_identifiable_labels=non_identifiable,
+            decision_non_identifiable_evidence=non_identifiable_evidence,
             build_metadata={
                 "created_at_utc": _utc_now(),
                 "git_revision": _git_revision(repo),
@@ -314,6 +355,11 @@ def main() -> None:
         # Enforce the train/test boundary: evaluation uses a fresh object loaded
         # from the persisted bundle and never fits on test data.
         bundle = OfflineKnowledgeBundle.load(bundle_path)
+        # 门禁工作点也必须来自持久化的知识包，不能用进程内的临时对象，
+        # 否则「阈值只在训练集上定出来」这条边界就没有被实际验证过。
+        if policy.name in bundle.decision_policies:
+            decision_policy = bundle.decision_policies[policy.name]
+            print(f"decision policy from bundle: {decision_policy.fitted_on}")
         test_packs, test_features = bundle.extract_test_features(
             test_cases,
             source_dataset=str(args.data_dir),

@@ -175,9 +175,11 @@ def test_prompt_contains_evidence_constraints_and_abstain_option(n5c):
 
 
 def test_prompt_only_injects_relevant_constraints(n5c):
-    """不能把 15 条无差别塞进去。"""
+    """不能把整个库无差别塞进去。"""
+    from rca_framework.constraints.library import CONSTRAINT_LIBRARY
+
     prompt = build_prompt(n5c["request"])
-    assert len(n5c["request"].constraint_ids) < 15
+    assert len(n5c["request"].constraint_ids) < len(CONSTRAINT_LIBRARY.constraints)
     absent = set(("C1_bias_zero_means_laser_off", "C2_bias_healthy_band")) - set(n5c["request"].constraint_ids)
     for constraint_id in absent:
         assert constraint_id not in prompt
@@ -320,7 +322,7 @@ def test_trace_records_every_attempt_for_the_log(n5c):
     payload = json.loads(json.dumps(trace.to_dict(), ensure_ascii=False))
     assert payload["attempt_count"] == 2
     assert payload["rewrote"] is True
-    assert payload["constraint_library_version"] == "constraint-library-v3"
+    assert payload["constraint_library_version"] == "constraint-library-v5"
     assert payload["prompt_version"] == PROMPT_TEMPLATE_VERSION
     assert len(payload["attempts"]) == 2
     assert payload["attempts"][0]["check"]["fatal_count"] > 0

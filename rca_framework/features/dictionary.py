@@ -391,6 +391,11 @@ PROFILES: Dict[str, Tuple[str, ...]] = {
     "v1_plus_context": V1_FAMILIES + ("port_width", "alarm_kind", "telemetry_gap"),
     "all_families": tuple(family.name for family in _FAMILIES),
     "context_only": ("port_width", "alarm_kind", "telemetry_gap"),
+    # 迭代 1 的验证用 profile。`side_asymmetry` 在 T1 被否的理由是它让 signature 过度唯一化、
+    # 打塌 N5a 桶，而不是它没有判别力。迭代 1 在 media_snr 上测到两端对比确有分层差异
+    # （L1 根因下「L2 侧 SNR 更差」命中 32.7%，L2 根因下只有 9.0%），
+    # 因此需要单独一个 profile 来回答「加回它能不能提升 LOO 泛化」，而不改动 v1/v2 字典本身。
+    "v2_plus_side_asymmetry": V2_FAMILIES + ("side_asymmetry",),
 }
 
 

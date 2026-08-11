@@ -39,18 +39,25 @@ BRANCH = "N5c"
 
 #: token 家族前缀 -> 相关约束类别。用来从 14 条里筛出与本 case 有关的那几条。
 FAMILY_TO_CATEGORY: Dict[str, Tuple[str, ...]] = {
-    "drop:": ("tx_power", "rx_power", "bias_current", "lane_directional_consistency"),
-    "status:": ("lane_directional_consistency",),
-    "imbalance:": ("lane_directional_consistency", "rx_power"),
-    "lane:": ("lane_directional_consistency", "tx_power", "rx_power"),
-    "level:": ("rx_power", "signal_quality"),
+    "drop:": (
+        "tx_power", "rx_power", "bias_current",
+        "lane_directional_consistency", "attribution_direction",
+    ),
+    "status:": ("lane_directional_consistency", "attribution_direction"),
+    "imbalance:": ("lane_directional_consistency", "rx_power", "attribution_direction"),
+    "lane:": (
+        "lane_directional_consistency", "tx_power", "rx_power", "attribution_direction",
+    ),
+    "level:": ("rx_power", "signal_quality", "attribution_direction"),
     "serdes:": ("signal_quality", "measurement_validity"),
     "telemetry:": ("measurement_validity",),
 }
 
-#: 量测有效性类约束（caveat）无条件注入：它们的作用是阻止无效推理，
+#: 量测有效性与可识别性类约束（caveat）无条件注入：它们的作用是阻止无效推理，
 #: 而无效推理恰恰最可能发生在「没有相关观测」的时候。
-ALWAYS_INJECTED_CATEGORIES: Tuple[str, ...] = ("measurement_validity",)
+#: `identifiability` 必须无条件注入的理由更直接：C20 说的是「不要给 fiber 结论」，
+#: 如果只在命中疑似介质 token 时才注入，模型恰好在最想猜 fiber 的场景下看不到它。
+ALWAYS_INJECTED_CATEGORIES: Tuple[str, ...] = ("measurement_validity", "identifiability")
 
 
 @dataclass(frozen=True)

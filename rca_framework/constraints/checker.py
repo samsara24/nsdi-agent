@@ -63,6 +63,11 @@ FORBIDDEN_CLAIM_PATTERNS: Dict[str, Tuple[str, str]] = {
     ),
 }
 
+#: `C19` 的结构化判据：这些词出现在一个 `effect == "support"` 的步骤里，
+#: 说明模型在用群体统计支持结论。用「词 + support」两个条件同时成立才判违规，
+#: 是为了不误伤「本 case 的观测与训练集分布一致」这类合法描述。
+PRIOR_AS_SUPPORT_PATTERN = r"(先验|基础比例|多数类|最常见|统计上更多|训练集(中|里)?(更|占)|SOP\s*叶|叶节点)"
+
 
 @dataclass(frozen=True)
 class Violation:
@@ -274,6 +279,18 @@ def check_response(
                 detail=step.claim,
             ))
         violations.extend(_forbidden_claims(step.claim, index, blackout))
+        if getattr(step, "effect", "neutral") == "support" and re.search(
+            PRIOR_AS_SUPPORT_PATTERN, step.claim
+        ):
+            violations.append(Violation(
+                kind="forbidden_claim", severity="fatal", step_index=index,
+                constraint_id="C19_population_prior_is_not_case_evidence",
+                message=(
+                    "用群体统计（类别先验 / SOP 叶节点分布 / 历史标签投票）作为 support 步骤的依据。"
+                    "群体统计只能决定默认动作，不能当作本 case 的物理证据"
+                ),
+                detail=step.claim,
+            ))
 
     verdict = response.verdict
     if verdict is not None:

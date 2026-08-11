@@ -64,7 +64,7 @@ def test_feedback_adds_case_diagnosis_graph():
         _outcome(),
         _decision(),
         sop_version="learned-sop-v1",
-        constraint_library_version="constraint-library-v3",
+        constraint_library_version="constraint-library-v5",
     )
     graph = EvidenceGraph(cases=(GraphCase("case-x", "L2", features.tokens),), dictionary_hash="hash")
     updated = apply_confirmed_feedback(graph, [diagnosis], confirmed_by="operator-a")
