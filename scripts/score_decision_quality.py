@@ -33,8 +33,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rca_framework.branches.base import wilson_lower_bound  # noqa: E402
 from rca_framework.types import ROOT_CAUSES  # noqa: E402
 
-#: 视为「给出了自动结论」的 M9 动作。其余动作都算弃答。
-ANSWER_ACTIONS = ("final_verdict",)
+#: 视为「给出了自动结论」的 M9 动作，与 `rca_framework.decision` 的 `ACTIONS` 保持一致。
+#: 其余动作（request_evidence / human_review）都算弃答。
+ANSWER_ACTIONS = ("final",)
 
 
 def load_outcomes(run_dir: Path) -> Dict[str, List[Dict[str, Any]]]:
