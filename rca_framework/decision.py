@@ -188,6 +188,15 @@ class DecisionPolicy:
     non_identifiable_labels: Tuple[str, ...] = ()
     #: 命中 `non_identifiable_labels` 时给出的定向补采项。
     non_identifiable_evidence: Mapping[str, Tuple[str, ...]] = field(default_factory=dict)
+    #: 按预测类别分别设定的下界。留空时所有类别共用 `final_lower_bound`。
+    #:
+    #: 单一门限在类别先验差一倍的数据上会结构性地偏向多数类：L2 先验 62.1%，
+    #: 任何指向 L2 的候选起点就比指向 L1（先验 30.4%）的候选高一截，
+    #: 于是一个统一门限会先把 L1 候选全部挡掉。迭代 1 的实测正是如此——
+    #: 门限 0.4104 下 L1 召回只有 6.25%、平衡召回 0.2596 低于随机猜一类的 1/3，
+    #: 而整体精度靠 L2 撑到 70.42%。按类别校准是把「每一类的风险都达标」
+    #: 写进目标，而不是让多数类替少数类背书。
+    per_label_lower_bound: Mapping[str, float] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         unknown = sorted(set(self.candidate_order) - set(CANDIDATE_SOURCES))
@@ -195,6 +204,14 @@ class DecisionPolicy:
             raise ValueError(f"unknown candidate sources: {unknown}")
         if not self.candidate_order:
             raise ValueError("candidate_order must not be empty")
+        for label, bound in self.per_label_lower_bound.items():
+            if not 0.0 <= float(bound) <= 1.0:
+                raise ValueError(f"per-label lower bound for {label} must be in [0, 1]: {bound}")
+
+    def lower_bound_for(self, label: Optional[str]) -> float:
+        if label is not None and label in self.per_label_lower_bound:
+            return float(self.per_label_lower_bound[label])
+        return self.final_lower_bound
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -207,6 +224,10 @@ class DecisionPolicy:
             "non_identifiable_labels": list(self.non_identifiable_labels),
             "non_identifiable_evidence": {
                 key: list(value) for key, value in sorted(self.non_identifiable_evidence.items())
+            },
+            "per_label_lower_bound": {
+                key: round(float(value), 6)
+                for key, value in sorted(self.per_label_lower_bound.items())
             },
         }
 
@@ -286,7 +307,11 @@ def simulate_gate(
     answered = 0
     correct = 0
     by_source: Dict[str, list[int]] = {}
+    by_label: Dict[str, list[int]] = {}
+    recall_hits: Dict[str, int] = {}
+    truth_counts: Dict[str, int] = {}
     for candidates, truth in rows:
+        truth_counts[truth] = truth_counts.get(truth, 0) + 1
         for candidate in candidates:
             if not passes_gate(candidate, policy):
                 continue
@@ -296,14 +321,36 @@ def simulate_gate(
             entry = by_source.setdefault(candidate.source, [0, 0])
             entry[0] += hit
             entry[1] += 1
+            label_entry = by_label.setdefault(str(candidate.verdict), [0, 0])
+            label_entry[0] += hit
+            label_entry[1] += 1
+            if hit:
+                recall_hits[truth] = recall_hits.get(truth, 0) + 1
             break
     total = len(rows)
+    recalls = [
+        recall_hits.get(label, 0) / count
+        for label, count in truth_counts.items()
+        if count
+    ]
     return {
         "answered": answered,
         "coverage": round(answered / total, 6) if total else 0.0,
         "correct": correct,
         "precision_when_answered": round(correct / answered, 6) if answered else None,
         "selective_risk": round(1.0 - correct / answered, 6) if answered else None,
+        # 按**预测类别**拆分的风险。按类别校准门限需要它：整体风险达标不代表
+        # 每一类都达标，迭代 1 就是整体 29.6% 风险下 L1 召回只有 6.25%。
+        "by_predicted_label": {
+            label: {
+                "answered": value[1],
+                "correct": value[0],
+                "precision": round(value[0] / value[1], 6) if value[1] else None,
+                "selective_risk": round(1.0 - value[0] / value[1], 6) if value[1] else None,
+            }
+            for label, value in sorted(by_label.items())
+        },
+        "balanced_recall": round(sum(recalls) / len(recalls), 6) if recalls else 0.0,
         "by_source": {
             source: {"correct": value[0], "answered": value[1]}
             for source, value in sorted(by_source.items())
@@ -321,6 +368,8 @@ def fit_decision_policy(
     non_identifiable_labels: Tuple[str, ...] = (),
     non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
     source: str = "train-loo",
+    class_conditional: bool = False,
+    class_conditional_rounds: int = 2,
 ) -> Tuple[DecisionPolicy, Dict[str, Any]]:
     """在训练留一法结果上反解出 `final_lower_bound`。
 
@@ -328,6 +377,10 @@ def fit_decision_policy(
     「在选择性风险不超过 `target_selective_risk` 的前提下取最大覆盖率」，
     这是运维能直接理解的口径：允许多少比例的自动结论是错的。
     v1 那个抽象的 0.5 下界没有对应任何可讨论的业务约束。
+
+    `class_conditional=True` 时，在统一门限之上再按预测类别逐类校准
+    （见 `refine_per_label_bounds`），把「每一类的风险都达标」写进目标；
+    否则单一门限会让多数类的正确率替少数类背书。
 
     返回策略与整条阈值-覆盖率曲线。找不到满足目标的阈值时返回最严格阈值，
     并在 `fitted_on` 里写明这件事，绝不悄悄放宽目标。
@@ -356,7 +409,18 @@ def fit_decision_policy(
             non_identifiable_evidence=evidence_map,
         )
         stats = simulate_gate(rows, probe)
-        curve.append({"final_lower_bound": threshold, **stats})
+        curve.append(
+            {
+                "final_lower_bound": threshold,
+                "answered": stats["answered"],
+                "coverage": stats["coverage"],
+                "correct": stats["correct"],
+                "precision_when_answered": stats["precision_when_answered"],
+                "selective_risk": stats["selective_risk"],
+                "balanced_recall": stats["balanced_recall"],
+                "by_source": stats["by_source"],
+            }
+        )
         risk = stats["selective_risk"]
         if risk is None or stats["coverage"] < minimum_coverage:
             continue
@@ -387,7 +451,7 @@ def fit_decision_policy(
         non_identifiable_labels=blocked,
         non_identifiable_evidence=evidence_map,
     )
-    return policy, {
+    diagnostics: Dict[str, Any] = {
         "source": source,
         "target_selective_risk": target_selective_risk,
         "minimum_support": minimum_support,
@@ -397,6 +461,126 @@ def fit_decision_policy(
         "chosen_lower_bound": chosen,
         "feasible": best is not None,
         "curve": curve,
+    }
+    if class_conditional:
+        policy, refinement = refine_per_label_bounds(
+            rows,
+            policy,
+            target_selective_risk=target_selective_risk,
+            rounds=class_conditional_rounds,
+            source=source,
+        )
+        diagnostics["class_conditional"] = refinement
+    return policy, diagnostics
+
+
+def refine_per_label_bounds(
+    rows: Sequence[Tuple[Sequence[DecisionCandidate], str]],
+    policy: DecisionPolicy,
+    *,
+    target_selective_risk: float,
+    rounds: int = 2,
+    source: str = "train-loo",
+) -> Tuple[DecisionPolicy, Dict[str, Any]]:
+    """在统一门限之上，为每个预测类别单独收紧或放宽下界。
+
+    做法是坐标上升：固定其它类别的门限，对当前类别扫遍所有候选下界，
+    取「该类风险 <= 目标」里覆盖最大的一个；轮换若干轮直到稳定。
+    之所以不做联合最优，是因为候选级联会在第一个过门的候选处 break，
+    改一个类别的门限会改变别的类别看到的样本，联合搜索既慢又更容易过拟合；
+    坐标上升的每一步都能解释成「这一类当前的风险是多少、为此把门限挪到哪」。
+
+    关键约束：**只有该类自己的风险达标才放宽它**。这样放宽 L1 门限
+    不会靠 L2 的正确率来掩盖 L1 的错误，也就避免了迭代 1 那种
+    「整体风险达标但少数类几乎没有召回」的结果。
+    """
+    labels = sorted(
+        {
+            str(candidate.verdict)
+            for candidates, _ in rows
+            for candidate in candidates
+            if candidate.verdict is not None
+            and candidate.verdict not in policy.non_identifiable_labels
+        }
+    )
+    thresholds_by_label: Dict[str, list[float]] = {
+        label: sorted(
+            {0.0}
+            | {
+                round(candidate.confidence_lower_bound, 6)
+                for candidates, _ in rows
+                for candidate in candidates
+                if str(candidate.verdict) == label
+                and candidate.support >= policy.minimum_support
+            }
+        )
+        for label in labels
+    }
+
+    bounds: Dict[str, float] = {label: policy.final_lower_bound for label in labels}
+    history: list[Dict[str, Any]] = []
+    for round_index in range(max(1, rounds)):
+        changed = False
+        for label in labels:
+            best_choice: Optional[Tuple[float, int]] = None
+            for threshold in thresholds_by_label[label]:
+                probe_bounds = dict(bounds)
+                probe_bounds[label] = threshold
+                stats = simulate_gate(rows, replace(policy, per_label_lower_bound=probe_bounds))
+                row = stats["by_predicted_label"].get(label)
+                if not row or not row["answered"]:
+                    continue
+                if row["selective_risk"] is None or row["selective_risk"] > target_selective_risk:
+                    continue
+                if best_choice is None or row["answered"] > best_choice[1]:
+                    best_choice = (threshold, row["answered"])
+            if best_choice is not None and best_choice[0] != bounds[label]:
+                bounds[label] = best_choice[0]
+                changed = True
+        stats = simulate_gate(rows, replace(policy, per_label_lower_bound=dict(bounds)))
+        history.append(
+            {
+                "round": round_index,
+                "bounds": {label: round(value, 6) for label, value in sorted(bounds.items())},
+                "coverage": stats["coverage"],
+                "selective_risk": stats["selective_risk"],
+                "balanced_recall": stats["balanced_recall"],
+                "by_predicted_label": stats["by_predicted_label"],
+            }
+        )
+        if not changed:
+            break
+
+    final_stats = simulate_gate(rows, replace(policy, per_label_lower_bound=dict(bounds)))
+    unmet = sorted(
+        label
+        for label, row in final_stats["by_predicted_label"].items()
+        if row["selective_risk"] is not None and row["selective_risk"] > target_selective_risk
+    )
+    refined = replace(
+        policy,
+        per_label_lower_bound=dict(bounds),
+        fitted_on=(
+            f"{policy.fitted_on}；按类别校准后下界 "
+            + "、".join(f"{label}={bounds[label]:.4f}" for label in labels)
+            + f"（训练留一法覆盖率 {final_stats['coverage']:.2%}，"
+            f"整体风险 {(final_stats['selective_risk'] or 0):.2%}，"
+            f"平衡召回 {final_stats['balanced_recall']:.4f}）"
+        ),
+    )
+    return refined, {
+        "source": source,
+        "target_selective_risk": target_selective_risk,
+        "rounds_run": len(history),
+        "bounds": {label: round(value, 6) for label, value in sorted(bounds.items())},
+        "labels_missing_target": unmet,
+        "history": history,
+        "final": {
+            "coverage": final_stats["coverage"],
+            "selective_risk": final_stats["selective_risk"],
+            "balanced_recall": final_stats["balanced_recall"],
+            "by_predicted_label": final_stats["by_predicted_label"],
+        },
     }
 
 
@@ -439,7 +623,7 @@ def passes_gate(candidate: DecisionCandidate, policy: DecisionPolicy) -> bool:
         candidate.verdict is not None
         and candidate.verdict not in policy.non_identifiable_labels
         and candidate.support >= policy.minimum_support
-        and candidate.confidence_lower_bound >= policy.final_lower_bound
+        and candidate.confidence_lower_bound >= policy.lower_bound_for(candidate.verdict)
     )
 
 

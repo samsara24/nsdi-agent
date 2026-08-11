@@ -247,6 +247,14 @@ def _parser() -> argparse.ArgumentParser:
         choices=ROOT_CAUSES,
         help="在现有遥测下不可识别的根因（C20）。命中候选转成带定向补采清单的 request_evidence",
     )
+    parser.add_argument(
+        "--class-conditional-bounds",
+        action="store_true",
+        help=(
+            "在统一门限之上按预测类别逐类校准下界，要求每一类的选择性风险各自达标；"
+            "单一门限会因类别先验差异结构性地挡掉少数类"
+        ),
+    )
     return parser
 
 
@@ -337,6 +345,7 @@ def main() -> None:
             decision_candidate_order=candidate_order,
             decision_non_identifiable_labels=non_identifiable,
             decision_non_identifiable_evidence=non_identifiable_evidence,
+            decision_class_conditional=args.class_conditional_bounds,
             build_metadata={
                 "created_at_utc": _utc_now(),
                 "git_revision": _git_revision(repo),

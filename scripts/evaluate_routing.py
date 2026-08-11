@@ -47,7 +47,7 @@ from rca_framework.evidence_graph import (  # noqa: E402
 )
 from rca_framework.evidence_pack import build_packs, labels_of  # noqa: E402
 from rca_framework.feedback import build_case_diagnosis  # noqa: E402
-from rca_framework.knowledge import _loo_sop_predictions  # noqa: E402
+from rca_framework.knowledge import _out_of_fold_sop_predictions  # noqa: E402
 from rca_framework.report import build_report  # noqa: E402
 from rca_framework.sop import LEARNED_SOP_VERSION, learn_sop  # noqa: E402
 from rca_framework.features.dictionary import dictionary_for  # noqa: E402
@@ -323,6 +323,7 @@ def fit_train_decision_policy(
     candidate_order: Tuple[str, ...],
     non_identifiable_labels: Tuple[str, ...] = (),
     non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
+    class_conditional: bool = False,
 ) -> Tuple[DecisionPolicy, Dict[str, Any]]:
     """在训练留一法输出上反解 M9 工作点。
 
@@ -343,8 +344,10 @@ def fit_train_decision_policy(
         sop_model=sop_model,
     )
     outcomes = [item[1] for item in paired]
-    loo_sop = (
-        _loo_sop_predictions(train_features, train_labels, sop=sop_model)
+    # 折外而非留一：留一法下同一叶子里「符合结论」的 case 置信度必然低于
+    # 「不符合」的 case，用它反解门限会反向筛选（见 `_out_of_fold_sop_predictions`）。
+    oof_sop = (
+        _out_of_fold_sop_predictions(train_features, train_labels, sop=sop_model)
         if sop_model is not None
         else [None] * len(outcomes)
     )
@@ -355,7 +358,7 @@ def fit_train_decision_policy(
     )
     rows = [
         (build_candidates(outcome, sop_prediction=sop_pred, policy=probe), truth)
-        for outcome, sop_pred, truth in zip(outcomes, loo_sop, train_labels)
+        for outcome, sop_pred, truth in zip(outcomes, oof_sop, train_labels)
     ]
     return fit_decision_policy(
         rows,
@@ -365,6 +368,7 @@ def fit_train_decision_policy(
         non_identifiable_labels=non_identifiable_labels,
         non_identifiable_evidence=non_identifiable_evidence,
         source=f"manifest-train-loo:{policy.name}",
+        class_conditional=class_conditional,
     )
 
 
@@ -561,6 +565,14 @@ def main() -> None:
         help="给定时忽略 --decision-lower-bound，改为在训练留一法上反解出满足该风险的最大覆盖率工作点",
     )
     parser.add_argument(
+        "--class-conditional-bounds",
+        action="store_true",
+        help=(
+            "在统一门限之上按预测类别逐类校准下界，要求每一类的选择性风险各自达标；"
+            "单一门限会因类别先验差异结构性地挡掉少数类"
+        ),
+    )
+    parser.add_argument(
         "--decision-candidate-order",
         nargs="+",
         default=("branch",),
@@ -679,6 +691,7 @@ def main() -> None:
                 candidate_order=candidate_order,
                 non_identifiable_labels=non_identifiable,
                 non_identifiable_evidence=non_identifiable_evidence,
+                class_conditional=args.class_conditional_bounds,
             )
             decision_fits[policy_name] = fit
             print(f"decision fit  : {decision_policy.fitted_on}\n")

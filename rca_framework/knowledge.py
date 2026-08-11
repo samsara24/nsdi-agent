@@ -134,7 +134,7 @@ class OfflineKnowledgeBundle:
                 str(name): LLMCalibration.from_dict(item)
                 for name, item in value.get("llm_calibrations", {}).items()
             },
-                decision_policies={
+            decision_policies={
                 str(name): DecisionPolicy(
                     version=str(item.get("version", DEFAULT_DECISION_POLICY.version)),
                     final_lower_bound=float(item.get("final_lower_bound", 0.5)),
@@ -146,6 +146,10 @@ class OfflineKnowledgeBundle:
                     non_identifiable_evidence={
                         str(key): tuple(entry)
                         for key, entry in item.get("non_identifiable_evidence", {}).items()
+                    },
+                    per_label_lower_bound={
+                        str(key): float(entry)
+                        for key, entry in item.get("per_label_lower_bound", {}).items()
                     },
                 )
                 for name, item in value.get("decision_policies", {}).items()
@@ -229,6 +233,16 @@ def _loo_sop_predictions(
     树本身很浅，161 次重拟合的代价可以忽略。这一步不是形式主义：
     叶节点的支持数与 Wilson 下界正是 M9 门禁要用的量，如果它包含被评估的
     那条 case，反解出来的阈值在测试集上就会失效。
+
+    **不要用它的置信度去反解门限**，改用 `_out_of_fold_sop_predictions`。
+    留一法确实排除了自身标签的正向泄漏，但引入了一个反向的构造性相关：
+    叶节点纯度 = (符合该叶结论的样本数 - [自己符合]) / (叶大小 - 1)，
+    于是同一个叶子里，**符合结论的 case 拿到的置信度必然低于不符合的 case**。
+    在 rca_v2_l2fixed 上三个叶子无一例外（详见 Progress.md 迭代 2）：
+    叶 `root.absent.present.absent` 判 L2，真值为 L2 的 28 条下界 0.6320，
+    真值为 L1 的下界 0.6666~0.7149，真值为 fiber 的高达 0.7510。
+    置信度与正确性在叶内是完全反序的，按它反解出的门限会系统性地
+    「放行反例、拦下正例」——这正是迭代 1 平衡召回只有 0.2596 的成因。
     """
     out: list[Optional[Dict[str, Any]]] = []
     kept_features = list(features)
@@ -250,6 +264,62 @@ def _loo_sop_predictions(
     return tuple(out)
 
 
+def stratified_folds(labels: Sequence[str], folds: int) -> Tuple[Tuple[int, ...], ...]:
+    """按标签分层地把下标轮转分配到 `folds` 折。
+
+    不使用随机数：给定标签序列结果唯一，实验可以逐字节复现。
+    """
+    if folds < 2:
+        raise ValueError("folds must be at least 2")
+    buckets: list[list[int]] = [[] for _ in range(folds)]
+    by_label: Dict[str, list[int]] = {}
+    for index, label in enumerate(labels):
+        by_label.setdefault(label, []).append(index)
+    cursor = 0
+    for label in sorted(by_label):
+        for index in by_label[label]:
+            buckets[cursor % folds].append(index)
+            cursor += 1
+    return tuple(tuple(sorted(bucket)) for bucket in buckets)
+
+
+def _out_of_fold_sop_predictions(
+    features: Sequence[CaseFeatures],
+    labels: Sequence[str],
+    *,
+    sop: LearnedSOP,
+    folds: int = 5,
+) -> Tuple[Optional[Dict[str, Any]], ...]:
+    """用分层 K 折的折外模型给每条训练 case 出预测，供门限反解使用。
+
+    与留一法的区别只有一处，但决定了门限是否可用：模型在「去掉整整一折」
+    的数据上拟合，被评估 case 的标签只通过它所在的那一折（约 20% 的数据）
+    影响叶节点纯度，而不再是唯一的扰动源。留一法下「叶内符合者置信度更低」
+    是恒等式，K 折下它被同折其余样本冲淡，置信度重新变成模型属性
+    而不是被留出标签的函数。
+
+    折外预测仍然严格无自身泄漏：预测某条 case 的模型从未见过它。
+    """
+    assignments = stratified_folds(labels, folds)
+    out: list[Optional[Dict[str, Any]]] = [None] * len(features)
+    for held_out in assignments:
+        if not held_out:
+            continue
+        keep = [index for index in range(len(features)) if index not in set(held_out)]
+        if not keep:
+            continue
+        model = learn_sop(
+            [features[index] for index in keep],
+            [labels[index] for index in keep],
+            max_depth=sop.max_depth,
+            min_leaf_size=sop.min_leaf_size,
+            source=f"{sop.source}:oof{folds}",
+        )
+        for index in held_out:
+            out[index] = model.predict(features[index]).to_dict()
+    return tuple(out)
+
+
 def fit_offline_knowledge(
     train_cases: Sequence[Dict[str, Any]],
     *,
@@ -265,6 +335,7 @@ def fit_offline_knowledge(
     decision_candidate_order: Tuple[str, ...] = ("branch", "sop"),
     decision_non_identifiable_labels: Tuple[str, ...] = (),
     decision_non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
+    decision_class_conditional: bool = False,
 ) -> Tuple[OfflineKnowledgeBundle, TrainingKnowledgeArtifacts]:
     """Fit and optionally LLM-enrich all train-only artifacts.
 
@@ -338,9 +409,10 @@ def fit_offline_knowledge(
                 for outcome in outcomes
             ]
 
-        # SOP 候选必须用留一法重拟合。用全量训练树给训练 case 打分会把它自己
-        # 算进叶节点分布，拟合出来的阈值会系统性偏乐观。
-        loo_sop = _loo_sop_predictions(features, labels, sop=sop)
+        # SOP 候选必须用折外模型打分：用全量训练树会把 case 自己算进叶节点分布，
+        # 阈值偏乐观；而用留一法则会反向污染——叶内符合结论的 case 置信度必然更低
+        # （见 `_out_of_fold_sop_predictions`），反解出的门限专挑反例放行。
+        oof_sop = _out_of_fold_sop_predictions(features, labels, sop=sop)
         decision_policy = DEFAULT_DECISION_POLICY
         decision_fit: Optional[Dict[str, Any]] = None
         if target_selective_risk is not None:
@@ -356,7 +428,7 @@ def fit_offline_knowledge(
                     build_candidates(outcome, sop_prediction=sop_pred, policy=probe_policy),
                     label,
                 )
-                for outcome, sop_pred, label in zip(outcomes, loo_sop, labels)
+                for outcome, sop_pred, label in zip(outcomes, oof_sop, labels)
             ]
             decision_policy, decision_fit = fit_decision_policy(
                 rows,
@@ -366,10 +438,11 @@ def fit_offline_knowledge(
                 non_identifiable_labels=decision_non_identifiable_labels,
                 non_identifiable_evidence=decision_non_identifiable_evidence,
                 source=f"manifest-train-loo:{policy.name}",
+                class_conditional=decision_class_conditional,
             )
             decision_policies[policy.name] = decision_policy
 
-        final_decisions = decide_many(outcomes, decision_policy, sop_predictions=loo_sop)
+        final_decisions = decide_many(outcomes, decision_policy, sop_predictions=oof_sop)
         for pack, feature, outcome, final_decision, confirmed_label in zip(
             packs, features, outcomes, final_decisions, labels
         ):
@@ -404,11 +477,11 @@ def fit_offline_knowledge(
             ),
             "decision_policy": decision_policy.to_dict(),
             "decision_policy_fit": decision_fit,
-            "loo_sop_answered": sum(
-                1 for item in loo_sop if item is not None and item.get("verdict") is not None
+            "oof_sop_answered": sum(
+                1 for item in oof_sop if item is not None and item.get("verdict") is not None
             ),
-            "loo_sop_correct": sum(
-                (item or {}).get("verdict") == label for item, label in zip(loo_sop, labels)
+            "oof_sop_correct": sum(
+                (item or {}).get("verdict") == label for item, label in zip(oof_sop, labels)
             ),
         }
         if decision_fit is not None:
