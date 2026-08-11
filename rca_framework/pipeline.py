@@ -6,16 +6,17 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
+from . import anomaly as anomaly_module
 from . import graph as graph_module
 from . import rules as rules_module
-from .anomaly import ThresholdModel, extract_evidence, fit_thresholds
+from .anomaly import LANE_SIGNATURES, ThresholdModel, extract_evidence, fit_thresholds, lane_loss_report
 from .evidence import AGREEMENT_TYPES, EvidenceView, aggregate_evidence
 from .fusion import fuse_results
 from .graph import AnomalyKnowledgeGraph, CoverageReport
 from .llm import PathLLMReasoner
 from .rules import SymbolicRuleEngine
 from .runtime import RuntimeConfig
-from .types import CaseEvidence, ROOT_CAUSES
+from .types import CaseEvidence, EVIDENCE_STATUSES, ROOT_CAUSES
 
 
 LEAKAGE_GUARD_NOTE = "The target label was removed before anomaly extraction, graph query, retrieval, prompting and rule matching."
@@ -51,14 +52,18 @@ class CaseContext:
     symbolic_result: Dict[str, Any]
     coverage: CoverageReport
     evidence_view: EvidenceView
+    lane_loss: Dict[str, Any]
 
     def observation(self) -> Dict[str, Any]:
         """纯观测字段。改变这里不会改变 legacy 的 prediction 与 scores。"""
         return {
+            "evidence_status": self.evidence.evidence_status,
             "coverage": self.coverage.to_dict(),
             "score_composition": self.graph_result.get("score_composition", {}),
             "evidence": self.evidence_view.to_dict(),
             "support_tier_counts": self.symbolic_result.get("support_tier_counts", {}),
+            # 阶段 2 影子模式：lane 级 signature 只观测，不参与打分。
+            "lane_loss": self.lane_loss,
         }
 
 
@@ -85,6 +90,7 @@ def build_case_context(
         evidence_view=aggregate_evidence(
             graph_module.evidence_items(graph_result) + rules_module.evidence_items(symbolic_result)
         ),
+        lane_loss=lane_loss_report(target, thresholds),
     )
 
 
@@ -232,19 +238,36 @@ class RCAPipeline:
         agreement_types: Counter[str] = Counter()
         independent_counts: Counter[int] = Counter()
         support_tiers: Counter[str] = Counter()
+        evidence_statuses: Counter[str] = Counter()
+        lane_signatures: Counter[str] = Counter()
         prior_only = 0
         exemplar_reachable = 0
+        lane_any = 0
+        lane_mismatch = 0
+        legacy_directional = 0
+        legacy_bidirectional = 0
         for context in contexts:
             coverage_states[context.coverage.state] += 1
             agreement_types[context.evidence_view.agreement_type] += 1
             independent_counts[context.evidence_view.independent_evidence_count] += 1
+            evidence_statuses[context.evidence.evidence_status] += 1
             prior_only += int(context.coverage.prior_only)
             exemplar_reachable += int(
                 context.coverage.max_retrieval_similarity >= graph_module.EXEMPLAR_SIMILARITY_THRESHOLD
             )
             for tier, count in (context.symbolic_result.get("support_tier_counts") or {}).items():
                 support_tiers[tier] += count
+            for name in context.lane_loss["signatures"]:
+                lane_signatures[name] += 1
+            lane_any += int(context.lane_loss["any_signature"])
+            lane_mismatch += int(any(
+                row["lane_count_mismatch"] for row in context.lane_loss["directions"].values()
+            ))
+            anomaly_ids = context.evidence.anomaly_ids
+            legacy_directional += int(any(item.startswith("directional_loss:") for item in anomaly_ids))
+            legacy_bidirectional += int(any(item.startswith("bidirectional_loss:") for item in anomaly_ids))
         return {
+            "evidence_status": {status: evidence_statuses[status] for status in EVIDENCE_STATUSES},
             "coverage_state": {state: coverage_states[state] for state in graph_module.COVERAGE_STATES},
             "prior_only_cases": prior_only,
             "agreement_type": {name: agreement_types[name] for name in AGREEMENT_TYPES},
@@ -256,6 +279,19 @@ class RCAPipeline:
             "retrieval": {
                 "exemplar_similarity_threshold": graph_module.EXEMPLAR_SIMILARITY_THRESHOLD,
                 "cases_at_or_above_threshold": exemplar_reachable,
+            },
+            # 阶段 2 影子统计。`legacy_*_cases` 是对照项：旧的方向性损耗从未触发，
+            # 新 signature 的触发数是判断 lane 级改造是否真的有效的唯一客观指标。
+            "lane_signature": {
+                "cases_with_any_signature": lane_any,
+                "by_signature": {name: lane_signatures[name] for name in LANE_SIGNATURES},
+                "cases_with_lane_count_mismatch": lane_mismatch,
+                "legacy_directional_loss_cases": legacy_directional,
+                "legacy_bidirectional_loss_cases": legacy_bidirectional,
+                "declared_thresholds": {
+                    "uniform_loss_spread_db": anomaly_module.UNIFORM_LOSS_SPREAD_DB,
+                    "single_lane_outlier_db": anomaly_module.SINGLE_LANE_OUTLIER_DB,
+                },
             },
         }
 

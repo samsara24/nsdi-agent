@@ -4,7 +4,7 @@ import json
 import re
 from typing import Any, Dict, Optional
 
-from .types import CaseEvidence, ROOT_CAUSES, normalize_scores, rank_scores
+from ..types import CaseEvidence, ROOT_CAUSES, normalize_scores, rank_scores
 
 
 LLM_OUTPUT_SCHEMA = {

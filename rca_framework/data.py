@@ -4,11 +4,12 @@ import hashlib
 import hmac
 import ipaddress
 import json
+import random
 import re
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .types import ROOT_CAUSES
 
@@ -80,6 +81,20 @@ def side_mapping(case: Dict[str, Any]) -> Optional[Dict[str, str]]:
     if (local, remote) == ("200G", "400G"):
         return {"L1": "remote", "L2": "local"}
     return None
+
+
+def case_side_mapping(case: Dict[str, Any]) -> Optional[Dict[str, str]]:
+    """给出 L1 / L2 与 local / remote 的对应关系。
+
+    对已脱敏的 schema-v2 case，映射结果在 `prepare` 阶段就已判定并保存为
+    `_meta.endpoint_values_swapped`，这里直接还原，不重新推断；对原始 case
+    则回落到 `side_mapping`。lane 级工具需要知道某一侧对应链路的哪一端。
+    """
+    meta = case.get("_meta")
+    if isinstance(meta, dict) and "endpoint_values_swapped" in meta:
+        swapped = bool(meta["endpoint_values_swapped"])
+        return {"L1": "remote", "L2": "local"} if swapped else {"L1": "local", "L2": "remote"}
+    return side_mapping(case)
 
 
 class Anonymizer:
@@ -330,3 +345,62 @@ def load_cases(data_dir: Path) -> List[Dict[str, Any]]:
         case.setdefault("case_id", path.stem)
         cases.append(case)
     return cases
+
+
+def load_split_manifest(data_dir: Path, manifest_name: str = "manifest.json") -> Dict[str, Any]:
+    """Load a dataset split manifest from `_metadata`.
+
+    The legacy organized dataset did not need this because its train/test split
+    is positional. New RCA v2 datasets carry the split explicitly so scripts do
+    not accidentally learn from the held-out portion.
+    """
+    path = data_dir / "_metadata" / manifest_name
+    if not path.exists():
+        raise FileNotFoundError(f"missing split manifest: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def cases_by_manifest_split(
+    data_dir: Path,
+    split: str,
+    *,
+    manifest_name: str = "manifest.json",
+) -> List[Dict[str, Any]]:
+    manifest = load_split_manifest(data_dir, manifest_name)
+    wanted = [
+        row["file"]
+        for row in manifest.get("cases", [])
+        if row.get("split") == split
+    ]
+    if not wanted:
+        raise ValueError(f"manifest has no cases for split {split!r}")
+    cases: List[Dict[str, Any]] = []
+    for filename in wanted:
+        path = data_dir / filename
+        case = json.loads(path.read_text(encoding="utf-8"))
+        case.setdefault("case_id", path.stem)
+        cases.append(case)
+    return cases
+
+
+def stratified_split_rows(
+    rows: Sequence[Dict[str, Any]],
+    *,
+    train_ratio: float = 0.6,
+    seed: int = 42,
+) -> List[Dict[str, Any]]:
+    """Assign deterministic train/test splits while preserving label balance."""
+    rng = random.Random(seed)
+    by_label: Dict[str, List[Dict[str, Any]]] = {}
+    for row in rows:
+        by_label.setdefault(str(row.get("label", "")), []).append(dict(row))
+
+    output: List[Dict[str, Any]] = []
+    for label in sorted(by_label):
+        group = sorted(by_label[label], key=lambda item: item["file"])
+        rng.shuffle(group)
+        train_count = int(round(len(group) * train_ratio))
+        for index, row in enumerate(group):
+            row["split"] = "train" if index < train_count else "test"
+            output.append(row)
+    return sorted(output, key=lambda item: item["file"])

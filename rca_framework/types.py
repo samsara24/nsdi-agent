@@ -7,6 +7,13 @@ from typing import Any, Dict, List, Tuple
 ROOT_CAUSES: Tuple[str, ...] = ("L1", "L2", "fiber")
 SIDES: Tuple[str, ...] = ("L1", "L2")
 
+EVIDENCE_STATUSES: Tuple[str, ...] = (
+    "anomalies_found",
+    "all_metrics_normal",
+    "partial_telemetry",
+    "no_telemetry",
+)
+
 
 @dataclass(frozen=True)
 class Anomaly:
@@ -46,6 +53,26 @@ class CaseEvidence:
         if not self.expected_fields:
             return 0.0
         return min(1.0, self.observed_fields / self.expected_fields)
+
+    @property
+    def evidence_status(self) -> str:
+        """把"零异常"从空集合升级为一等结论。
+
+        `anomalies == []` 现在可以有三种完全相反的含义：所有指标都正常、遥测本身
+        缺失、或只采到一部分指标。判定只用已有的 `observed_fields` /
+        `expected_fields`，不引入任何新阈值。
+
+        实现为派生属性而不是存储字段，因为它完全由现有字段决定：这样
+        `to_dict` 不变，`model.json` 的 `label-centered-anomaly-graph-v2` schema
+        与既有 artifacts 都不受影响，也不会出现字段与事实不同步。
+        """
+        if self.observed_fields <= 0:
+            return "no_telemetry"
+        if self.anomalies:
+            return "anomalies_found"
+        if self.observed_fields >= self.expected_fields:
+            return "all_metrics_normal"
+        return "partial_telemetry"
 
     def to_dict(self) -> Dict[str, Any]:
         return {

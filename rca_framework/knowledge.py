@@ -1,0 +1,345 @@
+"""Train-only offline knowledge bundle for the non-evolution RCA experiment.
+
+The bundle is the hard boundary between training and evaluation: thresholds,
+feature-model parameters, historical vectors, the evidence graph, learned SOP,
+and confidence calibration are fitted once on the manifest train split, then
+loaded read-only while evaluating the test split.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Dict, Mapping, MutableMapping, Optional, Sequence, Tuple
+
+from .anomaly import ThresholdModel, fit_thresholds
+from .branches import fit_calibration, handle_many
+from .branches.base import BranchCalibration
+from .constraints.library import CONSTRAINT_LIBRARY
+from .decision import (
+    DEFAULT_DECISION_POLICY,
+    LLMCalibration,
+    apply_llm_calibration,
+    decide_many,
+)
+from .evidence_graph import EvidenceGraph, RoutingPolicy, match_many
+from .evidence_pack import EvidencePack, build_packs, labels_of
+from .features.dictionary import dictionary_for
+from .features.extractor import CaseFeatures, FeatureModel, extract_features, fit_feature_model
+from .feedback import build_case_diagnosis
+from .sop import LearnedSOP, learn_sop
+
+
+KNOWLEDGE_BUNDLE_SCHEMA = "offline-knowledge-bundle-v1"
+
+
+@dataclass(frozen=True)
+class TrainingKnowledgeArtifacts:
+    """LLM-assisted train-only build logs; raw traces live outside the bundle."""
+
+    summary: Mapping[str, Any] = field(default_factory=dict)
+    traces: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class OfflineKnowledgeBundle:
+    schema_version: str
+    source_dataset: str
+    split_manifest_hash: str
+    feature_profile: str
+    thresholds: ThresholdModel
+    feature_model: FeatureModel
+    graph: EvidenceGraph
+    sop: LearnedSOP
+    training_features: Tuple[CaseFeatures, ...]
+    branch_calibrations: Mapping[str, BranchCalibration]
+    llm_calibrations: Mapping[str, LLMCalibration] = field(default_factory=dict)
+    build_metadata: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def train_case_ids(self) -> Tuple[str, ...]:
+        return tuple(item.case_id for item in self.training_features)
+
+    def content_hash(self) -> str:
+        payload = self._payload()
+        return hashlib.sha256(
+            json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
+        ).hexdigest()[:16]
+
+    def _payload(self) -> Dict[str, Any]:
+        return {
+            "schema_version": self.schema_version,
+            "source_dataset": self.source_dataset,
+            "split_manifest_hash": self.split_manifest_hash,
+            "feature_profile": self.feature_profile,
+            "thresholds": self.thresholds.to_dict(),
+            "feature_model": self.feature_model.to_dict(),
+            "graph": self.graph.to_dict(),
+            "sop": self.sop.to_dict(),
+            "training_features": [item.to_dict() for item in self.training_features],
+            "branch_calibrations": {
+                name: calibration.to_dict()
+                for name, calibration in sorted(self.branch_calibrations.items())
+            },
+            "llm_calibrations": {
+                name: calibration.to_dict()
+                for name, calibration in sorted(self.llm_calibrations.items())
+            },
+            "build_metadata": dict(self.build_metadata),
+        }
+
+    def to_dict(self) -> Dict[str, Any]:
+        value = self._payload()
+        value["content_hash"] = self.content_hash()
+        value["train_case_ids"] = list(self.train_case_ids)
+        return value
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "OfflineKnowledgeBundle":
+        schema = str(value.get("schema_version", ""))
+        if schema != KNOWLEDGE_BUNDLE_SCHEMA:
+            raise ValueError(
+                f"unsupported knowledge bundle schema: {schema!r}; "
+                f"expected {KNOWLEDGE_BUNDLE_SCHEMA!r}"
+            )
+        bundle = cls(
+            schema_version=schema,
+            source_dataset=str(value.get("source_dataset", "")),
+            split_manifest_hash=str(value.get("split_manifest_hash", "")),
+            feature_profile=str(value["feature_profile"]),
+            thresholds=ThresholdModel.from_dict(dict(value["thresholds"])),
+            feature_model=FeatureModel.from_dict(dict(value["feature_model"])),
+            graph=EvidenceGraph.from_dict(value["graph"]),
+            sop=LearnedSOP.from_dict(value["sop"]),
+            training_features=tuple(
+                CaseFeatures.from_dict(dict(item))
+                for item in value.get("training_features", ())
+            ),
+            branch_calibrations={
+                str(name): BranchCalibration.from_dict(item)
+                for name, item in value.get("branch_calibrations", {}).items()
+            },
+            llm_calibrations={
+                str(name): LLMCalibration.from_dict(item)
+                for name, item in value.get("llm_calibrations", {}).items()
+            },
+            build_metadata=dict(value.get("build_metadata", {})),
+        )
+        expected_hash = str(value.get("content_hash", ""))
+        if expected_hash and bundle.content_hash() != expected_hash:
+            raise ValueError(
+                "knowledge bundle content hash mismatch: "
+                f"stored={expected_hash}, computed={bundle.content_hash()}"
+            )
+        bundle.validate()
+        return bundle
+
+    def validate(self) -> None:
+        dictionary = dictionary_for(self.feature_profile)
+        if self.graph.dictionary_hash != dictionary.content_hash():
+            raise ValueError("knowledge bundle feature dictionary hash does not match current code")
+        if self.feature_model.dictionary_hash != self.graph.dictionary_hash:
+            raise ValueError("feature model and evidence graph dictionary hashes differ")
+        if self.sop.dictionary_hash != self.graph.dictionary_hash:
+            raise ValueError("learned SOP and evidence graph dictionary hashes differ")
+        feature_ids = self.train_case_ids
+        graph_ids = tuple(item.case_id for item in self.graph.cases)
+        if feature_ids != graph_ids:
+            raise ValueError("training vector order does not match evidence graph case order")
+        if len(set(feature_ids)) != len(feature_ids):
+            raise ValueError("duplicate case ids in knowledge bundle")
+        if self.sop.training_case_count != len(feature_ids):
+            raise ValueError("learned SOP training count does not match historical vectors")
+        if not self.branch_calibrations:
+            raise ValueError("knowledge bundle has no train-only branch calibration")
+
+    def save(self, path: Path) -> Path:
+        self.validate()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_suffix(path.suffix + ".tmp")
+        temporary.write_text(
+            json.dumps(self.to_dict(), ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        temporary.replace(path)
+        return path
+
+    @classmethod
+    def load(cls, path: Path) -> "OfflineKnowledgeBundle":
+        return cls.from_dict(json.loads(path.read_text(encoding="utf-8")))
+
+    def extract_test_features(
+        self,
+        cases: Sequence[Dict[str, Any]],
+        *,
+        source_dataset: Optional[str] = None,
+    ) -> Tuple[Tuple[EvidencePack, ...], Tuple[CaseFeatures, ...]]:
+        """Transform test inputs using frozen train-only parameters."""
+        dictionary = dictionary_for(self.feature_profile)
+        packs = tuple(
+            build_packs(cases, source_dataset=source_dataset or self.source_dataset)
+        )
+        features = tuple(
+            extract_features(
+                pack,
+                self.thresholds,
+                self.feature_model,
+                dictionary=dictionary,
+            )
+            for pack in packs
+        )
+        return packs, features
+
+
+def fit_offline_knowledge(
+    train_cases: Sequence[Dict[str, Any]],
+    *,
+    source_dataset: str,
+    split_manifest_hash: str,
+    feature_profile: str,
+    policies: Sequence[RoutingPolicy],
+    reasoner: Optional[Any] = None,
+    top_k: int = 0,
+    build_metadata: Optional[Mapping[str, Any]] = None,
+) -> Tuple[OfflineKnowledgeBundle, TrainingKnowledgeArtifacts]:
+    """Fit and optionally LLM-enrich all train-only artifacts.
+
+    When a reasoner is supplied, every train case that enters an LLM-capable
+    branch is processed in leave-one-out mode. The validated SOP+LLM chain is
+    attached to the historical case as EvidenceGraph v2 diagnosis knowledge.
+    """
+    labels = labels_of(train_cases)
+    dictionary = dictionary_for(feature_profile)
+    thresholds = fit_thresholds(train_cases)
+    packs = tuple(build_packs(train_cases, source_dataset=source_dataset))
+    model = fit_feature_model(packs, dictionary=dictionary)
+    features = tuple(
+        extract_features(pack, thresholds, model, dictionary=dictionary)
+        for pack in packs
+    )
+    sop = learn_sop(
+        features,
+        labels,
+        source=f"{Path(source_dataset).name}:manifest-train",
+    )
+    graph = EvidenceGraph.build(
+        features,
+        labels,
+        feature_model=model,
+        dictionary=dictionary,
+        source_dataset=source_dataset,
+        confirmed_by="dataset:manifest-train",
+    )
+    train_results = match_many(graph, features, top_k=top_k, leave_one_out=True)
+
+    branch_calibrations: Dict[str, BranchCalibration] = {}
+    llm_calibrations: Dict[str, LLMCalibration] = {}
+    trace_artifacts: Dict[str, Dict[str, Any]] = {}
+    policy_summaries: Dict[str, Any] = {}
+    diagnosis_by_case: MutableMapping[str, Any] = {}
+
+    for policy in policies:
+        calibration = fit_calibration(
+            train_results,
+            packs,
+            labels,
+            policy=policy,
+            source="manifest-train-loo",
+        )
+        branch_calibrations[policy.name] = calibration
+        traces: Dict[str, Any] = {}
+        paired = handle_many(
+            train_results,
+            packs,
+            calibration,
+            policy=policy,
+            reasoner=reasoner,
+            trace_collector=traces,
+            features=features,
+            sop_model=sop,
+        )
+        outcomes = [item[1] for item in paired]
+        if reasoner is not None:
+            llm_calibration = LLMCalibration.fit(
+                outcomes,
+                [traces.get(outcome.case_id) for outcome in outcomes],
+                labels,
+                source=f"manifest-train-loo-llm:{policy.name}",
+            )
+            llm_calibrations[policy.name] = llm_calibration
+            outcomes = [
+                apply_llm_calibration(outcome, traces.get(outcome.case_id), llm_calibration)
+                for outcome in outcomes
+            ]
+
+        final_decisions = decide_many(outcomes, DEFAULT_DECISION_POLICY)
+        for pack, feature, outcome, final_decision, confirmed_label in zip(
+            packs, features, outcomes, final_decisions, labels
+        ):
+            diagnosis_by_case[pack.case_id] = build_case_diagnosis(
+                pack,
+                feature,
+                outcome,
+                final_decision,
+                sop_version=sop.version,
+                constraint_library_version=CONSTRAINT_LIBRARY.version,
+                confirmed_by="dataset:manifest-train",
+                confirmed_label=confirmed_label,
+            )
+        trace_artifacts[policy.name] = {
+            case_id: trace.to_dict() for case_id, trace in sorted(traces.items())
+        }
+        policy_summaries[policy.name] = {
+            "case_count": len(features),
+            "llm_trace_count": len(traces),
+            "llm_accepted_count": sum(
+                getattr(trace, "accepted", None) is not None for trace in traces.values()
+            ),
+            "prediction_matches_training_label": sum(
+                outcome.verdict == label for outcome, label in zip(outcomes, labels)
+            ),
+            "answered_count": sum(outcome.verdict is not None for outcome in outcomes),
+            "branch_calibration": calibration.to_dict(),
+            "llm_calibration": (
+                llm_calibrations[policy.name].to_dict()
+                if policy.name in llm_calibrations
+                else None
+            ),
+        }
+
+    if diagnosis_by_case:
+        graph = graph.with_case_diagnoses(
+            [diagnosis_by_case[case_id] for case_id in sorted(diagnosis_by_case)]
+        )
+
+    bundle = OfflineKnowledgeBundle(
+        schema_version=KNOWLEDGE_BUNDLE_SCHEMA,
+        source_dataset=source_dataset,
+        split_manifest_hash=split_manifest_hash,
+        feature_profile=feature_profile,
+        thresholds=thresholds,
+        feature_model=model,
+        graph=graph,
+        sop=sop,
+        training_features=features,
+        branch_calibrations=branch_calibrations,
+        llm_calibrations=llm_calibrations,
+        build_metadata=dict(build_metadata or {}),
+    )
+    bundle.validate()
+    return bundle, TrainingKnowledgeArtifacts(
+        summary={
+            "schema_version": "training-knowledge-summary-v1",
+            "train_case_count": len(train_cases),
+            "historical_vector_count": len(features),
+            "evidence_graph_case_count": len(graph.cases),
+            "evidence_graph_diagnosis_count": len(graph.case_diagnoses),
+            "graph_version": graph.version,
+            "graph_purity": graph.purity_report(),
+            "sop": sop.to_dict(),
+            "policies": policy_summaries,
+        },
+        traces=trace_artifacts,
+    )
