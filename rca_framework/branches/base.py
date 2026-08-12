@@ -19,22 +19,12 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
-from ..types import ROOT_CAUSES
+from ..types import ROOT_CAUSES, wilson_lower_bound
 
 
-def wilson_lower_bound(successes: int, total: int, z: float = 1.96) -> float:
-    """二项比例的 Wilson 置信下界。
-
-    用 Wilson 而不是正态近似，是因为样本量小、比例接近 0 或 1 时正态近似会给出
-    区间越界的荒谬结果（例如 2/2 的下界算成 1.0）。
-    """
-    if total <= 0:
-        return 0.0
-    phat = successes / total
-    denominator = 1.0 + z * z / total
-    centre = phat + z * z / (2 * total)
-    margin = z * math.sqrt((phat * (1.0 - phat) + z * z / (4 * total)) / total)
-    return round(max(0.0, (centre - margin) / denominator), 6)
+#: 从 `types` re-export：实现下沉到叶子模块以打破 features -> expert -> branches
+#: -> features 的循环，调用点与行为都不变。
+wilson_lower_bound = wilson_lower_bound
 
 
 def majority_label(labels: Sequence[str]) -> Optional[str]:

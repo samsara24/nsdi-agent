@@ -29,6 +29,7 @@ from .decision import (
 )
 from .evidence_graph import EvidenceGraph, RoutingPolicy, match_many
 from .evidence_pack import EvidencePack, build_packs, labels_of
+from .expert import ExpertCalibration, diagnose_many
 from .features.dictionary import dictionary_for
 from .features.extractor import CaseFeatures, FeatureModel, extract_features, fit_feature_model
 from .feedback import build_case_diagnosis
@@ -59,6 +60,9 @@ class OfflineKnowledgeBundle:
     training_features: Tuple[CaseFeatures, ...]
     branch_calibrations: Mapping[str, BranchCalibration]
     llm_calibrations: Mapping[str, LLMCalibration] = field(default_factory=dict)
+    #: 专家规则各分组在训练集上的实测可靠性。规则本身来自现网经验、不含拟合参数，
+    #: 但「这条规则有多可信」必须留在训练边界内，因此它和分支标定一样进知识包。
+    expert_calibration: Optional[ExpertCalibration] = None
     #: 每个路由策略在训练留一法上反解出的 M9 工作点。测试阶段只读加载，不重新拟合。
     decision_policies: Mapping[str, DecisionPolicy] = field(default_factory=dict)
     build_metadata: Mapping[str, Any] = field(default_factory=dict)
@@ -92,6 +96,9 @@ class OfflineKnowledgeBundle:
                 name: calibration.to_dict()
                 for name, calibration in sorted(self.llm_calibrations.items())
             },
+            "expert_calibration": (
+                self.expert_calibration.to_dict() if self.expert_calibration is not None else None
+            ),
             "decision_policies": {
                 name: policy.to_dict()
                 for name, policy in sorted(self.decision_policies.items())
@@ -134,6 +141,11 @@ class OfflineKnowledgeBundle:
                 str(name): LLMCalibration.from_dict(item)
                 for name, item in value.get("llm_calibrations", {}).items()
             },
+            expert_calibration=(
+                ExpertCalibration.from_dict(value["expert_calibration"])
+                if value.get("expert_calibration")
+                else None
+            ),
             decision_policies={
                 str(name): DecisionPolicy(
                     version=str(item.get("version", DEFAULT_DECISION_POLICY.version)),
@@ -220,6 +232,56 @@ class OfflineKnowledgeBundle:
             for pack in packs
         )
         return packs, features
+
+    def expert_predictions(
+        self,
+        packs: Sequence[EvidencePack],
+    ) -> Tuple[Optional[Dict[str, Any]], ...]:
+        """用训练集标定给测试 case 的专家裁决打分。
+
+        规则在测试期照常运行——它没有参数需要冻结；被冻结的是可靠性统计。
+        知识包里没有专家标定时全部返回 `None`，M9 于是看不到专家候选，
+        而不是拿一个没有标定的下界去闯门禁。
+        """
+        if self.expert_calibration is None:
+            return tuple(None for _ in packs)
+        return tuple(
+            self.expert_calibration.prediction(diagnosis)
+            for diagnosis in diagnose_many(packs)
+        )
+
+
+def out_of_fold_expert_predictions(
+    packs: Sequence[EvidencePack],
+    labels: Sequence[str],
+    *,
+    folds: int = 5,
+) -> Tuple[Optional[Dict[str, Any]], ...]:
+    """折外的专家规则打分，供门限反解使用。
+
+    这里折外的只有**可靠性统计**，规则输出本身与折划分无关——这正是专家规则
+    与 SOP 的结构性差异：SOP 折外要重新学一棵树，专家规则只要重新数一遍
+    「同组里有多少条判对了」。因此这里不存在留一法那种叶内反序问题
+    （见 `_out_of_fold_sop_predictions`），折外与全量的差值就是纯粹的乐观量。
+    """
+    diagnoses = diagnose_many(packs)
+    assignments = stratified_folds(labels, folds)
+    out: list[Optional[Dict[str, Any]]] = [None] * len(packs)
+    for held_out in assignments:
+        if not held_out:
+            continue
+        held = set(held_out)
+        keep = [index for index in range(len(packs)) if index not in held]
+        if not keep:
+            continue
+        calibration = ExpertCalibration.fit(
+            [diagnoses[index] for index in keep],
+            [labels[index] for index in keep],
+            source=f"train-oof{folds}",
+        )
+        for index in held_out:
+            out[index] = calibration.prediction(diagnoses[index])
+    return tuple(out)
 
 
 def _loo_sop_predictions(
@@ -366,6 +428,11 @@ def fit_offline_knowledge(
         confirmed_by="dataset:manifest-train",
     )
     train_results = match_many(graph, features, top_k=top_k, leave_one_out=True)
+    # 专家规则不学参数，因此这里只统计各规则组在训练集上的实测可靠性。
+    # 测试期用的就是这张表；门限反解另用折外版本，两者之差即为乐观量。
+    expert_calibration = ExpertCalibration.fit(
+        diagnose_many(packs), labels, source="manifest-train"
+    )
 
     branch_calibrations: Dict[str, BranchCalibration] = {}
     llm_calibrations: Dict[str, LLMCalibration] = {}
@@ -413,6 +480,7 @@ def fit_offline_knowledge(
         # 阈值偏乐观；而用留一法则会反向污染——叶内符合结论的 case 置信度必然更低
         # （见 `_out_of_fold_sop_predictions`），反解出的门限专挑反例放行。
         oof_sop = _out_of_fold_sop_predictions(features, labels, sop=sop)
+        oof_expert = out_of_fold_expert_predictions(packs, labels)
         decision_policy = DEFAULT_DECISION_POLICY
         decision_fit: Optional[Dict[str, Any]] = None
         if target_selective_risk is not None:
@@ -425,10 +493,17 @@ def fit_offline_knowledge(
             )
             rows = [
                 (
-                    build_candidates(outcome, sop_prediction=sop_pred, policy=probe_policy),
+                    build_candidates(
+                        outcome,
+                        sop_prediction=sop_pred,
+                        expert_prediction=expert_pred,
+                        policy=probe_policy,
+                    ),
                     label,
                 )
-                for outcome, sop_pred, label in zip(outcomes, oof_sop, labels)
+                for outcome, sop_pred, expert_pred, label in zip(
+                    outcomes, oof_sop, oof_expert, labels
+                )
             ]
             decision_policy, decision_fit = fit_decision_policy(
                 rows,
@@ -442,7 +517,12 @@ def fit_offline_knowledge(
             )
             decision_policies[policy.name] = decision_policy
 
-        final_decisions = decide_many(outcomes, decision_policy, sop_predictions=oof_sop)
+        final_decisions = decide_many(
+            outcomes,
+            decision_policy,
+            sop_predictions=oof_sop,
+            expert_predictions=oof_expert,
+        )
         for pack, feature, outcome, final_decision, confirmed_label in zip(
             packs, features, outcomes, final_decisions, labels
         ):
@@ -483,6 +563,12 @@ def fit_offline_knowledge(
             "oof_sop_correct": sum(
                 (item or {}).get("verdict") == label for item, label in zip(oof_sop, labels)
             ),
+            "oof_expert_answered": sum(
+                1 for item in oof_expert if item is not None and item.get("verdict") is not None
+            ),
+            "oof_expert_correct": sum(
+                (item or {}).get("verdict") == label for item, label in zip(oof_expert, labels)
+            ),
         }
         if decision_fit is not None:
             decision_fits[policy.name] = decision_fit
@@ -504,6 +590,7 @@ def fit_offline_knowledge(
         training_features=features,
         branch_calibrations=branch_calibrations,
         llm_calibrations=llm_calibrations,
+        expert_calibration=expert_calibration,
         decision_policies=decision_policies,
         build_metadata=dict(build_metadata or {}),
     )
@@ -518,6 +605,7 @@ def fit_offline_knowledge(
             "graph_version": graph.version,
             "graph_purity": graph.purity_report(),
             "sop": sop.to_dict(),
+            "expert_calibration": expert_calibration.to_dict(),
             "policies": policy_summaries,
         },
         traces=trace_artifacts,

@@ -43,7 +43,16 @@ from typing import Any, Dict, Iterable, Sequence, Tuple
 #: C21 把这个陷阱写成禁止推断——它是本数据集上最容易被误当成信号的量；
 #: C22 则是同一轮审计里唯一站得住的正向发现：同侧接收 lane 间不均衡，
 #: 是训练集上唯一一个 Wilson 下界超过 L1 先验的观测条件。
-CONSTRAINT_LIBRARY_VERSION = "constraint-library-v5"
+#: v6 注入 `docs/EXPERT_EXPERIENCE.md` 的现网专家归因方向表（C23-C26）。
+#: 这四条与 v3-v5 的所有约束有一个方法论上的区别：**异常的定义换了**。
+#: 此前所有 `measured` 约束都建立在训练集分位数口径的 token 上（`level:...:low_tail`
+#: 之类），v6 建立在专家的固定工程阈值上（`expert:...` 家族，特征字典 v3）。
+#: 这个区别不是形式上的：同一段物理事实「L2 侧接收异常支持 L1」，
+#: 在分位数口径下 Wilson 下界 30.0% 与 L1 先验 30.4% 无法区分（C17 的实测结论），
+#: 换成专家阈值口径后下界升到 38.7%，明显超过先验。
+#: 因此 C24 不是推翻 C17，而是限定 C17 的适用范围：它否掉的是分位数口径的证据，
+#: 不是这段物理关系本身。迭代 2 得出的「70~75% 可辨识上限」同样要按这个口径重读。
+CONSTRAINT_LIBRARY_VERSION = "constraint-library-v6"
 
 CONSTRAINT_KINDS: Tuple[str, ...] = ("invariant", "exclusion", "indicator", "caveat")
 PROVENANCES: Tuple[str, ...] = ("device_spec", "measured", "derived")
@@ -940,6 +949,206 @@ _CONSTRAINTS: Tuple[Constraint, ...] = (
         applies_to_token_prefixes=("imbalance:L2:rxpower",),
         allowed_effects=("support",),
         allowed_targets=("L1",),
+    ),
+    Constraint(
+        constraint_id="C23_expert_receive_anomaly_on_l1_supports_l2",
+        category="attribution_direction",
+        kind="indicator",
+        title="L1 侧接收类读数越出工程阈值时，故障指向对端 L2 的发送链路",
+        physical_statement=(
+            "接收侧读数度量的是**对端发出、穿过介质之后**到达本端的光，"
+            "因此接收类指标（rxpower、media_snr）越出工程阈值时，"
+            "故障不可能出在本端自己的发送器上。现网专家规则据此把"
+            "「rxpower 异常」「media_snr 异常」以及三项组合异常（serdes_snr + media_snr + "
+            "rxpower 同侧同时异常）统一定界到**异常所在端的对端**。"
+            "组合异常的物理含义更强：光口、介质侧信噪比与电口三级同时劣化，"
+            "说明整条接收通道拿到的信号本身就是坏的，而不是本端某一级的问题。"
+        ),
+        formal_expression=(
+            "expert_receive_anomaly(L1)  =>  support L2"
+            "  其中 expert_receive_anomaly 按 EXPERT_EXPERIENCE.md §3.3 的固定阈值判定"
+        ),
+        parameters=(
+            ("rxpower 判异阈值", "断光 -40 dBm / 低值 < -2.5 dBm / 高值 > 4.6 dBm / lane 极差 > 1 dB"),
+            ("media_snr 判异阈值", "断光 0 / 低值 < 22.4 / 高值 > 28.7 / lane 极差 > 3"),
+            ("训练集触发", "58/161"),
+            ("对端归因正确率", "46/58 = 79.3%"),
+            ("Wilson 95% 下界", "67.2%"),
+            ("L2 类别先验", "62.1%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split：按专家阈值判定后由 L1 侧接收类异常"
+            "（含三项组合异常）胜出仲裁的 58 条中，根因确为对端 L2 的 46 条 = 79.3%，"
+            "Wilson 下界 67.2% 超过 L2 先验 62.1%。"
+            "留出集同向：34 条中 28 条 = 82.4%（下界 66.5%，先验 62.6%）。"
+            "两个切分的下界都超过先验，且规则不含任何在本数据集上拟合的参数。"
+        ),
+        diagnostic_use=(
+            "命中即可支持 L2。它与 C16 说的是同一段物理关系，但证据口径不同："
+            "C16 用的是分位数 token（`drop:L1:rxpower:` 等），本条用的是工程阈值 token"
+            "（`expert:L1:...`）。同一条 case 可能只命中其中一种，两者可以互相印证，"
+            "但不得把它们当成两条独立证据——它们读的是同一批原始读数。"
+        ),
+        prompt_text=(
+            "L1（400G）侧的接收光功率或介质侧信噪比越出工程阈值时，支持根因在对端 L2。"
+            "理由是接收侧看到的光是对端发出的，本端自己的发送器不在这条光路上。"
+            "实测 58 条命中里 46 条根因确实在 L2（79.3%，95% 下界 67.2%，L2 基础比例 62.1%）。"
+            "若 serdes_snr、media_snr、rxpower 三项在同一侧同时异常，这条证据更强。"
+        ),
+        applies_to_token_prefixes=(
+            "expert:L1:rxpower:",
+            "expert:L1:media_snr:",
+            "expert:pattern:L1:multi_metric",
+            "expert:points_to:L1:L2",
+        ),
+        allowed_effects=("support",),
+        allowed_targets=("L2",),
+    ),
+    Constraint(
+        constraint_id="C24_expert_receive_anomaly_on_l2_supports_l1",
+        category="attribution_direction",
+        kind="indicator",
+        title="L2 侧接收类读数越出工程阈值时，故障指向对端 L1 的发送链路",
+        physical_statement=(
+            "C23 的镜像方向。物理上这条关系本来就是对称的——接收侧看到的永远是"
+            "对端发出的光——此前之所以只承认 L1 受害方向（C16 / C17），"
+            "是因为在分位数口径下 L2 方向测不出增益。"
+        ),
+        formal_expression="expert_receive_anomaly(L2)  =>  support L1",
+        parameters=(
+            ("训练集触发", "22/161"),
+            ("对端归因正确率", "13/22 = 59.1%"),
+            ("Wilson 95% 下界", "38.7%"),
+            ("L1 类别先验", "30.4%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split：由 L2 侧接收类专家异常胜出仲裁的 22 条中，"
+            "根因确为对端 L1 的 13 条 = 59.1%，Wilson 下界 38.7% 超过 L1 先验 30.4%。"
+            "留出集 27 条中 17 条 = 63.0%（下界 44.2%）。"
+            "**与 C17 的关系必须写清楚**：C17 在分位数口径（`drop:L2:rxpower:` 等）下测到"
+            "下界 30.0%、与先验 30.4% 无法区分，因此判定该方向不可用。"
+            "换成工程阈值口径后同一段物理关系变得可用，说明 C17 否掉的是那一种证据定义，"
+            "不是这段物理关系。这也是迭代 3 最重要的方法论结论："
+            "**「现有遥测无法判别 X」这类负结论必须连同异常定义一起陈述，否则会被过度推广。**"
+        ),
+        diagnostic_use=(
+            "命中即可支持 L1，但强度弱于 C23（下界 38.7% vs 67.2%）："
+            "支持少数类需要的证据强度本来就低，不要把两者的下界直接比大小。"
+            "命中时应同时给出补采建议（L1 侧各发送通道的功率与偏置电流历史）。"
+            "不得与 C17 同时引用：两者读的是同一批原始读数的不同判定口径。"
+        ),
+        prompt_text=(
+            "L2（200G）侧的接收光功率或介质侧信噪比越出工程阈值时，支持根因在对端 L1。"
+            "实测 22 条命中里 13 条根因确实在 L1（59.1%，95% 下界 38.7%，L1 基础比例 30.4%）。"
+            "注意这条与 C17 的适用条件不同：C17 针对的是「相对本数据集分位数偏低」，"
+            "本条针对的是「越出工程阈值」，后者才具备判别力。同一条 case 不要两条都引。"
+        ),
+        applies_to_token_prefixes=(
+            "expert:L2:rxpower:",
+            "expert:L2:media_snr:",
+            "expert:pattern:L2:multi_metric",
+            "expert:points_to:L2:L1",
+        ),
+        allowed_effects=("support",),
+        allowed_targets=("L1",),
+    ),
+    Constraint(
+        constraint_id="C25_expert_local_chain_anomaly_on_l1_supports_l1",
+        category="attribution_direction",
+        kind="indicator",
+        title="L1 侧发送与电口读数越出工程阈值时，故障指向 L1 自身",
+        physical_statement=(
+            "与接收类相反，发送光功率（txpower）、主机侧信噪比（host_snr）与 SerDes 信噪比"
+            "（serdes_snr）度量的都是**本端自己产生的信号**，光没有出过本端的模块，"
+            "因此它们越阈时指向本端。这正是专家方向表分成两类的物理依据："
+            "看到的是别人发来的光就归对端，看到的是自己发出的信号就归自己。"
+            "发送侧断光（txpower lane_down）是全表最高优先级——它是一个确定性事实，"
+            "不需要与其它证据比较强弱。"
+        ),
+        formal_expression="expert_local_chain_anomaly(L1)  =>  support L1",
+        parameters=(
+            ("训练集触发", "18/161"),
+            ("本端归因正确率", "11/18 = 61.1%"),
+            ("Wilson 95% 下界", "38.6%"),
+            ("L1 类别先验", "30.4%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split：由 L1 侧发送 / 电口类专家异常胜出仲裁的 18 条中，"
+            "根因确为 L1 的 11 条 = 61.1%，Wilson 下界 38.6% 超过 L1 先验 30.4%。"
+            "留出集 11 条中 6 条 = 54.5%（下界 28.0%），略低于先验，样本量也小；"
+            "因此本条只能作为弱支持，不能单独定论。"
+        ),
+        diagnostic_use=(
+            "命中可支持 L1，但必须标注为弱证据并建议人工确认。"
+            "唯一的例外是 `expert:L1:txpower:lane_down`：本端发送断光是确定性事实，"
+            "按 C6 还可同时排除 fiber。"
+        ),
+        prompt_text=(
+            "L1（400G）侧的发送光功率、主机侧信噪比或 SerDes 信噪比越出工程阈值时，支持根因在 L1 自身，"
+            "因为这些读数度量的是本端自己产生的信号，不经过光纤也不来自对端。"
+            "实测 18 条命中里 11 条根因在 L1（61.1%，95% 下界 38.6%，L1 基础比例 30.4%），"
+            "属于弱证据，需人工确认。本端发送断光是例外，它是确定性事实。"
+        ),
+        applies_to_token_prefixes=(
+            "expert:L1:txpower:",
+            "expert:L1:host_snr:",
+            "expert:L1:serdes_snr:",
+            "expert:pattern:L1:port_down",
+            "expert:points_to:L1:L1",
+        ),
+        allowed_effects=("support",),
+        allowed_targets=("L1",),
+    ),
+    Constraint(
+        constraint_id="C26_expert_local_chain_anomaly_on_l2_is_not_discriminative",
+        category="attribution_direction",
+        kind="caveat",
+        title="L2 侧发送与电口读数越阈不足以支持 L2",
+        physical_statement=(
+            "C25 的镜像方向在物理上同样成立，但在本数据集上不具备判别力——"
+            "不是因为物理不对，而是因为 L2 的类别先验已经有 62.1%，"
+            "一条把 63.3% 的 case 判对的规则并没有比「什么都不看直接报 L2」更好。"
+            "这是所有面向多数类的证据都要过的一关：**支持多数类需要的下界远高于支持少数类**。"
+        ),
+        formal_expression=(
+            "expert_local_chain_anomaly(L2)  =>  P(L2) 与先验不可区分；不得据此断言 L2"
+        ),
+        parameters=(
+            ("训练集触发", "30/161"),
+            ("本端归因正确率", "19/30 = 63.3%"),
+            ("Wilson 95% 下界", "45.5%"),
+            ("L2 类别先验", "62.1%"),
+        ),
+        provenance="measured",
+        measured_evidence=(
+            "rca_v2_l2fixed manifest train split：由 L2 侧发送 / 电口类专家异常胜出仲裁的 30 条中，"
+            "根因为 L2 的 19 条 = 63.3%，Wilson 下界 45.5% **低于** L2 先验 62.1%。"
+            "留出集上这一组反而很准（22 条中 20 条 = 90.9%，下界 72.2%），"
+            "但两个切分差 27 个百分点、训练集下界不达标，按本仓库既定口径不足以升级为 support。"
+            "记录这个分歧本身有价值：它说明该规则组的可靠性不稳定，需要更多数据才能定论。"
+        ),
+        diagnostic_use=(
+            "命中时只能作为中性观察写进推理链，不得作为 support。"
+            "若同一条 case 上没有任何其它方向证据，应输出「候选 L2，证据不足以定论」"
+            "并请求补采 L2 侧发送通道的历史读数。"
+        ),
+        prompt_text=(
+            "L2（200G）侧的发送光功率、主机侧信噪比或 SerDes 信噪比越阈，不能作为支持 L2 的证据。"
+            "实测该条件下判对率 63.3%（95% 下界 45.5%），而 L2 的基础比例本来就有 62.1%，"
+            "也就是说它并不比直接报 L2 更好。此时应把它记为中性观察，并说明证据不足。"
+        ),
+        applies_to_token_prefixes=(
+            "expert:L2:txpower:",
+            "expert:L2:host_snr:",
+            "expert:L2:serdes_snr:",
+            "expert:pattern:L2:port_down",
+            "expert:points_to:L2:L2",
+        ),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
     ),
 )
 

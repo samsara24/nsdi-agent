@@ -24,6 +24,7 @@ from typing import Any, Dict, Iterable, Sequence, Tuple
 
 FEATURE_DICTIONARY_VERSION = "feature-dictionary-v1"
 FEATURE_DICTIONARY_V2_VERSION = "feature-dictionary-v2"
+FEATURE_DICTIONARY_V3_VERSION = "feature-dictionary-v3"
 
 #: 连续量分档采用训练集分位数，只把两侧尾部编码为 token，中间区间不产出 token。
 #: 0.25 / 0.75 是默认边界；改这两个数会改变 `content_hash()`。
@@ -35,7 +36,7 @@ DOWN_SENTINEL_DBM = -39.0
 
 #: 家族的准入状态。`v1` 是冻结进特征字典 v1 的家族，`candidate` 是已实现但未通过
 #: T1 选型的家族：它们保留在代码里供消融与后续数据集重测，但不进 v1 signature。
-FAMILY_STATUSES: Tuple[str, ...] = ("v1", "v2", "candidate")
+FAMILY_STATUSES: Tuple[str, ...] = ("v1", "v2", "v3", "candidate")
 
 
 @dataclass(frozen=True)
@@ -305,6 +306,68 @@ _FAMILIES: Tuple[FeatureFamily, ...] = (
         ),
     ),
     FeatureFamily(
+        name="expert_anomaly",
+        dimension="现网专家阈值判定出的逐侧逐指标异常",
+        physical_meaning=(
+            "`docs/EXPERT_EXPERIENCE.md` 记录的现网专家规则用一组固定阈值判定异常，"
+            "而本字典其余家族用的是训练集分位数。两者不是同一件事：分位数问的是"
+            "「这条 case 在本数据集里算不算离群」，专家阈值问的是「这个读数在器件规格上"
+            "算不算异常」。前者随数据集漂移，后者不漂移。"
+            "迭代 3 实测出这个区别是决定性的：专家阈值口径下 L2 侧接收异常支持 L1 的"
+            "Wilson 下界 38.7% 超过 L1 先验 30.4%，而同一件事在分位数口径下"
+            "（C17 的实测）下界 30.0% 与先验无法区分。**同一段物理事实，换一个"
+            "异常定义就从没有判别力变成有判别力**，说明此前测到的可辨识上限属于"
+            "特征抽象而不属于遥测本身。"
+        ),
+        unit="类别（lane_down / low_value / high_value / lane_diff）",
+        value_domain=("lane_down", "low_value", "high_value", "lane_diff"),
+        extraction_rule=(
+            "对每侧每个专家指标（rxpower、txpower、host_snr、media_snr、serdes_snr），"
+            "按 EXPERT_EXPERIENCE.md §3.2 的短路顺序取唯一异常类型："
+            "lane_down（任一 lane 触及 down 阈值）-> low_value -> high_value -> "
+            "lane_diff（极差超阈）。无异常不产出 token。"
+            "host_snr 沿用文档 §2.3 的特殊处理：该侧无任何正值时整项作废。"
+        ),
+        token_template="expert:{side}:{metric}:{anomaly_type}",
+        sparsity="每侧每指标最多 1 个，实测每 case 平均约 2-3 个",
+        tier="core",
+        status="v3",
+        selection_note=(
+            "阈值来自现网经验，不在本数据集上拟合，因此它不受 train/test 边界约束；"
+            "受约束的是各规则组的可靠性统计，那部分留在知识包里。"
+        ),
+    ),
+    FeatureFamily(
+        name="expert_pattern",
+        dimension="专家规则的组合模式与归因方向",
+        physical_meaning=(
+            "单个指标异常只说明「哪里不对」，专家规则的价值在于**指向哪一端**。"
+            "本家族把两条组合模式和最终归因方向显式编码："
+            "`multi_metric` 是同侧 serdes_snr + media_snr + rxpower 同时异常，"
+            "物理含义是整条接收通道劣化，因而指向对端发送链路；"
+            "`points_to` 记录该侧证据按方向表得出的定界端。"
+            "把方向做成 token，是为了让 SOP 与 LLM 能直接引用它，"
+            "而不是各自从原始读数里重新推一遍方向——迭代 2 实测 LLM 自己推方向会推反。"
+        ),
+        unit="类别",
+        value_domain=("multi_metric", "port_down", "points_to_L1", "points_to_L2"),
+        extraction_rule=(
+            "同侧 serdes_snr / media_snr / rxpower 三项都异常时产出 "
+            "`expert:pattern:{side}:multi_metric`；该侧 txpower 与 rxpower 都无有效发光时产出 "
+            "`expert:pattern:{side}:port_down`；该侧命中的最高优先级规则指向 X 时产出 "
+            "`expert:points_to:{side}:{X}`。不产出最终裁决 token，"
+            "合并两端与兜底仍由 `rca_framework.expert` 负责，避免特征层把答案直接写进 signature。"
+        ),
+        token_template="expert:pattern:{side}:{pattern} / expert:points_to:{side}:{target}",
+        sparsity="每侧最多 3 个 token",
+        tier="attribution_direction",
+        status="v3",
+        selection_note=(
+            "`points_to` 是方向知识的 token 化，是 v3 相对 v2 的核心增量。"
+            "它不等于最终结论：两端可能互相矛盾，仲裁与兜底不在特征层做。"
+        ),
+    ),
+    FeatureFamily(
         name="serdes_state",
         dimension="SerDes SNR 是否只有有效 / 失效二值信息",
         physical_meaning=(
@@ -345,6 +408,10 @@ V2_FAMILIES: Tuple[str, ...] = (
     "serdes_state",
 )
 
+#: v3 = v2 + 专家阈值口径的异常与方向 token。加而不改：v2 的七个家族原样保留，
+#: 这样 v2 与 v3 的差异可以严格归因到「注入专家知识」这一件事上。
+V3_FAMILIES: Tuple[str, ...] = V2_FAMILIES + ("expert_anomaly", "expert_pattern")
+
 ALL_FAMILIES: Tuple[FeatureFamily, ...] = _FAMILIES
 
 #: 声明了全部家族的完整字典，供 `scripts/sweep_feature_families.py` 做消融。
@@ -381,10 +448,25 @@ FEATURE_DICTIONARY_V2 = FeatureDictionary(
 )
 
 
+#: `rca_v2_l2fixed` 的 v3 字典：在 v2 之上注入专家阈值口径的异常与归因方向 token。
+FEATURE_DICTIONARY_V3 = FeatureDictionary(
+    version=FEATURE_DICTIONARY_V3_VERSION,
+    families=tuple(family for family in _FAMILIES if family.name in V3_FAMILIES),
+    notes=(
+        "v3 = v2 + expert_anomaly + expert_pattern，v2 的家族逐字不变。",
+        "专家阈值来自 docs/EXPERT_EXPERIENCE.md，是数据集之外的人工经验，不在训练集上拟合；"
+        "因此 v3 与 v2 的差异衡量的是「注入专家知识的收益」，不是「多学了几个参数」。",
+        "expert_pattern 里的 points_to token 是逐侧方向判断，不是最终裁决；"
+        "两端仲裁与兜底仍由 rca_framework.expert 负责。",
+    ),
+)
+
+
 #: 命名 profile，用于家族消融与 T10 的实验配置。
 PROFILES: Dict[str, Tuple[str, ...]] = {
     "v1": V1_FAMILIES,
     "v2": V2_FAMILIES,
+    "v3": V3_FAMILIES,
     "legacy_equivalent": ("status_fault", "fence_outlier", "lane_imbalance"),
     "v1_no_level": ("signal_drop", "status_fault", "lane_imbalance"),
     "v1_plus_lane_direction": V1_FAMILIES + ("lane_direction",),
@@ -404,6 +486,8 @@ def dictionary_for(profile: str) -> FeatureDictionary:
         return FEATURE_DICTIONARY
     if profile == "v2":
         return FEATURE_DICTIONARY_V2
+    if profile == "v3":
+        return FEATURE_DICTIONARY_V3
     if profile not in PROFILES:
         raise KeyError(f"unknown feature profile: {profile}; available: {sorted(PROFILES)}")
     return FULL_DICTIONARY.subset(PROFILES[profile], version_suffix=f"::{profile}")

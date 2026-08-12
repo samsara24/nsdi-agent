@@ -200,7 +200,7 @@ def test_retry_feedback_is_labelled_as_a_past_mistake(n5c):
 
 def test_prompt_is_deterministic(n5c):
     assert build_prompt(n5c["request"]) == build_prompt(n5c["request"])
-    assert PROMPT_TEMPLATE_VERSION == "rca-constrained-reasoning-v6"
+    assert PROMPT_TEMPLATE_VERSION == "rca-constrained-reasoning-v7"
     assert len(prompt_template_hash()) == 16
 
 
@@ -322,7 +322,7 @@ def test_trace_records_every_attempt_for_the_log(n5c):
     payload = json.loads(json.dumps(trace.to_dict(), ensure_ascii=False))
     assert payload["attempt_count"] == 2
     assert payload["rewrote"] is True
-    assert payload["constraint_library_version"] == "constraint-library-v5"
+    assert payload["constraint_library_version"] == "constraint-library-v6"
     assert payload["prompt_version"] == PROMPT_TEMPLATE_VERSION
     assert len(payload["attempts"]) == 2
     assert payload["attempts"][0]["check"]["fatal_count"] > 0

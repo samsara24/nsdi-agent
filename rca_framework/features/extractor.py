@@ -28,6 +28,14 @@ from ..anomaly import (
     safe_float,
 )
 from ..evidence_pack import EvidencePack
+from ..expert import (
+    EXPERT_METRICS,
+    MULTI_METRIC_REQUIRES,
+    apply_host_snr_rule,
+    detect_side_anomalies,
+    port_down_from_values,
+    side_diagnosis_from_anomalies,
+)
 from ..types import SIDES
 from .dictionary import FEATURE_DICTIONARY, TAIL_QUANTILES, FeatureDictionary
 
@@ -299,6 +307,48 @@ def _serdes_state(case: Dict[str, Any], thresholds: ThresholdModel, model: Optio
     return tokens
 
 
+def _expert_side_values(case: Dict[str, Any], side: str) -> Dict[str, List[float]]:
+    """按专家规则的口径取一侧的 lane 读数。
+
+    与其它家族的差别在于这里**不做健康值过滤**：专家阈值把断光哨兵也当成一种
+    异常（`lane_down`），过滤掉它就丢掉了最高优先级的那条规则。
+    """
+    return apply_host_snr_rule(
+        {
+            metric: [
+                value
+                for value in lane_values(case, metric, side).values()
+                if value is not None
+            ]
+            for metric in EXPERT_METRICS
+        }
+    )
+
+
+def _expert_anomaly(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
+    tokens: List[str] = []
+    for side in SIDES:
+        anomalies = detect_side_anomalies(_expert_side_values(case, side))
+        for metric, kind in sorted(anomalies.items()):
+            tokens.append(f"expert:{side}:{metric}:{kind}")
+    return tokens
+
+
+def _expert_pattern(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
+    tokens: List[str] = []
+    for side in SIDES:
+        values = _expert_side_values(case, side)
+        anomalies = detect_side_anomalies(values)
+        if port_down_from_values(values):
+            tokens.append(f"expert:pattern:{side}:port_down")
+        if all(metric in anomalies for metric in MULTI_METRIC_REQUIRES):
+            tokens.append(f"expert:pattern:{side}:multi_metric")
+        diagnosis = side_diagnosis_from_anomalies(side, anomalies)
+        if diagnosis is not None:
+            tokens.append(f"expert:points_to:{side}:{diagnosis.location}")
+    return tokens
+
+
 FAMILY_EXTRACTORS: Dict[str, Callable[[Dict[str, Any], ThresholdModel, Optional[FeatureModel]], List[str]]] = {
     "signal_drop": _signal_drop,
     "status_fault": _status_fault,
@@ -311,6 +361,8 @@ FAMILY_EXTRACTORS: Dict[str, Callable[[Dict[str, Any], ThresholdModel, Optional[
     "alarm_kind": _alarm_kind,
     "telemetry_gap": _telemetry_gap,
     "serdes_state": _serdes_state,
+    "expert_anomaly": _expert_anomaly,
+    "expert_pattern": _expert_pattern,
 }
 
 

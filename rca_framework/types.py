@@ -1,11 +1,31 @@
 from __future__ import annotations
 
+import math
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List, Tuple
 
 
 ROOT_CAUSES: Tuple[str, ...] = ("L1", "L2", "fiber")
 SIDES: Tuple[str, ...] = ("L1", "L2")
+
+
+def wilson_lower_bound(successes: int, total: int, z: float = 1.96) -> float:
+    """二项比例的 Wilson 置信下界。
+
+    用 Wilson 而不是正态近似，是因为样本量小、比例接近 0 或 1 时正态近似会给出
+    区间越界的荒谬结果（例如 2/2 的下界算成 1.0）。
+
+    定义放在最底层的 `types` 里而不是 `branches.base`：从迭代 3 起，特征抽取层
+    也要间接依赖它，而 `branches` 包会 import 回 `features`，留在原处会成环。
+    `branches.base` 仍然 re-export 同一个函数，既有调用点不受影响。
+    """
+    if total <= 0:
+        return 0.0
+    phat = successes / total
+    denominator = 1.0 + z * z / total
+    centre = phat + z * z / (2 * total)
+    margin = z * math.sqrt((phat * (1.0 - phat) + z * z / (4 * total)) / total)
+    return round(max(0.0, (centre - margin) / denominator), 6)
 
 EVIDENCE_STATUSES: Tuple[str, ...] = (
     "anomalies_found",

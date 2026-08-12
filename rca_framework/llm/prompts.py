@@ -27,7 +27,13 @@ from ..types import ROOT_CAUSES
 #: v2 改写了弃权判据。v1 只说「证据不足就弃权」，真机实测（DeepSeek-R1-32B）
 #: 三条 case 全部因为「host_snr 未采集」弃权——而 C14 本就说明该字段常态缺失。
 #: 模型把「遥测不全」当成了「证据不足」。v2 把判据改成「可用证据能否区分候选根因」。
-PROMPT_TEMPLATE_VERSION = "rca-constrained-reasoning-v6"
+#: v7 加入归因方向表。迭代 2 的失败分析显示，73 条 LLM 回答里 58 条被约束校验打回，
+#: 其中最集中的一类是**归因方向反了**：模型看到「L1 侧收光异常」就把根因写成 L1，
+#: 而接收侧看到的光是对端发出的，本端发送器根本不在这条光路上。
+#: 这不是 prompt 措辞问题——v6 的约束清单里确实写了 C16，但它混在 20 多条约束中间，
+#: 模型要先自己意识到「该用方向类约束」才会去读。v7 把方向表提到系统级硬规则，
+#: 让它在读证据之前就已经知道每一类观测指向哪一端。
+PROMPT_TEMPLATE_VERSION = "rca-constrained-reasoning-v7"
 SOP_VERSION = "learned-sop-advisory-v2"
 
 ROOT_CAUSE_DEFINITIONS = {
@@ -36,9 +42,42 @@ ROOT_CAUSE_DEFINITIONS = {
     "fiber": "L1 与 L2 之间的光纤 / 链路介质根因",
 }
 
+#: 现网专家的归因方向表（`docs/EXPERT_EXPERIENCE.md` §5.3 / §7）。
+#:
+#: 它先于任何统计证据成立，因为它来自链路的物理结构而不是本数据集的相关性：
+#: 一侧的接收类读数度量的是**对端发出、穿过光纤后到达本端**的光，
+#: 而发送类与电口读数度量的是**本端自己产生**的信号。
+#: 把它放进系统级 preamble 而不是约束清单，是因为它是读证据的**前提**：
+#: 模型必须在解释任何一个 token 之前就知道这个 token 约束的是哪一端。
+ATTRIBUTION_DIRECTION_RULE = """归因方向（先于一切证据解释，任何一步推理都不得违反）：
+
+光链路是双向的，一端看到的现象未必由这一端造成。判断「症状在哪一端」之后，
+必须先按下表把它翻译成「根因在哪一端」，再去找支持它的约束：
+
+| 观测到的异常 | 度量的是什么 | 根因指向 |
+| --- | --- | --- |
+| rxpower（接收光功率）异常 | 对端发出、穿过光纤到达本端的光 | **对端** |
+| media_snr（介质侧信噪比）异常 | 同上，收到的光的质量 | **对端** |
+| 上面两项 + serdes_snr 在同一侧同时异常 | 整条接收通道都拿到坏信号 | **对端**（证据更强） |
+| txpower（发送光功率）异常 | 本端自己发出的光 | **本端** |
+| host_snr（主机侧信噪比）异常 | 本端电口进来的信号 | **本端** |
+| serdes_snr 单独异常 | 本端 SerDes 的信号质量 | **本端** |
+
+因此：「L1 侧收光低」支持的是 **L2**，不是 L1；「L2 侧收光低」支持的是 **L1**，不是 L2。
+把接收侧症状归给报症状的那一端，是本任务上最常见也最严重的错误。
+
+两端都有异常时按专家优先级仲裁，数值小的先赢：
+发送侧断光(0) > 三项组合异常(1) > host_snr(2) > serdes_snr(3) > media_snr(4) > rxpower(5) > 发送侧非断光异常(6)。
+两端优先级相同但指向不同时才考虑光纤。
+
+「该侧一切正常」是合法且有用的观察：把它写成 `effect=neutral`、`target=""` 的一步，
+不要为了凑证据把正常读数说成异常。
+"""
+
 SYSTEM_PREAMBLE = """你是光链路故障定界专家。你的任务是在给定的物理约束内，
 依据给定证据判断根因，或者在证据不足时明确弃权。
 
+""" + ATTRIBUTION_DIRECTION_RULE + """
 硬性要求：
 1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，
    也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。
@@ -154,6 +193,7 @@ def prompt_template_hash() -> str:
         (
             PROMPT_TEMPLATE_VERSION,
             SOP_VERSION,
+            ATTRIBUTION_DIRECTION_RULE,
             SYSTEM_PREAMBLE,
             OUTPUT_INSTRUCTION,
             inspect.getsource(_evidence_section),

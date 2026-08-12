@@ -24,7 +24,12 @@ DECISION_ACTIONS: Tuple[str, ...] = ("final", "request_evidence", "human_review"
 #: 后者是叶节点自身的标签分布。把 SOP 列为合法候选而不是仅仅当 prompt 上下文，
 #: 是因为实测中分支路线在每一条分支上都不如 SOP 叶子；把它藏在 prompt 里
 #: 等于让系统在明明有更可靠的先验时仍然输出更差的结论。
-CANDIDATE_SOURCES: Tuple[str, ...] = ("branch", "sop")
+#:
+#: `expert` 是现网人工经验规则（`rca_framework.expert`），迭代 3 加入。它与前两者
+#: 有一处根本不同：**规则本身不从本数据学任何参数**，训练集只用来统计各规则组的
+#: 可靠性。它在测试集上相对多数类 +14.02pp，而 branch / sop 两条路线的上限是 +1.4pp，
+#: 差距全部来自它携带的归因方向知识（消融见 Progress §9.33）。
+CANDIDATE_SOURCES: Tuple[str, ...] = ("branch", "sop", "expert")
 
 
 def llm_calibration_group(branch: str, confidence: float) -> str:
@@ -263,6 +268,29 @@ def sop_candidate(sop_prediction: Optional[Mapping[str, Any]]) -> Optional[Decis
     )
 
 
+def expert_candidate(
+    expert_prediction: Optional[Mapping[str, Any]],
+) -> Optional[DecisionCandidate]:
+    """把专家规则的裁决包装成候选。
+
+    与 SOP 候选的关键区别在于 `group` 的含义：SOP 的组是「训练集里落在同一叶子的
+    那批 case」，专家规则的组是「命中同一条规则的那批 case」。后者是**因果同类**
+    而不是统计同类——同组 case 共享的是一条物理归因链，不是一段特征区间。
+    这也是它的可靠性能跨 train/test 稳住的原因。
+    """
+    if not expert_prediction or expert_prediction.get("verdict") is None:
+        return None
+    return DecisionCandidate(
+        source="expert",
+        verdict=str(expert_prediction["verdict"]),
+        confidence=float(expert_prediction.get("confidence", 0.0)),
+        confidence_lower_bound=float(expert_prediction.get("confidence_lower_bound", 0.0)),
+        support=int(expert_prediction.get("support", 0)),
+        group=str(expert_prediction.get("group", "expert:unknown")),
+        reason=str(expert_prediction.get("reason", "")),
+    )
+
+
 def branch_candidate(outcome: BranchOutcome) -> Optional[DecisionCandidate]:
     if outcome.verdict is None:
         return None
@@ -281,11 +309,13 @@ def build_candidates(
     outcome: BranchOutcome,
     *,
     sop_prediction: Optional[Mapping[str, Any]] = None,
+    expert_prediction: Optional[Mapping[str, Any]] = None,
     policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
 ) -> Tuple[DecisionCandidate, ...]:
     builders = {
         "branch": lambda: branch_candidate(outcome),
         "sop": lambda: sop_candidate(sop_prediction),
+        "expert": lambda: expert_candidate(expert_prediction),
     }
     candidates = []
     for source in policy.candidate_order:
@@ -618,6 +648,15 @@ class FinalDecision:
         }
 
 
+#: 报告里对每个候选来源的说明。区分它们不是措辞问题：三者的证据强度不同，
+#: 运维看到「群体先验」和看到「本 case 的物理归因链」应当采取不同的复核动作。
+CANDIDATE_ORIGINS: Mapping[str, str] = {
+    "branch": "分支证据链",
+    "sop": "learned SOP 叶节点先验（群体统计，不是本 case 的物理证据）",
+    "expert": "专家规则归因链（现网人工经验，方向由物理链路结构决定）",
+}
+
+
 def passes_gate(candidate: DecisionCandidate, policy: DecisionPolicy) -> bool:
     return (
         candidate.verdict is not None
@@ -632,6 +671,7 @@ def decide(
     policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
     *,
     sop_prediction: Optional[Mapping[str, Any]] = None,
+    expert_prediction: Optional[Mapping[str, Any]] = None,
 ) -> FinalDecision:
     """把任意 N5 输出收敛成最终结论、补采请求或人工介入。
 
@@ -639,15 +679,16 @@ def decide(
     级联顺序是有意的：case 特异的分支证据链优先于群体先验，
     只有分支不可用或不达标时才让 SOP 叶子接手。
     """
-    candidates = build_candidates(outcome, sop_prediction=sop_prediction, policy=policy)
+    candidates = build_candidates(
+        outcome,
+        sop_prediction=sop_prediction,
+        expert_prediction=expert_prediction,
+        policy=policy,
+    )
     for candidate in candidates:
         if not passes_gate(candidate, policy):
             continue
-        origin = (
-            "分支证据链"
-            if candidate.source == "branch"
-            else "learned SOP 叶节点先验（群体统计，不是本 case 的物理证据）"
-        )
+        origin = CANDIDATE_ORIGINS.get(candidate.source, candidate.source)
         return FinalDecision(
             case_id=outcome.case_id,
             branch=outcome.branch,
@@ -729,14 +770,18 @@ def decide_many(
     policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
     *,
     sop_predictions: Optional[Sequence[Optional[Mapping[str, Any]]]] = None,
+    expert_predictions: Optional[Sequence[Optional[Mapping[str, Any]]]] = None,
 ) -> Tuple[FinalDecision, ...]:
     if sop_predictions is not None and len(sop_predictions) != len(outcomes):
         raise ValueError("sop_predictions must be the same length as outcomes")
+    if expert_predictions is not None and len(expert_predictions) != len(outcomes):
+        raise ValueError("expert_predictions must be the same length as outcomes")
     return tuple(
         decide(
             outcome,
             policy,
             sop_prediction=None if sop_predictions is None else sop_predictions[index],
+            expert_prediction=None if expert_predictions is None else expert_predictions[index],
         )
         for index, outcome in enumerate(outcomes)
     )

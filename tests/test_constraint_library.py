@@ -26,8 +26,8 @@ from rca_framework.evidence_pack import build_packs
 from rca_framework.features import dictionary_for, extract_features, fit_feature_model
 
 
-#: 约束库 v5 的内容指纹。改任何一条约束或 schema 契约都会让它变化。
-LIBRARY_CONTENT_HASH = "6db9b1c80f98090d"
+#: 约束库 v6 的内容指纹。改任何一条约束或 schema 契约都会让它变化。
+LIBRARY_CONTENT_HASH = "af09f49aba8039ca"
 
 #: T2 验收要求覆盖的物理量。
 REQUIRED_CATEGORIES = (
@@ -130,12 +130,50 @@ EXPECTED_STEP_CONTRACTS = {
         ("imbalance:L2:rxpower",),
         ("support",), ("L1",),
     ),
+    "C23_expert_receive_anomaly_on_l1_supports_l2": (
+        (
+            "expert:L1:rxpower:",
+            "expert:L1:media_snr:",
+            "expert:pattern:L1:multi_metric",
+            "expert:points_to:L1:L2",
+        ),
+        ("support",), ("L2",),
+    ),
+    "C24_expert_receive_anomaly_on_l2_supports_l1": (
+        (
+            "expert:L2:rxpower:",
+            "expert:L2:media_snr:",
+            "expert:pattern:L2:multi_metric",
+            "expert:points_to:L2:L1",
+        ),
+        ("support",), ("L1",),
+    ),
+    "C25_expert_local_chain_anomaly_on_l1_supports_l1": (
+        (
+            "expert:L1:txpower:",
+            "expert:L1:host_snr:",
+            "expert:L1:serdes_snr:",
+            "expert:pattern:L1:port_down",
+            "expert:points_to:L1:L1",
+        ),
+        ("support",), ("L1",),
+    ),
+    "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative": (
+        (
+            "expert:L2:txpower:",
+            "expert:L2:host_snr:",
+            "expert:L2:serdes_snr:",
+            "expert:pattern:L2:port_down",
+            "expert:points_to:L2:L2",
+        ),
+        ("neutral",), ("",),
+    ),
 }
 
 
 def test_library_is_frozen():
-    assert CONSTRAINT_LIBRARY.version == "constraint-library-v5"
-    assert len(CONSTRAINT_LIBRARY.constraints) == 22
+    assert CONSTRAINT_LIBRARY.version == "constraint-library-v6"
+    assert len(CONSTRAINT_LIBRARY.constraints) == 26
     assert CONSTRAINT_LIBRARY.content_hash() == LIBRARY_CONTENT_HASH
     assert len(set(CONSTRAINT_LIBRARY.ids())) == len(CONSTRAINT_LIBRARY.ids())
 
@@ -205,7 +243,7 @@ def test_all_constraints_start_pending_expert_review():
 
 def test_library_is_json_serializable():
     payload = json.dumps(CONSTRAINT_LIBRARY.to_dict(), ensure_ascii=False, sort_keys=True)
-    assert json.loads(payload)["version"] == "constraint-library-v5"
+    assert json.loads(payload)["version"] == "constraint-library-v6"
 
 
 def test_every_constraint_has_an_exact_v2_step_contract():

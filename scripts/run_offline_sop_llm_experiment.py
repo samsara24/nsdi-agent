@@ -205,7 +205,9 @@ def _parser() -> argparse.ArgumentParser:
         default=Path("datasets/rca_v2_l2fixed"),
     )
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--feature-profile", default="v2", choices=("v1", "v2", "all_families"))
+    parser.add_argument(
+        "--feature-profile", default="v2", choices=("v1", "v2", "v3", "all_families")
+    )
     parser.add_argument(
         "--policy",
         default=COVERAGE_POLICY.name,
@@ -390,6 +392,7 @@ def main() -> None:
             sop_model=bundle.sop,
             branch_calibration=bundle.branch_calibrations[policy.name],
             llm_calibration_override=bundle.llm_calibrations.get(policy.name),
+            expert_calibration=bundle.expert_calibration,
         )
         reports = {policy.name: report}
         outcomes = {policy.name: records}

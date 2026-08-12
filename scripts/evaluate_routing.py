@@ -46,8 +46,12 @@ from rca_framework.evidence_graph import (  # noqa: E402
     routing_summary,
 )
 from rca_framework.evidence_pack import build_packs, labels_of  # noqa: E402
+from rca_framework.expert import ExpertCalibration, diagnose_many  # noqa: E402
 from rca_framework.feedback import build_case_diagnosis  # noqa: E402
-from rca_framework.knowledge import _out_of_fold_sop_predictions  # noqa: E402
+from rca_framework.knowledge import (  # noqa: E402
+    _out_of_fold_sop_predictions,
+    out_of_fold_expert_predictions,
+)
 from rca_framework.report import build_report  # noqa: E402
 from rca_framework.sop import LEARNED_SOP_VERSION, learn_sop  # noqa: E402
 from rca_framework.features.dictionary import dictionary_for  # noqa: E402
@@ -351,14 +355,29 @@ def fit_train_decision_policy(
         if sop_model is not None
         else [None] * len(outcomes)
     )
+    oof_expert = (
+        out_of_fold_expert_predictions(train_packs, train_labels)
+        if "expert" in candidate_order
+        else [None] * len(outcomes)
+    )
     probe = DecisionPolicy(
         final_lower_bound=0.0,
         minimum_support=minimum_support,
         candidate_order=candidate_order,
     )
     rows = [
-        (build_candidates(outcome, sop_prediction=sop_pred, policy=probe), truth)
-        for outcome, sop_pred, truth in zip(outcomes, oof_sop, train_labels)
+        (
+            build_candidates(
+                outcome,
+                sop_prediction=sop_pred,
+                expert_prediction=expert_pred,
+                policy=probe,
+            ),
+            truth,
+        )
+        for outcome, sop_pred, expert_pred, truth in zip(
+            outcomes, oof_sop, oof_expert, train_labels
+        )
     ]
     return fit_decision_policy(
         rows,
@@ -381,6 +400,7 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
                sop_model=None,
                branch_calibration: Optional[Any] = None,
                llm_calibration_override: Optional[LLMCalibration] = None,
+               expert_calibration: Optional[ExpertCalibration] = None,
                ) -> Tuple[Dict[str, Any], List[Dict[str, Any]], Dict[str, Any]]:
     calibration = branch_calibration or fit_calibration(
         train_results, train_packs, train_labels, policy=policy
@@ -426,8 +446,17 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
         else None
         for index in range(len(outcomes))
     ]
+    # 专家规则在测试期照常运行；被训练边界冻结的是它的可靠性标定，不是规则本身。
+    expert_diagnoses = diagnose_many(test_packs)
+    expert_predictions: List[Optional[Dict[str, Any]]] = [
+        expert_calibration.prediction(diagnosis) if expert_calibration is not None else None
+        for diagnosis in expert_diagnoses
+    ]
     final_decisions = decide_many(
-        outcomes, decision_policy, sop_predictions=sop_predictions
+        outcomes,
+        decision_policy,
+        sop_predictions=sop_predictions,
+        expert_predictions=expert_predictions,
     )
 
     answered = [(o, t) for o, t in zip(outcomes, test_labels) if o.verdict is not None]
@@ -478,6 +507,8 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
             "evidence_pack": test_packs[index].to_dict(),
             "features": feature_record,
             "sop_prediction": sop_prediction,
+            "expert_diagnosis": expert_diagnoses[index].to_dict(),
+            "expert_prediction": expert_predictions[index],
             "match": match_record(result),
             "routing": routing.to_dict(),
             "branch_outcome": outcome.to_dict(),
@@ -544,7 +575,7 @@ def main() -> None:
     parser.add_argument("--train-size", type=int, default=126)
     parser.add_argument("--manifest-split", action="store_true",
                         help="从 data-dir/_metadata/manifest.json 显式读取 train/test split")
-    parser.add_argument("--feature-profile", default="v1", choices=("v1", "v2", "all_families"),
+    parser.add_argument("--feature-profile", default="v1", choices=("v1", "v2", "v3", "all_families"),
                         help="特征字典 profile；l2fixed v2 实验应使用 v2")
     parser.add_argument("--learned-sop", action="store_true",
                         help="在训练集上学习 learned-sop-v1，并接入 N5c dry-run")
@@ -703,6 +734,9 @@ def main() -> None:
             train_features=train_features,
             test_features=test_features,
             sop_model=sop_model,
+            expert_calibration=ExpertCalibration.fit(
+                diagnose_many(train_packs), labels_of(train_cases), source="manifest-train"
+            ),
         )
         reports[policy.name] = report
         all_records[policy.name] = records
