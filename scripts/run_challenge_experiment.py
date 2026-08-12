@@ -30,10 +30,14 @@ from rca_framework.expert import diagnose_many
 from rca_framework.features import dictionary_for, extract_features, fit_feature_model
 from rca_framework.llm.backend import Backend, NoneBackend, VLLMBackend
 from rca_framework.llm.challenge import (
+    CHALLENGE_PROMPT_V2_VERSION,
     CHALLENGE_PROMPT_VERSION,
     build_challenge_prompt,
+    build_premise_audit_prompt,
     challenge_metrics,
     parse_challenge,
+    parse_premise_audit,
+    score_threshold_curve,
 )
 
 
@@ -61,6 +65,23 @@ def group_reliability_baseline(
     return [group in suspect for group in test_groups]
 
 
+def _premise_distribution(records, variant: str) -> Dict[str, int]:
+    """v1 统计模型挑中的那一条前提；v2 统计每条前提被判为不成立的次数。"""
+    counts: Dict[str, int] = defaultdict(int)
+    for record in records:
+        response = record["response"]
+        if not response:
+            continue
+        if variant == "v1":
+            premise = response.get("premise_at_risk")
+            if premise:
+                counts[premise] += 1
+        else:
+            for premise in response.get("failed", ()):
+                counts[premise] += 1
+    return dict(sorted(counts.items(), key=lambda item: -item[1]))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=Path("datasets/rca_v2_l2fixed"))
@@ -72,7 +93,16 @@ def main() -> int:
     parser.add_argument("--max-tokens", type=int, default=1600)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--feature-profile", default="v3")
+    # 本机默认值会挂：自定义 all-reduce 与 NCCL_P2P_DISABLE=1 同时开启时，
+    # 引擎在注册完 cuda graph 地址后卡死在 shm 广播上（迭代 4 实测复现两次）。
+    parser.add_argument("--disable-custom-all-reduce", action="store_true", default=True)
+    parser.add_argument(
+        "--enable-custom-all-reduce",
+        dest="disable_custom_all_reduce",
+        action="store_false",
+    )
     parser.add_argument("--baseline-threshold", type=float, default=0.60)
+    parser.add_argument("--variant", choices=("v1", "v2"), default="v1")
     args = parser.parse_args()
 
     train_cases = cases_by_manifest_split(args.data_dir, "train")
@@ -89,8 +119,11 @@ def main() -> int:
         for pack in test_packs
     ]
 
+    build_prompt = (
+        build_challenge_prompt if args.variant == "v1" else build_premise_audit_prompt
+    )
     prompts = [
-        build_challenge_prompt(
+        build_prompt(
             case_id=pack.case_id,
             expert_verdict=diagnosis.verdict or "abstain",
             expert_group=diagnosis.group,
@@ -108,6 +141,7 @@ def main() -> int:
             gpu_memory_utilization=args.gpu_memory_utilization,
             max_model_len=args.max_model_len,
             max_new_tokens=args.max_tokens,
+            disable_custom_all_reduce=args.disable_custom_all_reduce,
             seed=args.seed,
         )
         if args.model_path
@@ -118,18 +152,25 @@ def main() -> int:
 
     records: List[Dict[str, Any]] = []
     rows: List[Tuple[bool, bool]] = []
+    scores: List[Tuple[int, bool]] = []
     parse_failures = 0
     for pack, diagnosis, feature, label, prompt, raw in zip(
         test_packs, test_diag, features, test_labels, prompts, outputs
     ):
-        parsed = parse_challenge(raw)
+        parsed = (
+            parse_challenge(raw) if args.variant == "v1" else parse_premise_audit(raw)
+        )
         if parsed is None:
             parse_failures += 1
-        # 解析失败按 agree 处理：无法解析不构成质疑理由，
+        # 解析失败按「不质疑」处理：无法解析不构成质疑理由，
         # 算成质疑会直接污染命中率。
-        challenged = bool(parsed and parsed.challenges)
+        score = 0 if parsed is None else (
+            int(parsed.challenges) if args.variant == "v1" else parsed.score
+        )
+        challenged = score > 0
         rule_wrong = diagnosis.verdict != label
         rows.append((challenged, rule_wrong))
+        scores.append((score, rule_wrong))
         records.append({
             "case_id": pack.case_id,
             "gold": label,
@@ -137,6 +178,7 @@ def main() -> int:
             "expert_group": diagnosis.group,
             "rule_wrong": rule_wrong,
             "challenged": challenged,
+            "score": score,
             "response": parsed.to_dict() if parsed else None,
             "raw_output": raw,
             "prompt": prompt,
@@ -155,30 +197,20 @@ def main() -> int:
 
     summary = {
         "schema_version": "challenge-experiment-v1",
-        "prompt_version": CHALLENGE_PROMPT_VERSION,
+        "prompt_version": (
+            CHALLENGE_PROMPT_VERSION if args.variant == "v1" else CHALLENGE_PROMPT_V2_VERSION
+        ),
         "backend": backend.name,
         "feature_profile": args.feature_profile,
         "seed": args.seed,
         "parse_failures": parse_failures,
         "llm_challenger": llm_metrics,
+        "score_threshold_curve": score_threshold_curve(scores),
         "group_reliability_baseline": {
             "threshold": args.baseline_threshold,
             **baseline_metrics,
         },
-        "premise_distribution": {
-            premise: sum(
-                1
-                for record in records
-                if record["response"] and record["response"]["premise_at_risk"] == premise
-            )
-            for premise in sorted(
-                {
-                    record["response"]["premise_at_risk"]
-                    for record in records
-                    if record["response"] and record["response"]["premise_at_risk"]
-                }
-            )
-        },
+        "premise_distribution": _premise_distribution(records, args.variant),
     }
 
     args.output.mkdir(parents=True, exist_ok=True)

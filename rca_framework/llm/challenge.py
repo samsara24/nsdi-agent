@@ -34,6 +34,20 @@ from .protocol import extract_json_object
 
 CHALLENGE_PROMPT_VERSION = "rca-challenge-v1"
 
+#: v2：把「要不要质疑」这个整体判断拆成逐条前提的事实检查。
+#:
+#: v1 的实测结果是完全退化的——107 条 case 全部 challenge，confidence 一律 0.8，
+#: 命中率因此等于错误率本身，信息量为零。但同一批输出也证明模型**在认真读 case**：
+#: 103 种不同解释、403 个引用 token 里只有 1 个不存在、前提类别与命中规则一一对应。
+#: 也就是说，它能读证据、能选对前提类别，缺的是「这条没问题」的判断力：
+#: 让它扮演复核者，它总能挑出毛病。
+#:
+#: v2 因此不再问它「要不要质疑」，改为逐条问「这条前提成不成立，证据是什么」。
+#: 每一条都是可对着证据 token 证伪的事实问题，而它已经证明这件事做得很好
+#: （幻觉率 0.2%）。质疑强度由「几条前提不成立」导出，是一个有方差的分数，
+#: 可以事后按任意人工预算取阈值，而不是由模型自己拍板要不要报警。
+CHALLENGE_PROMPT_V2_VERSION = "rca-challenge-v2-premise-checks"
+
 ASSESSMENTS: Tuple[str, ...] = ("agree", "challenge")
 
 #: 可被质疑的前提。做成枚举而不是自由文本，是为了让质疑本身可统计、可校验：
@@ -233,6 +247,215 @@ def build_challenge_prompt(
             json.dumps(CHALLENGE_OUTPUT_SCHEMA["properties"], ensure_ascii=False, indent=2),
         )
     )
+
+
+PREMISE_CHECK_SCHEMA: Dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "premise_checks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "premise": {"type": "string", "enum": list(PREMISES)},
+                    "holds": {"type": "boolean"},
+                    "cited_evidence": {"type": "array", "items": {"type": "string"}},
+                    "note": {"type": "string"},
+                },
+                "required": ["premise", "holds", "cited_evidence", "note"],
+                "additionalProperties": False,
+            },
+        },
+        "evidence_to_collect": {"type": "array", "items": {"type": "string"}},
+        "explanation": {"type": "string"},
+    },
+    "required": ["premise_checks", "evidence_to_collect", "explanation"],
+    "additionalProperties": False,
+}
+
+
+@dataclass(frozen=True)
+class PremiseCheck:
+    premise: str
+    holds: bool
+    cited_evidence: Tuple[str, ...] = ()
+    note: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "premise": self.premise,
+            "holds": self.holds,
+            "cited_evidence": list(self.cited_evidence),
+            "note": self.note,
+        }
+
+
+@dataclass(frozen=True)
+class PremiseAudit:
+    checks: Tuple[PremiseCheck, ...] = ()
+    evidence_to_collect: Tuple[str, ...] = ()
+    explanation: str = ""
+    raw_output: str = ""
+
+    @property
+    def failed(self) -> Tuple[str, ...]:
+        return tuple(check.premise for check in self.checks if not check.holds)
+
+    @property
+    def score(self) -> int:
+        """不成立的前提条数。质疑强度由它导出，阈值事后按人工预算取。"""
+        return len(self.failed)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "premise_checks": [check.to_dict() for check in self.checks],
+            "failed": list(self.failed),
+            "score": self.score,
+            "evidence_to_collect": list(self.evidence_to_collect),
+            "explanation": self.explanation,
+        }
+
+
+def parse_premise_audit(text: str) -> Optional[PremiseAudit]:
+    payload = extract_json_object(text)
+    if payload is None:
+        return None
+    try:
+        value = json.loads(payload)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(value, dict):
+        return None
+    raw_checks = value.get("premise_checks")
+    if not isinstance(raw_checks, list) or not raw_checks:
+        return None
+
+    checks: List[PremiseCheck] = []
+    seen: set = set()
+    for item in raw_checks:
+        if not isinstance(item, dict):
+            return None
+        premise = str(item.get("premise", ""))
+        if premise not in PREMISES or premise in seen:
+            return None
+        seen.add(premise)
+        holds = item.get("holds")
+        if not isinstance(holds, bool):
+            return None
+        raw_evidence = item.get("cited_evidence")
+        evidence = (
+            tuple(str(token) for token in raw_evidence)
+            if isinstance(raw_evidence, list)
+            else ()
+        )
+        checks.append(
+            PremiseCheck(
+                premise=premise,
+                holds=holds,
+                cited_evidence=evidence,
+                note=str(item.get("note", "") or ""),
+            )
+        )
+
+    raw_collect = value.get("evidence_to_collect")
+    return PremiseAudit(
+        checks=tuple(checks),
+        evidence_to_collect=(
+            tuple(str(item) for item in raw_collect) if isinstance(raw_collect, list) else ()
+        ),
+        explanation=str(value.get("explanation", "") or ""),
+        raw_output=text,
+    )
+
+
+SYSTEM_PREAMBLE_V2 = """你是光链路故障定界的复核专家。
+
+一套确定性专家规则已经对本 case 给出了定界结论。**不要重新定界**，
+也不要给出你自己的判断——在同一批 case 上规则比自由推理准得多。
+
+你的任务是逐条核对这条规则依赖的每一项前提，对每一项只回答两件事：
+它在本 case 上成不成立，以及你据以判断的证据 token 是哪几个。
+
+这是事实核对，不是意见。判断标准：
+
+- `holds: true` 表示**证据里没有任何东西推翻这条前提**。
+  前提没有被推翻就是成立，不需要证据去正面证明它。
+- `holds: false` 只在你能指出**具体哪个证据 token 推翻了它**时才填，
+  并把那些 token 写进 `cited_evidence`。说不出 token 就是 true。
+- 绝大多数前提在绝大多数 case 上都是成立的。如果你把大部分前提都判成
+  false，说明你在表达疑虑而不是在核对事实，那样的输出没有任何用处。
+- 只能引用「可用证据」清单里的 token。
+- `note` 一句话说明依据；`explanation` 面向值班工程师，一到两句。
+- `evidence_to_collect` 写现场补采什么能定案，要具体。
+
+必须对下面列出的每一条前提都给出一项检查，不能遗漏，也不能重复。
+"""
+
+
+def build_premise_audit_prompt(
+    *,
+    case_id: str,
+    expert_verdict: str,
+    expert_group: str,
+    expert_reason: str,
+    evidence_tokens: Sequence[str],
+    missing_fields: Sequence[str] = (),
+) -> str:
+    premises = "\n".join(f"- `{name}`：{PREMISE_TEXT[name]}" for name in PREMISES)
+    payload = {
+        "case_id": case_id,
+        "专家规则结论": expert_verdict,
+        "命中的规则": expert_group,
+        "规则给出的理由": expert_reason,
+        "可用证据": sorted(evidence_tokens),
+        "未采集字段": sorted(missing_fields),
+    }
+    return "\n".join(
+        (
+            SYSTEM_PREAMBLE_V2,
+            "",
+            "需要逐条核对的前提：",
+            "",
+            premises,
+            "",
+            "待复核的 case：",
+            "",
+            json.dumps(payload, ensure_ascii=False, indent=2),
+            "",
+            "只输出一个 JSON 对象，字段如下：",
+            "",
+            json.dumps(PREMISE_CHECK_SCHEMA["properties"], ensure_ascii=False, indent=2),
+        )
+    )
+
+
+def score_threshold_curve(
+    rows: Sequence[Tuple[int, bool]],
+) -> List[Dict[str, Any]]:
+    """按「不成立前提条数 >= k」扫阈值，给出每个人工预算下的命中率。
+
+    这是 v2 相对 v1 的实质差别：质疑强度是分数而不是布尔，
+    因此可以事后选工作点，而不是由模型替运维决定报警率。
+    """
+    total = len(rows)
+    errors = sum(1 for _, wrong in rows if wrong)
+    curve: List[Dict[str, Any]] = []
+    for k in range(0, len(PREMISES) + 1):
+        flagged = [wrong for score, wrong in rows if score >= k]
+        hits = sum(1 for wrong in flagged if wrong)
+        curve.append({
+            "min_failed_premises": k,
+            "flagged": len(flagged),
+            "flag_rate": round(len(flagged) / total, 6) if total else 0.0,
+            "hits": hits,
+            "hit_rate": round(hits / len(flagged), 6) if flagged else 0.0,
+            "error_recall": round(hits / errors, 6) if errors else 0.0,
+            "lift_over_error_rate": round(
+                (hits / len(flagged) if flagged else 0.0) - (errors / total if total else 0.0),
+                6,
+            ),
+        })
+    return curve
 
 
 def challenge_metrics(
