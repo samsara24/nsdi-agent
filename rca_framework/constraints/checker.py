@@ -28,6 +28,7 @@ from ..anomaly import DOWN_THRESHOLDS, lane_values
 from ..evidence_pack import EvidencePack
 from ..types import ROOT_CAUSES, SIDES
 from .library import CONSTRAINT_LIBRARY, ConstraintLibrary
+from .semantics import matches_scope
 
 
 SEVERITIES: Tuple[str, ...] = ("fatal", "warning")
@@ -224,34 +225,47 @@ def check_response(
             if constraint_id not in constraint_ids:
                 continue
             constraint = library.get(constraint_id)
-            if getattr(step, "effect", "neutral") not in constraint.allowed_effects:
+            effect = getattr(step, "effect", "neutral")
+            target = getattr(step, "target", None)
+            # 「这条约束的前件在本 case 上不成立」是一个合法且有信息量的观察。
+            # 模型表达它的方式是 effect=neutral、target=""、并引用那条约束。
+            # 这是引用方式不合规范，不是物理断言错误，因此只记 warning：
+            # 迭代 3 实测有 35 步因此被判废，连带作废了整份 verdict 正确的回答。
+            cites_as_negative = effect == "neutral" and not target
+            if effect not in constraint.allowed_effects:
                 violations.append(Violation(
-                    kind="constraint_violation", severity="fatal", step_index=index,
+                    kind="constraint_violation",
+                    severity="warning" if cites_as_negative else "fatal",
+                    step_index=index,
                     constraint_id=constraint_id,
                     message=(
-                        f"该约束不允许 effect={getattr(step, 'effect', '')}；"
+                        f"该约束不允许 effect={effect}；"
                         f"允许值为 {', '.join(constraint.allowed_effects)}"
+                        + ("。中性步骤应当不引用任何约束" if cites_as_negative else "")
                     ),
                 ))
-            if getattr(step, "target", None) not in constraint.allowed_targets:
+            if target not in constraint.allowed_targets and not cites_as_negative:
                 violations.append(Violation(
                     kind="constraint_violation", severity="fatal", step_index=index,
                     constraint_id=constraint_id,
                     message=(
-                        f"该约束不允许 target={getattr(step, 'target', '')}；"
+                        f"该约束不允许 target={target or ''}；"
                         f"允许值为 {', '.join(constraint.allowed_targets)}"
                     ),
                 ))
             matching_tokens = [
                 token for token in step.cited_evidence
-                if token.startswith(constraint.applies_to_token_prefixes)
+                if matches_scope(token, constraint.applies_to_token_prefixes)
             ] if constraint.applies_to_token_prefixes else []
             if constraint.applies_to_token_prefixes and not matching_tokens:
                 violations.append(Violation(
                     kind="constraint_violation", severity="fatal", step_index=index,
                     constraint_id=constraint_id,
                     message="引用的证据 token 家族与该约束的适用范围不匹配",
-                    detail=f"expected prefixes={constraint.applies_to_token_prefixes}",
+                    detail=(
+                        f"expected prefixes={constraint.applies_to_token_prefixes}"
+                        "（同侧同指标的其他判据族也接受，见 constraints.semantics）"
+                    ),
                 ))
             if not constraint.applies_to_token_prefixes and step.cited_evidence:
                 violations.append(Violation(
