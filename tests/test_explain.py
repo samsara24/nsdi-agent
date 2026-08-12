@@ -135,10 +135,54 @@ def test_fiber_verdict_skips_direction_check():
     assert report["all_pass"]
 
 
-def test_rule_without_evidence_does_not_fail_relevance():
-    """no_anomaly 兜底本来就没有依据可引，苛求相关性等于惩罚如实解释。"""
-    report = _check(_explanation(), rule_evidence=[])
+def test_rule_without_evidence_skips_relevance_and_direction():
+    """no_anomaly 兜底既没有依据可引，也不存在方向推理。
+
+    实测有一条 case 模型如实写「两端都无明显异常，规则兜底报本端」，
+    第一版检查把它判成违反方向表——那是在惩罚模型说实话。
+    """
+    report = _check(
+        _explanation(symptom_side="L2", root_cause_side="L2"),
+        rule_evidence=[],
+        rule_verdict="L2",
+    )
     assert report["token_relevance"]
+    assert report["direction_consistency"]
+
+
+def test_direction_uses_token_side_not_declared_symptom_side():
+    """症状端标签模棱两可，token 的侧别不模棱两可。
+
+    模型有时把「运维在哪一端发现问题」当成 symptom_side，与它引用的读数所在侧
+    不一致。实测 5 条不合格里有 3 条坏在这个标签上，物理叙述其实完全正确。
+    方向因此改由每个 token 自己的 (侧, 指标) 推出。
+    """
+    report = _check(
+        _explanation(
+            key_evidence=[
+                {"token": "expert:L1:rxpower:lane_down", "reads_as": "L1 收光跌落"}
+            ],
+            symptom_side="L2",
+            root_cause_side="L2",
+        )
+    )
+    assert report["direction_consistency"]
+
+
+def test_mixed_local_and_far_evidence_accepts_either_direction():
+    for root in ("L1", "L2"):
+        report = _check(
+            _explanation(
+                key_evidence=[
+                    {"token": "expert:L1:rxpower:lane_down", "reads_as": "L1 收光跌落"},
+                    {"token": "expert:L1:txpower:lane_down", "reads_as": "L1 发光跌落"},
+                ],
+                root_cause_side=root,
+            ),
+            rule_evidence=[("L1", "rxpower"), ("L1", "txpower")],
+            rule_verdict=root,
+        )
+        assert report["direction_consistency"], root
 
 
 @pytest.mark.parametrize(

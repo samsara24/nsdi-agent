@@ -248,7 +248,9 @@ def check_explanation(
     # 那种 case 本来就没有依据可引，苛求相关性等于惩罚模型如实解释。
     token_relevance = (not rule_scopes) or bool(cited_scopes & rule_scopes)
 
-    direction_consistency = _direction_consistent(explanation)
+    direction_consistency = _direction_consistent(
+        explanation, rule_used_evidence=bool(rule_scopes)
+    )
     verdict_consistency = explanation.root_cause_side == rule_verdict
 
     checks = {
@@ -271,27 +273,37 @@ def check_explanation(
     return checks
 
 
-def _direction_consistent(explanation: Explanation) -> bool:
-    """引用证据的指标类型是否支持声明的「症状端 -> 根因端」。
+def _direction_consistent(explanation: Explanation, *, rule_used_evidence: bool = True) -> bool:
+    """引用证据的指标类型是否支持声明的根因端。
 
-    fiber 结论不参与这项检查：方向表说不出光纤，那是两端仲裁的产物。
+    方向由**每个 token 自己的 `(侧, 指标)`** 推出，不看模型声明的 `symptom_side`。
+    第一版是拿 `symptom_side` 去筛 token 的，实测 5 条不合格里有 3 条坏在这里：
+    模型把「运维在哪一端发现问题」当成了 symptom_side，与它引用的读数所在侧不一致，
+    于是物理叙述完全正确的解释被判错。症状端标签本身是模棱两可的，
+    不该成为方向检查的支点；token 的侧别不模棱两可。
+
+    两种情况跳过这项检查：
+
+    - `fiber` 结论。方向表说不出光纤，它是两端仲裁的产物。
+    - 规则本身没有用到任何异常（`no_anomaly` 兜底）。此时不存在方向推理，
+      模型如实说明「规则在两端都无异常时兜底报本端」反而会被判违反方向表。
+      与 `token_relevance` 同一个理由：不能因为模型如实解释而惩罚它。
+
     引用里同时含本端类与对端类指标时，两个方向都算合规——
     这种 case 本来就是混合的，逼模型二选一会把如实描述判成错误。
     """
-    if explanation.root_cause_side == "fiber":
+    if explanation.root_cause_side == "fiber" or not rule_used_evidence:
         return True
-    if explanation.symptom_side not in SIDES:
-        return False
     implied = set()
     for token in explanation.cited_tokens:
         scope = token_scope(token)
-        if scope is None or scope[0] != explanation.symptom_side:
+        if scope is None or scope[0] not in SIDES:
             continue
         direction = DIRECTION_BY_METRIC.get(scope[1] or "")
         if direction == "far":
-            implied.add(_opposite(explanation.symptom_side))
+            implied.add(_opposite(scope[0]))
         elif direction == "local":
-            implied.add(explanation.symptom_side)
+            implied.add(scope[0])
     if not implied:
         return False
     return explanation.root_cause_side in implied
