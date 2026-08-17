@@ -1,0 +1,125 @@
+[expanded-rca] start: 2026-08-17T17:38:10+00:00
+[expanded-rca] root: /home/chenziang/nsdi-agent-clean
+[expanded-rca] model: /home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B
+[expanded-rca] clean train: /home/chenziang/nsdi-agent-clean/experiments/20260816_expanded-pattern-conflict/clean_train.jsonl
+[expanded-rca] expanded test: /home/chenziang/nsdi-agent-clean/experiments/20260816_expanded-pattern-conflict/clean_expanded_test.jsonl
+[expanded-rca] output: /home/chenziang/nsdi-agent-clean/artifacts/expanded_expert_clean_deepseek32b_20260817_173806
+[expanded-rca] GPU policy: TP=2, free>=44000MiB, used<=2048MiB, util<=10%
+[expanded-rca] selected physical GPUs: 0,4
+{
+  "model_path": "/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B",
+  "model_type": "qwen2",
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "hidden_size": 5120,
+  "num_hidden_layers": 64,
+  "torch_version": "2.8.0+cu128",
+  "transformers_version": "4.57.1",
+  "vllm_version": "0.11.0",
+  "cuda_device_count_visible": 2
+}
+[expanded-rca] loading DeepSeek-R1-Distill-Qwen-32B with vLLM for dual-similarity + executable SOP evaluation
+INFO 08-17 17:40:30 [__init__.py:216] Automatically detected platform cuda.
+INFO 08-17 17:41:00 [utils.py:233] non-default args: {'trust_remote_code': True, 'dtype': 'bfloat16', 'max_model_len': 8192, 'tensor_parallel_size': 2, 'gpu_memory_utilization': 0.85, 'disable_log_stats': True, 'enforce_eager': True, 'disable_custom_all_reduce': True, 'model': '/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B'}
+The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+WARNING 08-17 17:41:00 [model.py:371] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+INFO 08-17 17:41:00 [model.py:547] Resolved architecture: Qwen2ForCausalLM
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO 08-17 17:41:00 [model.py:1510] Using max model len 8192
+INFO 08-17 17:41:03 [scheduler.py:205] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-17 17:41:03 [__init__.py:381] Cudagraph is disabled under eager mode
+INFO 08-17 17:41:04 [core.py:77] Initializing a V1 LLM engine (v0.11.0) with config: model='/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B', speculative_config=None, tokenizer='/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=2, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=True, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser=''), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B, enable_prefix_caching=True, chunked_prefill_enabled=True, pooler_config=None, compilation_config={"level":0,"debug_dump_path":"","cache_dir":"","backend":"","custom_ops":[],"splitting_ops":null,"use_inductor":true,"compile_sizes":[],"inductor_compile_config":{"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":0,"use_cudagraph":true,"cudagraph_num_of_warmups":0,"cudagraph_capture_sizes":[],"cudagraph_copy_inputs":false,"full_cuda_graph":false,"use_inductor_graph_partition":false,"pass_config":{},"max_capture_size":0,"local_cache_dir":null}
+WARNING 08-17 17:41:04 [multiproc_executor.py:720] Reducing Torch parallelism from 32 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 08-17 17:41:04 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[0, 1], buffer_handle=(2, 16777216, 10, 'psm_e5ce0b29'), local_subscribe_addr='ipc:///tmp/9dd13d27-ea9a-4025-bb09-dc9d3eb14f2d', remote_subscribe_addr=None, remote_addr_ipv6=False)
+INFO 08-17 17:41:14 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[0], buffer_handle=(1, 10485760, 10, 'psm_66a61615'), local_subscribe_addr='ipc:///tmp/d7bb1df5-996b-4e91-955e-ded6d8f8466e', remote_subscribe_addr=None, remote_addr_ipv6=False)
+INFO 08-17 17:41:14 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[0], buffer_handle=(1, 10485760, 10, 'psm_5a290788'), local_subscribe_addr='ipc:///tmp/d1a4cb9e-b930-4f96-a401-8e87062d277f', remote_subscribe_addr=None, remote_addr_ipv6=False)
+[Gloo] Rank 0 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank 1 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank 0 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank 1 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+INFO 08-17 17:41:15 [__init__.py:1384] Found nccl from library libnccl.so.2
+INFO 08-17 17:41:15 [__init__.py:1384] Found nccl from library libnccl.so.2
+INFO 08-17 17:41:15 [pynccl.py:103] vLLM is using nccl==2.27.3
+INFO 08-17 17:41:15 [pynccl.py:103] vLLM is using nccl==2.27.3
+WARNING 08-17 17:41:15 [symm_mem.py:58] SymmMemCommunicator: Device capability 8.6 not supported, communicator is not available.
+WARNING 08-17 17:41:15 [symm_mem.py:58] SymmMemCommunicator: Device capability 8.6 not supported, communicator is not available.
+INFO 08-17 17:41:15 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[1], buffer_handle=(1, 4194304, 6, 'psm_8afb24f1'), local_subscribe_addr='ipc:///tmp/88c9fed3-b389-4b09-93dd-1b93fc3de70a', remote_subscribe_addr=None, remote_addr_ipv6=False)
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 1 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank 0 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+INFO 08-17 17:41:15 [__init__.py:1384] Found nccl from library libnccl.so.2
+INFO 08-17 17:41:15 [__init__.py:1384] Found nccl from library libnccl.so.2
+INFO 08-17 17:41:15 [pynccl.py:103] vLLM is using nccl==2.27.3
+INFO 08-17 17:41:15 [pynccl.py:103] vLLM is using nccl==2.27.3
+INFO 08-17 17:41:15 [parallel_state.py:1208] rank 0 in world size 2 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+INFO 08-17 17:41:15 [parallel_state.py:1208] rank 1 in world size 2 is assigned as DP rank 0, PP rank 0, TP rank 1, EP rank 1
+WARNING 08-17 17:41:16 [topk_topp_sampler.py:66] FlashInfer is not available. Falling back to the PyTorch-native implementation of top-p & top-k sampling. For the best performance, please install FlashInfer.
+[1;36m(Worker_TP1 pid=2881839)[0;0m INFO 08-17 17:41:16 [gpu_model_runner.py:2602] Starting to load model /home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B...
+WARNING 08-17 17:41:16 [topk_topp_sampler.py:66] FlashInfer is not available. Falling back to the PyTorch-native implementation of top-p & top-k sampling. For the best performance, please install FlashInfer.
+[1;36m(Worker_TP0 pid=2881776)[0;0m INFO 08-17 17:41:16 [gpu_model_runner.py:2602] Starting to load model /home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(Worker_TP1 pid=2881839)[0;0m INFO 08-17 17:41:16 [gpu_model_runner.py:2634] Loading model from scratch...
+[1;36m(Worker_TP1 pid=2881839)[0;0m INFO 08-17 17:41:16 [cuda.py:366] Using Flash Attention backend on V1 engine.
+[1;36m(Worker_TP0 pid=2881776)[0;0m INFO 08-17 17:41:16 [gpu_model_runner.py:2634] Loading model from scratch...
+[1;36m(Worker_TP0 pid=2881776)[0;0m INFO 08-17 17:41:16 [cuda.py:366] Using Flash Attention backend on V1 engine.
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:   0% Completed | 0/8 [00:00<?, ?it/s]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  12% Completed | 1/8 [00:01<00:10,  1.46s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  25% Completed | 2/8 [00:03<00:09,  1.62s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  38% Completed | 3/8 [00:04<00:08,  1.65s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  50% Completed | 4/8 [00:06<00:06,  1.64s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  62% Completed | 5/8 [00:07<00:04,  1.57s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  75% Completed | 6/8 [00:09<00:03,  1.52s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards:  88% Completed | 7/8 [00:10<00:01,  1.25s/it]
+[1;36m(Worker_TP1 pid=2881839)[0;0m INFO 08-17 17:41:27 [default_loader.py:267] Loading weights took 11.11 seconds
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards: 100% Completed | 8/8 [00:11<00:00,  1.28s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m Loading safetensors checkpoint shards: 100% Completed | 8/8 [00:11<00:00,  1.43s/it]
+[1;36m(Worker_TP0 pid=2881776)[0;0m 
+[1;36m(Worker_TP0 pid=2881776)[0;0m INFO 08-17 17:41:28 [default_loader.py:267] Loading weights took 11.54 seconds
+[1;36m(Worker_TP1 pid=2881839)[0;0m INFO 08-17 17:41:28 [gpu_model_runner.py:2653] Model loading took 30.7294 GiB and 11.338563 seconds
+[1;36m(Worker_TP0 pid=2881776)[0;0m INFO 08-17 17:41:28 [gpu_model_runner.py:2653] Model loading took 30.7294 GiB and 11.777703 seconds
+[1;36m(Worker_TP0 pid=2881776)[0;0m INFO 08-17 17:41:41 [gpu_worker.py:298] Available KV cache memory: 8.04 GiB
+[1;36m(Worker_TP1 pid=2881839)[0;0m INFO 08-17 17:41:41 [gpu_worker.py:298] Available KV cache memory: 8.04 GiB
+INFO 08-17 17:41:41 [kv_cache_utils.py:1087] GPU KV cache size: 65,840 tokens
+INFO 08-17 17:41:41 [kv_cache_utils.py:1091] Maximum concurrency for 8,192 tokens per request: 8.04x
+INFO 08-17 17:41:41 [kv_cache_utils.py:1087] GPU KV cache size: 65,840 tokens
+INFO 08-17 17:41:41 [kv_cache_utils.py:1091] Maximum concurrency for 8,192 tokens per request: 8.04x
+[1;36m(Worker_TP1 pid=2881839)[0;0m WARNING 08-17 17:41:41 [cudagraph_dispatcher.py:106] cudagraph dispatching keys are not initialized. No cudagraph will be used.
+[1;36m(Worker_TP0 pid=2881776)[0;0m WARNING 08-17 17:41:41 [cudagraph_dispatcher.py:106] cudagraph dispatching keys are not initialized. No cudagraph will be used.
+INFO 08-17 17:41:41 [core.py:210] init engine (profile, create kv cache, warmup model) took 12.82 seconds
+INFO 08-17 17:41:42 [llm.py:306] Supported_tasks: ('generate',)
+Adding requests:   0%|          | 0/340 [00:00<?, ?it/s]Adding requests:   0%|          | 0/340 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/chenziang/nsdi-agent-clean/scripts/run_expanded_dual_experiment.py", line 414, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/chenziang/nsdi-agent-clean/scripts/run_expanded_dual_experiment.py", line 308, in main
+    traces = ConstrainedReasoner(backend=backend).reason_many(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/nsdi-agent-clean/rca_framework/llm/reason.py", line 136, in reason_many
+    outputs = self.backend.generate(prompts)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/nsdi-agent-clean/rca_framework/llm/backend.py", line 147, in generate
+    outputs = self._model.generate(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/entrypoints/llm.py", line 393, in generate
+    self._validate_and_add_requests(
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/entrypoints/llm.py", line 1516, in _validate_and_add_requests
+    self._add_request(
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/entrypoints/llm.py", line 1569, in _add_request
+    self.llm_engine.add_request(
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/v1/engine/llm_engine.py", line 230, in add_request
+    prompt_str, request = self.processor.process_inputs(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/v1/engine/processor.py", line 392, in process_inputs
+    self._validate_model_inputs(encoder_inputs, decoder_inputs)
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/v1/engine/processor.py", line 466, in _validate_model_inputs
+    self._validate_model_input(decoder_inputs, prompt_type="decoder")
+  File "/home/chenziang/miniconda3/envs/logsy/lib/python3.11/site-packages/vllm/v1/engine/processor.py", line 535, in _validate_model_input
+    raise ValueError(
+ValueError: The decoder prompt (length 9482) is longer than the maximum model length of 8192. Make sure that `max_model_len` is no smaller than the number of text tokens.
+[expanded-rca] exit status: 1 at 2026-08-17T17:41:47+00:00

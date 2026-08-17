@@ -1,0 +1,6 @@
+schema_version=expanded-git-sync-v1
+git_remote=origin
+git_branch=codex/expanded-expert-clean-v1
+input_commit=df694bbf573c05933eeccaac623e90bd1129ae6f
+experiment_exit_status=1
+upload_started_at=2026-08-17T17:41:47+00:00
