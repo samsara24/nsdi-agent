@@ -1,0 +1,18 @@
+{
+  "schema_version": "expanded-remote-run-metadata-v3-expert-clean",
+  "data_contract_version": "expanded-expert-clean-v1",
+  "finished_at_utc": "2026-08-17T16:47:34.126854+00:00",
+  "python": "3.12.2",
+  "root": "/home/chenziang/nsdi-agent-clean",
+  "old_dataset": "/home/chenziang/nsdi-agent-clean/datasets/organized_rca_v2_stratified_60_40_seed42",
+  "train_jsonl": "/home/chenziang/nsdi-agent-clean/experiments/20260816_expanded-pattern-conflict/clean_train.jsonl",
+  "expanded_test": "/home/chenziang/nsdi-agent-clean/experiments/20260816_expanded-pattern-conflict/clean_expanded_test.jsonl",
+  "model_path": "/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B",
+  "cuda_visible_devices": "0,5",
+  "tensor_parallel_size": 2,
+  "gpu_min_free_mb": 44000,
+  "train_size": 122,
+  "test_size": 341,
+  "prompt_and_evaluation": "unchanged legacy rca_framework.cli train-evaluate",
+  "n8_feedback_update": false
+}

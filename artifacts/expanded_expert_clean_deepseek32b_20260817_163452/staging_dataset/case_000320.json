@@ -1,0 +1,141 @@
+{
+  "alarm_ip_interface": "L2_ENDPOINT--200G_PORT",
+  "alarm_time": "2024-09-16 17:36:48",
+  "alarm_name": "数通设备syslog告警:DCN-AI超平面-接口降lane-网络侧",
+  "label": "L1",
+  "bias": {
+    "L1": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "L2": {
+      "0": 7.78,
+      "1": 7.77,
+      "2": 7.78,
+      "3": 7.77
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40
+    },
+    "L2": {
+      "0": -0.9,
+      "1": -0.12,
+      "2": -0.29,
+      "3": -0.23
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40
+    },
+    "L2": {
+      "0": 0.91,
+      "1": 1.21,
+      "2": 0.79,
+      "3": 0.99
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "L2": {
+      "0": 25.96,
+      "1": 26.31,
+      "2": 26.31,
+      "3": 26.31
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null
+    },
+    "L2": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null
+    }
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 0,
+      "1": 0,
+      "2": 1,
+      "3": 0
+    },
+    "L2": {
+      "0": 779984,
+      "1": 790770,
+      "2": 748001,
+      "3": 829419
+    }
+  },
+  "link_location": "location_9939c7fc2bc4",
+  "link_side_ip_interface_map": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "vendor": {
+    "L1": "vendor_cdb6ae252fcb",
+    "L2": "vendor_a80157e28228"
+  },
+  "vendor_sn": {
+    "L1": "serial_54f29c30115f",
+    "L2": "serial_17f629507da7"
+  },
+  "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 43.01,
+    "L2": 56.02
+  },
+  "Voltage": {
+    "L1": 3.26,
+    "L2": 3.37
+  },
+  "Lane number": {
+    "L1": 0,
+    "L2": 2
+  },
+  "label_rate": "400G",
+  "case_id": "case_000207",
+  "_meta": {
+    "schema_version": "2.0",
+    "side_definition": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "endpoint_values_swapped": true
+  }
+}
