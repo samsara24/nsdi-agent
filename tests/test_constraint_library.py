@@ -21,6 +21,15 @@ from rca_framework.constraints.library import (
     PROVENANCES,
     render_prompt_block,
 )
+from rca_framework.constraints.layers import (
+    CONSTRAINT_LAYER_MAP,
+    LAYER_DECISION_TREE,
+    LAYER_MEASUREMENT,
+    LAYER_PHYSICS,
+    OLD_CONSTRAINT_IDS,
+)
+from rca_framework.constraints.measurement import MEASUREMENT_CONTRACT_LIBRARY
+from rca_framework.constraints.physics import PHYSICS_LIBRARY, PhysicalConstraint
 from rca_framework.data import cases_by_manifest_split
 from rca_framework.evidence_pack import build_packs
 from rca_framework.features import dictionary_for, extract_features, fit_feature_model
@@ -176,6 +185,37 @@ def test_library_is_frozen():
     assert len(CONSTRAINT_LIBRARY.constraints) == 26
     assert CONSTRAINT_LIBRARY.content_hash() == LIBRARY_CONTENT_HASH
     assert len(set(CONSTRAINT_LIBRARY.ids())) == len(CONSTRAINT_LIBRARY.ids())
+
+
+def test_layer_migration_map_covers_all_legacy_constraints():
+    assert set(CONSTRAINT_LAYER_MAP) == set(OLD_CONSTRAINT_IDS) == set(CONSTRAINT_LIBRARY.ids())
+    assert LAYER_PHYSICS in CONSTRAINT_LAYER_MAP["C6_tx_down_excludes_medium"]
+    assert CONSTRAINT_LAYER_MAP["C2_bias_healthy_band"] == (LAYER_DECISION_TREE,)
+    assert CONSTRAINT_LAYER_MAP["C12_no_absolute_link_loss"] == (LAYER_MEASUREMENT,)
+    assert set(CONSTRAINT_LAYER_MAP["C23_expert_receive_anomaly_on_l1_supports_l2"]) == {
+        LAYER_PHYSICS,
+        LAYER_DECISION_TREE,
+    }
+
+
+def test_physics_layer_rejects_train_set_fitted_parameters():
+    with pytest.raises(ValueError, match="train-set fitted"):
+        PhysicalConstraint(
+            constraint_id="P_bad_bias_band",
+            title="bad",
+            statement="bad",
+            formal_expression="7.2 <= bias <= 7.8",
+            diagnostic_use="bad",
+            prompt_text="bad",
+            provenance="derived",
+            parameters=(("训练集偏置范围", "7.2-7.8 mA"),),
+        )
+
+
+def test_new_layers_have_expected_contracts():
+    assert "P5_tx_down_excludes_medium" in PHYSICS_LIBRARY.ids()
+    assert "M4_blackout_sentinel_is_no_reading" in MEASUREMENT_CONTRACT_LIBRARY.ids()
+    assert {item.kind for item in MEASUREMENT_CONTRACT_LIBRARY.contracts} == {"veto"}
 
 
 def test_v4_supplies_the_missing_device_side_support_constraints():

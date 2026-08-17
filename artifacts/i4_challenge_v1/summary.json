@@ -1,0 +1,37 @@
+{
+  "schema_version": "challenge-experiment-v1",
+  "prompt_version": "rca-challenge-v1",
+  "backend": "vllm",
+  "feature_profile": "v3",
+  "seed": 42,
+  "parse_failures": 0,
+  "llm_challenger": {
+    "case_count": 107,
+    "challenged": 107,
+    "challenge_rate": 1.0,
+    "rule_error_count": 25,
+    "rule_error_rate": 0.233645,
+    "hits": 25,
+    "hit_rate": 0.233645,
+    "error_recall": 1.0,
+    "lift_over_error_rate": 0.0
+  },
+  "group_reliability_baseline": {
+    "threshold": 0.6,
+    "case_count": 107,
+    "challenged": 32,
+    "challenge_rate": 0.299065,
+    "rule_error_count": 25,
+    "rule_error_rate": 0.233645,
+    "hits": 8,
+    "hit_rate": 0.25,
+    "error_recall": 0.32,
+    "lift_over_error_rate": 0.016355
+  },
+  "premise_distribution": {
+    "direction_table_applies": 56,
+    "no_evidence_fallback": 10,
+    "other_side_overlooked": 6,
+    "scope_too_narrow": 35
+  }
+}

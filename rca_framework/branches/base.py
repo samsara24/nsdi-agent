@@ -135,6 +135,11 @@ class BranchOutcome:
     caveats: Tuple[str, ...] = ()
     needs_llm: bool = False
     needs_human: bool = False
+    confidence_breakdown: Optional[Mapping[str, float]] = None
+    self_reported_confidence: float = 0.0
+    history_verdict: Optional[str] = None
+    fallback_source: str = ""
+    compliance_penalties: Tuple[Mapping[str, Any], ...] = ()
 
     @property
     def is_abstained(self) -> bool:
@@ -155,4 +160,9 @@ class BranchOutcome:
             "caveats": list(self.caveats),
             "needs_llm": self.needs_llm,
             "needs_human": self.needs_human,
+            "confidence_breakdown": dict(self.confidence_breakdown or {}),
+            "self_reported_confidence": self.self_reported_confidence,
+            "history_verdict": self.history_verdict,
+            "fallback_source": self.fallback_source,
+            "compliance_penalties": [dict(item) for item in self.compliance_penalties],
         }

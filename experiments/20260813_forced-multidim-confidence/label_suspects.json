@@ -1,0 +1,83 @@
+{
+  "schema_version": "rca-loop-label-suspects-v1",
+  "label_suspects": [
+    {
+      "case_id": "case_5d80fba2c22f",
+      "actual": "L1",
+      "system_pred": "L2",
+      "reason": "N5a exact signature matches historical case with different label",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4e466fb62ba8",
+      "actual": "L1",
+      "system_pred": "L2",
+      "reason": "N5a exact signature matches historical case with different label",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4541f9bbc853",
+      "actual": "L2",
+      "system_pred": "L1",
+      "reason": "N5a exact signature matches historical case with different label",
+      "tokens": [
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_60e62d6d1052",
+      "actual": "fiber",
+      "system_pred": "L2",
+      "reason": "N5a exact signature matches historical case with different label",
+      "tokens": [
+        "level:L1:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_ec7c50c7fd54",
+      "actual": "L2",
+      "system_pred": "L1",
+      "reason": "N5a exact signature matches a historical case with a different label",
+      "tokens": [
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "source_experiment": "current"
+    }
+  ]
+}

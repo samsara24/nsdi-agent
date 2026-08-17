@@ -1,0 +1,59 @@
+{
+  "n5c_cases": 46,
+  "modes": {
+    "fabricated_evidence": {
+      "total": 46,
+      "blocked": 46,
+      "block_rate": 1.0,
+      "violation_kinds": {
+        "fabricated_evidence": 46
+      }
+    },
+    "fabricated_constraint": {
+      "total": 46,
+      "blocked": 46,
+      "block_rate": 1.0,
+      "violation_kinds": {
+        "fabricated_constraint": 46
+      }
+    },
+    "unsupported_step": {
+      "total": 46,
+      "blocked": 46,
+      "block_rate": 1.0,
+      "violation_kinds": {
+        "unsupported_step": 46
+      }
+    },
+    "absolute_loss_claim": {
+      "total": 46,
+      "blocked": 46,
+      "block_rate": 1.0,
+      "violation_kinds": {
+        "forbidden_claim": 46
+      }
+    },
+    "serdes_db_claim": {
+      "total": 46,
+      "blocked": 46,
+      "block_rate": 1.0,
+      "violation_kinds": {
+        "forbidden_claim": 46
+      }
+    },
+    "host_snr_normal_claim": {
+      "total": 46,
+      "blocked": 46,
+      "block_rate": 1.0,
+      "violation_kinds": {
+        "forbidden_claim": 46
+      }
+    },
+    "compliant": {
+      "total": 46,
+      "blocked": 0,
+      "block_rate": 0.0,
+      "violation_kinds": {}
+    }
+  }
+}

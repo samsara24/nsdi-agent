@@ -1,0 +1,4692 @@
+{
+  "schema_version": "sop-operating-points-v1",
+  "data_dir": "datasets/rca_v2_l2fixed",
+  "feature_dictionary_version": "feature-dictionary-v2",
+  "train_size": 161,
+  "majority_label": "L2",
+  "majority_rate": 0.6211,
+  "protocol": "留一法产出无偏预测，再对 LOO 预测做 bootstrap；标签只来自 train split，测试集不参与。",
+  "selection_caveat": "本表是在同一份 161 条 LOO 结果上扫出来的，直接取最大值会带来选择偏差。选配置时应优先看 selective_precision_beats_majority 是否稳定高，而不是看点估计差 1-2 个百分点。",
+  "rows": [
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6149,
+      "coverage": 0.7702,
+      "manual_rate": 0.2298,
+      "selective_precision": 0.7339,
+      "majority_on_kept": 0.6371,
+      "lift_over_majority_on_kept": 0.0968,
+      "selective_precision_wilson_lower_bound": 0.649913,
+      "kept": 124,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.7019,
+          0.8323
+        ],
+        "selective_precision_ci95": [
+          0.648,
+          0.811
+        ],
+        "wins_vs_majority": 0.395,
+        "selective_precision_beats_majority": 1.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6584,
+      "coverage": 0.9938,
+      "manual_rate": 0.0062,
+      "selective_precision": 0.6625,
+      "majority_on_kept": 0.625,
+      "lift_over_majority_on_kept": 0.0375,
+      "selective_precision_wilson_lower_bound": 0.586184,
+      "kept": 160,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.9814,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7312
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6584,
+      "coverage": 0.9938,
+      "manual_rate": 0.0062,
+      "selective_precision": 0.6625,
+      "majority_on_kept": 0.625,
+      "lift_over_majority_on_kept": 0.0375,
+      "selective_precision_wilson_lower_bound": 0.586184,
+      "kept": 160,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.9814,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7312
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6335,
+      "coverage": 0.8509,
+      "manual_rate": 0.1491,
+      "selective_precision": 0.6861,
+      "majority_on_kept": 0.6423,
+      "lift_over_majority_on_kept": 0.0438,
+      "selective_precision_wilson_lower_bound": 0.604244,
+      "kept": 137,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.795,
+          0.9068
+        ],
+        "selective_precision_ci95": [
+          0.6031,
+          0.7634
+        ],
+        "wins_vs_majority": 0.621,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6584,
+      "coverage": 0.8509,
+      "manual_rate": 0.1491,
+      "selective_precision": 0.7007,
+      "majority_on_kept": 0.6569,
+      "lift_over_majority_on_kept": 0.0438,
+      "selective_precision_wilson_lower_bound": 0.619426,
+      "kept": 137,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.795,
+          0.9006
+        ],
+        "selective_precision_ci95": [
+          0.6174,
+          0.7746
+        ],
+        "wins_vs_majority": 0.897,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6832,
+      "coverage": 0.8447,
+      "manual_rate": 0.1553,
+      "selective_precision": 0.6985,
+      "majority_on_kept": 0.6544,
+      "lift_over_majority_on_kept": 0.0441,
+      "selective_precision_wilson_lower_bound": 0.616821,
+      "kept": 136,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "coverage_ci95": [
+          0.7826,
+          0.8944
+        ],
+        "selective_precision_ci95": [
+          0.6165,
+          0.7769
+        ],
+        "wins_vs_majority": 0.991,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.5963,
+      "coverage": 0.6832,
+      "manual_rate": 0.3168,
+      "selective_precision": 0.6636,
+      "majority_on_kept": 0.6091,
+      "lift_over_majority_on_kept": 0.0545,
+      "selective_precision_wilson_lower_bound": 0.571148,
+      "kept": 110,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5155,
+          0.6708
+        ],
+        "coverage_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "selective_precision_ci95": [
+          0.5714,
+          0.7477
+        ],
+        "wins_vs_majority": 0.175,
+        "selective_precision_beats_majority": 0.999
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6149,
+      "coverage": 0.7081,
+      "manual_rate": 0.2919,
+      "selective_precision": 0.7456,
+      "majority_on_kept": 0.693,
+      "lift_over_majority_on_kept": 0.0526,
+      "selective_precision_wilson_lower_bound": 0.658566,
+      "kept": 114,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.6335,
+          0.7764
+        ],
+        "selective_precision_ci95": [
+          0.6555,
+          0.8273
+        ],
+        "wins_vs_majority": 0.395,
+        "selective_precision_beats_majority": 0.998
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6149,
+      "coverage": 0.6211,
+      "manual_rate": 0.3789,
+      "selective_precision": 0.71,
+      "majority_on_kept": 0.65,
+      "lift_over_majority_on_kept": 0.06,
+      "selective_precision_wilson_lower_bound": 0.614609,
+      "kept": 100,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.5404,
+          0.6957
+        ],
+        "selective_precision_ci95": [
+          0.6082,
+          0.8021
+        ],
+        "wins_vs_majority": 0.395,
+        "selective_precision_beats_majority": 0.998
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6832,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6832,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0621,
+      "selective_precision_wilson_lower_bound": 0.607812,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "wins_vs_majority": 0.991,
+        "selective_precision_beats_majority": 0.991
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6646,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6646,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0435,
+      "selective_precision_wilson_lower_bound": 0.588583,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5901,
+          0.7391
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5901,
+          0.7391
+        ],
+        "wins_vs_majority": 0.954,
+        "selective_precision_beats_majority": 0.954
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7391
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7391
+        ],
+        "wins_vs_majority": 0.897,
+        "selective_precision_beats_majority": 0.897
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.6522,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6522,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0311,
+      "selective_precision_wilson_lower_bound": 0.575833,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.882
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.6522,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6522,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0311,
+      "selective_precision_wilson_lower_bound": 0.575833,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.882
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.6522,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6522,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0311,
+      "selective_precision_wilson_lower_bound": 0.575833,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.882
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.4,
+      "accuracy": 0.6646,
+      "coverage": 0.7764,
+      "manual_rate": 0.2236,
+      "selective_precision": 0.648,
+      "majority_on_kept": 0.624,
+      "lift_over_majority_on_kept": 0.024,
+      "selective_precision_wilson_lower_bound": 0.561001,
+      "kept": 125,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5901,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.7081,
+          0.8447
+        ],
+        "selective_precision_ci95": [
+          0.5615,
+          0.7311
+        ],
+        "wins_vs_majority": 0.954,
+        "selective_precision_beats_majority": 0.826
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.813
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.6584,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6584,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0373,
+      "selective_precision_wilson_lower_bound": 0.582201,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.813
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.646,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.646,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0248,
+      "selective_precision_wilson_lower_bound": 0.569477,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.723
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.646,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.646,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0248,
+      "selective_precision_wilson_lower_bound": 0.569477,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.723
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.646,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.646,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0248,
+      "selective_precision_wilson_lower_bound": 0.569477,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5714,
+          0.7205
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5714,
+          0.7205
+        ],
+        "wins_vs_majority": 0.718,
+        "selective_precision_beats_majority": 0.718
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.6335,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6335,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0124,
+      "selective_precision_wilson_lower_bound": 0.556806,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.661
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.6335,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6335,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0124,
+      "selective_precision_wilson_lower_bound": 0.556806,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.661
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.6398,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6398,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0186,
+      "selective_precision_wilson_lower_bound": 0.563135,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.559,
+          0.7143
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.559,
+          0.7143
+        ],
+        "wins_vs_majority": 0.659,
+        "selective_precision_beats_majority": 0.659
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6335,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6335,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0124,
+      "selective_precision_wilson_lower_bound": 0.556806,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "wins_vs_majority": 0.621,
+        "selective_precision_beats_majority": 0.621
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.6211,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6211,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.544185,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.7019
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5404,
+          0.7019
+        ],
+        "wins_vs_majority": 0.454,
+        "selective_precision_beats_majority": 0.454
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.6149,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6149,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0062,
+      "selective_precision_wilson_lower_bound": 0.537894,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5342,
+          0.6894
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5342,
+          0.6894
+        ],
+        "wins_vs_majority": 0.4,
+        "selective_precision_beats_majority": 0.4
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.6149,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.6149,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0062,
+      "selective_precision_wilson_lower_bound": 0.537894,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.6894
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5404,
+          0.6894
+        ],
+        "wins_vs_majority": 0.395,
+        "selective_precision_beats_majority": 0.395
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.0,
+      "accuracy": 0.5963,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.5963,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0248,
+      "selective_precision_wilson_lower_bound": 0.519095,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5155,
+          0.6708
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.5155,
+          0.6708
+        ],
+        "wins_vs_majority": 0.175,
+        "selective_precision_beats_majority": 0.175
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.5714,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.5714,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0497,
+      "selective_precision_wilson_lower_bound": 0.494199,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4969,
+          0.6522
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.4969,
+          0.6522
+        ],
+        "wins_vs_majority": 0.03,
+        "selective_precision_beats_majority": 0.03
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.528,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.528,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0932,
+      "selective_precision_wilson_lower_bound": 0.451086,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4472,
+          0.6025
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.4472,
+          0.6025
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.001
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.5217,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.5217,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0994,
+      "selective_precision_wilson_lower_bound": 0.444973,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.441,
+          0.5963
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.441,
+          0.5963
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.001
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.0,
+      "accuracy": 0.5404,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.5404,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.0807,
+      "selective_precision_wilson_lower_bound": 0.463346,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4534,
+          0.6211
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.4534,
+          0.6211
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.001
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.0,
+      "accuracy": 0.5093,
+      "coverage": 1.0,
+      "manual_rate": 0.0,
+      "selective_precision": 0.5093,
+      "majority_on_kept": 0.6211,
+      "lift_over_majority_on_kept": -0.1118,
+      "selective_precision_wilson_lower_bound": 0.432783,
+      "kept": 161,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4224,
+          0.5839
+        ],
+        "coverage_ci95": [
+          1.0,
+          1.0
+        ],
+        "selective_precision_ci95": [
+          0.4224,
+          0.5839
+        ],
+        "wins_vs_majority": 0.0,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6584,
+      "coverage": 0.9627,
+      "manual_rate": 0.0373,
+      "selective_precision": 0.6452,
+      "majority_on_kept": 0.6452,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.567159,
+      "kept": 155,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.9317,
+          0.9876
+        ],
+        "selective_precision_ci95": [
+          0.5677,
+          0.7161
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6584,
+      "coverage": 0.9565,
+      "manual_rate": 0.0435,
+      "selective_precision": 0.6494,
+      "majority_on_kept": 0.6494,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.571184,
+      "kept": 154,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.9255,
+          0.9814
+        ],
+        "selective_precision_ci95": [
+          0.5714,
+          0.72
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6584,
+      "coverage": 0.9565,
+      "manual_rate": 0.0435,
+      "selective_precision": 0.6494,
+      "majority_on_kept": 0.6494,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.571184,
+      "kept": 154,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.9255,
+          0.9814
+        ],
+        "selective_precision_ci95": [
+          0.5714,
+          0.72
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.5404,
+      "coverage": 0.913,
+      "manual_rate": 0.087,
+      "selective_precision": 0.5374,
+      "majority_on_kept": 0.6122,
+      "lift_over_majority_on_kept": -0.0748,
+      "selective_precision_wilson_lower_bound": 0.456887,
+      "kept": 147,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4534,
+          0.6211
+        ],
+        "coverage_ci95": [
+          0.8696,
+          0.9565
+        ],
+        "selective_precision_ci95": [
+          0.4521,
+          0.6174
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.528,
+      "coverage": 0.9068,
+      "manual_rate": 0.0932,
+      "selective_precision": 0.5342,
+      "majority_on_kept": 0.6027,
+      "lift_over_majority_on_kept": -0.0685,
+      "selective_precision_wilson_lower_bound": 0.453493,
+      "kept": 146,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4472,
+          0.6025
+        ],
+        "coverage_ci95": [
+          0.8634,
+          0.9503
+        ],
+        "selective_precision_ci95": [
+          0.4507,
+          0.6122
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.5217,
+      "coverage": 0.9006,
+      "manual_rate": 0.0994,
+      "selective_precision": 0.5448,
+      "majority_on_kept": 0.6207,
+      "lift_over_majority_on_kept": -0.0759,
+      "selective_precision_wilson_lower_bound": 0.463658,
+      "kept": 145,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.441,
+          0.5963
+        ],
+        "coverage_ci95": [
+          0.8509,
+          0.9441
+        ],
+        "selective_precision_ci95": [
+          0.4583,
+          0.6233
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.5093,
+      "coverage": 0.8944,
+      "manual_rate": 0.1056,
+      "selective_precision": 0.5417,
+      "majority_on_kept": 0.6111,
+      "lift_over_majority_on_kept": -0.0694,
+      "selective_precision_wilson_lower_bound": 0.460258,
+      "kept": 144,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4224,
+          0.5839
+        ],
+        "coverage_ci95": [
+          0.8509,
+          0.9379
+        ],
+        "selective_precision_ci95": [
+          0.4571,
+          0.619
+        ],
+        "wins_vs_majority": 0.0,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.6522,
+      "coverage": 0.8758,
+      "manual_rate": 0.1242,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.585347,
+      "kept": 141,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.8199,
+          0.9193
+        ],
+        "selective_precision_ci95": [
+          0.5839,
+          0.7465
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.6335,
+      "coverage": 0.8509,
+      "manual_rate": 0.1491,
+      "selective_precision": 0.6496,
+      "majority_on_kept": 0.6715,
+      "lift_over_majority_on_kept": -0.0219,
+      "selective_precision_wilson_lower_bound": 0.566655,
+      "kept": 137,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.795,
+          0.9006
+        ],
+        "selective_precision_ci95": [
+          0.5655,
+          0.7293
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.6522,
+      "coverage": 0.8385,
+      "manual_rate": 0.1615,
+      "selective_precision": 0.6963,
+      "majority_on_kept": 0.6963,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.61418,
+      "kept": 135,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.7764,
+          0.8882
+        ],
+        "selective_precision_ci95": [
+          0.6103,
+          0.7744
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.6335,
+      "coverage": 0.8323,
+      "manual_rate": 0.1677,
+      "selective_precision": 0.6642,
+      "majority_on_kept": 0.6642,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.580628,
+      "kept": 134,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.7702,
+          0.8882
+        ],
+        "selective_precision_ci95": [
+          0.5766,
+          0.7464
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.6335,
+      "coverage": 0.8199,
+      "manual_rate": 0.1801,
+      "selective_precision": 0.6742,
+      "majority_on_kept": 0.6742,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.590348,
+      "kept": 132,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.7578,
+          0.8758
+        ],
+        "selective_precision_ci95": [
+          0.5896,
+          0.7557
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6832,
+      "coverage": 0.8012,
+      "manual_rate": 0.1988,
+      "selective_precision": 0.6899,
+      "majority_on_kept": 0.6899,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.605584,
+      "kept": 129,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "coverage_ci95": [
+          0.7329,
+          0.8571
+        ],
+        "selective_precision_ci95": [
+          0.6048,
+          0.7692
+        ],
+        "wins_vs_majority": 0.991,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6335,
+      "coverage": 0.7888,
+      "manual_rate": 0.2112,
+      "selective_precision": 0.6929,
+      "majority_on_kept": 0.6929,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.608006,
+      "kept": 127,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.7205,
+          0.8509
+        ],
+        "selective_precision_ci95": [
+          0.6033,
+          0.775
+        ],
+        "wins_vs_majority": 0.621,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6584,
+      "coverage": 0.7888,
+      "manual_rate": 0.2112,
+      "selective_precision": 0.7087,
+      "majority_on_kept": 0.7087,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.624437,
+      "kept": 127,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.7205,
+          0.8509
+        ],
+        "selective_precision_ci95": [
+          0.6222,
+          0.792
+        ],
+        "wins_vs_majority": 0.897,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6832,
+      "coverage": 0.7888,
+      "manual_rate": 0.2112,
+      "selective_precision": 0.7008,
+      "majority_on_kept": 0.7008,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.616208,
+      "kept": 127,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "coverage_ci95": [
+          0.7205,
+          0.8447
+        ],
+        "selective_precision_ci95": [
+          0.6167,
+          0.7805
+        ],
+        "wins_vs_majority": 0.991,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.6522,
+      "coverage": 0.7888,
+      "manual_rate": 0.2112,
+      "selective_precision": 0.6299,
+      "majority_on_kept": 0.6299,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.543287,
+      "kept": 127,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.7205,
+          0.8509
+        ],
+        "selective_precision_ci95": [
+          0.5397,
+          0.7168
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.6522,
+      "coverage": 0.7888,
+      "manual_rate": 0.2112,
+      "selective_precision": 0.6299,
+      "majority_on_kept": 0.6299,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.543287,
+      "kept": 127,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.7205,
+          0.8509
+        ],
+        "selective_precision_ci95": [
+          0.5397,
+          0.7168
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6335,
+      "coverage": 0.7764,
+      "manual_rate": 0.2236,
+      "selective_precision": 0.704,
+      "majority_on_kept": 0.704,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.618859,
+      "kept": 125,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.7081,
+          0.8385
+        ],
+        "selective_precision_ci95": [
+          0.6179,
+          0.784
+        ],
+        "wins_vs_majority": 0.621,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6584,
+      "coverage": 0.7764,
+      "manual_rate": 0.2236,
+      "selective_precision": 0.72,
+      "majority_on_kept": 0.72,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.635633,
+      "kept": 125,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.7081,
+          0.8323
+        ],
+        "selective_precision_ci95": [
+          0.6341,
+          0.8
+        ],
+        "wins_vs_majority": 0.897,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.5714,
+      "coverage": 0.7702,
+      "manual_rate": 0.2298,
+      "selective_precision": 0.6371,
+      "majority_on_kept": 0.6613,
+      "lift_over_majority_on_kept": -0.0242,
+      "selective_precision_wilson_lower_bound": 0.549523,
+      "kept": 124,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4969,
+          0.6522
+        ],
+        "coverage_ci95": [
+          0.7019,
+          0.8385
+        ],
+        "selective_precision_ci95": [
+          0.5504,
+          0.719
+        ],
+        "wins_vs_majority": 0.03,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.528,
+      "coverage": 0.7329,
+      "manual_rate": 0.2671,
+      "selective_precision": 0.5593,
+      "majority_on_kept": 0.5593,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.469276,
+      "kept": 118,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4472,
+          0.6025
+        ],
+        "coverage_ci95": [
+          0.6646,
+          0.8012
+        ],
+        "selective_precision_ci95": [
+          0.4602,
+          0.6475
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.5404,
+      "coverage": 0.7329,
+      "manual_rate": 0.2671,
+      "selective_precision": 0.5678,
+      "majority_on_kept": 0.5678,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.47767,
+      "kept": 118,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4534,
+          0.6211
+        ],
+        "coverage_ci95": [
+          0.6646,
+          0.8012
+        ],
+        "selective_precision_ci95": [
+          0.4706,
+          0.6555
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.6522,
+      "coverage": 0.7329,
+      "manual_rate": 0.2671,
+      "selective_precision": 0.678,
+      "majority_on_kept": 0.678,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.589197,
+      "kept": 118,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.6584,
+          0.8012
+        ],
+        "selective_precision_ci95": [
+          0.5882,
+          0.7632
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.6522,
+      "coverage": 0.7329,
+      "manual_rate": 0.2671,
+      "selective_precision": 0.678,
+      "majority_on_kept": 0.678,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.589197,
+      "kept": 118,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.6584,
+          0.8012
+        ],
+        "selective_precision_ci95": [
+          0.5882,
+          0.7632
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.5093,
+      "coverage": 0.7205,
+      "manual_rate": 0.2795,
+      "selective_precision": 0.569,
+      "majority_on_kept": 0.569,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.478062,
+      "kept": 116,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4224,
+          0.5839
+        ],
+        "coverage_ci95": [
+          0.6522,
+          0.7888
+        ],
+        "selective_precision_ci95": [
+          0.4722,
+          0.6555
+        ],
+        "wins_vs_majority": 0.0,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.6398,
+      "coverage": 0.7205,
+      "manual_rate": 0.2795,
+      "selective_precision": 0.6552,
+      "majority_on_kept": 0.681,
+      "lift_over_majority_on_kept": -0.0259,
+      "selective_precision_wilson_lower_bound": 0.564953,
+      "kept": 116,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.559,
+          0.7143
+        ],
+        "coverage_ci95": [
+          0.6522,
+          0.7888
+        ],
+        "selective_precision_ci95": [
+          0.561,
+          0.7407
+        ],
+        "wins_vs_majority": 0.659,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.5217,
+      "coverage": 0.7205,
+      "manual_rate": 0.2795,
+      "selective_precision": 0.5776,
+      "majority_on_kept": 0.5776,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.486628,
+      "kept": 116,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.441,
+          0.5963
+        ],
+        "coverage_ci95": [
+          0.6522,
+          0.7888
+        ],
+        "selective_precision_ci95": [
+          0.4818,
+          0.6636
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.646,
+      "coverage": 0.7143,
+      "manual_rate": 0.2857,
+      "selective_precision": 0.6696,
+      "majority_on_kept": 0.6957,
+      "lift_over_majority_on_kept": -0.0261,
+      "selective_precision_wilson_lower_bound": 0.579338,
+      "kept": 115,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5714,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.6398,
+          0.7888
+        ],
+        "selective_precision_ci95": [
+          0.5776,
+          0.7563
+        ],
+        "wins_vs_majority": 0.718,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.6149,
+      "coverage": 0.7081,
+      "manual_rate": 0.2919,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.693,
+      "lift_over_majority_on_kept": -0.0263,
+      "selective_precision_wilson_lower_bound": 0.575946,
+      "kept": 114,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5342,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.6335,
+          0.7764
+        ],
+        "selective_precision_ci95": [
+          0.5726,
+          0.7521
+        ],
+        "wins_vs_majority": 0.4,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.646,
+      "coverage": 0.6832,
+      "manual_rate": 0.3168,
+      "selective_precision": 0.7091,
+      "majority_on_kept": 0.7091,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.618305,
+      "kept": 110,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.6087,
+          0.7516
+        ],
+        "selective_precision_ci95": [
+          0.6075,
+          0.7913
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.6584,
+      "coverage": 0.677,
+      "manual_rate": 0.323,
+      "selective_precision": 0.7248,
+      "majority_on_kept": 0.7248,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.634356,
+      "kept": 109,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.6025,
+          0.7516
+        ],
+        "selective_precision_ci95": [
+          0.6286,
+          0.8095
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.4,
+      "accuracy": 0.6211,
+      "coverage": 0.677,
+      "manual_rate": 0.323,
+      "selective_precision": 0.7064,
+      "majority_on_kept": 0.7339,
+      "lift_over_majority_on_kept": -0.0275,
+      "selective_precision_wilson_lower_bound": 0.615075,
+      "kept": 109,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.7019
+        ],
+        "coverage_ci95": [
+          0.6025,
+          0.7453
+        ],
+        "selective_precision_ci95": [
+          0.6132,
+          0.7909
+        ],
+        "wins_vs_majority": 0.454,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.6646,
+      "coverage": 0.677,
+      "manual_rate": 0.323,
+      "selective_precision": 0.6881,
+      "majority_on_kept": 0.6881,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.595951,
+      "kept": 109,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5901,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.6025,
+          0.7516
+        ],
+        "selective_precision_ci95": [
+          0.595,
+          0.7727
+        ],
+        "wins_vs_majority": 0.954,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.5,
+      "accuracy": 0.5963,
+      "coverage": 0.6211,
+      "manual_rate": 0.3789,
+      "selective_precision": 0.67,
+      "majority_on_kept": 0.67,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.573052,
+      "kept": 100,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5155,
+          0.6708
+        ],
+        "coverage_ci95": [
+          0.5466,
+          0.7019
+        ],
+        "selective_precision_ci95": [
+          0.5729,
+          0.7604
+        ],
+        "wins_vs_majority": 0.175,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.6398,
+      "coverage": 0.5901,
+      "manual_rate": 0.4099,
+      "selective_precision": 0.6947,
+      "majority_on_kept": 0.6947,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.596064,
+      "kept": 95,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.559,
+          0.7143
+        ],
+        "coverage_ci95": [
+          0.5093,
+          0.6646
+        ],
+        "selective_precision_ci95": [
+          0.5938,
+          0.7865
+        ],
+        "wins_vs_majority": 0.659,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.646,
+      "coverage": 0.5901,
+      "manual_rate": 0.4099,
+      "selective_precision": 0.7053,
+      "majority_on_kept": 0.7053,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.607049,
+      "kept": 95,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5714,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.5093,
+          0.6646
+        ],
+        "selective_precision_ci95": [
+          0.6044,
+          0.8
+        ],
+        "wins_vs_majority": 0.718,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.6149,
+      "coverage": 0.5776,
+      "manual_rate": 0.4224,
+      "selective_precision": 0.7097,
+      "majority_on_kept": 0.7097,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.610572,
+      "kept": 93,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5342,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.4969,
+          0.6584
+        ],
+        "selective_precision_ci95": [
+          0.6061,
+          0.8
+        ],
+        "wins_vs_majority": 0.4,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.646,
+      "coverage": 0.5776,
+      "manual_rate": 0.4224,
+      "selective_precision": 0.7204,
+      "majority_on_kept": 0.7204,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.621874,
+      "kept": 93,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.5031,
+          0.6584
+        ],
+        "selective_precision_ci95": [
+          0.6203,
+          0.8085
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.6398,
+      "coverage": 0.5652,
+      "manual_rate": 0.4348,
+      "selective_precision": 0.7253,
+      "majority_on_kept": 0.7253,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.62585,
+      "kept": 91,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.559,
+          0.7143
+        ],
+        "coverage_ci95": [
+          0.4783,
+          0.646
+        ],
+        "selective_precision_ci95": [
+          0.6264,
+          0.8171
+        ],
+        "wins_vs_majority": 0.659,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.646,
+      "coverage": 0.5652,
+      "manual_rate": 0.4348,
+      "selective_precision": 0.7253,
+      "majority_on_kept": 0.7253,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.62585,
+      "kept": 91,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.4845,
+          0.646
+        ],
+        "selective_precision_ci95": [
+          0.6196,
+          0.8193
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.646,
+      "coverage": 0.5652,
+      "manual_rate": 0.4348,
+      "selective_precision": 0.7363,
+      "majority_on_kept": 0.7363,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.637492,
+      "kept": 91,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5714,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.4845,
+          0.646
+        ],
+        "selective_precision_ci95": [
+          0.6354,
+          0.8318
+        ],
+        "wins_vs_majority": 0.718,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.6584,
+      "coverage": 0.5652,
+      "manual_rate": 0.4348,
+      "selective_precision": 0.7363,
+      "majority_on_kept": 0.7363,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.637492,
+      "kept": 91,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.4845,
+          0.646
+        ],
+        "selective_precision_ci95": [
+          0.6316,
+          0.8276
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.4,
+      "accuracy": 0.6584,
+      "coverage": 0.5652,
+      "manual_rate": 0.4348,
+      "selective_precision": 0.7473,
+      "majority_on_kept": 0.7473,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.649201,
+      "kept": 91,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.4907,
+          0.646
+        ],
+        "selective_precision_ci95": [
+          0.6477,
+          0.837
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.646,
+      "coverage": 0.5528,
+      "manual_rate": 0.4472,
+      "selective_precision": 0.7416,
+      "majority_on_kept": 0.7416,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.641969,
+      "kept": 89,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.4658,
+          0.6335
+        ],
+        "selective_precision_ci95": [
+          0.6395,
+          0.8333
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.6584,
+      "coverage": 0.5528,
+      "manual_rate": 0.4472,
+      "selective_precision": 0.7528,
+      "majority_on_kept": 0.7528,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.653978,
+      "kept": 89,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.4658,
+          0.6335
+        ],
+        "selective_precision_ci95": [
+          0.6512,
+          0.84
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.6211,
+      "coverage": 0.5466,
+      "manual_rate": 0.4534,
+      "selective_precision": 0.7614,
+      "majority_on_kept": 0.7614,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.662572,
+      "kept": 88,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.7019
+        ],
+        "coverage_ci95": [
+          0.4658,
+          0.6273
+        ],
+        "selective_precision_ci95": [
+          0.663,
+          0.8523
+        ],
+        "wins_vs_majority": 0.454,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.5963,
+      "coverage": 0.5342,
+      "manual_rate": 0.4658,
+      "selective_precision": 0.6163,
+      "majority_on_kept": 0.6163,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.510627,
+      "kept": 86,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5155,
+          0.6708
+        ],
+        "coverage_ci95": [
+          0.4596,
+          0.6149
+        ],
+        "selective_precision_ci95": [
+          0.506,
+          0.7195
+        ],
+        "wins_vs_majority": 0.175,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.646,
+      "coverage": 0.4596,
+      "manual_rate": 0.5404,
+      "selective_precision": 0.7432,
+      "majority_on_kept": 0.7432,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.633453,
+      "kept": 74,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.3851,
+          0.5342
+        ],
+        "selective_precision_ci95": [
+          0.6296,
+          0.8375
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.5,
+      "accuracy": 0.6584,
+      "coverage": 0.4534,
+      "manual_rate": 0.5466,
+      "selective_precision": 0.7671,
+      "majority_on_kept": 0.7671,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.658325,
+      "kept": 73,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.3789,
+          0.5342
+        ],
+        "selective_precision_ci95": [
+          0.6628,
+          0.8659
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.646,
+      "coverage": 0.4472,
+      "manual_rate": 0.5528,
+      "selective_precision": 0.7639,
+      "majority_on_kept": 0.7639,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.65401,
+      "kept": 72,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.3727,
+          0.528
+        ],
+        "selective_precision_ci95": [
+          0.6494,
+          0.863
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.6584,
+      "coverage": 0.441,
+      "manual_rate": 0.559,
+      "selective_precision": 0.7887,
+      "majority_on_kept": 0.7887,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.680248,
+      "kept": 71,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.3665,
+          0.5217
+        ],
+        "selective_precision_ci95": [
+          0.6866,
+          0.8831
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.5714,
+      "coverage": 0.4348,
+      "manual_rate": 0.5652,
+      "selective_precision": 0.5143,
+      "majority_on_kept": 0.5143,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.399542,
+      "kept": 70,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4969,
+          0.6522
+        ],
+        "coverage_ci95": [
+          0.3602,
+          0.5155
+        ],
+        "selective_precision_ci95": [
+          0.3913,
+          0.6316
+        ],
+        "wins_vs_majority": 0.03,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.646,
+      "coverage": 0.4286,
+      "manual_rate": 0.5714,
+      "selective_precision": 0.7971,
+      "majority_on_kept": 0.7971,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.687757,
+      "kept": 69,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.354,
+          0.5031
+        ],
+        "selective_precision_ci95": [
+          0.6912,
+          0.8947
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.6584,
+      "coverage": 0.3727,
+      "manual_rate": 0.6273,
+      "selective_precision": 0.9333,
+      "majority_on_kept": 0.9333,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.840744,
+      "kept": 60,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.2919,
+          0.4472
+        ],
+        "selective_precision_ci95": [
+          0.8627,
+          0.9855
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6646,
+      "coverage": 0.3665,
+      "manual_rate": 0.6335,
+      "selective_precision": 0.5424,
+      "majority_on_kept": 0.5424,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.416576,
+      "kept": 59,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5901,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.2919,
+          0.441
+        ],
+        "selective_precision_ci95": [
+          0.4118,
+          0.6618
+        ],
+        "wins_vs_majority": 0.954,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6584,
+      "coverage": 0.2981,
+      "manual_rate": 0.7019,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.525398,
+      "kept": 48,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.2298,
+          0.3727
+        ],
+        "selective_precision_ci95": [
+          0.5278,
+          0.8049
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6584,
+      "coverage": 0.2981,
+      "manual_rate": 0.7019,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.525398,
+      "kept": 48,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.2298,
+          0.3727
+        ],
+        "selective_precision_ci95": [
+          0.5278,
+          0.8049
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6584,
+      "coverage": 0.2981,
+      "manual_rate": 0.7019,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.525398,
+      "kept": 48,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.2298,
+          0.3727
+        ],
+        "selective_precision_ci95": [
+          0.5278,
+          0.8049
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6584,
+      "coverage": 0.2981,
+      "manual_rate": 0.7019,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.525398,
+      "kept": 48,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.2298,
+          0.3727
+        ],
+        "selective_precision_ci95": [
+          0.5278,
+          0.8049
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.55,
+      "accuracy": 0.6584,
+      "coverage": 0.2981,
+      "manual_rate": 0.7019,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.525398,
+      "kept": 48,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.2298,
+          0.3727
+        ],
+        "selective_precision_ci95": [
+          0.5278,
+          0.8049
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6584,
+      "coverage": 0.2981,
+      "manual_rate": 0.7019,
+      "selective_precision": 0.6667,
+      "majority_on_kept": 0.6667,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.525398,
+      "kept": 48,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.2298,
+          0.3727
+        ],
+        "selective_precision_ci95": [
+          0.5278,
+          0.8049
+        ],
+        "wins_vs_majority": 0.999,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.6149,
+      "coverage": 0.2795,
+      "manual_rate": 0.7205,
+      "selective_precision": 0.5556,
+      "majority_on_kept": 0.5556,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.411759,
+      "kept": 45,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5342,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.2112,
+          0.354
+        ],
+        "selective_precision_ci95": [
+          0.4,
+          0.7027
+        ],
+        "wins_vs_majority": 0.4,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.5,
+      "accuracy": 0.6335,
+      "coverage": 0.2733,
+      "manual_rate": 0.7267,
+      "selective_precision": 0.8182,
+      "majority_on_kept": 0.8182,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.680392,
+      "kept": 44,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.205,
+          0.3416
+        ],
+        "selective_precision_ci95": [
+          0.6939,
+          0.925
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.6335,
+      "coverage": 0.2733,
+      "manual_rate": 0.7267,
+      "selective_precision": 0.8182,
+      "majority_on_kept": 0.8182,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.680392,
+      "kept": 44,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.205,
+          0.3416
+        ],
+        "selective_precision_ci95": [
+          0.6939,
+          0.925
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.5714,
+      "coverage": 0.2733,
+      "manual_rate": 0.7267,
+      "selective_precision": 0.8182,
+      "majority_on_kept": 0.8182,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.680392,
+      "kept": 44,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4969,
+          0.6522
+        ],
+        "coverage_ci95": [
+          0.205,
+          0.3416
+        ],
+        "selective_precision_ci95": [
+          0.6939,
+          0.925
+        ],
+        "wins_vs_majority": 0.03,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.6211,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.6098,
+      "majority_on_kept": 0.6098,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.457266,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.7019
+        ],
+        "coverage_ci95": [
+          0.1925,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.4474,
+          0.7619
+        ],
+        "wins_vs_majority": 0.454,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.6335,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.6585,
+      "majority_on_kept": 0.6585,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.505496,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.5128,
+          0.8
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.6335,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.6585,
+      "majority_on_kept": 0.6585,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.505496,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.5128,
+          0.8
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.6522,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.7805,
+      "majority_on_kept": 0.7805,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.632947,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.6452,
+          0.9024
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.6522,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.7805,
+      "majority_on_kept": 0.7805,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.632947,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.6452,
+          0.9024
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6832,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.6585,
+      "majority_on_kept": 0.6585,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.505496,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.6087,
+          0.7578
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.5143,
+          0.8056
+        ],
+        "wins_vs_majority": 0.991,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.6522,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.7805,
+      "majority_on_kept": 0.7805,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.632947,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.6452,
+          0.9024
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.6522,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.7805,
+      "majority_on_kept": 0.7805,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.632947,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.6452,
+          0.9024
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.6522,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.7805,
+      "majority_on_kept": 0.7805,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.632947,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.6452,
+          0.9024
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.6522,
+      "coverage": 0.2547,
+      "manual_rate": 0.7453,
+      "selective_precision": 0.7805,
+      "majority_on_kept": 0.7805,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.632947,
+      "kept": 41,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5776,
+          0.7267
+        ],
+        "coverage_ci95": [
+          0.1863,
+          0.323
+        ],
+        "selective_precision_ci95": [
+          0.6452,
+          0.9024
+        ],
+        "wins_vs_majority": 0.882,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6335,
+      "coverage": 0.2422,
+      "manual_rate": 0.7578,
+      "selective_precision": 0.7179,
+      "majority_on_kept": 0.7179,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.562244,
+      "kept": 39,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.1739,
+          0.3168
+        ],
+        "selective_precision_ci95": [
+          0.5676,
+          0.8519
+        ],
+        "wins_vs_majority": 0.621,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6584,
+      "coverage": 0.2422,
+      "manual_rate": 0.7578,
+      "selective_precision": 0.7179,
+      "majority_on_kept": 0.7179,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.562244,
+      "kept": 39,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.1739,
+          0.3168
+        ],
+        "selective_precision_ci95": [
+          0.5676,
+          0.8519
+        ],
+        "wins_vs_majority": 0.897,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6646,
+      "coverage": 0.2298,
+      "manual_rate": 0.7702,
+      "selective_precision": 0.7297,
+      "majority_on_kept": 0.7297,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.570215,
+      "kept": 37,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5901,
+          0.7391
+        ],
+        "coverage_ci95": [
+          0.1615,
+          0.2919
+        ],
+        "selective_precision_ci95": [
+          0.5769,
+          0.8649
+        ],
+        "wins_vs_majority": 0.954,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.6335,
+      "coverage": 0.2174,
+      "manual_rate": 0.7826,
+      "selective_precision": 0.7714,
+      "majority_on_kept": 0.7714,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.609824,
+      "kept": 35,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5528,
+          0.7081
+        ],
+        "coverage_ci95": [
+          0.1553,
+          0.2795
+        ],
+        "selective_precision_ci95": [
+          0.6286,
+          0.9062
+        ],
+        "wins_vs_majority": 0.661,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance_level",
+      "dropped_prefixes": [
+        "imbalance:",
+        "level:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.5714,
+      "coverage": 0.2174,
+      "manual_rate": 0.7826,
+      "selective_precision": 0.7714,
+      "majority_on_kept": 0.7714,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.609824,
+      "kept": 35,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4969,
+          0.6522
+        ],
+        "coverage_ci95": [
+          0.1553,
+          0.2795
+        ],
+        "selective_precision_ci95": [
+          0.6286,
+          0.9062
+        ],
+        "wins_vs_majority": 0.03,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.6149,
+      "coverage": 0.1801,
+      "manual_rate": 0.8199,
+      "selective_precision": 0.5517,
+      "majority_on_kept": 0.5517,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.375477,
+      "kept": 29,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5342,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.1242,
+          0.2422
+        ],
+        "selective_precision_ci95": [
+          0.375,
+          0.7353
+        ],
+        "wins_vs_majority": 0.4,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.5093,
+      "coverage": 0.1429,
+      "manual_rate": 0.8571,
+      "selective_precision": 0.6957,
+      "majority_on_kept": 0.6957,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.491339,
+      "kept": 23,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4224,
+          0.5839
+        ],
+        "coverage_ci95": [
+          0.0932,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5,
+          0.8889
+        ],
+        "wins_vs_majority": 0.0,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.528,
+      "coverage": 0.1429,
+      "manual_rate": 0.8571,
+      "selective_precision": 0.6957,
+      "majority_on_kept": 0.6957,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.491339,
+      "kept": 23,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4472,
+          0.6025
+        ],
+        "coverage_ci95": [
+          0.0932,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5,
+          0.8889
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.55,
+      "accuracy": 0.5217,
+      "coverage": 0.1429,
+      "manual_rate": 0.8571,
+      "selective_precision": 0.6957,
+      "majority_on_kept": 0.6957,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.491339,
+      "kept": 23,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.441,
+          0.5963
+        ],
+        "coverage_ci95": [
+          0.0932,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5,
+          0.8889
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.55,
+      "accuracy": 0.5404,
+      "coverage": 0.1429,
+      "manual_rate": 0.8571,
+      "selective_precision": 0.6957,
+      "majority_on_kept": 0.6957,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.491339,
+      "kept": 23,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4534,
+          0.6211
+        ],
+        "coverage_ci95": [
+          0.0932,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5,
+          0.8889
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.6149,
+      "coverage": 0.1429,
+      "manual_rate": 0.8571,
+      "selective_precision": 0.0,
+      "majority_on_kept": 0.0,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.0,
+      "kept": 23,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.6894
+        ],
+        "coverage_ci95": [
+          0.087,
+          0.205
+        ],
+        "selective_precision_ci95": [
+          0.0,
+          0.0
+        ],
+        "wins_vs_majority": 0.395,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.5093,
+      "coverage": 0.1366,
+      "manual_rate": 0.8634,
+      "selective_precision": 0.7273,
+      "majority_on_kept": 0.7273,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.518479,
+      "kept": 22,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4224,
+          0.5839
+        ],
+        "coverage_ci95": [
+          0.087,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5263,
+          0.9048
+        ],
+        "wins_vs_majority": 0.0,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.528,
+      "coverage": 0.1366,
+      "manual_rate": 0.8634,
+      "selective_precision": 0.7273,
+      "majority_on_kept": 0.7273,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.518479,
+      "kept": 22,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4472,
+          0.6025
+        ],
+        "coverage_ci95": [
+          0.087,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5294,
+          0.913
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.5217,
+      "coverage": 0.1366,
+      "manual_rate": 0.8634,
+      "selective_precision": 0.7273,
+      "majority_on_kept": 0.7273,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.518479,
+      "kept": 22,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.441,
+          0.5963
+        ],
+        "coverage_ci95": [
+          0.087,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5263,
+          0.9048
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 2,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.5404,
+      "coverage": 0.1366,
+      "manual_rate": 0.8634,
+      "selective_precision": 0.7273,
+      "majority_on_kept": 0.7273,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.518479,
+      "kept": 22,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.4534,
+          0.6211
+        ],
+        "coverage_ci95": [
+          0.087,
+          0.1925
+        ],
+        "selective_precision_ci95": [
+          0.5294,
+          0.913
+        ],
+        "wins_vs_majority": 0.001,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.6584,
+      "coverage": 0.1304,
+      "manual_rate": 0.8696,
+      "selective_precision": 0.7619,
+      "majority_on_kept": 0.7619,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.549084,
+      "kept": 21,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5839,
+          0.7329
+        ],
+        "coverage_ci95": [
+          0.0807,
+          0.1801
+        ],
+        "selective_precision_ci95": [
+          0.5556,
+          0.9333
+        ],
+        "wins_vs_majority": 0.813,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 12,
+      "gate": 0.6,
+      "accuracy": 0.646,
+      "coverage": 0.118,
+      "manual_rate": 0.882,
+      "selective_precision": 0.8421,
+      "majority_on_kept": 0.8421,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.624341,
+      "kept": 19,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5652,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.0745,
+          0.1677
+        ],
+        "selective_precision_ci95": [
+          0.6667,
+          1.0
+        ],
+        "wins_vs_majority": 0.723,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 4,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.6211,
+      "coverage": 0.118,
+      "manual_rate": 0.882,
+      "selective_precision": 0.8421,
+      "majority_on_kept": 0.8421,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.624341,
+      "kept": 19,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5404,
+          0.7019
+        ],
+        "coverage_ci95": [
+          0.0683,
+          0.1739
+        ],
+        "selective_precision_ci95": [
+          0.6667,
+          1.0
+        ],
+        "wins_vs_majority": 0.454,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "no_imbalance",
+      "dropped_prefixes": [
+        "imbalance:"
+      ],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.646,
+      "coverage": 0.0994,
+      "manual_rate": 0.9006,
+      "selective_precision": 0.4375,
+      "majority_on_kept": 0.4375,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.230984,
+      "kept": 16,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5714,
+          0.7205
+        ],
+        "coverage_ci95": [
+          0.0497,
+          0.1491
+        ],
+        "selective_precision_ci95": [
+          0.2,
+          0.7
+        ],
+        "wins_vs_majority": 0.718,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 3,
+      "min_leaf_size": 8,
+      "gate": 0.6,
+      "accuracy": 0.6398,
+      "coverage": 0.087,
+      "manual_rate": 0.913,
+      "selective_precision": 0.5,
+      "majority_on_kept": 0.5,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.267989,
+      "kept": 14,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.559,
+          0.7143
+        ],
+        "coverage_ci95": [
+          0.0435,
+          0.1304
+        ],
+        "selective_precision_ci95": [
+          0.2308,
+          0.7692
+        ],
+        "wins_vs_majority": 0.659,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "status:L1:RxLOS"
+    },
+    {
+      "mask": "full",
+      "dropped_prefixes": [],
+      "max_depth": 4,
+      "min_leaf_size": 5,
+      "gate": 0.6,
+      "accuracy": 0.5963,
+      "coverage": 0.0621,
+      "manual_rate": 0.9379,
+      "selective_precision": 0.0,
+      "majority_on_kept": 0.0,
+      "lift_over_majority_on_kept": 0.0,
+      "selective_precision_wilson_lower_bound": 0.0,
+      "kept": 10,
+      "bootstrap": {
+        "rounds": 1000,
+        "accuracy_ci95": [
+          0.5155,
+          0.6708
+        ],
+        "coverage_ci95": [
+          0.0248,
+          0.1056
+        ],
+        "selective_precision_ci95": [
+          0.0,
+          0.0
+        ],
+        "wins_vs_majority": 0.175,
+        "selective_precision_beats_majority": 0.0
+      },
+      "root_split_token": "imbalance:L2:rxpower"
+    }
+  ]
+}

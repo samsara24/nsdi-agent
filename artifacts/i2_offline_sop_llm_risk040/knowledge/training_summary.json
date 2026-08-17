@@ -1,0 +1,627 @@
+{
+  "schema_version": "training-knowledge-summary-v1",
+  "train_case_count": 161,
+  "historical_vector_count": 161,
+  "evidence_graph_case_count": 161,
+  "evidence_graph_diagnosis_count": 161,
+  "graph_version": "evidence-graph-v1:161:b8c5e73e22e24e81",
+  "graph_purity": {
+    "case_count": 161,
+    "signature_group_count": 147,
+    "mixed_label_group_count": 4,
+    "mixed_label_case_count": 10,
+    "mixed_label_case_ratio": 0.062112,
+    "singleton_group_count": 137,
+    "empty_signature_case_count": 0
+  },
+  "sop": {
+    "version": "learned-sop-v1",
+    "dictionary_version": "feature-dictionary-v2",
+    "dictionary_hash": "78bbdbbf601fe29e",
+    "training_case_count": 161,
+    "max_depth": 3,
+    "min_leaf_size": 5,
+    "source": "rca_v2_l2fixed:manifest-train",
+    "content_hash": "9c96d6f5d84e9ad7",
+    "root": {
+      "node_id": "root",
+      "samples": 161,
+      "label_counts": {
+        "L1": 49,
+        "L2": 100,
+        "fiber": 12
+      },
+      "prediction": "L2",
+      "token": "imbalance:L2:rxpower",
+      "present": {
+        "node_id": "root.present",
+        "samples": 7,
+        "label_counts": {
+          "L1": 6,
+          "L2": 0,
+          "fiber": 1
+        },
+        "prediction": "L1"
+      },
+      "absent": {
+        "node_id": "root.absent",
+        "samples": 154,
+        "label_counts": {
+          "L1": 43,
+          "L2": 100,
+          "fiber": 11
+        },
+        "prediction": "L2",
+        "token": "status:L1:RxLOS",
+        "present": {
+          "node_id": "root.absent.present",
+          "samples": 42,
+          "label_counts": {
+            "L1": 5,
+            "L2": 32,
+            "fiber": 5
+          },
+          "prediction": "L2",
+          "token": "level:L2:rxpower_mean:high_tail",
+          "present": {
+            "node_id": "root.absent.present.present",
+            "samples": 7,
+            "label_counts": {
+              "L1": 3,
+              "L2": 4,
+              "fiber": 0
+            },
+            "prediction": "L2"
+          },
+          "absent": {
+            "node_id": "root.absent.present.absent",
+            "samples": 35,
+            "label_counts": {
+              "L1": 2,
+              "L2": 28,
+              "fiber": 5
+            },
+            "prediction": "L2"
+          }
+        },
+        "absent": {
+          "node_id": "root.absent.absent",
+          "samples": 112,
+          "label_counts": {
+            "L1": 38,
+            "L2": 68,
+            "fiber": 6
+          },
+          "prediction": "L2",
+          "token": "imbalance:L2:serdes_snr",
+          "present": {
+            "node_id": "root.absent.absent.present",
+            "samples": 21,
+            "label_counts": {
+              "L1": 9,
+              "L2": 8,
+              "fiber": 4
+            },
+            "prediction": "L1"
+          },
+          "absent": {
+            "node_id": "root.absent.absent.absent",
+            "samples": 91,
+            "label_counts": {
+              "L1": 29,
+              "L2": 60,
+              "fiber": 2
+            },
+            "prediction": "L2"
+          }
+        }
+      }
+    }
+  },
+  "policies": {
+    "coverage-v2": {
+      "case_count": 161,
+      "llm_trace_count": 112,
+      "llm_accepted_count": 35,
+      "prediction_matches_training_label": 32,
+      "answered_count": 59,
+      "branch_calibration": {
+        "source": "manifest-train-loo:coverage-v2",
+        "groups": {
+          "N5a_mixed": {
+            "correct": 3,
+            "total": 3,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.438494
+          },
+          "N5a_pure": {
+            "correct": 12,
+            "total": 19,
+            "accuracy": 0.631579,
+            "wilson_lower_bound": 0.410392
+          },
+          "N5b_critical_gap": {
+            "correct": 5,
+            "total": 7,
+            "accuracy": 0.714286,
+            "wilson_lower_bound": 0.358929
+          },
+          "N5b_minor_gap": {
+            "correct": 16,
+            "total": 29,
+            "accuracy": 0.551724,
+            "wilson_lower_bound": 0.375477
+          },
+          "N5c_no_exclusion": {
+            "correct": 0,
+            "total": 94,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "correct": 0,
+            "total": 5,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N6_abstain": {
+            "correct": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          }
+        }
+      },
+      "llm_calibration": {
+        "source": "manifest-train-loo-llm:coverage-v2",
+        "confidence_bins": [
+          0.0,
+          0.5,
+          0.7,
+          0.9,
+          1.0
+        ],
+        "groups": {
+          "llm:N5b:[0.5,0.7)": {
+            "correct": 1,
+            "total": 2,
+            "accuracy": 0.5,
+            "wilson_lower_bound": 0.094529
+          },
+          "llm:N5c:[0.5,0.7)": {
+            "correct": 4,
+            "total": 10,
+            "accuracy": 0.4,
+            "wilson_lower_bound": 0.168178
+          },
+          "llm:N5c:[0.7,0.9)": {
+            "correct": 2,
+            "total": 2,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.342372
+          }
+        }
+      },
+      "decision_policy": {
+        "version": "decision-policy-v2",
+        "final_lower_bound": 0.410392,
+        "minimum_support": 10,
+        "candidate_order": [
+          "branch",
+          "sop"
+        ],
+        "target_selective_risk": 0.4,
+        "fitted_on": "manifest-train-loo:coverage-v2: 目标选择性风险 <= 40.00%，取到最大覆盖率的阈值 0.4104（训练留一法覆盖率 81.99%，实测风险 39.39%，支持数下限 10）；按类别校准后下界 L1=0.4104、L2=0.0000（训练留一法覆盖率 83.85%，整体风险 38.52%，平衡召回 0.2836）",
+        "non_identifiable_labels": [
+          "fiber"
+        ],
+        "non_identifiable_evidence": {
+          "fiber": [
+            "OTDR 曲线（定位反射与损耗事件的距离）",
+            "两端 MPO / LC 端面镜检结果",
+            "同一 lane 的双向功率标定（用于替代不可信的功率相减）",
+            "光纤跳线更换后的复测结果"
+          ]
+        },
+        "per_label_lower_bound": {
+          "L1": 0.410392,
+          "L2": 0.0
+        }
+      },
+      "decision_policy_fit": {
+        "source": "manifest-train-loo:coverage-v2",
+        "target_selective_risk": 0.4,
+        "minimum_support": 10,
+        "minimum_coverage": 0.0,
+        "candidate_order": [
+          "branch",
+          "sop"
+        ],
+        "non_identifiable_labels": [
+          "fiber"
+        ],
+        "chosen_lower_bound": 0.410392,
+        "feasible": true,
+        "curve": [
+          {
+            "final_lower_bound": 0.0,
+            "answered": 144,
+            "coverage": 0.89441,
+            "correct": 80,
+            "precision_when_answered": 0.555556,
+            "selective_risk": 0.444444,
+            "balanced_recall": 0.280544,
+            "by_source": {
+              "branch": {
+                "correct": 29,
+                "answered": 51
+              },
+              "sop": {
+                "correct": 51,
+                "answered": 93
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.168178,
+            "answered": 144,
+            "coverage": 0.89441,
+            "correct": 80,
+            "precision_when_answered": 0.555556,
+            "selective_risk": 0.444444,
+            "balanced_recall": 0.280544,
+            "by_source": {
+              "branch": {
+                "correct": 29,
+                "answered": 51
+              },
+              "sop": {
+                "correct": 51,
+                "answered": 93
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.307218,
+            "answered": 143,
+            "coverage": 0.888199,
+            "correct": 80,
+            "precision_when_answered": 0.559441,
+            "selective_risk": 0.440559,
+            "balanced_recall": 0.280544,
+            "by_source": {
+              "branch": {
+                "correct": 25,
+                "answered": 42
+              },
+              "sop": {
+                "correct": 55,
+                "answered": 101
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.323692,
+            "answered": 140,
+            "coverage": 0.869565,
+            "correct": 80,
+            "precision_when_answered": 0.571429,
+            "selective_risk": 0.428571,
+            "balanced_recall": 0.280544,
+            "by_source": {
+              "branch": {
+                "correct": 25,
+                "answered": 42
+              },
+              "sop": {
+                "correct": 55,
+                "answered": 98
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.375477,
+            "answered": 136,
+            "coverage": 0.84472,
+            "correct": 79,
+            "precision_when_answered": 0.580882,
+            "selective_risk": 0.419118,
+            "balanced_recall": 0.273741,
+            "by_source": {
+              "branch": {
+                "correct": 25,
+                "answered": 42
+              },
+              "sop": {
+                "correct": 54,
+                "answered": 94
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.410392,
+            "answered": 132,
+            "coverage": 0.819876,
+            "correct": 80,
+            "precision_when_answered": 0.606061,
+            "selective_risk": 0.393939,
+            "balanced_recall": 0.273605,
+            "by_source": {
+              "branch": {
+                "correct": 12,
+                "answered": 18
+              },
+              "sop": {
+                "correct": 68,
+                "answered": 114
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.468075,
+            "answered": 129,
+            "coverage": 0.801242,
+            "correct": 79,
+            "precision_when_answered": 0.612403,
+            "selective_risk": 0.387597,
+            "balanced_recall": 0.263333,
+            "by_source": {
+              "sop": {
+                "correct": 79,
+                "answered": 129
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.490157,
+            "answered": 106,
+            "coverage": 0.658385,
+            "correct": 65,
+            "precision_when_answered": 0.613208,
+            "selective_risk": 0.386792,
+            "balanced_recall": 0.216667,
+            "by_source": {
+              "sop": {
+                "correct": 65,
+                "answered": 106
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.497155,
+            "answered": 102,
+            "coverage": 0.63354,
+            "correct": 64,
+            "precision_when_answered": 0.627451,
+            "selective_risk": 0.372549,
+            "balanced_recall": 0.213333,
+            "by_source": {
+              "sop": {
+                "correct": 64,
+                "answered": 102
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.497805,
+            "answered": 83,
+            "coverage": 0.515528,
+            "correct": 50,
+            "precision_when_answered": 0.60241,
+            "selective_risk": 0.39759,
+            "balanced_recall": 0.166667,
+            "by_source": {
+              "sop": {
+                "correct": 50,
+                "answered": 83
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.523014,
+            "answered": 64,
+            "coverage": 0.397516,
+            "correct": 37,
+            "precision_when_answered": 0.578125,
+            "selective_risk": 0.421875,
+            "balanced_recall": 0.123333,
+            "by_source": {
+              "sop": {
+                "correct": 37,
+                "answered": 64
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.527378,
+            "answered": 63,
+            "coverage": 0.391304,
+            "correct": 37,
+            "precision_when_answered": 0.587302,
+            "selective_risk": 0.412698,
+            "balanced_recall": 0.123333,
+            "by_source": {
+              "sop": {
+                "correct": 37,
+                "answered": 63
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.540381,
+            "answered": 60,
+            "coverage": 0.372671,
+            "correct": 36,
+            "precision_when_answered": 0.6,
+            "selective_risk": 0.4,
+            "balanced_recall": 0.12,
+            "by_source": {
+              "sop": {
+                "correct": 36,
+                "answered": 60
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.562494,
+            "answered": 43,
+            "coverage": 0.267081,
+            "correct": 29,
+            "precision_when_answered": 0.674419,
+            "selective_risk": 0.325581,
+            "balanced_recall": 0.096667,
+            "by_source": {
+              "sop": {
+                "correct": 29,
+                "answered": 43
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.568205,
+            "answered": 25,
+            "coverage": 0.15528,
+            "correct": 20,
+            "precision_when_answered": 0.8,
+            "selective_risk": 0.2,
+            "balanced_recall": 0.066667,
+            "by_source": {
+              "sop": {
+                "correct": 20,
+                "answered": 25
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.639577,
+            "answered": 11,
+            "coverage": 0.068323,
+            "correct": 8,
+            "precision_when_answered": 0.727273,
+            "selective_risk": 0.272727,
+            "balanced_recall": 0.026667,
+            "by_source": {
+              "sop": {
+                "correct": 8,
+                "answered": 11
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.654512,
+            "answered": 9,
+            "coverage": 0.055901,
+            "correct": 6,
+            "precision_when_answered": 0.666667,
+            "selective_risk": 0.333333,
+            "balanced_recall": 0.02,
+            "by_source": {
+              "sop": {
+                "correct": 6,
+                "answered": 9
+              }
+            }
+          },
+          {
+            "final_lower_bound": 0.72246,
+            "answered": 4,
+            "coverage": 0.024845,
+            "correct": 3,
+            "precision_when_answered": 0.75,
+            "selective_risk": 0.25,
+            "balanced_recall": 0.01,
+            "by_source": {
+              "sop": {
+                "correct": 3,
+                "answered": 4
+              }
+            }
+          }
+        ],
+        "class_conditional": {
+          "source": "manifest-train-loo:coverage-v2",
+          "target_selective_risk": 0.4,
+          "rounds_run": 2,
+          "bounds": {
+            "L1": 0.410392,
+            "L2": 0.0
+          },
+          "labels_missing_target": [
+            "L1"
+          ],
+          "history": [
+            {
+              "round": 0,
+              "bounds": {
+                "L1": 0.410392,
+                "L2": 0.0
+              },
+              "coverage": 0.838509,
+              "selective_risk": 0.385185,
+              "balanced_recall": 0.283605,
+              "by_predicted_label": {
+                "L1": {
+                  "answered": 4,
+                  "correct": 2,
+                  "precision": 0.5,
+                  "selective_risk": 0.5
+                },
+                "L2": {
+                  "answered": 131,
+                  "correct": 81,
+                  "precision": 0.618321,
+                  "selective_risk": 0.381679
+                }
+              }
+            },
+            {
+              "round": 1,
+              "bounds": {
+                "L1": 0.410392,
+                "L2": 0.0
+              },
+              "coverage": 0.838509,
+              "selective_risk": 0.385185,
+              "balanced_recall": 0.283605,
+              "by_predicted_label": {
+                "L1": {
+                  "answered": 4,
+                  "correct": 2,
+                  "precision": 0.5,
+                  "selective_risk": 0.5
+                },
+                "L2": {
+                  "answered": 131,
+                  "correct": 81,
+                  "precision": 0.618321,
+                  "selective_risk": 0.381679
+                }
+              }
+            }
+          ],
+          "final": {
+            "coverage": 0.838509,
+            "selective_risk": 0.385185,
+            "balanced_recall": 0.283605,
+            "by_predicted_label": {
+              "L1": {
+                "answered": 4,
+                "correct": 2,
+                "precision": 0.5,
+                "selective_risk": 0.5
+              },
+              "L2": {
+                "answered": 131,
+                "correct": 81,
+                "precision": 0.618321,
+                "selective_risk": 0.381679
+              }
+            }
+          }
+        }
+      },
+      "oof_sop_answered": 161,
+      "oof_sop_correct": 92
+    }
+  }
+}

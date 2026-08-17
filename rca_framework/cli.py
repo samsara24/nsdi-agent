@@ -57,52 +57,58 @@ def train_command(args: argparse.Namespace) -> Dict[str, Any]:
         max_rules_per_class=args.max_rules_per_class,
     )
     pipeline = RCAPipeline(config).fit(cases[:args.train_size])
-    output = Path(args.output_dir)
-    if output.exists() and any(output.iterdir()):
-        raise FileExistsError(f"refusing to overwrite non-empty run directory: {output}")
-    model_dir = output / "model"
-    pipeline.save(model_dir)
-    evaluation = pipeline.evaluate(cases[args.train_size:], runtime=runtime_from_args(args))
-    dump_json(output / "evaluation_summary.json", evaluation["summary"])
-    dump_json(output / "predictions.json", evaluation["predictions"])
-    run_manifest = {
-        "data_dir": str(Path(args.data_dir)),
-        "train_size": args.train_size,
-        "test_size": len(cases) - args.train_size,
-        "train_case_ids": [case["case_id"] for case in cases[:args.train_size]],
-        "test_case_ids": [case["case_id"] for case in cases[args.train_size:]],
-        "backend": args.backend,
-        "llm_runtime": {
-            "model_path": args.model_path,
-            "tensor_parallel_size": args.tensor_parallel_size,
-            "gpu_memory_utilization": args.gpu_memory_utilization,
-            "max_model_len": args.max_model_len,
-            "max_new_tokens": args.max_new_tokens,
-            "dtype": args.dtype,
-            "enforce_eager": args.enforce_eager,
-            "guided_json": not args.disable_guided_json,
-            "disable_custom_all_reduce": args.disable_custom_all_reduce,
-        },
-        "leakage_policy": "All fitted artifacts use the first train-size cases only; test labels are read after inference solely for metrics.",
-    }
-    dump_json(output / "run_manifest.json", run_manifest)
-    return {
-        "output_dir": str(output),
-        "model_dir": str(model_dir),
-        "summary": evaluation["summary"],
-        "graph": {"nodes": len(pipeline.graph.nodes), "edges": len(pipeline.graph.edges)},
-        "rules": {label: len(items) for label, items in pipeline.rules.rule_sets.items()},
-        "rule_overlap": pipeline.rules.overlap_audit()["total_overlap_count"],
-    }
+    try:
+        output = Path(args.output_dir)
+        if output.exists() and any(output.iterdir()):
+            raise FileExistsError(f"refusing to overwrite non-empty run directory: {output}")
+        model_dir = output / "model"
+        pipeline.save(model_dir)
+        evaluation = pipeline.evaluate(cases[args.train_size:], runtime=runtime_from_args(args))
+        dump_json(output / "evaluation_summary.json", evaluation["summary"])
+        dump_json(output / "predictions.json", evaluation["predictions"])
+        run_manifest = {
+            "data_dir": str(Path(args.data_dir)),
+            "train_size": args.train_size,
+            "test_size": len(cases) - args.train_size,
+            "train_case_ids": [case["case_id"] for case in cases[:args.train_size]],
+            "test_case_ids": [case["case_id"] for case in cases[args.train_size:]],
+            "backend": args.backend,
+            "llm_runtime": {
+                "model_path": args.model_path,
+                "tensor_parallel_size": args.tensor_parallel_size,
+                "gpu_memory_utilization": args.gpu_memory_utilization,
+                "max_model_len": args.max_model_len,
+                "max_new_tokens": args.max_new_tokens,
+                "dtype": args.dtype,
+                "enforce_eager": args.enforce_eager,
+                "guided_json": not args.disable_guided_json,
+                "disable_custom_all_reduce": args.disable_custom_all_reduce,
+            },
+            "leakage_policy": "All fitted artifacts use the first train-size cases only; test labels are read after inference solely for metrics.",
+        }
+        dump_json(output / "run_manifest.json", run_manifest)
+        return {
+            "output_dir": str(output),
+            "model_dir": str(model_dir),
+            "summary": evaluation["summary"],
+            "graph": {"nodes": len(pipeline.graph.nodes), "edges": len(pipeline.graph.edges)},
+            "rules": {label: len(items) for label, items in pipeline.rules.rule_sets.items()},
+            "rule_overlap": pipeline.rules.overlap_audit()["total_overlap_count"],
+        }
+    finally:
+        pipeline.close()
 
 
 def infer_command(args: argparse.Namespace) -> Dict[str, Any]:
     pipeline = RCAPipeline.load(Path(args.model))
-    case = json.loads(Path(args.case).read_text(encoding="utf-8"))
-    result = pipeline.infer(case, runtime=runtime_from_args(args))
-    if args.output:
-        dump_json(Path(args.output), result)
-    return result
+    try:
+        case = json.loads(Path(args.case).read_text(encoding="utf-8"))
+        result = pipeline.infer(case, runtime=runtime_from_args(args))
+        if args.output:
+            dump_json(Path(args.output), result)
+        return result
+    finally:
+        pipeline.close()
 
 
 def build_parser() -> argparse.ArgumentParser:

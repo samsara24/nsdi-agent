@@ -1,0 +1,121 @@
+{
+  "case_count": 85,
+  "correct": 58,
+  "accuracy": 0.6823529411764706,
+  "recall": {
+    "L1": 0.4583333333333333,
+    "L2": 0.8545454545454545,
+    "fiber": 0.0
+  },
+  "confusion_matrix": {
+    "L1": {
+      "L1": 11,
+      "L2": 13
+    },
+    "L2": {
+      "L2": 47,
+      "L1": 8
+    },
+    "fiber": {
+      "L1": 4,
+      "L2": 2
+    }
+  },
+  "decision_status": {
+    "agreement": 82,
+    "conflict_resolved_by_kg_rag_llm": 3
+  },
+  "llm_reasoning_mode": {
+    "deterministic_path_fallback": 85
+  },
+  "valid_llm_outputs": 0,
+  "label_leakage": false,
+  "observations": {
+    "evidence_status": {
+      "anomalies_found": 64,
+      "all_metrics_normal": 2,
+      "partial_telemetry": 19,
+      "no_telemetry": 0
+    },
+    "coverage_state": {
+      "covered_pair": 47,
+      "covered_singleton": 5,
+      "covered_exemplar": 10,
+      "partial": 1,
+      "uncovered": 22
+    },
+    "prior_only_cases": 22,
+    "agreement_type": {
+      "independent_agreement": 4,
+      "same_source_agreement": 58,
+      "conflict": 1,
+      "no_evidence": 22
+    },
+    "independent_evidence_count": {
+      "0": 22,
+      "1": 53,
+      "2": 10
+    },
+    "matched_rule_support_tier": {
+      "strong": 370,
+      "moderate": 187,
+      "low_support": 73
+    },
+    "rule_support_audit": {
+      "L1": {
+        "rule_count": 31,
+        "support_tier": {
+          "strong": 3,
+          "moderate": 19,
+          "low_support": 9
+        },
+        "selection": {
+          "strict": 31
+        }
+      },
+      "L2": {
+        "rule_count": 40,
+        "support_tier": {
+          "strong": 19,
+          "moderate": 12,
+          "low_support": 9
+        },
+        "selection": {
+          "strict": 40
+        }
+      },
+      "fiber": {
+        "rule_count": 28,
+        "support_tier": {
+          "strong": 0,
+          "moderate": 0,
+          "low_support": 28
+        },
+        "selection": {
+          "strict": 28
+        }
+      }
+    },
+    "retrieval": {
+      "exemplar_similarity_threshold": 0.5,
+      "cases_at_or_above_threshold": 62
+    },
+    "lane_signature": {
+      "cases_with_any_signature": 42,
+      "by_signature": {
+        "tx_ok_rx_down": 29,
+        "tx_down": 6,
+        "bidirectional_same_lane": 2,
+        "uniform_loss_all_lanes": 0,
+        "single_lane_outlier": 7
+      },
+      "cases_with_lane_count_mismatch": 0,
+      "legacy_directional_loss_cases": 0,
+      "legacy_bidirectional_loss_cases": 0,
+      "declared_thresholds": {
+        "uniform_loss_spread_db": 1.0,
+        "single_lane_outlier_db": 2.0
+      }
+    }
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "schema_version": "rca-loop-bad-cases-v1",
+  "bad_cases": [
+    {
+      "case_id": "case_5d80fba2c22f",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_safe_model_fix",
+      "next_action": "mark_irreducible_or_label_review",
+      "notes": []
+    },
+    {
+      "case_id": "case_f3594459612d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "threshold_or_key_evidence",
+      "next_action": "revisit_key_evidence_contract",
+      "notes": [
+        "并列候选的历史标签不一致，结论取多数投票"
+      ]
+    },
+    {
+      "case_id": "case_4e466fb62ba8",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_safe_model_fix",
+      "next_action": "mark_irreducible_or_label_review",
+      "notes": []
+    },
+    {
+      "case_id": "case_b244b38241f9",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "threshold_or_key_evidence",
+      "next_action": "revisit_key_evidence_contract",
+      "notes": []
+    },
+    {
+      "case_id": "case_0c3939c5292e",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ]
+    },
+    {
+      "case_id": "case_4541f9bbc853",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_safe_model_fix",
+      "next_action": "mark_irreducible_or_label_review",
+      "notes": []
+    },
+    {
+      "case_id": "case_61d86d3a287d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "threshold_or_key_evidence",
+      "next_action": "revisit_key_evidence_contract",
+      "notes": []
+    },
+    {
+      "case_id": "case_f6ab3c98854d",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_4695d660361d",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：status:L2:RxLOL(P10_receive_symptom_points_to_far_transmit_chain)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_1d881d28d2a3",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_60e62d6d1052",
+      "actual": "fiber",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_9daf397bb2f7",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "drop:L1:rxpower:single_lane",
+        "status:L1:RxLOS"
+      ],
+      "critical_missing": [
+        "drop:L1:rxpower:single_lane",
+        "status:L1:RxLOS"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：drop:L1:rxpower:single_lane(P10_receive_symptom_points_to_far_transmit_chain, P11_single_lane_does_not_exclude_fiber, P6_rx_has_continuous_degradation, P9_scope_all_lanes_vs_single_lane)、status:L1:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    }
+  ]
+}

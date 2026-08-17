@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>光链路 RCA：框架、证据、约束与效果解剖</title><style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.75 -apple-system,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+     color:#1f2430;background:#f6f7f9}
+code,.mono,td.num,th.num{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+a{color:#1d4ed8}
+.wrap{max-width:1280px;margin:0 auto;padding:0 28px 120px}
+header.top{background:linear-gradient(160deg,#111827,#1f2937 60%,#312e5f);color:#f3f4f6;padding:44px 0 36px;margin-bottom:0}
+header.top .wrap{padding-bottom:0}
+header.top h1{margin:0 0 10px;font-size:29px;letter-spacing:.3px}
+header.top p.sub{margin:0;color:#c3c8d4;font-size:14px}
+header.top .meta{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+header.top .meta span{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+     border-radius:5px;padding:4px 10px;font-size:12.5px;color:#e5e7eb}
+nav.toc{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
+     border-bottom:1px solid #e2e5ea;margin-bottom:34px}
+nav.toc .wrap{padding:0 28px;display:flex;gap:2px;overflow-x:auto}
+nav.toc a{padding:12px 12px;font-size:13.5px;color:#48505f;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav.toc a:hover{color:#111827;background:#f1f3f6}
+nav.toc a.on{color:#1d4ed8;border-bottom-color:#1d4ed8;font-weight:600}
+section{margin:0 0 46px;scroll-margin-top:60px}
+h2{font-size:22px;margin:0 0 6px;padding-bottom:9px;border-bottom:2px solid #e2e5ea}
+h2 .n{color:#9aa1ad;font-weight:400;margin-right:9px}
+h3{font-size:17px;margin:30px 0 10px}
+h4{font-size:14.5px;margin:20px 0 7px;color:#374151}
+p{margin:11px 0}
+.lead{font-size:15.5px;color:#3d4453;background:#fff;border:1px solid #e2e5ea;border-left:4px solid #6366f1;
+     border-radius:0 8px 8px 0;padding:16px 20px;margin:16px 0 26px}
+.card{background:#fff;border:1px solid #e2e5ea;border-radius:10px;padding:20px 22px;margin:16px 0}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}
+.kpi{background:#fff;border:1px solid #e2e5ea;border-radius:10px;padding:15px 17px}
+.kpi .v{font-size:25px;font-weight:650;letter-spacing:-.4px;font-family:ui-monospace,Menlo,monospace}
+.kpi .k{font-size:12.5px;color:#6b7280;margin-bottom:3px}
+.kpi .note{font-size:12px;color:#8b919c;margin-top:5px;line-height:1.5}
+.kpi.good .v{color:#047857}.kpi.bad .v{color:#b91c1c}.kpi.warn .v{color:#b45309}.kpi.flat .v{color:#374151}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid #e5e7eb;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600;font-size:12.5px;color:#374151;position:sticky;top:0}
+td.num,th.num{text-align:right}
+tr:hover td{background:#fafbfc}
+.tbl-wrap{overflow:auto;max-height:560px;border:1px solid #e5e7eb;border-radius:8px}
+.tbl-wrap table{border:0}
+.tbl-wrap th{box-shadow:inset 0 -1px 0 #e5e7eb}
+.pill{display:inline-block;padding:1px 8px;border-radius:11px;font-size:11.5px;font-weight:600;line-height:1.7;white-space:nowrap}
+.p-L1{background:#dbeafe;color:#1e40af}
+.p-L2{background:#dcfce7;color:#166534}
+.p-fiber{background:#fef3c7;color:#92400e}
+.p-none{background:#f3f4f6;color:#6b7280}
+.p-ok{background:#d1fae5;color:#065f46}
+.p-bad{background:#fee2e2;color:#991b1b}
+.p-warn{background:#fef3c7;color:#92400e}
+.p-info{background:#e0e7ff;color:#3730a3}
+.bar{position:relative;background:#eef0f3;border-radius:3px;height:16px;min-width:80px;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:#93c5fd;display:block}
+.bar b{position:absolute;inset:0;font-size:11px;text-align:center;font-weight:600;color:#1f2937;line-height:16px}
+.bar.lo i{background:#fca5a5}.bar.hi i{background:#86efac}
+details{border:1px solid #e2e5ea;border-radius:8px;background:#fff;margin:10px 0}
+details>summary{cursor:pointer;padding:11px 15px;font-weight:600;font-size:13.5px;color:#374151;list-style:none;display:flex;gap:9px;align-items:center}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:#9aa1ad;font-size:12px}
+details[open]>summary::before{content:"▾"}
+details>summary:hover{background:#f8f9fb}
+details .body{padding:4px 16px 16px;border-top:1px solid #eef0f3}
+.note{font-size:13px;color:#6b7280;background:#f8f9fb;border-left:3px solid #cbd2dc;padding:9px 13px;margin:11px 0;border-radius:0 5px 5px 0}
+.warnbox{font-size:13.5px;background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;padding:13px 16px;border-radius:0 7px 7px 0;margin:13px 0}
+.badbox{font-size:13.5px;background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #ef4444;padding:13px 16px;border-radius:0 7px 7px 0;margin:13px 0}
+.okbox{font-size:13.5px;background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid #22c55e;padding:13px 16px;border-radius:0 7px 7px 0;margin:13px 0}
+.infobox{font-size:13.5px;background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #3b82f6;padding:13px 16px;border-radius:0 7px 7px 0;margin:13px 0}
+ul,ol{margin:11px 0;padding-left:24px}
+li{margin:5px 0}
+.small{font-size:12.5px;color:#6b7280}
+.flow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 0 12px}
+.flow .st{min-width:150px;flex:1;background:#fff;border:1px solid #d6dae1;border-radius:8px;padding:10px 12px;position:relative}
+.flow .st+.st{margin-left:20px}
+.flow .st+.st::before{content:"";position:absolute;left:-20px;top:50%;width:20px;height:2px;background:#c3c9d3}
+.flow .st+.st::after{content:"";position:absolute;left:-8px;top:50%;transform:translateY(-50%);
+     border-left:6px solid #c3c9d3;border-top:4px solid transparent;border-bottom:4px solid transparent}
+.flow .st .lab{font-size:11px;color:#8b919c;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.flow .st .val{font-size:13px;font-weight:600;color:#1f2430;word-break:break-word}
+.flow .st .sub{font-size:11.5px;color:#6b7280;margin-top:4px;line-height:1.55}
+.flow .st.hit{border-color:#22c55e;background:#f0fdf4}
+.flow .st.err{border-color:#ef4444;background:#fef2f2}
+.flow .st.dim{opacity:.62}
+.flow .st.pick{box-shadow:0 0 0 2px #6366f1 inset}
+.lanes{font-size:12.5px;width:100%}
+.lanes td,.lanes th{padding:4px 7px;text-align:right}
+.lanes th:first-child,.lanes td:first-child{text-align:left;font-weight:600;color:#374151;white-space:nowrap}
+.lanes td.dark{background:#fee2e2;color:#991b1b;font-weight:700}
+.lanes td.zero{background:#fef3c7;color:#92400e;font-weight:700}
+.lanes td.lo{background:#e0f2fe;color:#075985}
+.lanes td.na{color:#c3c9d3}
+.tokwrap{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
+.tok{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;background:#f1f3f6;border:1px solid #e2e5ea;
+     border-radius:4px;padding:2px 7px;color:#374151}
+.tok.ex{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+.tok.cited{background:#fef9c3;border-color:#fde047;color:#854d0e;font-weight:600}
+.thinking{font-size:13px;line-height:1.8;color:#3d4453;background:#fbfcfd;border:1px solid #e5e7eb;
+     border-radius:7px;padding:14px 16px;white-space:pre-wrap;max-height:420px;overflow:auto}
+.step{border:1px solid #e5e7eb;border-radius:7px;padding:11px 13px;margin:9px 0;background:#fff}
+.step .claim{font-size:13.5px;color:#1f2430;margin-bottom:7px}
+.step .m{font-size:11.5px;color:#6b7280;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.step.support{border-left:3px solid #22c55e}
+.step.exclude{border-left:3px solid #ef4444}
+.step.neutral{border-left:3px solid #cbd2dc}
+.viol{font-size:12.5px;padding:6px 10px;border-radius:5px;margin:5px 0}
+.viol.fatal{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.viol.warning{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid #e2e5ea;
+     border-radius:9px;padding:13px 16px;margin:16px 0 22px;position:sticky;top:45px;z-index:30}
+.filters .lbl{font-size:12.5px;color:#6b7280;margin-right:2px}
+.btn{border:1px solid #d6dae1;background:#fff;border-radius:6px;padding:5px 11px;font-size:12.5px;cursor:pointer;color:#374151}
+.btn:hover{background:#f3f4f6}
+.btn.on{background:#1f2937;border-color:#1f2937;color:#fff;font-weight:600}
+.search{border:1px solid #d6dae1;border-radius:6px;padding:5px 10px;font-size:12.5px;width:200px}
+.caseCard{background:#fff;border:1px solid #e2e5ea;border-radius:11px;margin:16px 0;overflow:hidden}
+.caseCard.wrong{border-color:#f3b8b8}
+.caseCard.right{border-color:#c1e7cd}
+.caseHead{display:flex;flex-wrap:wrap;gap:11px;align-items:center;padding:13px 18px;border-bottom:1px solid #eef0f3;background:#fbfcfd}
+.caseCard.wrong .caseHead{background:#fef7f7}
+.caseCard.right .caseHead{background:#f7fdf9}
+.caseHead .cid{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;font-weight:650}
+.caseHead .grow{flex:1}
+.caseBody{padding:16px 18px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:1000px){.cols{grid-template-columns:1fr}}
+.blind{background:#f5f3ff;border:1px solid #ddd6fe;border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:14px 17px;margin:12px 0}
+.blind h5{margin:0 0 7px;font-size:13.5px;color:#5b21b6;text-transform:none}
+.insight{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;border-radius:0 8px 8px 0;padding:14px 17px;margin:12px 0}
+.insight h5{margin:0 0 7px;font-size:13.5px;color:#92400e}
+.fix{background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;padding:14px 17px;margin:12px 0}
+.fix h5{margin:0 0 7px;font-size:13.5px;color:#166534}
+.blind p,.insight p,.fix p{margin:6px 0;font-size:13.5px;line-height:1.8}
+h5{font-weight:700}
+.kindTag{font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:11px;color:#fff}
+.empty{text-align:center;color:#9aa1ad;padding:50px;font-size:14px}
+.footer{margin-top:60px;padding-top:22px;border-top:1px solid #e2e5ea;font-size:12.5px;color:#8b919c}
+.tree{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.9;white-space:pre;overflow-x:auto;
+      background:#fbfcfd;border:1px solid #e5e7eb;border-radius:7px;padding:14px 16px}
+</style></head><body>
+<header class="top"><div class="wrap">
+<h1>光链路 RCA：框架、证据、约束与效果解剖</h1><p class="sub">对当前 RCA v2 测试数据的完整复盘 —— 系统由什么构成、做到了什么水平、以及「换一个更强的推理模型」能不能解决问题</p>
+<div class="meta"><span>数据集 rca_v2_l2fixed</span><span>train/test 161/107</span><span>模型 DeepSeek-R1-Distill-Qwen-32B</span><span>prompt rca-constrained-reasoning-v7</span><span>约束库 constraint-library-v6</span><span>特征 feature-dictionary-v3</span></div>
+</div></header>
+<nav class="toc"><div class="wrap"><a href="#s-verdict">结论</a><a href="#s-arch">实现框架</a><a href="#s-pack">证据包</a><a href="#s-feat">特征与证据</a><a href="#s-graph">证据图</a><a href="#s-constr">物理约束</a><a href="#s-sop">SOP</a><a href="#s-expert">专家规则</a><a href="#s-cascade">级联决策</a><a href="#s-result">结果与效果</a><a href="#s-cells">规则可靠性解剖</a><a href="#s-ceiling">可推导性上限</a><a href="#s-llm">LLM 三岗位</a><a href="#s-defects">缺陷与建议</a></div></nav>
+<div class="wrap">
+
+<section id="s-verdict"><h2><span class="n">00</span>先回答那个假设</h2>
+<div class="lead">
+你的假设是「效果差可能是因为用了比较差的推理模型」。把测试数据翻完之后，结论是
+<b>这个假设不成立，而且可以被具体地否证</b>：当前 24 条判错的 case 里，有 23 条是
+「从这份遥测出发，任何推理者都推不出答案」——不是推错，是无从下手。
+一个更强的模型在这些 case 上唯一能做得更好的事情是<b>拒绝回答</b>，而不是答对。
+</div>
+
+<div class="grid g4">
+  <div class="kpi flat"><div class="k">自动结论覆盖率</div><div class="v">95.3%</div>
+    <div class="note">102/107 条给出结论</div></div>
+  <div class="kpi warn"><div class="k">给结论时精度</div><div class="v">76.5%</div>
+    <div class="note">78/102 条正确</div></div>
+  <div class="kpi flat"><div class="k">多数类基线</div><div class="v">62.6%</div>
+    <div class="note">全部答 L2 就有这个成绩</div></div>
+  <div class="kpi bad"><div class="k">fiber 召回</div><div class="v">0.0%</div>
+    <div class="note">0/8，结构性不可召回</div></div>
+</div>
+
+<h3>三句话版本</h3>
+<div class="okbox"><b>1. 增益来自人工专家经验，不来自模型。</b>
+覆盖率从 MVP 的 0% 提到 95.3%，靠的是把工程阈值与两端仲裁规则写进
+<code>expert.py</code>。同一份数据上，LLM 作为定界器的准确率显著低于专家规则
+（McNemar p=0.0117），作为质疑器命中率为 0，只有作为解释器时四项可机检指标全部通过。</div>
+
+<div class="warnbox"><b>2. 专家规则 76.64% 的成绩里，一半以上落在统计上不成立的格子上。</b>
+把规则按「哪条规则胜出 + 从哪端指向哪端」拆成 15 个格子后，
+最大的三个格子（<code>multi_metric L1→L2</code> 之外的 <code>multi_metric L2→L1</code>、
+<code>single:serdes_snr</code> 两个方向）合计覆盖全库过半 case，准确率只有 50~74%。
+按选择性预测重排后，<b>覆盖率降到 63.6% 可以把精度从 76.64% 提到 85.29%</b>。</div>
+
+<div class="badbox"><b>3. 真正的瓶颈是可观测量，不是推理能力。</b>
+用一套只依赖物理哨兵与同侧对比的「盲读」规则（不看标签、不用任何数据集统计量）扫全库：
+只有 <b>9.0%（24/268）</b>的 case 能被物理推导出结论，
+精度 87.5%；而专家规则在<b>同一个子集</b>上精度也正好是
+87.5%。也就是说物理能说清的地方，
+现有规则已经做到了；剩下 91% 的 case 里没有可推理的内容，只有可猜的先验。</div>
+</section>
+
+<section id="s-arch"><h2><span class="n">01</span>实现框架</h2>
+<p>一条告警从原始遥测走到结论要经过六个节点。下面每个节点后面括号里是它在代码里的位置。</p>
+<div class="card">
+<div class="flow">
+  <div class="st"><div class="lab">N1 证据包</div><div class="val">原始遥测标准化</div>
+    <div class="sub">逐 lane 光功率/SNR/状态位<br><code>evidence_pack.py</code></div></div>
+  <div class="st"><div class="lab">N2 特征</div><div class="val">稀疏证据 token</div>
+    <div class="sub">阈值+分位数 → 可解释 token<br><code>features/extractor.py</code></div></div>
+  <div class="st"><div class="lab">N3 证据图</div><div class="val">历史签名检索</div>
+    <div class="sub">IDF 加权 Jaccard<br><code>evidence_graph/</code></div></div>
+  <div class="st"><div class="lab">N4 路由</div><div class="val">按命中强度分流</div>
+    <div class="sub">N5a/N5b/N5c/N6<br><code>branches/</code></div></div>
+  <div class="st"><div class="lab">M9 级联</div><div class="val">多来源裁决</div>
+    <div class="sub">专家/SOP/分支/LLM<br><code>decision.py</code></div></div>
+  <div class="st"><div class="lab">输出</div><div class="val">结论或拒答</div>
+    <div class="sub">带置信度与人工介入标记</div></div>
+</div>
+<div class="note">LLM 不在主干上。它被挂在三个可替换的岗位上：<b>定界器</b>（直接给根因）、
+<b>质疑器</b>（判断专家规则的前提是否成立）、<b>解释器</b>（把规则依据翻译成人话）。
+三个岗位分别做了独立实验，结论见下方「LLM 三岗位」。</div>
+</div>
+
+<h3>关键设计：训练与测试的隔离</h3>
+<p>所有在训练集上拟合的东西——阈值模型、特征分位数边界、IDF 权重、SOP 决策树、
+标定分组的支持数与 Wilson 下界——都只用 train 的 161 条。test 的 107 条不参与任何拟合，
+也不回灌进证据图。证据包这一层的类型设计强制了这件事：
+<code>fit_feature_model()</code> 的入参是 <code>EvidencePack</code>，而证据包里根本没有
+<code>label</code> 字段，所以「拟合时不许看标签」由类型保证，不靠调用方自觉。</p>
+</section>
+
+<section id="s-pack"><h2><span class="n">02</span>证据包：系统能看到什么</h2>
+<p>证据包是唯一的输入。它决定了后面所有环节的能力上限，所以先看它里面到底有什么、缺什么。</p>
+<div id="packCoverage"></div>
+<h3>结构性问题</h3>
+<div id="packIssues"></div>
+</section>
+
+<section id="s-feat"><h2><span class="n">03</span>特征与证据 token</h2>
+<p>N2 把连续的遥测读数变成离散 token。这一步是<b>有损</b>的，而损失掉的东西正好是后面
+很多判错的原因，所以值得逐族看清楚。</p>
+<div id="tokenFamilies"></div>
+<div id="tokenLossy"></div>
+</section>
+
+<section id="s-graph"><h2><span class="n">04</span>证据图</h2>
+<div id="graphInfo"></div>
+</section>
+
+<section id="s-constr"><h2><span class="n">05</span>物理约束库</h2>
+<p>约束库是给 LLM 的物理护栏，同时也是校验器判断模型有没有胡说的依据。
+每条约束规定了它适用于哪些 token 前缀、允许被用作什么效果（支持/排除/中性）、
+以及允许指向哪些根因。</p>
+<div id="constrSummary"></div>
+<div id="constrTable"></div>
+</section>
+
+<section id="s-sop"><h2><span class="n">06</span>SOP</h2>
+<div id="sopInfo"></div>
+</section>
+
+<section id="s-expert"><h2><span class="n">07</span>专家规则</h2>
+<div id="expertInfo"></div>
+</section>
+
+<section id="s-cascade"><h2><span class="n">08</span>级联决策 M9</h2>
+<div id="cascadeInfo"></div>
+</section>
+
+<section id="s-result"><h2><span class="n">09</span>结果与效果</h2>
+<div id="resultBlock"></div>
+</section>
+
+<section id="s-cells"><h2><span class="n">10</span>规则可靠性解剖</h2>
+<p>整体准确率会把好格子和坏格子的表现平均掉。把专家规则按
+「哪条规则胜出 + 症状在哪端 → 指向哪端」拆开之后，才能看到成绩是从哪里来的、
+错误集中在哪里。下表在<b>全库 268 条</b>上统计（test 只有 107 条，单格样本量不够）。</p>
+<div id="cellsBlock"></div>
+<h3>选择性预测：拒答换精度</h3>
+<div id="selectiveBlock"></div>
+</section>
+
+<section id="s-ceiling"><h2><span class="n">11</span>物理可推导性上限</h2>
+<div id="ceilingBlock"></div>
+</section>
+
+<section id="s-llm"><h2><span class="n">12</span>LLM 三岗位实测</h2>
+<div id="llmBlock"></div>
+</section>
+
+<section id="s-defects"><h2><span class="n">13</span>缺陷清单与建议</h2>
+<div id="defectBlock"></div>
+</section>
+
+<div class="footer">本页所有数字均由 <code>scripts/build_overview_bundle.py</code> 与 <code>scripts/build_defect_bundle.py</code> 在 <code>datasets/rca_v2_l2fixed</code> 上重算得出，可重跑核对。逐 case 的决策链与错因分析见 <a href='rca_cases.html'>rca_cases.html</a>。</div>
+</div>
+<script id="ovData" type="application/json">{"dataset": {"name": "rca_v2_l2fixed", "train": 161, "test": 107, "train_dist": {"L2": 100, "L1": 49, "fiber": 12}, "test_dist": {"L1": 32, "L2": 67, "fiber": 8}}, "constraints": [{"id": "C1_bias_zero_means_laser_off", "category": "bias_current", "kind": "invariant", "title": "偏置电流为零等价于该 lane 未发光", "statement": "激光器的光输出由偏置电流驱动。偏置电流为 0 mA 时器件根本没有被点亮，该 lane 必然没有光输出，这与光纤链路的状态无关。", "formal": "bias[side][lane] == 0  <=>  txpower[side][lane] <= -39 dBm", "params": [["断光哨兵", "-39 dBm"], ["零电流判定", "bias == 0 mA"]], "provenance": "device_spec", "evidence": "训练集 1008 个 lane 读数中有 45 个 bias == 0，涉及 8 条 case；这 45 个 lane 的 txpower 全部同时处于断光哨兵，无一例外，反向也成立：没有出现 tx 断光而 bias 非零的 lane。", "use": "先用它把「没发出光」与「光发出后丢失」分开。前者的根因在发送端设备，后者才可能是介质。这一步必须在任何功率比较之前做。", "prefixes": ["drop:L1:bias:", "drop:L2:bias:"], "effects": ["neutral"], "targets": [""]}, {"id": "C2_bias_healthy_band", "category": "bias_current", "kind": "indicator", "title": "健康 lane 的偏置电流落在窄带内", "statement": "同型号模块在正常工作点上的偏置电流分布很窄。电流显著抬高通常意味着激光器老化后需要更大驱动才能维持同样光功率，是器件劣化的早期信号。", "formal": "7.2 mA <= bias[side][lane] <= 7.8 mA  (healthy lane)", "params": [["下界", "7.2 mA"], ["上界", "7.8 mA"]], "provenance": "measured", "evidence": "训练集非零偏置电流的 p25 = 7.22 mA（L1）/ 7.29 mA（L2），p99 = 7.72 mA（L1）/ 7.78 mA（L2），全部落在 7.2-7.8 mA。", "use": "本数据集内没有观察到落在该带之外的非零电流，因此它当前只能作为「电流正常」的排除依据，不能作为老化判据。合并数据集后重新标定。", "prefixes": ["drop:L1:bias:", "drop:L2:bias:"], "effects": ["neutral"], "targets": [""]}, {"id": "C3_temperature_operating_range", "category": "temperature", "kind": "exclusion", "title": "模块温度在工作范围内则排除热致故障", "statement": "商用光模块的工作温度范围是 0-70 °C。温度在范围内时，温漂不足以导致链路中断或降 lane。", "formal": "0 degC <= Temperature[side] <= 70 degC", "params": [["下界", "0 degC"], ["上界", "70 degC"]], "provenance": "device_spec", "evidence": "训练集 252 个温度读数全部落在 39.35-60.13 °C，无一超出 70 °C。L2 侧系统性高于 L1 侧约 3.5 °C（中位数 50.30 vs 46.72），这是 200G 与 400G 端口的形态差异，不是故障。", "use": "在本数据集上温度恒为排除条件：不允许把根因写成过温。L1 / L2 之间的固定温差也不能当作两侧差异证据。", "prefixes": [], "effects": ["neutral"], "targets": [""]}, {"id": "C4_voltage_nominal_band", "category": "voltage", "kind": "exclusion", "title": "供电电压在 3.3 V ±5% 内则排除供电异常", "statement": "光模块标称供电 3.3 V，允许偏差 ±5%，即 3.135-3.465 V。超出下界时激光器驱动与 DSP 都可能不稳定。", "formal": "3.135 V <= Voltage[side] <= 3.465 V", "params": [["标称", "3.3 V"], ["允许偏差", "±5%"]], "provenance": "device_spec", "evidence": "训练集 252 个电压读数中只有 1 个低于下界（case_aa307cc7c7db 的 L2 侧 3.10 V），其余全部落在 3.14-3.42 V。", "use": "命中越界时把该侧设备列为候选并要求人工确认；由于全训练集只有 1 例，不允许据此建立统计规则。", "prefixes": [], "effects": ["neutral"], "targets": [""]}, {"id": "C5_tx_power_range", "category": "tx_power", "kind": "invariant", "title": "发送光功率的量程与断光哨兵", "statement": "单 lane 发送光功率由激光器输出决定，正常工作点集中在 0 dBm 附近的窄带；读数掉到 -39 dBm 及以下是「无光」的哨兵值，不是一个真实的功率测量。", "formal": "txpower[side][lane] > -39 dBm  =>  -1.8 dBm <= txpower <= 2.1 dBm", "params": [["断光哨兵", "-39 dBm"], ["健康下界", "-1.8 dBm"], ["健康上界", "2.1 dBm"]], "provenance": "measured", "evidence": "训练集健康 txpower 共 963 个读数，L1 侧 -1.70~1.91 dBm，L2 侧 -1.73~2.08 dBm；没有介于 -39 dBm 与 -1.8 dBm 之间的中间值，说明发送功率是「要么正常要么无光」。", "use": "发送功率不存在渐变劣化区间，因此 tx 侧只需判断有光 / 无光，不要对 tx 做「偏低多少 dB」的推断。", "prefixes": ["drop:L1:txpower:", "drop:L2:txpower:", "level:L1:txpower_mean:", "level:L2:txpower_mean:"], "effects": ["neutral"], "targets": [""]}, {"id": "C6_tx_down_excludes_medium", "category": "tx_power", "kind": "exclusion", "title": "本端未发光时排除介质根因", "statement": "光纤只能衰减已经进入它的光，不能解释一束从未被发出的光。本端某 lane 没有光输出时，该方向的问题必然在发送端。", "formal": "txpower[near][lane] <= -39 dBm  =>  root_cause != fiber (for that direction)", "params": [["断光哨兵", "-39 dBm"]], "provenance": "derived", "evidence": "由 C1 与 C5 推出，不引入新参数。训练集中 tx 断光的 lane 与 bias == 0 完全重合。", "use": "这是排除 fiber 的最强单条依据，应在 N5c 推理的第一步执行。", "prefixes": ["drop:L1:txpower:", "drop:L2:txpower:", "lane:L1_to_L2:tx_down", "lane:L2_to_L1:tx_down"], "effects": ["exclude"], "targets": ["fiber"]}, {"id": "C7_rx_power_range", "category": "rx_power", "kind": "invariant", "title": "接收光功率的量程与断光哨兵", "statement": "接收功率等于对端发送功率减去链路衰减，因此它有真实的连续劣化区间；读数掉到 -39 dBm 及以下同样是「无光」哨兵。", "formal": "rxpower[side][lane] > -39 dBm  =>  -12.3 dBm <= rxpower <= 3.0 dBm", "params": [["断光哨兵", "-39 dBm"], ["实测下界", "-12.3 dBm"], ["实测上界", "3.0 dBm"]], "provenance": "measured", "evidence": "训练集健康 rxpower 共 929 个读数，L1 侧 -12.15~2.95 dBm，L2 侧 -12.25~2.83 dBm；与 tx 不同，rx 存在连续的低功率区间（p1 为 -8.45 / -4.68 dBm）。", "use": "接收侧允许讨论「偏低多少」，这是与发送侧的关键区别，也是 `level_tail` 特征家族只在接收侧有判别力的物理原因。", "prefixes": ["drop:L1:rxpower:", "drop:L2:rxpower:", "imbalance:L1:rxpower", "imbalance:L2:rxpower", "level:L1:rxpower_mean:", "level:L2:rxpower_mean:"], "effects": ["neutral"], "targets": [""]}, {"id": "C8_tx_ok_rx_down_indicates_medium", "category": "lane_directional_consistency", "kind": "indicator", "title": "本端发光正常而对端同 lane 无光指向介质或对端接收", "statement": "光已经被发出却没有到达对端，说明它在传输路径上丢失。路径包含光纤、连接器、以及对端的接收器件。", "formal": "txpower[near][lane] > -39 dBm AND rxpower[far][lane] <= -39 dBm  =>  root_cause in {fiber, far_end_device}", "params": [["断光哨兵", "-39 dBm"]], "provenance": "derived", "evidence": "全量 211 条 case 中有 61 条命中该模式，标签分布 L2 40 / L1 13 / fiber 8。fiber 在命中组中的占比 13.1%，高于全局占比 6.6%，约 2 倍富集；但它同时命中 53 条非 fiber case，因此只能作为 indicator 而不是判据。", "use": "命中后必须继续区分「介质」与「对端接收器件」，单靠这一条不能判 fiber。区分手段见 C9。", "prefixes": ["lane:L1_to_L2:tx_ok_rx_down", "lane:L2_to_L1:tx_ok_rx_down"], "effects": ["support"], "targets": ["fiber"]}, {"id": "C9_bidirectional_symmetry", "category": "lane_directional_consistency", "kind": "indicator", "title": "双向对称异常指向介质，单向异常指向该方向的端点", "statement": "一对光纤中的两根分别承载两个方向。同一 lane 双向同时异常说明整条 lane 或其光纤对被共同影响（例如同一根尾纤被拔出、同一个连接器脏污）；只有单向异常说明问题落在该方向的发送端或接收端，而不是共享的介质。", "formal": "abnormal(L1->L2, lane) AND abnormal(L2->L1, lane)  =>  shared cause (fiber pair / connector); XOR  =>  endpoint of that direction", "params": [], "provenance": "device_spec", "evidence": "全量 211 条中同 lane 双向异常的有 9 条（标签 L2 6 / fiber 2 / L1 1），样本量太小，不足以支撑统计结论；这条约束的依据是物理拓扑而非数据。", "use": "与 C8 串联使用：C8 判断光是否在路径中丢失，C9 判断丢失是否双向对称。双向对称才把 fiber 提到首位。", "prefixes": ["lane:L1_to_L2:bidirectional_same_lane", "lane:L2_to_L1:bidirectional_same_lane"], "effects": ["support"], "targets": ["fiber"]}, {"id": "C10_all_lanes_vs_single_lane", "category": "lane_directional_consistency", "kind": "indicator", "title": "全 lane 同时异常与单 lane 异常指向不同层级", "statement": "一个端口的所有 lane 共享供电、时钟、模块壳体和同一束光纤；单条 lane 则有独立的激光器、探测器和纤芯。所有 lane 同时异常指向共享层，单 lane 异常指向该通道的独立器件。", "formal": "down_lane_count == lane_count  =>  port-level; down_lane_count == 1  =>  channel-level", "params": [], "provenance": "device_spec", "evidence": "这正是特征家族 `signal_drop` 把断 lane 数分成 single_lane / partial_lanes / all_lanes 三档的物理依据；T1 家族消融显示该分档是 v1 中不可替代的一项。", "use": "决定排障动作的粒度：整端口换模块 / 换整束纤，还是单通道定位。", "prefixes": ["drop:"], "effects": ["neutral"], "targets": [""]}, {"id": "C11_media_snr_floor", "category": "signal_quality", "kind": "indicator", "title": "介质侧信噪比显著低于正常带且收光正常时指向链路质量", "statement": "介质侧 SNR 反映解调后的信号质量。收光功率正常而 SNR 偏低，说明损伤不是功率衰减，而是色散、反射、串扰这类不改变总功率的链路质量问题。", "formal": "rxpower normal AND media_snr < 22.5 dB  =>  link quality degradation", "params": [["正常带下界", "22.5 dB"], ["正常带中位数", "25.6 dB (L1) / 26.0 dB (L2)"]], "provenance": "measured", "evidence": "训练集健康 media_snr 的 p1 为 22.47 dB（L1）/ 22.95 dB（L2），低于 20 dB 的读数只有 4 个（16.71 / 17.51 / 17.51 / 17.70）。", "use": "触发极少，当前只能作为个别 case 的补充线索；不要把它写进任何需要统计支撑的规则。", "prefixes": ["level:L1:media_snr_min:low_tail", "level:L2:media_snr_min:low_tail"], "effects": ["support"], "targets": ["fiber"]}, {"id": "C12_no_absolute_link_loss", "category": "measurement_validity", "kind": "caveat", "title": "本数据集不能用两端功率相减计算链路损耗", "statement": "无源链路的损耗必然非负，即对端收到的功率不可能高于本端发出的功率。本数据集违反这一点，说明两端 lane 编号不对应，或收发功率的标定口径不同。", "formal": "mean(txpower[near]) - mean(rxpower[far]) >= 0   # 本数据集不成立", "params": [], "provenance": "measured", "evidence": "按 lane 号配对后，L1->L2 方向的均值损耗中位数为 -0.285 dB，L2->L1 为 -0.227 dB，两个方向的中位数都是负值，物理上不可能。legacy `directional_loss` 学到的上界（3.11 / 3.42 dB）因此也不可信。第二个更直观的证据（迭代 1 补测）：只看序不看数值，统计两端**最差 lane 的编号**是否相同。若两端编号真的对应，故障 case 里这个比例应明显高于随机；实测 rxpower 为 37/155 = 23.9%、media_snr 为 46/161 = 28.6%，而 4 lane 下随机一致的概率就是 25%，两者都与随机无法区分。这个检验只需要遥测本身，可以直接用来判断一份数据的两端 lane 是否对齐。", "use": "禁止在约束、规则或 prompt 中写绝对损耗门限。只允许使用同侧内部的相对量（lane 间极差）与训练集分位分档。", "prefixes": ["lane:"], "effects": ["neutral"], "targets": [""]}, {"id": "C13_serdes_snr_unit_unknown", "category": "measurement_validity", "kind": "caveat", "title": "serdes_snr 不是 dB 量纲，不得按信噪比解释", "statement": "`serdes_snr` 字段的健康取值在 6.6e5-8.3e5 量级，断链时为 1。这不是任何 dB 口径的信噪比，更接近某种原始计数或定点数。", "formal": "serdes_snr 量纲未知；仅可用作有效 / 无效的二值判断", "params": [["健康区间", "约 6.6e5 - 8.3e5（量纲未知）"], ["失效哨兵", "1"]], "provenance": "measured", "evidence": "训练集 972 个 serdes_snr 读数中，健康值 p25-p99 为 6.6e5-8.2e5，最小值为 1。legacy 规则里出现频率很高的 `low_outlier:*:serdes_snr` 就建立在这个量纲未知的字段上。", "use": "在向厂商确认量纲之前，只允许用它区分「有效」与「失效」，不允许出现「serdes SNR 低了 x dB」这类表述。", "prefixes": ["serdes:"], "effects": ["neutral"], "targets": [""]}, {"id": "C14_host_snr_mostly_missing", "category": "measurement_validity", "kind": "caveat", "title": "host_snr 在多数 case 上缺失，缺失不等于正常", "statement": "主机侧信噪比反映模块与交换芯片之间的电口质量，与光链路无关。该字段在本数据集大面积缺失。", "formal": "host_snr 存在率 = 52/161 训练 case", "params": [["训练集存在率", "52/161（32.3%）"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split 的 161 条 case 中，只有 52 条任一侧有非空 host_snr 读数，109 条两侧均无有效读数（存在率 32.3%）。", "use": "缺失必须被显式表述为「未采集」，不能当作「正常」。N6 在判断证据充分性时要把它算作缺失证据而不是通过项。", "prefixes": ["telemetry:partial_telemetry", "telemetry:no_telemetry"], "effects": ["neutral"], "targets": [""]}, {"id": "C15_blackout_sentinel_is_not_laser_off", "category": "measurement_validity", "kind": "caveat", "title": "全链路读数同时触底时，哨兵表示「未读到数」而不是「无光」", "statement": "两端的发送、接收、介质侧信噪比同时全部处于断光哨兵，同时 TxLOS 却报 Normal，这两件事互相矛盾：模块若真的没有发光，TxLOS 应当告警。更合理的解释是链路整体中断后遥测通道本身失效，所有光学读数回落到哨兵默认值。此时哨兵是「读不到」而不是「没有光」。", "formal": "ALL(txpower, rxpower over both sides) <= -39 dBm AND TxLOS == Normal  =>  哨兵含义为 no_reading，不得据此推断激光关断", "params": [["断光哨兵", "-39 dBm"], ["训练集命中", "4/161"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split 的 161 条中有 4 条命中：两侧 4 个 lane 的 txpower / rxpower 全为 -40.0 dBm，状态位一律 TxLOS=Normal、TxLOL=Normal、RxLOS=Abnormal、RxLOL=Abnormal。4 条的标签为 L2 3 条、fiber 1 条：物理观测完全一致而根因不同，说明该状态下的遥测不足以区分根因。", "use": "这是 C6 的前置条件：只有在遥测确实有效（存在任一非哨兵读数）时，才允许用「本端未发光」去排除介质根因。命中本约束的 case 应直接转人工，不论它产出了多少个特征 token——token 多不等于证据强。", "prefixes": ["drop:L1:txpower:all_lanes", "drop:L2:txpower:all_lanes", "drop:L1:rxpower:all_lanes", "drop:L2:rxpower:all_lanes"], "effects": ["neutral"], "targets": [""]}, {"id": "C16_receive_symptom_constrains_far_transmit_chain", "category": "attribution_direction", "kind": "indicator", "title": "接收侧症状把故障约束在对端发送链路、介质与本端接收链路三者之内", "statement": "一侧的接收类读数（rxpower、media_snr、RxLOS / RxLOL）度量的是**对端发出、穿过介质之后到达本端**的光。因此接收侧出现症状时，候选根因只能落在「对端发送链路」「介质」「本端接收链路」这三段里，在物理上不可能是本端自己的发送链路——本端发出的光根本不经过本端的接收器。这条方向性是光链路 RCA 里最基本的归因约束：报症状的一端通常不是肇事的一端。", "formal": "receive_symptom(X)  =>  root_cause_chain in {tx_chain(Y), medium, rx_chain(X)}  AND  root_cause_chain != tx_chain(X)", "params": [["接收侧症状定义", "RxLOS / RxLOL 告警，或 rxpower / media_snr 存在断 lane"]], "provenance": "derived", "evidence": "rca_v2_l2fixed manifest train split（161 条）按「只有哪一侧出现接收侧症状」分组：只有 L1 侧 63 条，其中根因为对端 L2 的 43 条 = 68.3%（Wilson 下界 56.0%，L2 先验 62.1%）；只有 L2 侧 25 条，其中根因为对端 L1 的 12 条 = 48.0%（Wilson 下界 30.0%，L1 先验 30.4%）。**两个方向不对称：只有 L1 受害方向的下界超过其预测类别的先验。**更细的口径同样如此：L1 侧 rx 只有单 lane 断（其余 lane 健康）37 条，根因 L2 30 条 = 81.1%（下界 65.8%）；镜像条件 L2 侧 rx 单 lane 断只有 13 条，根因 L1 仅 4 条 = 30.8%，与 L1 先验无法区分。", "use": "只允许在 L1 侧为接收受害方时用它支持 L2；L2 侧为受害方时按 C17 处理，不得镜像套用。这条不对称本身是实测结果，不要为了对称性把它写成双向规则。", "prefixes": ["drop:L1:rxpower:", "drop:L1:media_snr:", "status:L1:RxLOS", "status:L1:RxLOL", "level:L1:rxpower_mean:low_tail", "level:L1:media_snr_min:low_tail", "lane:L2_to_L1:tx_ok_rx_down"], "effects": ["support"], "targets": ["L2"]}, {"id": "C17_l2_side_receive_symptom_is_not_discriminative", "category": "attribution_direction", "kind": "caveat", "title": "L2 侧接收症状不足以支持 L1 根因", "statement": "C16 的方向性在物理上是对称的，但在本数据集上只有一个方向具备统计判别力。L2（200G）侧作为接收受害方时，对端归因的实测正确率与 L1 的类别先验没有区别，说明现有遥测无法把「L1 发送链路劣化」与「L2 自身接收链路劣化」分开——两者在 L2 侧看到的现象一样。", "formal": "receive_symptom(L2) AND NOT receive_symptom(L1)  =>  P(L1) 与先验不可区分；不得据此断言 L1", "params": [["训练集触发", "25/161"], ["对端归因正确率", "12/25 = 48.0%"], ["Wilson 95% 下界", "30.0%"], ["L1 类别先验", "30.4%"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split：只有 L2 侧出现接收症状的 25 条中，标签为 L1 的 12 条、L2 的 10 条、fiber 的 3 条。预测 L1 的 Wilson 下界 30.0% 恰好落在 L1 先验 30.4% 上，没有增益。单 lane 口径更差：L2 侧 rx 单 lane 断 13 条中 L1 仅 4 条（30.8%）。", "use": "命中本约束的 case 应输出「候选 L1，但当前证据不足以定论」并给出补采项（L1 侧 host_snr / serdes 读数、L1 侧同 lane 的发送功率历史），而不是给出 L1 结论。这是把一个实测负结果变成明确的补采动作。唯一的例外是 C22：L2 侧各 lane 之间接收不齐（而不是整体偏低）仍可作为 L1 的弱支持，两者的适用 token 不重叠。", "prefixes": ["drop:L2:rxpower:", "drop:L2:media_snr:", "status:L2:RxLOS", "status:L2:RxLOL", "level:L2:rxpower_mean:low_tail", "level:L2:media_snr_min:low_tail", "lane:L1_to_L2:tx_ok_rx_down"], "effects": ["neutral"], "targets": [""]}, {"id": "C18_single_lane_scope_does_not_exclude_fiber", "category": "lane_directional_consistency", "kind": "caveat", "title": "单 lane 异常缩小的是共享层，不是介质本身", "statement": "单条 lane 异常而同端口其余 lane 健康，可以排除所有 lane 共享的部分：模块供电、壳体温度、整束光纤被拔出、整个连接器脱落。但**不能排除介质**：并行光模块的每条 lane 走独立纤芯，单根纤芯断裂或单个 MPO 芯位脏污同样只影响一条 lane。把「单 lane」直接推成「不是光纤」是一个很自然但错误的推理。", "formal": "down_lane_count == 1  =>  排除 port 级共享原因；不得推出 root_cause != fiber", "params": [["训练集单 lane 断 case 数", "50（L1 侧 37 + L2 侧 13）"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split 中 rx 恰好一条 lane 断的 case 共 50 条，其中 fiber 标签 6 条 = 12.0%，**高于** fiber 全局先验 7.45%。如果单 lane 能排除介质，这个比例应当低于先验。", "use": "单 lane 结论只能写成「排除端口级共享原因」，后续仍要在「对端该通道的激光器」「该 lane 的纤芯 / 芯位」「本端该通道的探测器」之间区分。", "prefixes": ["drop:"], "effects": ["neutral"], "targets": [""]}, {"id": "C19_population_prior_is_not_case_evidence", "category": "measurement_validity", "kind": "caveat", "title": "类别先验与 SOP 叶节点分布不是本 case 的物理证据", "statement": "learned SOP 的叶节点标签分布、历史候选的标签投票和类别先验都是**群体统计**。它们可以决定在没有判别证据时的默认动作，但它们不描述当前这条链路发生了什么。把它们当成证据会产生一种特别难发现的错误：结论看起来有依据，实际上整条推理链没有引用任何一个当前 case 的观测。", "formal": "SOP_leaf_distribution, class_prior, history_label_vote  NOT IN cited_evidence  AND  effect != support", "params": [["训练集 L2 先验", "100/161 = 62.1%"]], "provenance": "derived", "evidence": "MVP 正式实验中 M9 前的 44 个候选有 23 个正确（52.3%），而单纯预测多数类 L2 在同一测试集上是 62.6%。也就是说，一条大量引用群体先验的推理链的表现低于直接报多数类，它增加的只是解释的外观。", "use": "M7 应拒绝把 SOP 路径、叶节点分布或历史标签投票写进 `cited_evidence` 的回答；允许在自然语言里提到它是默认动作的来源，但不允许作为 support 步骤。", "prefixes": [], "effects": ["neutral"], "targets": [""]}, {"id": "C20_fiber_not_identifiable_from_current_telemetry", "category": "identifiability", "kind": "caveat", "title": "现有遥测无法识别 fiber 根因", "statement": "介质根因需要的证据是链路损耗、反射事件位置、端面污染或弯曲损耗，这些都要靠 OTDR、端面镜检或双向功率标定获得。本数据集的遥测只有两端模块的自报读数，且按 C12 连绝对损耗都算不出来。因此 fiber 在信息层面就不可识别，这不是模型能力问题。", "formal": "max over observable conditions of P(fiber | condition) 的 Wilson 95% 下界 <= 0.082  =>  不得断言 fiber", "params": [["fiber 全局先验", "12/161 = 7.45%"], ["最强富集条件", "L2 侧 rx 单 lane 断：3/13 = 23.1%，Wilson 下界 8.2%"]], "provenance": "measured", "evidence": "在 rca_v2_l2fixed manifest train split 上穷举了断 lane 波及范围、双向同 lane 断、两侧 media_snr 同时偏低、两侧收光同时偏弱等条件，支持数 >= 6 的条件里 fiber 占比最高为 23.1%（n=13），Wilson 95% 下界 8.2%，与 7.45% 的先验无法区分。MVP 正式实验的测试侧也一致：系统预测 fiber 10 次只对 1 次。", "use": "禁止输出 fiber 结论。命中疑似介质模式时输出「候选 fiber，需现场确认」并请求 OTDR 曲线、端面镜检或双向功率标定，让 fiber 成为一个明确的补采分支而不是一个低精度的猜测。", "prefixes": [], "effects": ["neutral"], "targets": [""]}, {"id": "C21_healthy_band_tx_level_is_not_attribution_evidence", "category": "tx_power", "kind": "caveat", "title": "正常带内的发送功率高低不是归因证据，两端相减更不是", "statement": "按 C5，发送功率只有「正常」与「无光」两态，正常带内的高低由激光器个体差异、出厂标定和端口形态决定，不由链路故障决定。在这样一个与根因几乎无关的连续量上取分布尾部，仍然会得到看起来偏斜的标签分布，因为尾部样本少。这类关联是抽样波动，不是物理关系。把两端的发送功率相减会同时踩上 C12 的坑：两端标定口径本来就不可比。", "formal": "txpower[side] > -39 dBm  =>  txpower 的具体数值不得进入 support 步骤；禁止使用 mean(txpower[L1]) - mean(txpower[L2])", "params": [["标签 L1 的 case", "L1 侧 tx 中位 +0.860 dBm / L2 侧 +0.863 dBm"], ["标签 L2 的 case", "L1 侧 tx 中位 +0.835 dBm / L2 侧 +0.855 dBm"], ["两端相减探针与 tx 低尾 token 的 Jaccard", "0.65"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split（161 条）三项实测：（1）按标签分层的健康 tx 均值中位数几乎相同（见 parameters），即发送电平与根因基本无关；（2）`level:L1:txpower_mean:low_tail` 命中 39 条且**无一条含断光哨兵**，标签 L2 29 / L1 6 / fiber 4，precision 74.4% 但 Wilson 下界 58.9%，低于 L2 先验 62.1%，因此没有增益；（3）两端相减的探针 `probe:txpower_side_gap:L1_worse` 是唯一下界（65.8%）超过 L2 先验的 tx 类信号，但它与上面那个低尾 token 的 Jaccard 达 0.65，控制该 token 后剩余支持只有 7 条，增益消失。", "use": "发送侧一律只做有光 / 无光判断（C5、C6）。不允许出现「L1 侧发送功率偏低所以……」这类步骤，也不允许两端功率相减。这条约束的作用是拦掉一条统计上很诱人、物理上站不住的捷径。", "prefixes": ["level:L1:txpower_mean:", "level:L2:txpower_mean:"], "effects": ["neutral"], "targets": [""]}, {"id": "C22_receive_lane_imbalance_indicates_far_transmit_array", "category": "lane_directional_consistency", "kind": "indicator", "title": "同侧接收 lane 间不均衡指向对端发送阵列的通道差异", "statement": "并行光模块的每条 lane 有独立的激光器与探测器，但同一端口内所有 lane 共享标定口径、整束光纤的共模损耗和接收侧的 AGC 配置。因此同侧各 lane 接收功率之间的**极差**天然消掉了这些共模项，剩下的差异只能来自对端各发送通道之间的不一致，即对端发送阵列的通道级劣化。这使它比两端绝对电平相减可靠得多——后者按 C12 在本数据集上根本不成立。「用同侧相对量做跨端归因」是这份数据里唯一站得住的跨端推理方式。", "formal": "spread(rxpower[X]) 显著大于同侧正常波动  =>  support tx_array(Y)，Y 为对端", "params": [["L2 侧接收不均衡命中", "7/161"], ["其中根因为对端 L1", "6/7 = 85.7%"], ["Wilson 95% 下界", "48.7%"], ["L1 类别先验", "30.4%"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split：`imbalance:L2:rxpower` 命中 7 条，标签为 L1 的 6 条、fiber 1 条，无一条含断光哨兵（即不均衡不是断 lane 造成的）。Wilson 下界 48.7% 超过 L1 先验 30.4%，这是全训练集上**唯一**一个下界超过 L1 先验的观测条件。镜像方向 `imbalance:L1:rxpower` 命中 10 条、8 条为 L2（80.0%，下界 49.0%），但 L2 先验是 62.1%，所以镜像方向不成立。这个不对称主要来自两类先验相差一倍（30.4% vs 62.1%）——支持少数类需要的证据强度本来就更低，不要读成物理上的不对称。", "use": "只允许用它支持 L1，且必须标注为弱证据：支持数只有 7 条，下界 48.7% 意味着「比先验强，但远达不到可以定论」。命中后应输出 L1 候选并请人工确认，同时建议补采 L1 侧各发送通道的功率与偏置电流历史，用来确认是哪一路通道。本条是 C17 的细化，不是推翻：C17 否掉的是「L2 侧整体收光低或告警」，本条针对的是「L2 侧各 lane 之间不齐」，两者不可混用。", "prefixes": ["imbalance:L2:rxpower"], "effects": ["support"], "targets": ["L1"]}, {"id": "C23_expert_receive_anomaly_on_l1_supports_l2", "category": "attribution_direction", "kind": "indicator", "title": "L1 侧接收类读数越出工程阈值时，故障指向对端 L2 的发送链路", "statement": "接收侧读数度量的是**对端发出、穿过介质之后**到达本端的光，因此接收类指标（rxpower、media_snr）越出工程阈值时，故障不可能出在本端自己的发送器上。现网专家规则据此把「rxpower 异常」「media_snr 异常」以及三项组合异常（serdes_snr + media_snr + rxpower 同侧同时异常）统一定界到**异常所在端的对端**。组合异常的物理含义更强：光口、介质侧信噪比与电口三级同时劣化，说明整条接收通道拿到的信号本身就是坏的，而不是本端某一级的问题。", "formal": "expert_receive_anomaly(L1)  =>  support L2  其中 expert_receive_anomaly 按 EXPERT_EXPERIENCE.md §3.3 的固定阈值判定", "params": [["rxpower 判异阈值", "断光 -40 dBm / 低值 < -2.5 dBm / 高值 > 4.6 dBm / lane 极差 > 1 dB"], ["media_snr 判异阈值", "断光 0 / 低值 < 22.4 / 高值 > 28.7 / lane 极差 > 3"], ["训练集触发", "58/161"], ["对端归因正确率", "46/58 = 79.3%"], ["Wilson 95% 下界", "67.2%"], ["L2 类别先验", "62.1%"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split：按专家阈值判定后由 L1 侧接收类异常（含三项组合异常）胜出仲裁的 58 条中，根因确为对端 L2 的 46 条 = 79.3%，Wilson 下界 67.2% 超过 L2 先验 62.1%。留出集同向：34 条中 28 条 = 82.4%（下界 66.5%，先验 62.6%）。两个切分的下界都超过先验，且规则不含任何在本数据集上拟合的参数。", "use": "命中即可支持 L2。它与 C16 说的是同一段物理关系，但证据口径不同：C16 用的是分位数 token（`drop:L1:rxpower:` 等），本条用的是工程阈值 token（`expert:L1:...`）。同一条 case 可能只命中其中一种，两者可以互相印证，但不得把它们当成两条独立证据——它们读的是同一批原始读数。", "prefixes": ["expert:L1:rxpower:", "expert:L1:media_snr:", "expert:pattern:L1:multi_metric", "expert:points_to:L1:L2"], "effects": ["support"], "targets": ["L2"]}, {"id": "C24_expert_receive_anomaly_on_l2_supports_l1", "category": "attribution_direction", "kind": "indicator", "title": "L2 侧接收类读数越出工程阈值时，故障指向对端 L1 的发送链路", "statement": "C23 的镜像方向。物理上这条关系本来就是对称的——接收侧看到的永远是对端发出的光——此前之所以只承认 L1 受害方向（C16 / C17），是因为在分位数口径下 L2 方向测不出增益。", "formal": "expert_receive_anomaly(L2)  =>  support L1", "params": [["训练集触发", "22/161"], ["对端归因正确率", "13/22 = 59.1%"], ["Wilson 95% 下界", "38.7%"], ["L1 类别先验", "30.4%"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split：由 L2 侧接收类专家异常胜出仲裁的 22 条中，根因确为对端 L1 的 13 条 = 59.1%，Wilson 下界 38.7% 超过 L1 先验 30.4%。留出集 27 条中 17 条 = 63.0%（下界 44.2%）。**与 C17 的关系必须写清楚**：C17 在分位数口径（`drop:L2:rxpower:` 等）下测到下界 30.0%、与先验 30.4% 无法区分，因此判定该方向不可用。换成工程阈值口径后同一段物理关系变得可用，说明 C17 否掉的是那一种证据定义，不是这段物理关系。这也是迭代 3 最重要的方法论结论：**「现有遥测无法判别 X」这类负结论必须连同异常定义一起陈述，否则会被过度推广。**", "use": "命中即可支持 L1，但强度弱于 C23（下界 38.7% vs 67.2%）：支持少数类需要的证据强度本来就低，不要把两者的下界直接比大小。命中时应同时给出补采建议（L1 侧各发送通道的功率与偏置电流历史）。不得与 C17 同时引用：两者读的是同一批原始读数的不同判定口径。", "prefixes": ["expert:L2:rxpower:", "expert:L2:media_snr:", "expert:pattern:L2:multi_metric", "expert:points_to:L2:L1"], "effects": ["support"], "targets": ["L1"]}, {"id": "C25_expert_local_chain_anomaly_on_l1_supports_l1", "category": "attribution_direction", "kind": "indicator", "title": "L1 侧发送与电口读数越出工程阈值时，故障指向 L1 自身", "statement": "与接收类相反，发送光功率（txpower）、主机侧信噪比（host_snr）与 SerDes 信噪比（serdes_snr）度量的都是**本端自己产生的信号**，光没有出过本端的模块，因此它们越阈时指向本端。这正是专家方向表分成两类的物理依据：看到的是别人发来的光就归对端，看到的是自己发出的信号就归自己。发送侧断光（txpower lane_down）是全表最高优先级——它是一个确定性事实，不需要与其它证据比较强弱。", "formal": "expert_local_chain_anomaly(L1)  =>  support L1", "params": [["训练集触发", "18/161"], ["本端归因正确率", "11/18 = 61.1%"], ["Wilson 95% 下界", "38.6%"], ["L1 类别先验", "30.4%"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split：由 L1 侧发送 / 电口类专家异常胜出仲裁的 18 条中，根因确为 L1 的 11 条 = 61.1%，Wilson 下界 38.6% 超过 L1 先验 30.4%。留出集 11 条中 6 条 = 54.5%（下界 28.0%），略低于先验，样本量也小；因此本条只能作为弱支持，不能单独定论。", "use": "命中可支持 L1，但必须标注为弱证据并建议人工确认。唯一的例外是 `expert:L1:txpower:lane_down`：本端发送断光是确定性事实，按 C6 还可同时排除 fiber。", "prefixes": ["expert:L1:txpower:", "expert:L1:host_snr:", "expert:L1:serdes_snr:", "expert:pattern:L1:port_down", "expert:points_to:L1:L1"], "effects": ["support"], "targets": ["L1"]}, {"id": "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative", "category": "attribution_direction", "kind": "caveat", "title": "L2 侧发送与电口读数越阈不足以支持 L2", "statement": "C25 的镜像方向在物理上同样成立，但在本数据集上不具备判别力——不是因为物理不对，而是因为 L2 的类别先验已经有 62.1%，一条把 63.3% 的 case 判对的规则并没有比「什么都不看直接报 L2」更好。这是所有面向多数类的证据都要过的一关：**支持多数类需要的下界远高于支持少数类**。", "formal": "expert_local_chain_anomaly(L2)  =>  P(L2) 与先验不可区分；不得据此断言 L2", "params": [["训练集触发", "30/161"], ["本端归因正确率", "19/30 = 63.3%"], ["Wilson 95% 下界", "45.5%"], ["L2 类别先验", "62.1%"]], "provenance": "measured", "evidence": "rca_v2_l2fixed manifest train split：由 L2 侧发送 / 电口类专家异常胜出仲裁的 30 条中，根因为 L2 的 19 条 = 63.3%，Wilson 下界 45.5% **低于** L2 先验 62.1%。留出集上这一组反而很准（22 条中 20 条 = 90.9%，下界 72.2%），但两个切分差 27 个百分点、训练集下界不达标，按本仓库既定口径不足以升级为 support。记录这个分歧本身有价值：它说明该规则组的可靠性不稳定，需要更多数据才能定论。", "use": "命中时只能作为中性观察写进推理链，不得作为 support。若同一条 case 上没有任何其它方向证据，应输出「候选 L2，证据不足以定论」并请求补采 L2 侧发送通道的历史读数。", "prefixes": ["expert:L2:txpower:", "expert:L2:host_snr:", "expert:L2:serdes_snr:", "expert:pattern:L2:port_down", "expert:points_to:L2:L2"], "effects": ["neutral"], "targets": [""]}], "constraint_version": "constraint-library-v6", "constraint_measured_on": "rca_v2_l2fixed manifest train split（seed=42，train_ratio=0.6）", "expert_rules": {"metrics": ["rxpower", "txpower", "host_snr", "media_snr", "serdes_snr"], "thresholds": {"rxpower": {"down": -40.0, "low": -2.5, "high": 4.6, "diff": 1.0}, "txpower": {"down": -40.0, "low": -2.5, "high": 2.5, "diff": 1.3}, "host_snr": {"down": 0.0, "low": 22.8, "high": 27.5, "diff": 2.5}, "media_snr": {"down": 0.0, "low": 22.4, "high": 28.7, "diff": 3.0}, "serdes_snr": {"down": 0.0, "low": 458750.0, "high": 947750.0, "diff": 230000.0}}, "single_base": {"host_snr": 2, "serdes_snr": 3, "media_snr": 4, "rxpower": 5, "txpower": 6}, "single_direction": {"host_snr": "same", "serdes_snr": "same", "media_snr": "opposite", "rxpower": "opposite", "txpower": "same"}, "anomaly_level": {"lane_down": 0, "low_value": 1, "high_value": 1, "lane_diff": 2}, "anomaly_order": ["lane_down", "low_value", "high_value", "lane_diff"], "multi_metric_priority": "1", "multi_metric_requires": ["serdes_snr", "media_snr", "rxpower"]}, "sop": {"version": "learned-sop-v1", "max_depth": 3, "min_leaf_size": 5, "hash": "97cfd7addfb9fab4", "root": {"node_id": "root", "samples": 161, "label_counts": {"L1": 49, "L2": 100, "fiber": 12}, "prediction": "L2", "token": "expert:points_to:L2:L1", "present": {"node_id": "root.present", "samples": 27, "label_counts": {"L1": 15, "L2": 7, "fiber": 5}, "prediction": "L1", "token": "level:L1:rxpower_mean:low_tail", "present": {"node_id": "root.present.present", "samples": 6, "label_counts": {"L1": 6, "L2": 0, "fiber": 0}, "prediction": "L1"}, "absent": {"node_id": "root.present.absent", "samples": 21, "label_counts": {"L1": 9, "L2": 7, "fiber": 5}, "prediction": "L1", "token": "drop:L2:rxpower:single_lane", "present": {"node_id": "root.present.absent.present", "samples": 10, "label_counts": {"L1": 1, "L2": 6, "fiber": 3}, "prediction": "L2"}, "absent": {"node_id": "root.present.absent.absent", "samples": 11, "label_counts": {"L1": 8, "L2": 1, "fiber": 2}, "prediction": "L1"}}}, "absent": {"node_id": "root.absent", "samples": 134, "label_counts": {"L1": 34, "L2": 93, "fiber": 7}, "prediction": "L2", "token": "expert:points_to:L1:L2", "present": {"node_id": "root.absent.present", "samples": 61, "label_counts": {"L1": 8, "L2": 47, "fiber": 6}, "prediction": "L2", "token": "level:L1:txpower_mean:low_tail", "present": {"node_id": "root.absent.present.present", "samples": 20, "label_counts": {"L1": 0, "L2": 18, "fiber": 2}, "prediction": "L2"}, "absent": {"node_id": "root.absent.present.absent", "samples": 41, "label_counts": {"L1": 8, "L2": 29, "fiber": 4}, "prediction": "L2"}}, "absent": {"node_id": "root.absent.absent", "samples": 73, "label_counts": {"L1": 26, "L2": 46, "fiber": 1}, "prediction": "L2", "token": "status:L2:RxLOS", "present": {"node_id": "root.absent.absent.present", "samples": 5, "label_counts": {"L1": 0, "L2": 4, "fiber": 1}, "prediction": "L2"}, "absent": {"node_id": "root.absent.absent.absent", "samples": 68, "label_counts": {"L1": 26, "L2": 42, "fiber": 0}, "prediction": "L2"}}}}}, "graph": {"version": "evidence-graph-v1:161:05c678031ebf4877", "nodes": 161, "dictionary": "feature-dictionary-v3", "dictionary_hash": "6838b8e1de5dd1a2", "label_dist": {"L2": 100, "L1": 49, "fiber": 12}, "test_sim_hist": {"0.3": 1, "0.4": 8, "0.5": 9, "0.6": 22, "0.7": 22, "0.8": 27, "0.9": 10, "1.0": 8}}, "token_families": {"expert": 570, "imbalance": 47, "lane": 90, "level": 443, "serdes": 322, "telemetry": 161, "drop": 203, "status": 156}, "token_vocab": 97, "baselines": {"majority": {"acc": 0.6261682242990654, "answered": 107, "per_class": {"L1": {"support": 32, "hit": 0, "pred_n": 0, "recall": 0.0, "precision": 0.0, "row": {"L2": 32}}, "L2": {"support": 67, "hit": 67, "pred_n": 107, "recall": 1.0, "precision": 0.6261682242990654, "row": {"L2": 67}}, "fiber": {"support": 8, "hit": 0, "pred_n": 0, "recall": 0.0, "precision": 0.0, "row": {"L2": 8}}}}, "graph_top1": {"acc": 0.6074766355140186, "answered": 107, "per_class": {"L1": {"support": 32, "hit": 14, "pred_n": 33, "recall": 0.4375, "precision": 0.42424242424242425, "row": {"L2": 17, "L1": 14, "fiber": 1}}, "L2": {"support": 67, "hit": 48, "pred_n": 68, "recall": 0.7164179104477612, "precision": 0.7058823529411765, "row": {"L2": 48, "L1": 17, "fiber": 2}}, "fiber": {"support": 8, "hit": 3, "pred_n": 6, "recall": 0.375, "precision": 0.5, "row": {"fiber": 3, "L2": 3, "L1": 2}}}}, "sop": {"acc": 0.6728971962616822, "answered": 107, "per_class": {"L1": {"support": 32, "hit": 12, "pred_n": 21, "recall": 0.375, "precision": 0.5714285714285714, "row": {"L2": 20, "L1": 12}}, "L2": {"support": 67, "hit": 60, "pred_n": 86, "recall": 0.8955223880597015, "precision": 0.6976744186046512, "row": {"L2": 60, "L1": 7}}, "fiber": {"support": 8, "hit": 0, "pred_n": 0, "recall": 0.0, "precision": 0.0, "row": {"L2": 6, "L1": 2}}}}, "expert": {"acc": 0.7663551401869159, "answered": 107, "per_class": {"L1": {"support": 32, "hit": 24, "pred_n": 39, "recall": 0.75, "precision": 0.6153846153846154, "row": {"L2": 8, "L1": 24}}, "L2": {"support": 67, "hit": 58, "pred_n": 68, "recall": 0.8656716417910447, "precision": 0.8529411764705882, "row": {"L2": 58, "L1": 9}}, "fiber": {"support": 8, "hit": 0, "pred_n": 0, "recall": 0.0, "precision": 0.0, "row": {"L2": 2, "L1": 6}}}}}, "reliability": {"single:rxpower|L1->L2": {"n": 18, "ok": 14, "acc": 0.7777777777777778, "wilson_lb": 0.54785, "verdict_prior": 0.6231, "beats_prior": false, "dist": {"L2": 14, "fiber": 1, "L1": 3}, "fiber_rate": 0.05555555555555555}, "multi_metric|L1->L2": {"n": 66, "ok": 52, "acc": 0.7878787878787878, "wilson_lb": 0.674867, "verdict_prior": 0.6231, "beats_prior": true, "dist": {"L2": 52, "L1": 9, "fiber": 5}, "fiber_rate": 0.07575757575757576}, "single:serdes_snr|L2->L2": {"n": 43, "ok": 32, "acc": 0.7441860465116279, "wilson_lb": 0.597613, "verdict_prior": 0.6231, "beats_prior": false, "dist": {"L1": 10, "L2": 32, "fiber": 1}, "fiber_rate": 0.023255813953488372}, "expert:no_anomaly|-": {"n": 37, "ok": 28, "acc": 0.7567567567567568, "wilson_lb": 0.598824, "verdict_prior": 0.0, "beats_prior": false, "dist": {"L1": 9, "L2": 28}, "fiber_rate": 0.0}, "single:media_snr|L1->L2": {"n": 8, "ok": 8, "acc": 1.0, "wilson_lb": 0.675584, "verdict_prior": 0.6231, "beats_prior": true, "dist": {"L2": 8}, "fiber_rate": 0.0}, "expert:port_status_gate|-": {"n": 9, "ok": 5, "acc": 0.5555555555555556, "wilson_lb": 0.266647, "verdict_prior": 0.0, "beats_prior": false, "dist": {"L2": 6, "fiber": 2, "L1": 1}, "fiber_rate": 0.2222222222222222}, "multi_metric|L2->L1": {"n": 29, "ok": 15, "acc": 0.5172413793103449, "wilson_lb": 0.344307, "verdict_prior": 0.3022, "beats_prior": true, "dist": {"L1": 15, "L2": 7, "fiber": 7}, "fiber_rate": 0.2413793103448276}, "single:rxpower|L2->L1": {"n": 12, "ok": 9, "acc": 0.75, "wilson_lb": 0.46769, "verdict_prior": 0.3022, "beats_prior": true, "dist": {"L1": 9, "fiber": 2, "L2": 1}, "fiber_rate": 0.16666666666666666}, "single:serdes_snr|L1->L1": {"n": 24, "ok": 12, "acc": 0.5, "wilson_lb": 0.314271, "verdict_prior": 0.3022, "beats_prior": true, "dist": {"L2": 10, "L1": 12, "fiber": 2}, "fiber_rate": 0.08333333333333333}, "single:media_snr|L2->L1": {"n": 8, "ok": 6, "acc": 0.75, "wilson_lb": 0.40927, "verdict_prior": 0.3022, "beats_prior": true, "dist": {"L1": 6, "L2": 2}, "fiber_rate": 0.0}, "txpower_lane_down|L2->L2": {"n": 4, "ok": 3, "acc": 0.75, "wilson_lb": 0.300636, "verdict_prior": 0.6231, "beats_prior": false, "dist": {"L2": 3, "L1": 1}, "fiber_rate": 0.0}, "single:host_snr|L2->L2": {"n": 5, "ok": 4, "acc": 0.8, "wilson_lb": 0.375528, "verdict_prior": 0.6231, "beats_prior": false, "dist": {"L2": 4, "L1": 1}, "fiber_rate": 0.0}, "txpower_lane_down|L1->L1": {"n": 2, "ok": 2, "acc": 1.0, "wilson_lb": 0.342372, "verdict_prior": 0.3022, "beats_prior": true, "dist": {"L1": 2}, "fiber_rate": 0.0}, "single:host_snr|L1->L1": {"n": 2, "ok": 2, "acc": 1.0, "wilson_lb": 0.342372, "verdict_prior": 0.3022, "beats_prior": true, "dist": {"L1": 2}, "fiber_rate": 0.0}, "single:txpower|L1->L1": {"n": 1, "ok": 1, "acc": 1.0, "wilson_lb": 0.206543, "verdict_prior": 0.3022, "beats_prior": false, "dist": {"L1": 1}, "fiber_rate": 0.0}}}</script><script id="cbMeta" type="application/json">{"meta": {"run": "i3b_offline_expert_v3_risk035 + i4_challenge_v2 + i5_explain_v1", "model": "DeepSeek-R1-Distill-Qwen-32B", "dataset": "rca_v2_l2fixed", "split": "manifest train/test = 161/107", "prompt_version": "rca-constrained-reasoning-v7", "constraint_library_version": "constraint-library-v6", "feature_profile": "v3"}, "metrics": {"actions": {"final": 102, "request_evidence": 3, "human_review": 2}, "answered": 102, "coverage": 0.953271, "correct": 78, "precision_when_answered": 0.764706, "coverage_accuracy": 0.728972, "low_confidence_degradation_rate": 0.046729, "human_intervention_rate": 0.018692, "class_metrics": {"L1": {"support": 32, "predicted": 35, "true_positive": 21, "precision": 0.6, "recall": 0.65625, "f1": 0.626866}, "L2": {"support": 67, "predicted": 67, "true_positive": 57, "precision": 0.850746, "recall": 0.850746, "f1": 0.850746}, "fiber": {"support": 8, "predicted": 0, "true_positive": 0, "precision": 0.0, "recall": 0.0, "f1": 0.0}}, "by_candidate_source": {"branch": {"answered": 2, "correct": 2, "precision_when_answered": 1.0}, "expert": {"answered": 90, "correct": 68, "precision_when_answered": 0.755556}, "sop": {"answered": 10, "correct": 8, "precision_when_answered": 0.8}}, "degeneracy_guard": {"majority_label": "L2", "majority_rate_over_all": 0.626168, "majority_on_kept": 0.637255, "lift_over_majority_on_kept": 0.127451, "balanced_recall": 0.502332, "abstention_effectiveness": {"abstained": 5, "with_sop_fallback": 5, "sop_would_be_wrong": 2, "effectiveness": 0.4}}}, "challenge": {"schema_version": "challenge-experiment-v1", "prompt_version": "rca-challenge-v2-premise-checks", "backend": "vllm", "feature_profile": "v3", "seed": 42, "parse_failures": 0, "llm_challenger": {"case_count": 107, "challenged": 98, "challenge_rate": 0.915888, "rule_error_count": 25, "rule_error_rate": 0.233645, "hits": 22, "hit_rate": 0.22449, "error_recall": 0.88, "lift_over_error_rate": -0.009155}, "score_threshold_curve": [{"min_failed_premises": 0, "flagged": 107, "flag_rate": 1.0, "hits": 25, "hit_rate": 0.233645, "error_recall": 1.0, "lift_over_error_rate": 0.0}, {"min_failed_premises": 1, "flagged": 98, "flag_rate": 0.915888, "hits": 22, "hit_rate": 0.22449, "error_recall": 0.88, "lift_over_error_rate": -0.009155}, {"min_failed_premises": 2, "flagged": 52, "flag_rate": 0.485981, "hits": 9, "hit_rate": 0.173077, "error_recall": 0.36, "lift_over_error_rate": -0.060568}, {"min_failed_premises": 3, "flagged": 10, "flag_rate": 0.093458, "hits": 1, "hit_rate": 0.1, "error_recall": 0.04, "lift_over_error_rate": -0.133645}, {"min_failed_premises": 4, "flagged": 1, "flag_rate": 0.009346, "hits": 0, "hit_rate": 0.0, "error_recall": 0.0, "lift_over_error_rate": -0.233645}, {"min_failed_premises": 5, "flagged": 0, "flag_rate": 0.0, "hits": 0, "hit_rate": 0.0, "error_recall": 0.0, "lift_over_error_rate": -0.233645}], "group_reliability_baseline": {"threshold": 0.6, "case_count": 107, "challenged": 32, "challenge_rate": 0.299065, "rule_error_count": 25, "rule_error_rate": 0.233645, "hits": 8, "hit_rate": 0.25, "error_recall": 0.32, "lift_over_error_rate": 0.016355}, "premise_distribution": {"scope_too_narrow": 58, "direction_table_applies": 45, "other_side_overlooked": 44, "no_evidence_fallback": 13, "anomaly_is_real": 1}}, "explain": {"schema_version": "explain-experiment-v1", "prompt_version": "rca-explain-v1", "backend": "vllm", "feature_profile": "v3", "seed": 42, "checkability": {"case_count": 107, "parse_rate": 1.0, "token_existence": 1.0, "token_relevance": 1.0, "direction_consistency": 0.962617, "verdict_consistency": 0.990654, "all_pass": 0.953271, "fabricated_token_count": 0}, "by_rule_correctness": {"rule_correct": {"case_count": 82, "parse_rate": 1.0, "token_existence": 1.0, "token_relevance": 1.0, "direction_consistency": 0.963415, "verdict_consistency": 0.987805, "all_pass": 0.95122, "fabricated_token_count": 0}, "rule_wrong": {"case_count": 25, "parse_rate": 1.0, "token_existence": 1.0, "token_relevance": 1.0, "direction_consistency": 0.96, "verdict_consistency": 1.0, "all_pass": 0.96, "fabricated_token_count": 0}}}}</script><script id="dfData" type="application/json">{"blind_reader": {"test": {"n": 107, "answered": 11, "coverage": 0.102803738317757, "blind_ok": 9, "blind_precision": 0.8181818181818182, "expert_ok_on_same_subset": 9, "expert_precision_on_same_subset": 0.8181818181818182, "expert_full_coverage_acc": 0.7663551401869159, "by_rule": {"P5": {"n": 47, "ok": 0, "answered": 0, "dist": {"L1": 13, "L2": 32, "fiber": 2}, "acc": null, "wilson_lb": null, "fiber_rate": 0.0425531914893617}, "P4": {"n": 19, "ok": 0, "answered": 0, "dist": {"L1": 4, "L2": 15}, "acc": null, "wilson_lb": null, "fiber_rate": 0.0}, "P2": {"n": 7, "ok": 6, "answered": 7, "dist": {"L1": 3, "L2": 4}, "acc": 0.8571428571428571, "wilson_lb": 0.486865, "fiber_rate": 0.0}, "P3": {"n": 30, "ok": 0, "answered": 0, "dist": {"L2": 14, "L1": 11, "fiber": 5}, "acc": null, "wilson_lb": null, "fiber_rate": 0.16666666666666666}, "P1": {"n": 4, "ok": 3, "answered": 4, "dist": {"fiber": 1, "L1": 1, "L2": 2}, "acc": 0.75, "wilson_lb": 0.300636, "fiber_rate": 0.25}}}, "all": {"n": 268, "answered": 24, "coverage": 0.08955223880597014, "blind_ok": 21, "blind_precision": 0.875, "expert_ok_on_same_subset": 21, "expert_precision_on_same_subset": 0.875, "expert_full_coverage_acc": 0.7201492537313433, "by_rule": {"P5": {"n": 121, "ok": 0, "answered": 0, "dist": {"L2": 75, "L1": 40, "fiber": 6}, "acc": null, "wilson_lb": null, "fiber_rate": 0.049586776859504134}, "P3": {"n": 79, "ok": 0, "answered": 0, "dist": {"L2": 48, "L1": 19, "fiber": 12}, "acc": null, "wilson_lb": null, "fiber_rate": 0.1518987341772152}, "P4": {"n": 44, "ok": 0, "answered": 0, "dist": {"L1": 15, "L2": 29}, "acc": null, "wilson_lb": null, "fiber_rate": 0.0}, "P2": {"n": 13, "ok": 12, "answered": 13, "dist": {"L2": 8, "L1": 5}, "acc": 0.9230769230769231, "wilson_lb": 0.666855, "fiber_rate": 0.0}, "P1": {"n": 11, "ok": 9, "answered": 11, "dist": {"fiber": 2, "L2": 7, "L1": 2}, "acc": 0.8181818181818182, "wilson_lb": 0.523014, "fiber_rate": 0.18181818181818182}}}}, "rule_cells_all": {"prior": {"L2": 0.6231343283582089, "L1": 0.30223880597014924, "fiber": 0.07462686567164178}, "cells": {"single:rxpower|L1->L2": {"rule": "single:rxpower", "direction": "L1->L2", "n": 18, "ok": 14, "acc": 0.7777777777777778, "wilson_lb": 0.54785, "verdict_prior": 0.6231343283582089, "beats_prior": false, "dist": {"L2": 14, "fiber": 1, "L1": 3}, "fiber_rate": 0.05555555555555555}, "multi_metric|L1->L2": {"rule": "multi_metric", "direction": "L1->L2", "n": 66, "ok": 52, "acc": 0.7878787878787878, "wilson_lb": 0.674867, "verdict_prior": 0.6231343283582089, "beats_prior": true, "dist": {"L2": 52, "L1": 9, "fiber": 5}, "fiber_rate": 0.07575757575757576}, "single:serdes_snr|L2->L2": {"rule": "single:serdes_snr", "direction": "L2->L2", "n": 43, "ok": 32, "acc": 0.7441860465116279, "wilson_lb": 0.597613, "verdict_prior": 0.6231343283582089, "beats_prior": false, "dist": {"L1": 10, "L2": 32, "fiber": 1}, "fiber_rate": 0.023255813953488372}, "expert:no_anomaly|-": {"rule": "expert:no_anomaly", "direction": "-", "n": 37, "ok": 28, "acc": 0.7567567567567568, "wilson_lb": 0.598824, "verdict_prior": 0.0, "beats_prior": false, "dist": {"L1": 9, "L2": 28}, "fiber_rate": 0.0}, "single:media_snr|L1->L2": {"rule": "single:media_snr", "direction": "L1->L2", "n": 8, "ok": 8, "acc": 1.0, "wilson_lb": 0.675584, "verdict_prior": 0.6231343283582089, "beats_prior": true, "dist": {"L2": 8}, "fiber_rate": 0.0}, "expert:port_status_gate|-": {"rule": "expert:port_status_gate", "direction": "-", "n": 9, "ok": 5, "acc": 0.5555555555555556, "wilson_lb": 0.266647, "verdict_prior": 0.0, "beats_prior": false, "dist": {"L2": 6, "fiber": 2, "L1": 1}, "fiber_rate": 0.2222222222222222}, "multi_metric|L2->L1": {"rule": "multi_metric", "direction": "L2->L1", "n": 29, "ok": 15, "acc": 0.5172413793103449, "wilson_lb": 0.344307, "verdict_prior": 0.30223880597014924, "beats_prior": true, "dist": {"L1": 15, "L2": 7, "fiber": 7}, "fiber_rate": 0.2413793103448276}, "single:rxpower|L2->L1": {"rule": "single:rxpower", "direction": "L2->L1", "n": 12, "ok": 9, "acc": 0.75, "wilson_lb": 0.46769, "verdict_prior": 0.30223880597014924, "beats_prior": true, "dist": {"L1": 9, "fiber": 2, "L2": 1}, "fiber_rate": 0.16666666666666666}, "single:serdes_snr|L1->L1": {"rule": "single:serdes_snr", "direction": "L1->L1", "n": 24, "ok": 12, "acc": 0.5, "wilson_lb": 0.314271, "verdict_prior": 0.30223880597014924, "beats_prior": true, "dist": {"L2": 10, "L1": 12, "fiber": 2}, "fiber_rate": 0.08333333333333333}, "single:media_snr|L2->L1": {"rule": "single:media_snr", "direction": "L2->L1", "n": 8, "ok": 6, "acc": 0.75, "wilson_lb": 0.40927, "verdict_prior": 0.30223880597014924, "beats_prior": true, "dist": {"L1": 6, "L2": 2}, "fiber_rate": 0.0}, "txpower_lane_down|L2->L2": {"rule": "txpower_lane_down", "direction": "L2->L2", "n": 4, "ok": 3, "acc": 0.75, "wilson_lb": 0.300636, "verdict_prior": 0.6231343283582089, "beats_prior": false, "dist": {"L2": 3, "L1": 1}, "fiber_rate": 0.0}, "single:host_snr|L2->L2": {"rule": "single:host_snr", "direction": "L2->L2", "n": 5, "ok": 4, "acc": 0.8, "wilson_lb": 0.375528, "verdict_prior": 0.6231343283582089, "beats_prior": false, "dist": {"L2": 4, "L1": 1}, "fiber_rate": 0.0}, "txpower_lane_down|L1->L1": {"rule": "txpower_lane_down", "direction": "L1->L1", "n": 2, "ok": 2, "acc": 1.0, "wilson_lb": 0.342372, "verdict_prior": 0.30223880597014924, "beats_prior": true, "dist": {"L1": 2}, "fiber_rate": 0.0}, "single:host_snr|L1->L1": {"rule": "single:host_snr", "direction": "L1->L1", "n": 2, "ok": 2, "acc": 1.0, "wilson_lb": 0.342372, "verdict_prior": 0.30223880597014924, "beats_prior": true, "dist": {"L1": 2}, "fiber_rate": 0.0}, "single:txpower|L1->L1": {"rule": "single:txpower", "direction": "L1->L1", "n": 1, "ok": 1, "acc": 1.0, "wilson_lb": 0.206543, "verdict_prior": 0.30223880597014924, "beats_prior": false, "dist": {"L1": 1}, "fiber_rate": 0.0}}}, "fiber_policy": {"baseline_acc": 0.7663551401869159, "override": [{"t": 0.6, "acc": 0.7757009345794392, "delta": 1, "fiber_recall": 0.375, "fiber_precision": 0.5, "triggered": 6}, {"t": 0.7, "acc": 0.7757009345794392, "delta": 1, "fiber_recall": 0.375, "fiber_precision": 0.5, "triggered": 6}, {"t": 0.8, "acc": 0.7757009345794392, "delta": 1, "fiber_recall": 0.375, "fiber_precision": 0.5, "triggered": 6}, {"t": 0.85, "acc": 0.7757009345794392, "delta": 1, "fiber_recall": 0.25, "fiber_precision": 0.5, "triggered": 4}, {"t": 0.9, "acc": 0.7757009345794392, "delta": 1, "fiber_recall": 0.125, "fiber_precision": 1.0, "triggered": 1}, {"t": 1.0, "acc": 0.7757009345794392, "delta": 1, "fiber_recall": 0.125, "fiber_precision": 1.0, "triggered": 1}], "abstain": [{"t": 0.6, "coverage": 0.9439252336448598, "precision": 0.7920792079207921, "answered": 101}, {"t": 0.7, "coverage": 0.9439252336448598, "precision": 0.7920792079207921, "answered": 101}, {"t": 0.8, "coverage": 0.9439252336448598, "precision": 0.7920792079207921, "answered": 101}, {"t": 0.85, "coverage": 0.9626168224299065, "precision": 0.7864077669902912, "answered": 103}, {"t": 0.9, "coverage": 0.9906542056074766, "precision": 0.7735849056603774, "answered": 106}, {"t": 1.0, "coverage": 0.9906542056074766, "precision": 0.7735849056603774, "answered": 106}], "fiber_cases": [{"id": "case_0b40c4048fd7", "expert": "L2", "top1": "fiber", "sim": 0.857}, {"id": "case_b2d2a66d4b1d", "expert": "L2", "top1": "L2", "sim": 0.865}, {"id": "case_f6ab3c98854d", "expert": "L1", "top1": "L1", "sim": 0.849}, {"id": "case_4695d660361d", "expert": "L1", "top1": "L2", "sim": 0.761}, {"id": "case_22d4dde687ab", "expert": "L1", "top1": "fiber", "sim": 1.0}, {"id": "case_ac436bbbc898", "expert": "L1", "top1": "L1", "sim": 0.459}, {"id": "case_85ab9d3bd128", "expert": "L1", "top1": "fiber", "sim": 0.81}, {"id": "case_60e62d6d1052", "expert": "L1", "top1": "L2", "sim": 0.54}]}, "selective_policy": {"baseline_full_coverage": 0.7663551401869159, "curve": [{"target_wilson_lb": 0.0, "answered": 107, "coverage": 1.0, "precision": 0.7663551401869159, "correct": 82, "recovered_share": 0.7663551401869159}, {"target_wilson_lb": 0.4, "answered": 68, "coverage": 0.6355140186915887, "precision": 0.8529411764705882, "correct": 58, "recovered_share": 0.5420560747663551}, {"target_wilson_lb": 0.5, "answered": 36, "coverage": 0.3364485981308411, "precision": 0.8611111111111112, "correct": 31, "recovered_share": 0.2897196261682243}, {"target_wilson_lb": 0.55, "answered": 22, "coverage": 0.205607476635514, "precision": 0.8181818181818182, "correct": 18, "recovered_share": 0.16822429906542055}, {"target_wilson_lb": 0.6, "answered": 22, "coverage": 0.205607476635514, "precision": 0.8181818181818182, "correct": 18, "recovered_share": 0.16822429906542055}, {"target_wilson_lb": 0.65, "answered": 0, "coverage": 0.0, "precision": 0.0, "correct": 0, "recovered_share": 0.0}, {"target_wilson_lb": 0.7, "answered": 0, "coverage": 0.0, "precision": 0.0, "correct": 0, "recovered_share": 0.0}, {"target_wilson_lb": 0.75, "answered": 0, "coverage": 0.0, "precision": 0.0, "correct": 0, "recovered_share": 0.0}], "train_cell_informative": {"single:rxpower|L1->L2": false, "multi_metric|L1->L2": true, "single:serdes_snr|L2->L2": false, "expert:no_anomaly|-": false, "single:media_snr|L1->L2": false, "expert:port_status_gate|-": false, "multi_metric|L2->L1": false, "single:rxpower|L2->L1": true, "single:serdes_snr|L1->L1": false, "single:media_snr|L2->L1": true, "txpower_lane_down|L2->L2": false, "single:host_snr|L2->L2": false, "txpower_lane_down|L1->L1": false, "single:host_snr|L1->L1": false, "single:txpower|L1->L1": false}, "note": "门槛在 train 上估、test 上查表；informative 与 reliable 是两个不同判据"}, "data_hygiene": {"unparsed_blocks": {"bias": ["case_0df147c7f93f", "case_102809177c6f", "case_1a56f70e541c", "case_224ca4dd577c", "case_4e07d1148cfd", "case_60e62d6d1052", "case_62b8d2de6e0c", "case_80bc3687c4b7", "case_9daf397bb2f7", "case_f7f2853723f2", "case_f9a6059bb977"]}, "missing": {"rxpower.L1": {"missing": 0, "rate": 0.0}, "rxpower.L2": {"missing": 0, "rate": 0.0}, "txpower.L1": {"missing": 0, "rate": 0.0}, "txpower.L2": {"missing": 0, "rate": 0.0}, "media_snr.L1": {"missing": 0, "rate": 0.0}, "media_snr.L2": {"missing": 0, "rate": 0.0}, "host_snr.L1": {"missing": 111, "rate": 0.4141791044776119}, "host_snr.L2": {"missing": 120, "rate": 0.44776119402985076}, "serdes_snr.L1": {"missing": 2, "rate": 0.007462686567164179}, "serdes_snr.L2": {"missing": 2, "rate": 0.007462686567164179}, "bias.L1": {"missing": 56, "rate": 0.208955223880597}, "bias.L2": {"missing": 56, "rate": 0.208955223880597}}, "cross_side_lane_mismatch": {"n": 31, "rate": 0.11567164179104478}, "serdes_vs_optical_lanes": {"4光lane/4serdes": 502, "8光lane/4serdes": 29, "3光lane/4serdes": 1}, "flat_txpower_sides": 37, "total": 268}, "metadata": {"alarm_name": [{"value": "DCN-AI超平面-接口降lane-网络侧", "n": 163, "L1_rate": 0.2822085889570552, "L2_rate": 0.6441717791411042, "fiber_rate": 0.0736196319018405, "dist": {"L2": 105, "L1": 46, "fiber": 12}}, {"value": "DCN-AI超平面-频繁升降lane-网络侧", "n": 46, "L1_rate": 0.2826086956521739, "L2_rate": 0.6739130434782609, "fiber_rate": 0.043478260869565216, "dist": {"L2": 31, "L1": 13, "fiber": 2}}, {"value": "降lane未恢复", "n": 23, "L1_rate": 0.5217391304347826, "L2_rate": 0.34782608695652173, "fiber_rate": 0.13043478260869565, "dist": {"L1": 12, "L2": 8, "fiber": 3}}, {"value": "频繁升降lane", "n": 23, "L1_rate": 0.30434782608695654, "L2_rate": 0.6086956521739131, "fiber_rate": 0.08695652173913043, "dist": {"L1": 7, "L2": 14, "fiber": 2}}], "alarm_ip_interface": [{"value": "存在", "n": 214, "L1_rate": 0.2850467289719626, "L2_rate": 0.6495327102803738, "fiber_rate": 0.06542056074766354, "dist": {"L2": 139, "L1": 61, "fiber": 14}}, {"value": "缺失", "n": 54, "L1_rate": 0.37037037037037035, "L2_rate": 0.5185185185185185, "fiber_rate": 0.1111111111111111, "dist": {"L2": 28, "L1": 20, "fiber": 6}}], "Lane number": [{"value": "{'L1': 2, 'L2': 2}", "n": 128, "L1_rate": 0.2890625, "L2_rate": 0.6328125, "fiber_rate": 0.078125, "dist": {"L2": 81, "L1": 37, "fiber": 10}}, {"value": "{'L1': 4, 'L2': 4}", "n": 65, "L1_rate": 0.27692307692307694, "L2_rate": 0.6923076923076923, "fiber_rate": 0.03076923076923077, "dist": {"L2": 45, "L1": 18, "fiber": 2}}, {"value": "None", "n": 54, "L1_rate": 0.37037037037037035, "L2_rate": 0.5185185185185185, "fiber_rate": 0.1111111111111111, "dist": {"L2": 28, "L1": 20, "fiber": 6}}, {"value": "{'L1': 0, 'L2': 0}", "n": 8, "L1_rate": 0.0, "L2_rate": 0.75, "fiber_rate": 0.25, "dist": {"L2": 6, "fiber": 2}}, {"value": "{'L1': 4, 'L2': 2}", "n": 5, "L1_rate": 0.4, "L2_rate": 0.6, "fiber_rate": 0.0, "dist": {"L2": 3, "L1": 2}}], "region": [{"value": "region_6d925d98a0f7", "n": 100, "L1_rate": 0.23, "L2_rate": 0.71, "fiber_rate": 0.06, "dist": {"L2": 71, "L1": 23, "fiber": 6}}, {"value": "region_d786c67b0600", "n": 68, "L1_rate": 0.29411764705882354, "L2_rate": 0.6029411764705882, "fiber_rate": 0.10294117647058823, "dist": {"L2": 41, "L1": 20, "fiber": 7}}, {"value": "region_8d76509afa00", "n": 44, "L1_rate": 0.36363636363636365, "L2_rate": 0.6136363636363636, "fiber_rate": 0.022727272727272728, "dist": {"L1": 16, "L2": 27, "fiber": 1}}, {"value": "region_9af70e948c6d", "n": 19, "L1_rate": 0.3157894736842105, "L2_rate": 0.47368421052631576, "fiber_rate": 0.21052631578947367, "dist": {"L1": 6, "L2": 9, "fiber": 4}}, {"value": "region_1818599036bb", "n": 17, "L1_rate": 0.4117647058823529, "L2_rate": 0.5294117647058824, "fiber_rate": 0.058823529411764705, "dist": {"L2": 9, "L1": 7, "fiber": 1}}, {"value": "None", "n": 11, "L1_rate": 0.36363636363636365, "L2_rate": 0.5454545454545454, "fiber_rate": 0.09090909090909091, "dist": {"L2": 6, "L1": 4, "fiber": 1}}, {"value": "region_26e6b453c3c8", "n": 7, "L1_rate": 0.5714285714285714, "L2_rate": 0.42857142857142855, "fiber_rate": 0.0, "dist": {"L1": 4, "L2": 3}}]}, "final_system": {"n": 107, "answered": 102, "coverage": 0.9532710280373832, "correct": 78, "precision": 0.7647058823529411, "overall": 0.7289719626168224, "per_class": {"L1": {"support": 32, "hit": 21, "pred_n": 35, "recall": 0.65625, "precision": 0.6, "row": {"L2": 9, "L1": 21, "abstain": 2}}, "L2": {"support": 67, "hit": 57, "pred_n": 67, "recall": 0.8507462686567164, "precision": 0.8507462686567164, "row": {"L2": 57, "L1": 8, "abstain": 2}}, "fiber": {"support": 8, "hit": 0, "pred_n": 0, "recall": 0.0, "precision": 0.0, "row": {"abstain": 1, "L2": 1, "L1": 6}}}, "confusion": {"L1": {"L2": 9, "L1": 21, "abstain": 2}, "L2": {"L2": 57, "L1": 8, "abstain": 2}, "fiber": {"abstain": 1, "L2": 1, "L1": 6}}}, "llm_alignment": {"correct": {"n": 78, "with_trace": 57, "parsed": 36, "unparsed_or_abstain": 21, "agree_with_final": 26, "agree_rate": 0.7222222222222222, "matches_gold": 26, "gold_rate": 0.7222222222222222}, "wrong": {"n": 24, "with_trace": 20, "parsed": 10, "unparsed_or_abstain": 10, "agree_with_final": 9, "agree_rate": 0.9, "matches_gold": 1, "gold_rate": 0.1}, "abstain": {"n": 5, "with_trace": 3, "parsed": 2, "unparsed_or_abstain": 1, "agree_with_final": 0, "agree_rate": 0.0, "matches_gold": 2, "gold_rate": 1.0}, "violation_kinds": {"constraint_violation": 441, "fabricated_constraint": 20, "fabricated_evidence": 9, "unsupported_step": 7}, "cases_with_fatal": 72}}</script>
+<script>
+function pill(v){const t=v===null||v===undefined?'弃答':v;const c=v?('p-'+v):'p-none';
+  return '<span class="pill '+c+'">'+t+'</span>';}
+function pct(x,d){return (100*x).toFixed(d===undefined?1:d)+'%';}
+function esc(s){return String(s===null||s===undefined?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function bar(v,cls){return '<div class="bar '+(cls||'')+'"><i style="width:'+(100*v).toFixed(1)+'%"></i>'
+  +'<b>'+pct(v)+'</b></div>';}
+// 目录高亮：用可见区域最靠上的 section 作为当前项，避免滚动到底部时全部熄灭
+(function(){
+  const links=[...document.querySelectorAll('nav.toc a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function sync(){
+    let cur=0;
+    secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<=120)cur=i;});
+    links.forEach((a,i)=>a.classList.toggle('on',i===cur));
+  }
+  document.addEventListener('scroll',sync,{passive:true});sync();
+})();
+
+
+const OV=JSON.parse(document.getElementById('ovData').textContent);
+const CB=JSON.parse(document.getElementById('cbMeta').textContent);
+const DF=JSON.parse(document.getElementById('dfData').textContent);
+const H=(id,s)=>{const e=document.getElementById(id);if(e)e.innerHTML=s;};
+
+/* ---------- 02 证据包 ---------- */
+(function(){
+  const m=DF.data_hygiene.missing;
+  const order=['rxpower','txpower','media_snr','host_snr','serdes_snr','bias'];
+  const desc={rxpower:'接收光功率，逐 lane',txpower:'发送光功率，逐 lane',
+    media_snr:'介质侧信噪比（面向光纤）',host_snr:'主机侧信噪比（面向交换芯片）',
+    serdes_snr:'SerDes 电通道信噪比',bias:'激光器偏置电流'};
+  let r='<div class="tbl-wrap"><table><tr><th>指标</th><th>含义</th>'+
+    '<th class="num">L1 缺失</th><th class="num">L2 缺失</th><th>覆盖情况</th></tr>';
+  order.forEach(k=>{
+    const a=m[k+'.L1'],b=m[k+'.L2'];
+    const worst=Math.max(a.rate,b.rate);
+    r+='<tr><td><code>'+k+'</code></td><td class="small">'+desc[k]+'</td>'+
+      '<td class="num">'+a.missing+' ('+pct(a.rate)+')</td>'+
+      '<td class="num">'+b.missing+' ('+pct(b.rate)+')</td>'+
+      '<td>'+bar(1-worst,worst>0.3?'lo':'hi')+'</td></tr>';
+  });
+  r+='</table></div>';
+  r+='<div class="warnbox"><b>host_snr 缺失 41~45%，而它是唯一能无歧义定端的指标。</b>'+
+     'host_snr 量的是模块朝交换芯片那一侧的电通道，对端无论如何也影响不到它，'+
+     '所以它异常就只能是本端的问题。专家规则给了它最高优先级（21），'+
+     '但因为样本太少（全库该判据只触发 2 次），标定分组永远攒不到 M9 要求的支持数，'+
+     '结果是<b>物理上最硬的判据反而最容易被级联作废</b>。'+
+     'case_5d80fba2c22f 就是这样丢掉一个正确结论的。</div>';
+  H('packCoverage',r);
+
+  const dh=DF.data_hygiene;
+  let q='<div class="grid g2">';
+  q+='<div class="card"><h4>跨端 lane 数不一致</h4><p class="small">'+
+     dh.cross_side_lane_mismatch.n+'/'+dh.total+'（'+pct(dh.cross_side_lane_mismatch.rate)+
+     '）的 case 里，L1 的接收 lane 数与 L2 的发送 lane 数不同。'+
+     '这意味着「本端 lane k 收不到光 → 查对端 lane k 发了没有」这条最基本的交叉核验，'+
+     '在这些 case 上无法进行。</p></div>';
+  const sv=Object.entries(dh.serdes_vs_optical_lanes).sort((a,b)=>b[1]-a[1]);
+  q+='<div class="card"><h4>光 lane 数与 serdes lane 数的配比</h4><table>'+
+     '<tr><th>配比</th><th class="num">出现次数</th></tr>'+
+     sv.map(([k,v])=>'<tr><td class="mono">'+k+'</td><td class="num">'+v+'</td></tr>').join('')+
+     '</table><p class="small">出现 8 光 lane 配 4 serdes lane 的情况，说明存在 gearbox/lane 复用，'+
+     'serdes lane 与光 lane 不是一一对应。不过实测这并不是 serdes 判据不准的原因——见第 13 节。</p></div>';
+  q+='</div>';
+  const up=DF.data_hygiene.unparsed_blocks;
+  if(Object.keys(up).length){
+    q+='<div class="badbox"><b>数据管道缺陷：字段未被解析且未报缺失。</b>'+
+      Object.entries(up).map(([k,v])=>'<code>'+k+'</code> 字段在 <b>'+v.length+
+      '</b> 条 case 上是未解析的字符串而不是字典（例如 <code>'+v[0]+'</code>）').join('；')+
+      '。<code>bias</code> 参与约束 C1（bias 归零 ⇔ 发端断光）与 C2（健康区间 7.2~7.8 mA）的'+
+      ' token 生成，这些 case 的相关证据实际缺失，但系统没有把它们记入 <code>missing_fields</code>，'+
+      '而是静默降级。</div>';
+  }
+  q+='<div class="warnbox"><b>txpower 可能是标称值而非实测值。</b>全库有 '+dh.flat_txpower_sides+
+     ' 个「侧」的发送功率四条读数完全相同（例如 0.69, 0.69, 0.69, 0.69）。'+
+     '如果 tx 是配置值，那么「对端发功率正常」就不能证明实际出光正常——'+
+     '这直接解释了为什么教科书式的 fiber 判据（对端在发、本端收不到 ⇒ 光缆问题）'+
+     '在全库上精度只有 14.4%。这个字段的语义必须先查清，'+
+     '否则所有依赖「对端发端是否正常」的推理都建立在流沙上。</div>';
+  H('packIssues',q);
+})();
+
+/* ---------- 03 特征 ---------- */
+(function(){
+  const fam=OV.token_families;
+  const note={level:'相对<b>数据集分位数</b>的高/低尾判断（比别的链路高或低）',
+    expert:'专家阈值表判定的异常，以及两端仲裁得出的 points_to / pattern',
+    drop:'相对健康基线的跌落幅度分档',serdes:'serdes 数据是否可用',
+    telemetry:'遥测完整度标记',status:'端口状态位',link:'链路侧属性'};
+  const tot=Object.values(fam).reduce((a,b)=>a+b,0);
+  let r='<div class="grid g2"><div class="card"><h4>token 族分布（train 161 条累计）</h4><table>'+
+    '<tr><th>族</th><th class="num">出现次数</th><th>占比</th><th>它编码的是什么</th></tr>';
+  Object.entries(fam).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{
+    r+='<tr><td><code>'+k+':</code></td><td class="num">'+v+'</td><td>'+bar(v/tot)+'</td>'+
+      '<td class="small">'+(note[k]||'')+'</td></tr>';
+  });
+  r+='</table><p class="small">词表规模 '+OV.token_vocab+' 个不同 token，字典版本 <code>'+
+     OV.graph.dictionary+'</code>。</p></div>';
+  r+='<div class="card"><h4>这一步丢掉了什么</h4><ul>'+
+    '<li><b>偏离的方向。</b><code>rxpower:lane_diff</code> 只说「某条 lane 与同侧其余不同」，'+
+    '不说是偏高还是偏低。而两者物理含义相反：偏低是上游衰减（指向对端），'+
+    '偏高不可能由对端衰减造成（指向本端标定或读数问题）。'+
+    '判错的 case 里有 3 条（3a9a11e3c449、0c3939c5292e、7fa3fefa52e3）'+
+    '真因都在「出现偏高读数的那一侧」，而规则一律指向对端。</li>'+
+    '<li><b>断了几条 lane、断的是哪几条。</b><code>lane_down</code> 是布尔型。'+
+    '而单 lane 断与多条非相邻 lane 同时断，物理含义完全不同——'+
+    '前者更像某一芯光纤或某一路光器件，后者更像模块内部按通道分组的失效。'+
+    'case_9e14bb67adf3 的判断依据正是「lane 1 与 lane 3 同时断而 0、2 完好」。</li>'+
+    '<li><b>绝对参考。</b>所有 level 族 token 都是相对<b>数据集分位数</b>的，'+
+    '也就是「比别的链路低」，而不是「比这条链路应有的水平低」。'+
+    '判断「L1 收到 0.4 dBm 是偏低还是正常」需要链路功率预算（对端标称发功率、'+
+    '光缆长度与损耗），证据包里没有任何这类基线。</li>'+
+    '<li><b>跨端对比。</b>所有 token 都是单侧的，没有一个 token 表达'+
+    '「L1 与 L2 的同名指标相差多少」。而 fiber 的物理特征本质上就是'+
+    '「两端都不正常但都不是单端故障」，只能用跨端量表达。'+
+    '连最基本的链路插损（对端 tx − 本端 rx）都没有被算出来。</li>'+
+    '</ul></div></div>';
+  H('tokenLossy',r);
+  H('tokenFamilies','');
+})();
+
+/* ---------- 04 证据图 ---------- */
+(function(){
+  const g=OV.graph, b=OV.baselines.graph_top1;
+  let r='<div class="grid g2"><div class="card"><h4>构成</h4><ul>'+
+    '<li>节点数 <b>'+g.nodes+'</b>（train 全部 case，test 不回灌）</li>'+
+    '<li>版本 <code>'+g.version+'</code>，字典 <code>'+g.dictionary+'</code></li>'+
+    '<li>相似度：证据 token 集合的 <b>IDF 加权 Jaccard</b>。'+
+    'IDF 只在 train 上统计，作用是让罕见 token 比常见 token 更有区分力</li>'+
+    '<li>标签分布 '+Object.entries(g.label_dist).map(([k,v])=>k+':'+v).join(' / ')+'</li>'+
+    '</ul></div>';
+  r+='<div class="card"><h4>纯检索基线的表现</h4><p>把 top-1 邻居的标签直接当预测：'+
+    '总准确率 <b>'+pct(b.acc,2)+'</b>，低于多数类基线的 62.62%。但它有一个别人都没有的能力：</p>'+
+    '<table><tr><th>类别</th><th class="num">召回</th><th class="num">精度</th></tr>'+
+    ['L1','L2','fiber'].map(l=>'<tr><td>'+pill(l)+'</td><td class="num">'+
+      pct(b.per_class[l].recall)+'</td><td class="num">'+pct(b.per_class[l].precision)+
+      '</td></tr>').join('')+'</table>'+
+    '<div class="okbox" style="margin-top:12px"><b>检索是唯一能召回 fiber 的通道</b>'+
+    '（37.5%，3/8），而专家规则、SOP、LLM 定界的 fiber 召回全是 0。'+
+    'fiber 在这份数据里只能靠<b>签名记忆</b>找到，不能靠物理推理找到。</div></div></div>';
+  const hist=g.test_sim_hist;
+  r+='<div class="card"><h4>test 上 top-1 相似度的分布</h4><table><tr><th>相似度区间</th>'+
+    '<th class="num">case 数</th><th>占比</th></tr>'+
+    Object.entries(hist).map(([k,v])=>'<tr><td class="mono">'+k+' ~ '+
+      (parseFloat(k)+0.1).toFixed(1)+'</td><td class="num">'+v+'</td><td>'+
+      bar(v/107)+'</td></tr>').join('')+'</table>'+
+    '<p class="small">相似度很低时（例如 case_fa72aef06d4d 只有 0.366），'+
+    '证据图实际上在说「训练集里没见过这样的 case」。这个信号目前没有被 M9 用作拒答依据。</p></div>';
+  H('graphInfo',r);
+})();
+
+/* ---------- 05 约束 ---------- */
+(function(){
+  const cs=OV.constraints;
+  const byCat={},byKind={};
+  cs.forEach(c=>{byCat[c.category]=(byCat[c.category]||0)+1;byKind[c.kind]=(byKind[c.kind]||0)+1;});
+  const kindCN={invariant:'不变式（恒成立）',exclusion:'排除式（可用于排除某根因）',
+    indicator:'指示式（提高某根因可能性）',caveat:'警示式（禁止某类推断）'};
+  let r='<div class="grid g2"><div class="card"><h4>按类型</h4><table><tr><th>类型</th>'+
+    '<th class="num">条数</th><th>含义</th></tr>'+
+    Object.entries(byKind).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<tr><td><code>'+k+
+    '</code></td><td class="num">'+v+'</td><td class="small">'+(kindCN[k]||'')+'</td></tr>').join('')+
+    '</table></div><div class="card"><h4>按物理范畴</h4><table><tr><th>范畴</th>'+
+    '<th class="num">条数</th></tr>'+
+    Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<tr><td><code>'+k+
+    '</code></td><td class="num">'+v+'</td></tr>').join('')+'</table></div></div>';
+  r+='<div class="note">版本 <code>'+OV.constraint_version+'</code>，共 <b>'+cs.length+
+     '</b> 条。其中标注为 <code>measured</code> 的条目，其参数是在 '+OV.constraint_measured_on+
+     ' 上实测得到的，不是凭经验写的。</div>';
+  H('constrSummary',r);
+
+  let t='<div class="tbl-wrap"><table><tr><th>ID</th><th>物理断言</th><th>形式化</th>'+
+    '<th>适用 token 前缀</th><th>允许效果</th><th>允许指向</th></tr>';
+  cs.forEach(c=>{
+    t+='<tr><td class="mono" style="white-space:nowrap"><b>'+c.id.split('_')[0]+'</b><br>'+
+      '<span class="small">'+c.kind+'</span></td>'+
+      '<td>'+esc(c.statement)+
+        (c.params.length?'<br><span class="small">参数：'+c.params.map(p=>p[0]+' = '+p[1]).join('，')+'</span>':'')+
+        (c.evidence?'<br><span class="small" style="color:#8b919c">实测：'+esc(c.evidence).slice(0,220)+'</span>':'')+
+      '</td>'+
+      '<td class="mono small">'+esc(c.formal)+'</td>'+
+      '<td class="small">'+(c.prefixes.length?c.prefixes.map(p=>'<code>'+p+'</code>').join('<br>'):'—')+'</td>'+
+      '<td class="small">'+c.effects.map(e=>'<span class="pill '+
+        (e==='support'?'p-ok':e==='exclude'?'p-bad':'p-none')+'">'+(e||'无')+'</span>').join(' ')+'</td>'+
+      '<td class="small">'+c.targets.map(x=>x?pill(x):'<span class="pill p-none">—</span>').join(' ')+'</td></tr>';
+  });
+  t+='</table></div>';
+  t+='<div class="warnbox"><b>约束正确 ≠ 用法正确。</b>C23/C24 这一对方向约束'+
+     '（「某端接收异常支持对端」）在物理上有依据，但它<b>只看症状出现在哪一侧，'+
+     '不核对对端发端是否真有对应的弱 lane</b>。判错的 case 里 case_fcacbc45173f 就是反例：'+
+     'L1 侧 lane 2 收得弱，但 L2 在这条 lane 上的发送功率恰恰是四条里最高的。'+
+     'LLM 忠实引用了 C23 并给出 L2——模型没错，是它被给了一条在这个子集上方向错误的前提。</div>';
+  H('constrTable',t);
+})();
+
+/* ---------- 06 SOP ---------- */
+(function(){
+  const s=OV.sop;
+  function render(n,depth,prefix){
+    const cnt=n.label_counts||{};
+    const dist=['L1','L2','fiber'].filter(l=>cnt[l]).map(l=>l+':'+cnt[l]).join(' ');
+    let line=prefix+'n='+n.samples+'  ['+dist+']  → '+(n.prediction||'无多数类');
+    let out=line+'\n';
+    if(n.token){
+      out+=render(n.present,depth+1,prefix+'  ├─ 有 '+n.token+' → ');
+      out+=render(n.absent,depth+1,prefix+'  └─ 无 '+n.token+' → ');
+    }
+    return out;
+  }
+  const b=OV.baselines.sop;
+  let r='<p>SOP 在这里不是人写的处置手册，而是<b>从训练标签学出来的一棵浅决策树</b>'+
+    '（深度 '+s.max_depth+'，叶子最小样本 '+s.min_leaf_size+'）。'+
+    '每个叶子带支持数与 Wilson 下界，让下游可以在路径太弱或标签太混时拒答。</p>';
+  r+='<div class="grid g3">'+
+    '<div class="kpi flat"><div class="k">SOP 单独的准确率</div><div class="v">'+pct(b.acc,2)+'</div>'+
+    '<div class="note">高于多数类 62.62%，低于专家规则</div></div>'+
+    '<div class="kpi bad"><div class="k">SOP 的 fiber 召回</div><div class="v">0.0%</div>'+
+    '<div class="note">树永远不会走到 fiber 叶子</div></div>'+
+    '<div class="kpi flat"><div class="k">在级联里实际采纳</div><div class="v">10 条</div>'+
+    '<div class="note">其中 8 条正确（80%）</div></div></div>';
+  r+='<h4>学出来的树</h4><div class="tree">'+esc(render(s.root,0,''))+'</div>';
+  r+='<div class="note">树只在 <code>expert:</code> 与 <code>level:</code> 这些 token 上分裂，'+
+     '本质上是在复述专家规则已经编码的信息，所以它和专家规则高度相关，'+
+     '在级联里提供的是冗余而不是新信息。</div>';
+  H('sopInfo',r);
+})();
+
+/* ---------- 07 专家规则 ---------- */
+(function(){
+  const e=OV.expert_rules, b=OV.baselines.expert;
+  const dirCN={self:'指向本端（出现症状的这一侧）',peer:'指向对端'};
+  let r='<div class="grid g2"><div class="card"><h4>阈值表</h4><table>'+
+    '<tr><th>指标</th><th class="num">低值门限</th><th class="num">高值门限</th></tr>'+
+    Object.entries(e.thresholds).map(([k,v])=>'<tr><td><code>'+k+'</code></td>'+
+      '<td class="num">'+(v.low!==undefined?v.low:'—')+'</td>'+
+      '<td class="num">'+(v.high!==undefined?v.high:'—')+'</td></tr>').join('')+
+    '</table></div>';
+  r+='<div class="card"><h4>单指标规则的优先级与方向</h4><table>'+
+    '<tr><th>指标</th><th class="num">基础优先级</th><th>方向</th></tr>'+
+    Object.entries(e.single_base).sort((a,b)=>a[1]-b[1]).map(([k,v])=>'<tr><td><code>'+k+
+      '</code></td><td class="num">'+v+'</td><td class="small">'+
+      (dirCN[e.single_direction[k]]||e.single_direction[k])+'</td></tr>').join('')+
+    '</table><p class="small">优先级按字符串排序，数字越小越优先。'+
+    '<code>multi_metric</code>（'+e.multi_metric_requires.join(' + ')+' 同时异常）'+
+    '优先级为 '+e.multi_metric_priority+'，压过所有单指标规则。</p></div></div>';
+  r+='<div class="card"><h4>两端仲裁</h4><p>对 L1 和 L2 各自独立跑一遍规则，然后取优先级更小的一侧胜出；'+
+    '若两侧优先级相同则记为 <code>both_anomaly</code>，若两侧都没触发则走 <code>no_anomaly</code> 兜底。'+
+    '胜出侧的规则决定「指向本端还是对端」，这一步才产出最终的 L1/L2 判定。</p>'+
+    '<div class="badbox"><b>仲裁会吞掉方向信息。</b><code>multi_metric</code> 优先级最高（1），'+
+    '但它只数「有几个指标异常」，不看其中哪个指标能确定方向。'+
+    'case_788f63a0a0fc 里 L2 侧连 <code>host_snr</code> 都异常了——'+
+    'host_snr 在物理上不可能被对端影响，所以方向本应由它决定；'+
+    '但 multi_metric 先触发，于是套用了「收端异常指对端」的默认方向，判成 L1，真因是 L2。</div></div>';
+  r+='<div class="grid g4">'+
+    '<div class="kpi warn"><div class="k">专家规则准确率（全答）</div><div class="v">'+pct(b.acc,2)+'</div>'+
+    '<div class="note">test 107 条</div></div>'+
+    ['L1','L2','fiber'].map(l=>'<div class="kpi '+(b.per_class[l].recall>0.7?'good':
+      b.per_class[l].recall>0?'warn':'bad')+'"><div class="k">'+l+' 召回</div><div class="v">'+
+      pct(b.per_class[l].recall)+'</div><div class="note">'+b.per_class[l].hit+'/'+
+      b.per_class[l].support+'</div></div>').join('')+'</div>';
+  H('expertInfo',r);
+})();
+
+/* ---------- 08 级联 ---------- */
+(function(){
+  const src=CB.metrics.by_candidate_source, dg=CB.metrics.degeneracy_guard;
+  let r='<p>M9 依次考察若干候选来源，第一个同时满足「标定分组的 Wilson 下界达标」与'+
+    '「支持数达标」的候选被采纳；都不达标就拒答（转人工或请求补采）。</p>';
+  r+='<div class="card"><h4>各来源在 test 上实际贡献了多少</h4><table>'+
+    '<tr><th>来源</th><th class="num">采纳条数</th><th class="num">其中正确</th><th>精度</th></tr>'+
+    Object.entries(src).sort((a,b)=>b[1].answered-a[1].answered).map(([k,v])=>
+      '<tr><td><code>'+k+'</code></td><td class="num">'+v.answered+'</td><td class="num">'+
+      v.correct+'</td><td>'+bar(v.precision_when_answered,v.precision_when_answered>0.8?'hi':'')+
+      '</td></tr>').join('')+'</table>'+
+    '<p class="small">专家规则承担了 90/102 的结论。LLM 作为候选来源一次都没有被采纳。</p></div>';
+  r+='<div class="grid g3">'+
+    '<div class="kpi good"><div class="k">相对多数类的增益</div><div class="v">+'+
+      (dg.lift_over_majority_on_kept*100).toFixed(2)+'pp</div>'+
+      '<div class="note">在给结论的子集上，多数类为 '+pct(dg.majority_on_kept)+'</div></div>'+
+    '<div class="kpi flat"><div class="k">人工介入率</div><div class="v">'+
+      pct(CB.metrics.human_intervention_rate)+'</div><div class="note">2 条转人工，3 条请求补采</div></div>'+
+    '<div class="kpi flat"><div class="k">平衡召回</div><div class="v">'+
+      (dg.balanced_recall!==undefined?dg.balanced_recall.toFixed(4):'—')+'</div>'+
+      '<div class="note">三类召回的算术平均，被 fiber 的 0 拖住</div></div></div>';
+  r+='<div class="badbox"><b>级联的优先级设计有一个原则性错误。</b>'+
+     'case_22d4dde687ab 的证据签名与训练集里某条 fiber case <b>完全相同（相似度 1.000）</b>，'+
+     '而级联仍然采纳了专家规则给出的 L1。检索精确命中本应是最强的证据，'+
+     '却被一个 Wilson 下界只有 34.4% 的规则格子覆盖了。</div>';
+  H('cascadeInfo',r);
+})();
+
+/* ---------- 09 结果 ---------- */
+(function(){
+  const fs=DF.final_system, cm=CB.metrics.class_metrics;
+  let r='<div class="grid g4">'+
+    '<div class="kpi flat"><div class="k">覆盖率</div><div class="v">'+pct(fs.coverage,2)+'</div>'+
+      '<div class="note">'+fs.answered+'/'+fs.n+'</div></div>'+
+    '<div class="kpi warn"><div class="k">给结论时精度</div><div class="v">'+pct(fs.precision,2)+'</div>'+
+      '<div class="note">'+fs.correct+'/'+fs.answered+'</div></div>'+
+    '<div class="kpi flat"><div class="k">全集正确率</div><div class="v">'+pct(fs.overall,2)+'</div>'+
+      '<div class="note">拒答记为不正确</div></div>'+
+    '<div class="kpi flat"><div class="k">多数类基线</div><div class="v">62.62%</div>'+
+      '<div class="note">全部答 L2</div></div></div>';
+
+  r+='<h3>逐类别表现</h3><table><tr><th>类别</th><th class="num">真实条数</th>'+
+    '<th class="num">预测条数</th><th class="num">命中</th><th>召回</th><th>精度</th></tr>';
+  ['L1','L2','fiber'].forEach(l=>{
+    const p=fs.per_class[l];
+    r+='<tr><td>'+pill(l)+'</td><td class="num">'+p.support+'</td><td class="num">'+p.pred_n+
+      '</td><td class="num">'+p.hit+'</td><td>'+bar(p.recall,p.recall>0.8?'hi':p.recall<0.4?'lo':'')+
+      '</td><td>'+bar(p.precision,p.precision>0.8?'hi':p.precision<0.4?'lo':'')+'</td></tr>';
+  });
+  r+='</table>';
+  r+='<div class="badbox"><b>L2 的成绩基本等于先验，L1 的精度只有 60%，fiber 是 0。</b>'+
+     'L2 召回 85.07% / 精度 85.07%，而 L2 本身就占 62.6%；'+
+     'L1 判出 35 条只对 21 条，也就是说<b>每判 3 次 L1 就有 1 次多判</b>；'+
+     'fiber 一次都没有被判出来。</div>';
+
+  r+='<h3>混淆矩阵</h3><table><tr><th>真值 ↓ / 预测 →</th>'+
+     ['L1','L2','fiber','abstain'].map(x=>'<th class="num">'+(x==='abstain'?'弃答':x)+'</th>').join('')+
+     '</tr>';
+  ['L1','L2','fiber'].forEach(g=>{
+    const row=fs.confusion[g]||{};
+    r+='<tr><td>'+pill(g)+'</td>'+['L1','L2','fiber','abstain'].map(p=>{
+      const v=row[p]||0;
+      const hit=(p===g);
+      return '<td class="num"'+(v?(' style="background:'+(hit?'#dcfce7':'#fee2e2')+
+        ';font-weight:600"'):'')+'>'+(v||'')+'</td>';
+    }).join('')+'</tr>';
+  });
+  r+='</table>';
+
+  r+='<h3>各口径对照</h3><p>76.6% 这个数字单独看没有意义，要和「什么都不做」比。</p><table>'+
+    '<tr><th>口径</th><th class="num">准确率</th><th class="num">L1 召回</th>'+
+    '<th class="num">L2 召回</th><th class="num">fiber 召回</th><th>说明</th></tr>';
+  const names={majority:['多数类基线','全部答 L2，不看任何遥测'],
+    graph_top1:['纯检索 top-1','用最相似历史 case 的标签，不用任何规则'],
+    sop:['学出来的 SOP','训练标签上的浅决策树'],
+    expert:['专家规则','人工编码的阈值表 + 两端仲裁']};
+  ['majority','graph_top1','sop','expert'].forEach(k=>{
+    const b=OV.baselines[k];
+    r+='<tr><td><b>'+names[k][0]+'</b></td><td class="num">'+pct(b.acc,2)+'</td>'+
+      ['L1','L2','fiber'].map(l=>'<td class="num">'+pct(b.per_class[l].recall)+'</td>').join('')+
+      '<td class="small">'+names[k][1]+'</td></tr>';
+  });
+  r+='<tr style="background:#f8f9fb"><td><b>当前完整系统</b></td><td class="num"><b>'+
+     pct(fs.overall,2)+'</b></td>'+['L1','L2','fiber'].map(l=>'<td class="num">'+
+     pct(fs.per_class[l].recall)+'</td>').join('')+
+     '<td class="small">级联 + 拒答，拒答记为不正确</td></tr></table>';
+  r+='<div class="note">专家规则是唯一明显超过多数类基线的单一方法（+14.0pp）。'+
+     '完整系统的全集正确率略低于专家规则全答（72.90% vs 76.64%），'+
+     '差额来自 5 条主动拒答——这不是退步，是把不确定的部分交出去了。</div>';
+  H('resultBlock',r);
+})();
+
+/* ---------- 10 规则格子 ---------- */
+(function(){
+  const rc=DF.rule_cells_all, cells=rc.cells, prior=rc.prior;
+  const rows=Object.entries(cells).sort((a,b)=>b[1].n-a[1].n);
+  let r='<div class="tbl-wrap"><table><tr><th>胜出规则</th><th>方向</th><th class="num">n</th>'+
+    '<th>准确率</th><th class="num">Wilson 下界</th><th class="num">所判类别先验</th>'+
+    '<th>是否提供信息</th><th>真值分布</th><th class="num">fiber 占比</th></tr>';
+  rows.forEach(([k,v])=>{
+    const bad=!v.beats_prior;
+    r+='<tr'+(bad?' style="background:#fffbf5"':'')+'>'+
+      '<td class="mono">'+v.rule+'</td><td class="mono small">'+v.direction+'</td>'+
+      '<td class="num"><b>'+v.n+'</b></td>'+
+      '<td>'+bar(v.acc,v.acc>0.8?'hi':v.acc<0.6?'lo':'')+'</td>'+
+      '<td class="num">'+pct(v.wilson_lb)+'</td>'+
+      '<td class="num">'+(v.verdict_prior?pct(v.verdict_prior):'—')+'</td>'+
+      '<td>'+(v.verdict_prior? (v.beats_prior?'<span class="pill p-ok">是</span>':
+        '<span class="pill p-bad">否</span>') : '<span class="pill p-none">不适用</span>')+'</td>'+
+      '<td class="small mono">'+Object.entries(v.dist).map(([l,c])=>l+':'+c).join(' ')+'</td>'+
+      '<td class="num'+(v.fiber_rate>0.15?'" style="background:#fef3c7;font-weight:600':'')+'">'+
+        pct(v.fiber_rate)+'</td></tr>';
+  });
+  r+='</table></div>';
+  r+='<div class="note">「是否提供信息」= 该格子准确率的 Wilson 95% 下界是否高于'+
+     '<b>它所判类别的先验</b>（L2 '+pct(prior.L2)+' / L1 '+pct(prior.L1)+' / fiber '+pct(prior.fiber)+
+     '）。答「否」意味着在统计上无法证实这条规则比直接猜那个类别更好。</div>';
+  r+='<div class="warnbox"><b>两个必须分清的判据。</b>上表的「是否提供信息」衡量'+
+     '<i>这条规则有没有价值</i>，但它<b>不能</b>直接拿来做拒答策略：'+
+     '判少数类的格子门槛很低（判 L1 只需超过 30.2%），照它拒答会把 74% 准确率的 L2 格子丢掉、'+
+     '反而留下 51% 的 L1 格子，精度会下降。要决定「该不该给结论」，'+
+     '应该看格子准确率的绝对下界——这就是下面的选择性预测曲线。</div>';
+  r+='<div class="badbox"><b>fiber 藏在哪里：</b><code>multi_metric L2→L1</code> 这个格子'+
+     '（全库 29 条）里 fiber 占 <b>24.1%</b>，是全库先验 7.5% 的 3.2 倍，'+
+     '同时它的准确率只有 51.7%——<b>全库最大的低可靠格子恰好是 fiber 的藏身处</b>。'+
+     '判错的 7 条 fiber 里有 4 条落在这里。</div>';
+  H('cellsBlock',r);
+
+  const sp=DF.selective_policy;
+  let s='<p>门槛在 <b>train 上</b>估每个格子的可靠性，test 上只做查表，不用 test 标签定门槛。'+
+    '训练集里没出现过的格子按拒答处理。</p><table>'+
+    '<tr><th class="num">要求格子下界 ≥</th><th class="num">覆盖</th><th class="num">给结论条数</th>'+
+    '<th>给结论时精度</th><th class="num">相对全答的精度变化</th></tr>';
+  const base=sp.baseline_full_coverage;
+  sp.curve.forEach(c=>{
+    if(c.answered===0)return;
+    const d=c.precision-base;
+    s+='<tr'+(Math.abs(c.target_wilson_lb-0.4)<1e-9?' style="background:#f0fdf4"':'')+'>'+
+      '<td class="num mono">'+c.target_wilson_lb.toFixed(2)+'</td>'+
+      '<td class="num">'+pct(c.coverage)+'</td><td class="num">'+c.answered+'</td>'+
+      '<td>'+bar(c.precision,c.precision>0.82?'hi':'')+'</td>'+
+      '<td class="num" style="color:'+(d>0?'#047857':'#b91c1c')+';font-weight:600">'+
+        (d>=0?'+':'')+(d*100).toFixed(2)+'pp</td></tr>';
+  });
+  s+='</table>';
+  s+='<div class="okbox"><b>这是本次分析里最直接可用的一条结论：</b>只把结论限制在'+
+     '可靠性达标的规则格子上，<b>覆盖率 63.6%（68/107）时给结论精度达到 85.29%</b>，'+
+     '比现在全答的 76.64% 高 8.65pp。剩下 36% 的 case 转人工或请求补采——'+
+     '它们本来就是在赌先验。这个改动不需要新模型、不需要新数据，只需要让 M9 认真执行'+
+     '它自己已经定义好的准入标准。</div>';
+  H('selectiveBlock',s);
+})();
+
+/* ---------- 11 可推导性上限 ---------- */
+(function(){
+  const a=DF.blind_reader.all, t=DF.blind_reader.test;
+  const ruleCN={
+    P1:'本端收不到光，且对端同 lane 也没在发光 → 光没出发 → 对端发端故障',
+    P2:'收到的光「变少且同步变脏」（功率与 SNR 一起掉）→ 上游衰减 → 对端',
+    P3:'本端收不到光，但对端在正常发光 → 光缆 / 本端收端 / 对端光口三者不可分 → 拒答',
+    P4:'光层两端干净，只有 serdes 电通道死 → 故障在电域，不属于三分类任何一类 → 拒答',
+    P5:'两端光层与电层都没有可判读的异常 → 快照不含定位信息 → 拒答'};
+  let r='<p>为了回答「换个更强的推理模型能不能解决问题」，我把「只看原始遥测、'+
+    '按物理推导」这件事写成了一套规则（<code>scripts/eval_blind_physical_reader.py</code>）。'+
+    '它<b>不看标签、不用任何数据集分位数、不用专家阈值表</b>，只用两样东西：'+
+    '断光/归零这类物理哨兵，以及同一个 case 内部的对比（同侧 lane 之间、两侧之间）。'+
+    '这样得到的就是「一个理想推理者在这份数据上的能力上限」。</p>';
+  r+='<div class="grid g4">'+
+    '<div class="kpi bad"><div class="k">物理能定论的比例</div><div class="v">'+pct(a.coverage,1)+'</div>'+
+      '<div class="note">'+a.answered+'/'+a.n+' 条（全库）</div></div>'+
+    '<div class="kpi good"><div class="k">定论时的精度</div><div class="v">'+pct(a.blind_precision,1)+'</div>'+
+      '<div class="note">'+a.blind_ok+'/'+a.answered+'</div></div>'+
+    '<div class="kpi flat"><div class="k">专家规则在同一子集上</div><div class="v">'+
+      pct(a.expert_precision_on_same_subset,1)+'</div><div class="note">完全相同</div></div>'+
+    '<div class="kpi warn"><div class="k">专家规则全答</div><div class="v">'+
+      pct(a.expert_full_coverage_acc,1)+'</div><div class="note">靠先验补上剩下 91%</div></div></div>';
+  r+='<div class="badbox"><b>这两个数字并列在一起，就是对「模型不够强」这个假设的否证：</b>'+
+     '物理能说清的 9% 里，现有规则已经做到了和理想推理者<b>一样好</b>（都是 87.5%）；'+
+     '而剩下 91% 里没有可推理的内容。专家规则 72% 的成绩中，'+
+     '超出这 9% 的部分全部来自「把统计先验附着在弱信号上」，'+
+     '这是<b>记忆与标定</b>的功劳，不是推理的功劳。换更强的推理模型不会改变这一点。</div>';
+
+  r+='<h3>各判据的触发量与结果（全库 268 条）</h3><div class="tbl-wrap"><table>'+
+    '<tr><th>判据</th><th>物理含义</th><th class="num">触发</th><th class="num">占比</th>'+
+    '<th>结果</th><th>真值分布</th><th class="num">fiber 占比</th></tr>';
+  Object.entries(a.by_rule).sort((x,y)=>x[0].localeCompare(y[0])).forEach(([k,v])=>{
+    const res=v.answered? ('精度 '+pct(v.acc)+'（下界 '+pct(v.wilson_lb)+'）')
+      : '<span class="pill p-warn">拒答</span>';
+    r+='<tr><td class="mono"><b>'+k+'</b></td><td class="small">'+ruleCN[k]+'</td>'+
+      '<td class="num">'+v.n+'</td><td class="num">'+pct(v.n/a.n)+'</td>'+
+      '<td>'+res+'</td><td class="small mono">'+
+        Object.entries(v.dist).map(([l,c])=>l+':'+c).join(' ')+'</td>'+
+      '<td class="num'+(v.fiber_rate>0.12?'" style="background:#fef3c7;font-weight:600':'')+'">'+
+        pct(v.fiber_rate)+'</td></tr>';
+  });
+  r+='</table></div>';
+  r+='<div class="grid g2">'+
+    '<div class="card"><h4>P3：光出发了却没到达（'+a.by_rule.P3.n+' 条，'+
+      pct(a.by_rule.P3.n/a.n)+'）</h4><p class="small">这是最该请求补采的一块。'+
+      'fiber 在这里占 '+pct(a.by_rule.P3.fiber_rate)+'，是全库先验 7.5% 的两倍。'+
+      '要把光缆、本端收端、对端光口分开，需要 OTDR 或双向同步快照——'+
+      '这是采集问题，不是算法问题。</p></div>'+
+    '<div class="card"><h4>P4：光层干净但电通道死（'+a.by_rule.P4.n+' 条，'+
+      pct(a.by_rule.P4.n/a.n)+'）</h4><p class="small">遥测说的是「电通道坏了」，'+
+      '标签说的是「哪个光模块被换了」，两者之间没有可推导的关系。'+
+      '这一块真值分布 '+Object.entries(a.by_rule.P4.dist).map(([l,c])=>l+':'+c).join(' ')+
+      '，与全库先验几乎一致，也就是说看到这个模式等于什么都没看到。'+
+      '判错的 24 条里有 6 条（25%）在这里。</p></div></div>';
+  r+='<div class="note">在 test 107 条上单独跑，覆盖 '+pct(t.coverage)+'（'+t.answered+
+     ' 条），精度 '+pct(t.blind_precision)+'，与全库一致。'+
+     '更关键的是：<b>当前系统判错的 24 条里，这套物理盲读对 23 条明确拒答</b>，'+
+     '唯一肯回答的一条（case_f40d7dea10c4）也答错了，而它恰好是最可靠判据 P2 在全库 13 次触发里'+
+     '唯一的反例。</div>';
+  H('ceilingBlock',r);
+})();
+
+/* ---------- 12 LLM ---------- */
+(function(){
+  const ch=CB.challenge.llm_challenger, ex=CB.explain.checkability;
+  let r='<p>LLM 被放在三个不同岗位上分别做了实验，同一个模型、同一份数据、同一个划分。'+
+    '三次实验的结论差别很大，值得分开看。</p>';
+  r+='<div class="grid g3">'+
+    '<div class="kpi bad"><div class="k">岗位一：定界器</div><div class="v">不可用</div>'+
+      '<div class="note">准确率显著低于专家规则（McNemar p=0.0117）。'+
+      'prompt 里已经把 <code>expert:points_to</code> 直接给了它，'+
+      '照抄就能到 77.8%，它自己只做到 60.4%</div></div>'+
+    '<div class="kpi bad"><div class="k">岗位二：质疑器</div><div class="v">无区分力</div>'+
+      '<div class="note">质疑率 '+pct(ch.challenge_rate)+'，命中率 '+pct(ch.hit_rate)+
+      '，而规则本身的错误率是 '+pct(ch.rule_error_rate)+'。'+
+      '增益 '+(ch.lift_over_error_rate*100).toFixed(2)+'pp——它几乎质疑一切，'+
+      '所谓命中只是撞上了基础错误率</div></div>'+
+    '<div class="kpi good"><div class="k">岗位三：解释器</div><div class="v">可用</div>'+
+      '<div class="note">四项可机检指标：token 存在性 '+pct(ex.token_existence)+
+      '、相关性 '+pct(ex.token_relevance)+'、方向一致性 '+pct(ex.direction_consistency)+
+      '、结论一致性 '+pct(ex.verdict_consistency)+'，全通过率 '+pct(ex.all_pass)+
+      '，编造 token '+ex.fabricated_token_count+' 个</div></div></div>';
+  r+='<div class="infobox"><b>为什么定界器这么差，而且不是「模型不够强」能解释的：</b>'+
+     'LLM 拿到的不是原始 lane 读数，而是 N2 抽取出来的<b>证据 token</b>。'+
+     '也就是说它读到的是「L1 侧 rxpower 有 lane_diff」，而不是「[2.53, 2.46, 0.78, 2.41]」。'+
+     '专家规则跑在原始值上，LLM 跑在压缩后的符号上——'+
+     '前面第 3 节列出的四类信息损失（方向、lane 数量、绝对参考、跨端对比），'+
+     'LLM 一个都拿不到。同一 token 空间上训练的随机森林准确率 67.19%，'+
+     '也低于跑在原始值上的专家规则 72.01%，说明<b>上限是被输入表示卡住的</b>。</div>';
+  r+='<div class="okbox"><b>解释器是唯一站得住的岗位，而它恰好不需要模型做判断。</b>'+
+     '解释器的任务是把已经确定的规则依据翻译成人话，四项指标都是机器可检的，'+
+     '不依赖人工评分。值得注意的是：在规则<b>判错</b>的 25 条上，'+
+     '解释器的全通过率是 '+pct(CB.explain.by_rule_correctness.rule_wrong.all_pass)+
+     '，比规则判对时还略高——它忠实地解释了一个错误结论。'+
+     '这正说明它做的是转述而不是判断，也提醒我们它不能用来兜错。</div>';
+
+  const la=DF.llm_alignment;
+  r+='<h4>为什么质疑器必然没有区分力：LLM 不是独立信号</h4>'+
+    '<p>把 LLM 的定界结论按「系统判对 / 判错」分开统计，问题就很清楚了。</p><table>'+
+    '<tr><th>子集</th><th class="num">条数</th><th class="num">有 trace</th>'+
+    '<th class="num">可解析</th><th class="num">未解析或弃答</th>'+
+    '<th class="num">与最终结论一致</th><th class="num">命中真值</th></tr>';
+  [['correct','系统判对'],['wrong','系统判错'],['abstain','系统拒答']].forEach(([k,lab])=>{
+    const g=la[k];
+    r+='<tr><td><b>'+lab+'</b></td><td class="num">'+g.n+'</td><td class="num">'+g.with_trace+
+      '</td><td class="num">'+g.parsed+'</td><td class="num">'+g.unparsed_or_abstain+'</td>'+
+      '<td class="num">'+g.agree_with_final+'（'+pct(g.agree_rate)+'）</td>'+
+      '<td class="num">'+g.matches_gold+'（'+pct(g.gold_rate)+'）</td></tr>';
+  });
+  r+='</table>';
+  r+='<div class="badbox"><b>在系统判错的 case 上，LLM 有 '+pct(la.wrong.agree_rate)+
+     ' 的概率给出和错误结论相同的答案，命中真值只有 '+pct(la.wrong.gold_rate)+'（'+
+     la.wrong.matches_gold+'/'+la.wrong.parsed+'）。</b>'+
+     '它复现规则的错误，而不是发现错误。原因不难理解：prompt 里直接给了 '+
+     '<code>expert:points_to</code> token，也就是把专家规则的逐端结论摊在了模型面前，'+
+     '所以模型的输出与规则高度相关。<b>一个与被检查者相关的检查者不可能提供独立校验</b>，'+
+     '这就是质疑器增益为负的结构性原因，调 prompt 或换更大的模型都改变不了。</div>';
+  r+='<div class="warnbox"><b>另外还有可用性问题：</b>系统判对的 57 条有 trace 的 case 里，'+
+     la.correct.unparsed_or_abstain+' 条（'+pct(la.correct.unparsed_or_abstain/la.correct.with_trace)+
+     '）的输出无法解析或模型自行弃答。全部 trace 累计 '+
+     Object.values(la.violation_kinds).reduce((a,b)=>a+b,0)+' 条约束违规，'+
+     la.cases_with_fatal+' 条 case 出现过 fatal 级违规，最高频的是 '+
+     Object.entries(la.violation_kinds)[0][0]+'（'+Object.entries(la.violation_kinds)[0][1]+' 条）。</div>';
+
+  const curve=CB.challenge.score_threshold_curve;
+  r+='<h4>质疑器的阈值曲线：调门槛也救不回来</h4><table>'+
+    '<tr><th class="num">最少失败前提数</th><th class="num">标记条数</th><th class="num">标记率</th>'+
+    '<th class="num">命中</th><th>命中率</th><th class="num">相对错误率的增益</th></tr>';
+  curve.forEach(c=>{
+    if(c.flagged===0)return;
+    r+='<tr><td class="num mono">'+c.min_failed_premises+'</td><td class="num">'+c.flagged+'</td>'+
+      '<td class="num">'+pct(c.flag_rate)+'</td><td class="num">'+c.hits+'</td>'+
+      '<td>'+bar(c.hit_rate,c.hit_rate>0.234?'hi':'lo')+'</td>'+
+      '<td class="num" style="color:'+(c.lift_over_error_rate>0?'#047857':'#b91c1c')+
+      ';font-weight:600">'+(c.lift_over_error_rate>=0?'+':'')+
+      (c.lift_over_error_rate*100).toFixed(2)+'pp</td></tr>';
+  });
+  r+='</table><div class="note">任何门槛下的增益都是负的：收紧门槛让标记数从 98 降到 10，'+
+     '命中率反而从 22.4% 掉到 10%。质疑器给出的「失败前提数」与规则是否真的错了<b>无关</b>。</div>';
+  H('llmBlock',r);
+})();
+
+/* ---------- 13 缺陷 ---------- */
+(function(){
+  const items=[
+    ['数据','bias 字段未解析且未报缺失','11 条 case 的 <code>bias</code> 是字符串而非字典，'+
+      '参与 C1/C2 的 token 生成，证据实际缺失但系统静默降级',
+      '修数据加载并在解析失败时写入 <code>missing_fields</code>；加类型断言','低','高'],
+    ['数据','txpower 语义未确认','37 个「侧」的 tx 四条读数完全相同，疑为标称值。'+
+      '所有依赖「对端发端是否正常」的推理都建立在此之上',
+      '核实字段来源；若为标称值则相关判据全部降级','低','高'],
+    ['数据','host_snr 缺失 41~45%','它是唯一能无歧义定端的指标（对端影响不到本端主机侧电通道）',
+      '优先补采；同时放宽这类强物理判据的标定支持数门槛','中','高'],
+    ['数据','缺 OTDR / 双向同步快照','P3 子集 79 条（29.5%）因此不可判，fiber 富集 15.2%',
+      '补采光缆段测量；在此之前该子集应请求补采而非二选一','高','高'],
+    ['特征','lane_diff 不带方向','偏高与偏低物理含义相反却压成同一 token；'+
+      '3 条判错 case 的真因都在「出现偏高读数的那一侧」',
+      '拆成 lane_diff_low / lane_diff_high，只让偏低指向对端','低','中'],
+    ['特征','lane_down 是布尔型','丢掉了「断几条、断哪几条」。'+
+      '实测「恰好 1 条 lane 断」覆盖了 multi_metric L2→L1 格子里全部 7 条 fiber',
+      '扩展为单 lane / 多 lane / 整侧三档','低','中'],
+    ['特征','没有任何跨端对比特征','fiber 的本质是「两端都不正常但都不是单端故障」，'+
+      '只能用跨端量表达；连链路插损（对端 tx − 本端 rx）都没算',
+      '增加跨端差值特征族','低','中'],
+    ['规则','multi_metric 重复计数同一件事','单 lane 断光时 rx/media_snr/serdes 三个"异常"'+
+      '是同一个物理事件的三种表述，规则却当三条独立证据抬高置信度',
+      '按 C1/C5 已声明的因果依赖合并计数','低','中'],
+    ['规则','multi_metric 吞掉 host_snr 的方向','host_snr 物理上只能指向本端，'+
+      '但 multi_metric 优先级更高，套用了「收端异常指对端」的默认方向（case_788f63a0a0fc）',
+      '参与指标含 host_snr 时方向由它决定','低','中'],
+    ['规则','C23/C24 缺对端交叉核验','「本端接收异常 ⇒ 对端」不核对对端同 lane 是否真的弱'+
+      '（case_fcacbc45173f 里对端该 lane 恰是最强的一条）',
+      '加前置条件；不满足则降级为 neutral','低','中'],
+    ['规则','serdes_snr high_value 被当作定界依据','SNR 偏高不是故障模式。'+
+      '该格子全库仅 1 条样本、准确率 0%（case_fa72aef06d4d）',
+      '从可定界异常类型中移除','低','低'],
+    ['规则','serdes 判据整体偏弱','<code>single:serdes_snr</code> 两个主要格子共 64 条'+
+      '（全库 23.9%），Wilson 下界均低于多数类先验',
+      '这一族应大幅提高拒答比例','低','高'],
+    ['级联','检索精确命中被规则覆盖','case_22d4dde687ab 与训练集某条 fiber 相似度 1.000，'+
+      '仍被 Wilson 下界 34.4% 的规则格子盖过',
+      '把高相似度精确命中提到专家规则之前','低','中'],
+    ['级联','未执行自己的准入标准','超过一半 case 落在下界不达标的格子上却照样给结论。'+
+      '按下界 ≥0.40 拒答可把精度从 76.64% 提到 85.29%（覆盖 63.6%）',
+      '按格子可靠性做选择性预测','低','高'],
+    ['级联','忽略「无先例」信号','检索相似度极低时（case_fa72aef06d4d 仅 0.366）'+
+      '证据图已在说没见过，M9 未采纳为拒答依据',
+      '把低相似度纳入拒答条件','低','低'],
+    ['标注','电域故障无对应类别','P4 子集 44 条（16.4%）光层干净、只有 serdes 死，'+
+      '真值分布与先验一致；判错的 24 条里 6 条在此',
+      '增设「电域疑似」出口，不参与三分类','中','高'],
+  ];
+  const impCol={'高':'p-bad','中':'p-warn','低':'p-info'};
+  let r='<div class="tbl-wrap"><table><tr><th>层次</th><th>缺陷</th><th>依据</th>'+
+    '<th>建议动作</th><th class="num">成本</th><th class="num">影响</th></tr>';
+  items.forEach(([lay,name,ev,fix,cost,imp])=>{
+    r+='<tr><td><span class="pill p-info">'+lay+'</span></td><td><b>'+name+'</b></td>'+
+      '<td class="small">'+ev+'</td><td class="small">'+fix+'</td>'+
+      '<td class="num"><span class="pill '+impCol[cost]+'">'+cost+'</span></td>'+
+      '<td class="num"><span class="pill '+impCol[imp]+'">'+imp+'</span></td></tr>';
+  });
+  r+='</table></div>';
+  r+='<h3>如果只做三件事</h3><div class="okbox"><ol>'+
+    '<li><b>让 M9 执行自己的准入标准。</b>按规则格子的 Wilson 下界做选择性预测，'+
+    '覆盖 63.6% 时精度 85.29%（+8.65pp）。零成本、零新数据、当天可验证。</li>'+
+    '<li><b>把 P3 子集（29.5%）改为请求补采。</b>这一块 fiber 富集两倍，'+
+    '现在被强行二选一，是 fiber 召回为 0 的直接原因。同时推动 OTDR 采集。</li>'+
+    '<li><b>查清 txpower 语义、修 bias 解析。</b>成本极低，但它决定了所有跨端推理'+
+    '是否可信——包括上面几条建议里的交叉核验。</li>'+
+    '</ol><p style="margin:9px 0 0">这三件事都不涉及换模型。'+
+    '按第 11 节的测量，换更强的推理模型在这份数据上能改善的是<b>拒答的准确性</b>，'+
+    '而拒答策略用规则可靠性统计就能做到，不需要模型。</p></div>';
+  H('defectBlock',r);
+})();
+
+</script>
+</body></html>

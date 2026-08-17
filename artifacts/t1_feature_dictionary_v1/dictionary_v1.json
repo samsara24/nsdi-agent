@@ -1,0 +1,86 @@
+{
+  "version": "feature-dictionary-v1",
+  "tail_quantiles": [
+    0.25,
+    0.75
+  ],
+  "down_sentinel_dbm": -39.0,
+  "families": [
+    {
+      "name": "signal_drop",
+      "dimension": "每侧每指标的断光/断链 lane 数分档",
+      "physical_meaning": "光模块某一侧的某个指标有多少条 lane 掉到断光哨兵值。1 条 lane 断通常是单通道器件或单芯问题，全部 lane 断通常是整端口或整束光纤问题，两者的排障动作完全不同，legacy 把它们压成同一个 token 是分辨率损失的主要来源之一。",
+      "unit": "lane 计数（无量纲）",
+      "value_domain": [
+        "single_lane",
+        "partial_lanes",
+        "all_lanes"
+      ],
+      "extraction_rule": "取该侧该指标全部 lane 原始值，统计 <= 断光哨兵（-39.0 dBm / SNR 0）的 lane 数 d 与总 lane 数 n。d==0 不产出 token；d==1 产出 single_lane；0<d<n 且 d>1 产出 partial_lanes；d==n 产出 all_lanes。",
+      "token_template": "drop:{side}:{metric}:{bucket}",
+      "sparsity": "只在存在断光 lane 时产出",
+      "tier": "core",
+      "status": "v1",
+      "selection_note": "",
+      "reuses_legacy": false
+    },
+    {
+      "name": "status_fault",
+      "dimension": "每侧 LOS / LOL 告警位",
+      "physical_meaning": "TxLOS / TxLOL / RxLOS / RxLOL 是光模块自身上报的失锁与失光标志位。它是设备侧唯一不依赖阈值拟合的一等硬证据，指明哪一端、发送还是接收出了问题。",
+      "unit": "布尔",
+      "value_domain": [
+        "TxLOS",
+        "TxLOL",
+        "RxLOS",
+        "RxLOL"
+      ],
+      "extraction_rule": "该侧状态字段落在 {abnormal, down, fault, error, los, lol, true, 1} 集合内则产出 token。",
+      "token_template": "status:{side}:{status_key}",
+      "sparsity": "只在异常时产出",
+      "tier": "core",
+      "status": "v1",
+      "selection_note": "",
+      "reuses_legacy": true
+    },
+    {
+      "name": "lane_imbalance",
+      "dimension": "每侧每指标健康 lane 的极差是否超限",
+      "physical_meaning": "同一端口内不同 lane 之间的差异。整端口共用同一光源与同一段光纤，lane 间极差偏大说明问题定位在单通道而不是整链路。",
+      "unit": "dB",
+      "value_domain": [
+        "over_learned_spread"
+      ],
+      "extraction_rule": "健康 lane 极差 > 训练集拟合的 spread 上界时产出。",
+      "token_template": "imbalance:{side}:{metric}",
+      "sparsity": "只在超限时产出",
+      "tier": "core",
+      "status": "v1",
+      "selection_note": "",
+      "reuses_legacy": true
+    },
+    {
+      "name": "level_tail",
+      "dimension": "每侧关键连续量相对训练集分位数的尾部档位",
+      "physical_meaning": "收/发光功率与介质侧 SNR 的绝对水平。稳健围栏只抓极端离群，但 fiber 类 case 的收光功率是系统性偏低而非离群，因此需要按训练集分位数分档。低档指向链路衰减，高档指向功率过冲。",
+      "unit": "dBm（rxpower / txpower）/ dB（media_snr）",
+      "value_domain": [
+        "low_tail",
+        "high_tail"
+      ],
+      "extraction_rule": "取健康 lane 的均值（SNR 取最小值），与训练集该统计量的 0.25 / 0.75 分位数比较。低于下分位产出 low_tail，高于上分位产出 high_tail，落在中间不产出 token。分位边界在训练集上拟合并写入 FeatureModel，不使用手写常数。",
+      "token_template": "level:{side}:{statistic}:{bucket}",
+      "sparsity": "约 50% 的 case 在每个统计量上产出 token",
+      "tier": "core",
+      "status": "v1",
+      "selection_note": "",
+      "reuses_legacy": false
+    }
+  ],
+  "notes": [
+    "所有 token 都是 ASCII 字面量，可直接进 prompt 与报告，无需再做一层映射。",
+    "只在观测偏离训练集中心区域时产出 token；没有恒定产出的 context 家族，因此零证据 case 仍然是空 signature，由 N6 显式降级而不是靠上下文硬凑相似度。",
+    "本字典不产生也不修改 legacy `anomaly_id`；legacy 路径与本字典完全解耦。",
+    "candidate 家族仍保留在 `FULL_DICTIONARY` 中，合并数据集到位后按同一套规则重跑选型。"
+  ]
+}

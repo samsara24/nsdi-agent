@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rca_framework.constraints.library import CONSTRAINT_LIBRARY  # noqa: E402
 from rca_framework.evidence_graph import EVIDENCE_GRAPH_V2_SCHEMA  # noqa: E402
 from rca_framework.features.dictionary import FEATURE_DICTIONARY_V2  # noqa: E402
-from rca_framework.sop import LEARNED_SOP_VERSION  # noqa: E402
+from rca_framework.sop import EXPERT_SOP_VERSION, LEARNED_SOP_VERSION, expert_sop_hash  # noqa: E402
 from scripts.render_constraint_skill import render as render_constraints  # noqa: E402
 
 
@@ -41,19 +41,21 @@ def render_domain() -> str:
 
 
 def render_sop() -> str:
-    return _front("rca-sop", "RCA v2 的 learned SOP 使用边界和决策树契约。") + "\n".join([
-        "# Learned SOP",
+    return _front("rca-sop", "RCA v2 的专家 SOP 与 learned SOP 使用边界。") + "\n".join([
+        "# RCA SOP",
         "",
-        f"当前 SOP 版本：`{LEARNED_SOP_VERSION}`。",
+        f"当前专家 SOP 版本：`{EXPERT_SOP_VERSION}`，hash `{expert_sop_hash()}`。",
+        f"当前 learned SOP 版本：`{LEARNED_SOP_VERSION}`。",
         "",
-        "该 SOP 是从训练集标签归纳得到的浅层可解释决策树，不是专家手写 SOP。",
-        "使用时必须同时检查叶节点支持数、叶子纯度和 Wilson 下界；低支持或混合叶必须补采或转人工。",
+        "专家 SOP 是 N5c 冷启动分支的检查顺序，用于约束 LLM 逐步推理校验。",
+        "learned SOP 是从训练集标签归纳得到的浅层可解释决策树，不是专家手写 SOP。",
+        "使用 learned SOP 时必须同时检查叶节点支持数、叶子纯度和 Wilson 下界；低支持或混合叶必须补采或转人工。",
         "",
         "## 使用规则",
         "",
-        "1. 只允许用 manifest train split 学习树结构和剪枝参数。",
-        "2. test split 只做最终评估，不能反向修改树、约束或特征。",
-        "3. 每条路径必须记录 `present:<token>` / `absent:<token>`，报告中展示完整路径。",
+        "1. N5a/N5b 不注入完整专家 SOP；只有 N5c 冷启动注入专家 SOP。",
+        "2. learned SOP / 数值树只能作为统计先验或报告字段，不能默认进入 M9 自动终裁。",
+        "3. test split 只做最终评估，不能反向修改树、约束、SOP 或特征。",
         "4. learned SOP 不得覆盖确定性物理排除，也不得把待专家确认的统计关系写成物理事实。",
         "",
     ])
@@ -87,10 +89,20 @@ def render_workflow() -> str:
         "2. N2：抽取可解释 token，连续阈值只从 train split 拟合。",
         "3. N3：证据图检索 Top-N，输出相似度、覆盖率、缺失和冲突证据。",
         "4. N4：用当前数据集 train-LOO 重新标定路由，不沿用旧 70% 阈值。",
-        "5. N5：N5a 复用纯历史链，N5b 补采/仲裁，N5c 走约束 + learned SOP。",
-        "6. N6：按历史覆盖率、SOP 叶子校准、约束合规、证据完整度和推导缺口决定 final / request_evidence / human_review。",
-        "7. N7：生成含根因、证据链、SOP 路径和置信来源的报告。",
-        "8. N8：只回灌人工确认结果。",
+        "5. N5：N5a 复用纯历史链，N5b 用物理约束判关键证据并仲裁，N5c 走专家 SOP + 约束 LLM。",
+        "6. N6：正式默认只接受 branch 候选；expert / learned SOP 只能显式消融或作报告字段。",
+        "7. N7：生成含主流程图、调整点、根因、证据链、SOP 路径、置信来源和逐 bad case 分析的报告。",
+        "8. N8：本阶段冻结；只保留人工确认回灌语义，不用测试 bad case 自动更新知识。",
+        "",
+        "## Loop 实验门禁",
+        "",
+        "- 每轮实验必须先说明遵循 `docs/个人整体思路.md`，并从测试 bad case 出发提出假设。",
+        "- 允许的核心调整只有：证据图约束 / schema、阈值或路由、大模型 prompt、代码 bug fix。",
+        "- 每轮实验必须归档到 `experiments/<YYYYMMDD>_<short-name>/`，并生成 `report.html`。",
+        "- `report.html` 必须展示当前主流程图，并标注本轮调整了哪里。",
+        "- 报告必须记录当前证据图、物理约束、SOP 版本、prompt 版本、阈值和 M9 candidate order。",
+        "- 正确 case 按分支和做对的步骤归纳；bad case 必须逐条分析失败步骤、错因和下一步动作。",
+        "- 疑似标签问题写入 `label_suspects.json`；当前不可安全提升的 case 写入 `irreducible_cases.json`，后续保留但不继续围绕它刷指标。",
         "",
     ])
 

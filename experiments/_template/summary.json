@@ -1,0 +1,16 @@
+{
+  "schema_version": "rca-loop-experiment-summary-v1",
+  "experiment_id": "YYYYMMDD_short-name",
+  "routing_distribution": {},
+  "correct_case_summary": {
+    "by_branch": {},
+    "worked_well_steps": []
+  },
+  "bad_case_summary": {
+    "by_failure_step": {},
+    "by_root_cause": {},
+    "fixable_count": 0,
+    "label_suspect_count": 0,
+    "irreducible_count": 0
+  }
+}

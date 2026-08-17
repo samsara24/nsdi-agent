@@ -1,0 +1,4172 @@
+{
+  "schema_version": "rca-loop-case-analysis-v1",
+  "cases": [
+    {
+      "case_id": "case_fcacbc45173f",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.68，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.68308557,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_713754bd3abd",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.66，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.66480066,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_5d80fba2c22f",
+      "actual": "L1",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_784dfd7a8801",
+      "actual": "L1",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "imbalance:L2:media_snr",
+        "imbalance:L2:rxpower",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_b53c29f2ed30",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.66，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.664626,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_6349169c912c",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.86，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.85672852,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.7,0.9)",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:media_snr_min:low_tail(P10_receive_symptom_points_to_far_transmit_chain)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_7ab9c8387860",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.68，证据覆盖率 100%），差异在于历史 case 还有 3 条本 case 未观测到的证据",
+      "max_similarity": 0.68231761,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "status:L1:RxLOL"
+      ],
+      "critical_missing": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "status:L1:RxLOL"
+      ],
+      "critical_reasons": {
+        "drop:L1:media_snr:single_lane": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P11_single_lane_does_not_exclude_fiber",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L1:RxLOL": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 3 条证据被物理归因约束判为关键，结论需要补采后复核：drop:L1:media_snr:single_lane(P10_receive_symptom_points_to_far_transmit_chain, P11_single_lane_does_not_exclude_fiber, P9_scope_all_lanes_vs_single_lane)、level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、status:L1:RxLOL(P10_receive_symptom_points_to_far_transmit_chain)",
+        "LLM 仲裁未形成可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 target=L2；允许值为 L1；引用的证据 token 家族与该约束的适用范围不匹配"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_0b40c4048fd7",
+      "actual": "fiber",
+      "branch": "N6",
+      "routing_reason": "两端收发光功率全部处于断光哨兵而 TxLOS 仍报 Normal（约束 C15），这 18 条特征全部来自同一条失效的采集通道，看似证据充分实则无一有效，转人工现场确认",
+      "max_similarity": 0.85417396,
+      "evidence_coverage": 0.888889,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N6_abstain",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N6_human_review",
+      "tokens": [
+        "drop:L1:media_snr:all_lanes",
+        "drop:L1:rxpower:all_lanes",
+        "drop:L1:serdes_snr:partial_lanes",
+        "drop:L1:txpower:all_lanes",
+        "drop:L2:media_snr:all_lanes",
+        "drop:L2:rxpower:all_lanes",
+        "drop:L2:txpower:all_lanes",
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane:L2_to_L1:tx_down",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:full_telemetry"
+      ],
+      "caveats": [
+        "证据不足以支撑任何根因判断，不做猜测"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_6ab2ffe70790",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.86，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.85646905,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_48915d45d5ca",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.86，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.85546893,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_02da79997180",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.79，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.79451741,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "imbalance:L2:media_snr",
+        "imbalance:L2:rxpower",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:media_snr_min:low_tail(P10_receive_symptom_points_to_far_transmit_chain)、level:L2:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)",
+        "LLM 仲裁未形成可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 effect=support；允许值为 neutral；该约束不允许 target=L1；允许值为 ；引用的证据 token 家族与该约束的适用范围不匹配；该约束不允许 effect=support；允许值为 neutral；该约束不允许 target=L1；允许值为 ；引用的证据 token 家族与该约束的适用范围不匹配"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_47f612c50f2f",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.77，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.76807154,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_c1f6d74a42c9",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.65，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.65397735,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)",
+        "LLM 仲裁未形成可用结论：模型主动弃权：证据不足以支撑任何根因"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_f40d7dea10c4",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.88，证据覆盖率 89%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.88083221,
+      "evidence_coverage": 0.888889,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:media_snr",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_13ac31d97368",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.60，证据覆盖率 90%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.59639893,
+      "evidence_coverage": 0.9,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "status:L2:RxLOL"
+      ],
+      "critical_missing": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "status:L2:RxLOL"
+      ],
+      "critical_reasons": {
+        "drop:L2:media_snr:single_lane": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P11_single_lane_does_not_exclude_fiber",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "drop:L2:serdes_snr:single_lane": [
+          "P11_single_lane_does_not_exclude_fiber",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "status:L2:RxLOL": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:rxpower",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_3160b584dd44",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.81，证据覆盖率 91%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.80778488,
+      "evidence_coverage": 0.909091,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_f4db10047757",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.67，证据覆盖率 71%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.67429639,
+      "evidence_coverage": 0.705882,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_with_exclusion",
+      "missing_evidence": [
+        "imbalance:L2:serdes_snr"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:txpower:single_lane",
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "drop:L2:serdes_snr:single_lane",
+        "lane:L1_to_L2:tx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:TxLOL",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 2 个（L1、L2），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_3e79df29763e",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 2 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_mixed",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "命中桶的历史标签不纯（L2 1 条、fiber 1 条），这套证据在历史上就区分不开这几个根因，结论取多数投票，需要额外证据才能定论",
+        "LLM 仲裁未形成可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；该约束在 v2 中没有对应 token，只能作为不绑定证据 token 的中性上下文引用"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_195ad8049a88",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.64，证据覆盖率 71%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.63865824,
+      "evidence_coverage": 0.714286,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:serdes_snr",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_75f46528e107",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.70，证据覆盖率 80%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.69680647,
+      "evidence_coverage": 0.8,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_7c60d5951f80",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.73，证据覆盖率 91%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.72952224,
+      "evidence_coverage": 0.909091,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "status:L1:RxLOS"
+      ],
+      "critical_missing": [
+        "status:L1:RxLOS"
+      ],
+      "critical_reasons": {
+        "status:L1:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_a859a2ae4d99",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.80，证据覆盖率 90%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.8006626,
+      "evidence_coverage": 0.9,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "imbalance:L1:rxpower",
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 effect=neutral；允许值为 support；引用的证据 token 家族与该约束的适用范围不匹配；该约束不允许 effect=neutral；允许值为 support；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_f3594459612d",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.81，证据覆盖率 100%），差异在于历史 case 还有 0 条本 case 未观测到的证据",
+      "max_similarity": 0.8120996,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.7,0.9)",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "并列候选的历史标签不一致，结论取多数投票"
+      ],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 43.85%，支持数 3），转人工复核"
+    },
+    {
+      "case_id": "case_88dce8a05674",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.57，证据覆盖率 100%），差异在于历史 case 还有 3 条本 case 未观测到的证据",
+      "max_similarity": 0.57168664,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "imbalance:L2:serdes_snr",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:media_snr_min:high_tail(P10_receive_symptom_points_to_far_transmit_chain)",
+        "LLM 仲裁未形成可用结论：模型主动弃权：证据不足以支撑任何根因"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9acd0b8c50e8",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_b2ec327c7ac7",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.67，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.66785712,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "imbalance:L1:rxpower",
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_f53a4bc3cd6d",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.68，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.67542647,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_4e466fb62ba8",
+      "actual": "L1",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_b1dfb752200b",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.75，证据覆盖率 82%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.7546549,
+      "evidence_coverage": 0.818182,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_2d2152766ba6",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.84，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.84041831,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_b244b38241f9",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.70，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.69801417,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "level:L1:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_86eee41de4c9",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.75，证据覆盖率 82%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.75400406,
+      "evidence_coverage": 0.818182,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：这一步既没有引用证据也没有引用约束，属于凭空断言",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_a86363693651",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.49，证据覆盖率 71%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.48576032,
+      "evidence_coverage": 0.714286,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L1:rxpower",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_1557d57dfde5",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_8448ab686d52",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.86，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.85609482,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论",
+        "证据包本身存在 1 条量测有效性告警，相关读数需谨慎采信"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_0c1bce9102c3",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.58，证据覆盖率 78%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.57959438,
+      "evidence_coverage": 0.777778,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_6f0602fcbd04",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 2 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_3a9a11e3c449",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.81，证据覆盖率 100%），差异在于历史 case 还有 0 条本 case 未观测到的证据",
+      "max_similarity": 0.81011636,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "并列候选的历史标签不一致，结论取多数投票",
+        "LLM 仲裁未形成可用结论：模型主动弃权：证据不足以支撑任何根因"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_04917832a9d6",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.91，证据覆盖率 92%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.90909806,
+      "evidence_coverage": 0.923077,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_9feaccdfdc30",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.73，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.73190578,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:serdes_snr",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_f4151dbd5222",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.68，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.68475783,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_8b3d4baf66f8",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.90，证据覆盖率 90%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.90336047,
+      "evidence_coverage": 0.9,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L1:media_snr",
+        "imbalance:L1:rxpower",
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_de30dd81f652",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.87，证据覆盖率 90%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.87465048,
+      "evidence_coverage": 0.9,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_e92d80fd827b",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.54，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.54049647,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail"
+      ],
+      "critical_missing": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:high_tail"
+      ],
+      "critical_reasons": {
+        "drop:L2:serdes_snr:single_lane": [
+          "P11_single_lane_does_not_exclude_fiber",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:media_snr_min:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:rxpower",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_d7c9425ca86c",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.56，证据覆盖率 80%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.55665106,
+      "evidence_coverage": 0.8,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:serdes_snr",
+        "level:L1:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_e7c93097d6e2",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.78，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.77785356,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "imbalance:L1:rxpower",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_0e7598a5fd0a",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.76，证据覆盖率 90%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.76211142,
+      "evidence_coverage": 0.9,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L1:media_snr",
+        "imbalance:L1:rxpower",
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:full_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用了本 case 不存在的证据：imbalance:L2:media_snr、imbalance:L2:rxpower。只能引用给定证据清单里的 token；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9cadaea07460",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.72，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.72389666,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L1:media_snr",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用了不存在的约束编号：P10；引用了不存在的约束编号：P13；引用了不存在的约束编号：M6、P5",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_382b7a31a8fb",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.63，证据覆盖率 82%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.62699165,
+      "evidence_coverage": 0.823529,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_with_exclusion",
+      "missing_evidence": [
+        "drop:L1:serdes_snr:all_lanes",
+        "drop:L2:rxpower:single_lane",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:invalid",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "drop:L1:serdes_snr:all_lanes",
+        "drop:L2:rxpower:single_lane",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_reasons": {
+        "drop:L1:serdes_snr:all_lanes": [
+          "P11_single_lane_does_not_exclude_fiber",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "drop:L2:rxpower:single_lane": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P11_single_lane_does_not_exclude_fiber",
+          "P6_rx_has_continuous_degradation",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L2:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:all_lanes",
+        "drop:L1:rxpower:all_lanes",
+        "drop:L1:txpower:all_lanes",
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:rxpower",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 2 个（L1、L2），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_0a23e38812e8",
+      "actual": "L1",
+      "branch": "N5a",
+      "routing_reason": "与 2 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "llm:N5a:[0.5,0.7)",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:full_telemetry"
+      ],
+      "caveats": [
+        "命中桶的历史标签不纯（L1 1 条、L2 1 条），这套证据在历史上就区分不开这几个根因，结论取多数投票，需要额外证据才能定论"
+      ],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 20.65%，支持数 1），转人工复核"
+    },
+    {
+      "case_id": "case_e7756a64e30d",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.70，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.70489876,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_d889b9addd14",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.75，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.74704754,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:serdes_snr",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_fb993ef2651e",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.64，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.64412854,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：这一步既没有引用证据也没有引用约束，属于凭空断言",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_5009db76a459",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.82，证据覆盖率 92%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.81785091,
+      "evidence_coverage": 0.916667,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_0c3939c5292e",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.79，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.7869351,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.5,0.7)",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9d6e145b9fdc",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.68，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.68250337,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：这一步既没有引用证据也没有引用约束，属于凭空断言；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_4541f9bbc853",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_2c9963b9a196",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.89，证据覆盖率 92%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.89040444,
+      "evidence_coverage": 0.916667,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_345e15396788",
+      "actual": "L1",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "imbalance:L2:media_snr",
+        "imbalance:L2:rxpower",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_ac452049dcfc",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.52，证据覆盖率 100%），差异在于历史 case 还有 5 条本 case 未观测到的证据",
+      "max_similarity": 0.51526677,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "level:L2:media_snr_min:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "imbalance:L1:rxpower",
+        "level:L1:media_snr_min:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 3 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、level:L2:media_snr_min:high_tail(P10_receive_symptom_points_to_far_transmit_chain)、level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)",
+        "LLM 仲裁未形成可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 target=L2；允许值为 L1；引用的证据 token 家族与该约束的适用范围不匹配"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9fe92e6d47b7",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.48，证据覆盖率 60%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.47872448,
+      "evidence_coverage": 0.6,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5c:[0.7,0.9)",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:all_lanes",
+        "drop:L1:rxpower:all_lanes",
+        "drop:L2:txpower:all_lanes",
+        "lane:L2_to_L1:tx_down",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_61d86d3a287d",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.80，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.79854195,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_aae29bfa4d32",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.84，证据覆盖率 91%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.83728194,
+      "evidence_coverage": 0.909091,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_1df9bdf2c0be",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.62，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.62466308,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_3cd73a13e616",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.65，证据覆盖率 100%），差异在于历史 case 还有 3 条本 case 未观测到的证据",
+      "max_similarity": 0.65251673,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.5,0.7)",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "imbalance:L2:rxpower",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_1fabf85a5ee2",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "imbalance:L1:media_snr",
+        "imbalance:L1:rxpower",
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_b2d2a66d4b1d",
+      "actual": "fiber",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.81，证据覆盖率 91%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.80989209,
+      "evidence_coverage": 0.909091,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "status:L1:RxLOS"
+      ],
+      "critical_missing": [
+        "status:L1:RxLOS"
+      ],
+      "critical_reasons": {
+        "status:L1:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_411486e52d45",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_83126f9b3650",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.55，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.5508668,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5c:[0.9,1.0]",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L2:serdes_snr",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_906cbc1553b8",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.91，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.90901076,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)",
+        "LLM 仲裁未形成可用结论：模型主动弃权：证据不足以支撑任何根因"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_4fff96563d56",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.91，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.91185326,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L2:media_snr_min:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)",
+        "LLM 仲裁未形成可用结论：模型主动弃权：证据不足以支撑任何根因"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_1e68b6eb3132",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.77，证据覆盖率 90%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.76820964,
+      "evidence_coverage": 0.9,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:media_snr_min:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_f6ab3c98854d",
+      "actual": "fiber",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.92，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.92069576,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_fa72aef06d4d",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.77，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.76805751,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_ec7c50c7fd54",
+      "actual": "L2",
+      "branch": "N5a",
+      "routing_reason": "与 2 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_bce075edaf82",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.90，证据覆盖率 100%），差异在于历史 case 还有 1 条本 case 未观测到的证据",
+      "max_similarity": 0.89979977,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.7,0.9)",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_83552129a3cc",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.75，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.74828743,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:serdes_snr:single_lane",
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_cfa4db56eb5a",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.54，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.53643164,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L1:RxLOL"
+      ],
+      "critical_missing": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L1:RxLOL"
+      ],
+      "critical_reasons": {
+        "drop:L1:media_snr:single_lane": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P11_single_lane_does_not_exclude_fiber",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L1:RxLOL": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L1:rxpower",
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_e2ba8d4715a3",
+      "actual": "L2",
+      "branch": "N6",
+      "routing_reason": "两端收发光功率全部处于断光哨兵而 TxLOS 仍报 Normal（约束 C15），这 18 条特征全部来自同一条失效的采集通道，看似证据充分实则无一有效，转人工现场确认",
+      "max_similarity": 0.86065566,
+      "evidence_coverage": 0.944444,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N6_abstain",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N6_human_review",
+      "tokens": [
+        "drop:L1:media_snr:all_lanes",
+        "drop:L1:rxpower:all_lanes",
+        "drop:L1:serdes_snr:all_lanes",
+        "drop:L1:txpower:all_lanes",
+        "drop:L2:media_snr:all_lanes",
+        "drop:L2:rxpower:all_lanes",
+        "drop:L2:txpower:all_lanes",
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane:L2_to_L1:tx_down",
+        "serdes:L1:invalid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "证据不足以支撑任何根因判断，不做猜测"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_d338b3cb902c",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.79，证据覆盖率 89%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.79469248,
+      "evidence_coverage": 0.888889,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_f519245c7b0f",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.53，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.53249889,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "drop:L2:rxpower:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "drop:L2:rxpower:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "critical_reasons": {
+        "drop:L2:rxpower:single_lane": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P11_single_lane_does_not_exclude_fiber",
+          "P6_rx_has_continuous_degradation",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L2:RxLOL": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "status:L2:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:partial_lanes",
+        "drop:L2:rxpower:partial_lanes",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：这一步既没有引用证据也没有引用约束，属于凭空断言",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_d3cf78b26833",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.59，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.58878875,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:serdes_snr:single_lane",
+        "imbalance:L1:media_snr",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_4695d660361d",
+      "actual": "fiber",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.78，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.77762583,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.5,0.7)",
+      "missing_evidence": [
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "critical_reasons": {
+        "status:L2:RxLOL": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "status:L2:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：status:L2:RxLOL(P10_receive_symptom_points_to_far_transmit_chain)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_7fa3fefa52e3",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.59，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.58742115,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "imbalance:L1:media_snr",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_583149723c3c",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.81，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.80766568,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:rxpower:single_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_22d4dde687ab",
+      "actual": "fiber",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "fiber",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "候选根因 fiber 在现有遥测下不可识别（见 C20）：最强富集条件的 Wilson 下界与类别先验无法区分，因此不输出结论，改为请求可判别该根因的定向测量"
+    },
+    {
+      "case_id": "case_ac436bbbc898",
+      "actual": "fiber",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.51，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.51072109,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "imbalance:L1:host_snr",
+        "level:L1:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:media_snr:partial_lanes",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:media_snr_min:low_tail(P10_receive_symptom_points_to_far_transmit_chain)",
+        "LLM 仲裁未形成可用结论：模型主动弃权：证据不足以支撑任何根因"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_63c7bc42fccc",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.82761824,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "llm:N5c:[0.5,0.7)",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 37.55%，支持数 5），转人工复核"
+    },
+    {
+      "case_id": "case_85ab9d3bd128",
+      "actual": "fiber",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.69，证据覆盖率 88%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.69095524,
+      "evidence_coverage": 0.875,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_1d881d28d2a3",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.77，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.77400007,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L1",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.5,0.7)",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L2:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9e34cb030209",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.79，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.78969824,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:serdes_snr",
+        "level:L1:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_4cefd4612d68",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.35，证据覆盖率 67%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.35415732,
+      "evidence_coverage": 0.666667,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:partial_lanes",
+        "drop:L2:serdes_snr:single_lane",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9c1d3e766e26",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.60，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.60200835,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "imbalance:L1:rxpower",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_737362825627",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.44，证据覆盖率 71%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.44262682,
+      "evidence_coverage": 0.714286,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:partial_lanes",
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:full_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_788f63a0a0fc",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.48，证据覆盖率 60%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.47701464,
+      "evidence_coverage": 0.6,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:host_snr:single_lane",
+        "drop:L2:media_snr:single_lane",
+        "imbalance:L2:rxpower",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:single_lane_outlier",
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_c770294bd1f2",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.64，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.63706694,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:partial_lanes",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:full_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未产出可校验的结构化输出",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_60e62d6d1052",
+      "actual": "fiber",
+      "branch": "N5a",
+      "routing_reason": "与 1 条历史 case 的证据完全一致（相似度 1.00），复用历史结论",
+      "max_similarity": 1.0,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5a_pure",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5a_historical_reuse",
+      "tokens": [
+        "level:L1:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "最优候选（来源 branch）未通过可靠性门槛（Wilson 下界 41.04%，支持数 19），转人工复核"
+    },
+    {
+      "case_id": "case_4e07d1148cfd",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.77，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.77400007,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_reasons": {
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L2:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)",
+        "LLM 仲裁未形成可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用了不存在的约束编号：C25_expert_local_chain_anomaly_on_l2_supports_l2"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_80bc3687c4b7",
+      "actual": "L2",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.60，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.60200835,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_minor_gap",
+      "missing_evidence": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "level:L1:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": true,
+      "failed_or_success_step": "N5b_minor_reuse",
+      "tokens": [
+        "imbalance:L1:rxpower",
+        "level:L2:rxpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_62b8d2de6e0c",
+      "actual": "L2",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.74，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.73546034,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:host_snr:partial_lanes",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 effect=exclude；允许值为 support；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_9daf397bb2f7",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.77，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.76953004,
+      "evidence_coverage": 1.0,
+      "branch_verdict": "L2",
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "llm:N5b:[0.5,0.7)",
+      "missing_evidence": [
+        "drop:L1:rxpower:single_lane",
+        "status:L1:RxLOS"
+      ],
+      "critical_missing": [
+        "drop:L1:rxpower:single_lane",
+        "status:L1:RxLOS"
+      ],
+      "critical_reasons": {
+        "drop:L1:rxpower:single_lane": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P11_single_lane_does_not_exclude_fiber",
+          "P6_rx_has_continuous_degradation",
+          "P9_scope_all_lanes_vs_single_lane"
+        ],
+        "status:L1:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "drop:L1:serdes_snr:single_lane",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L1:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：drop:L1:rxpower:single_lane(P10_receive_symptom_points_to_far_transmit_chain, P11_single_lane_does_not_exclude_fiber, P6_rx_has_continuous_degradation, P9_scope_all_lanes_vs_single_lane)、status:L1:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_9e14bb67adf3",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.49，证据覆盖率 75%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.48621728,
+      "evidence_coverage": 0.75,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "critical_reasons": {
+        "level:L1:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "status:L1:RxLOL": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ],
+        "status:L1:RxLOS": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:partial_lanes",
+        "drop:L1:rxpower:partial_lanes",
+        "drop:L1:serdes_snr:partial_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "level:L2:media_snr_min:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_38ee60fd682e",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.72，证据覆盖率 80%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.72070899,
+      "evidence_coverage": 0.8,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L2:media_snr_min:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "imbalance:L2:serdes_snr",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:rxpower_mean:high_tail",
+        "level:L1:txpower_mean:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 effect=neutral；允许值为 exclude；引用的证据 token 家族与该约束的适用范围不匹配；该约束不允许 effect=neutral；允许值为 support；引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_92919cfab57f",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.68，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.68015883,
+      "evidence_coverage": 0.857143,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "imbalance:L2:serdes_snr"
+      ],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：模型主动弃权：证据不足以支撑任何根因",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_e168b4979b39",
+      "actual": "L1",
+      "branch": "N5b",
+      "routing_reason": "历史上存在包含本 case 全部证据的 case（相似度 0.65，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据",
+      "max_similarity": 0.65397735,
+      "evidence_coverage": 1.0,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5b_critical_gap",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5b_critical_key_evidence",
+      "tokens": [
+        "drop:L2:serdes_snr:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)",
+        "LLM 仲裁未形成可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 target=L1；允许值为 fiber"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    },
+    {
+      "case_id": "case_4b322d8486b5",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.80，证据覆盖率 83%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.79668075,
+      "evidence_coverage": 0.833333,
+      "branch_verdict": null,
+      "final_action": "human_review",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "critical_reasons": {},
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：引用的证据 token 家族与该约束的适用范围不匹配",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入"
+    },
+    {
+      "case_id": "case_2ee657ca7489",
+      "actual": "L1",
+      "branch": "N5c",
+      "routing_reason": "历史匹配度不足（相似度 0.74，证据覆盖率 85%），存在历史未见的证据，走约束与 SOP 的通用排障",
+      "max_similarity": 0.74164418,
+      "evidence_coverage": 0.846154,
+      "branch_verdict": null,
+      "final_action": "request_evidence",
+      "final_verdict": null,
+      "calibration_group": "N5c_no_exclusion",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_reasons": {
+        "level:L1:rxpower_mean:low_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ],
+        "level:L2:rxpower_mean:high_tail": [
+          "P10_receive_symptom_points_to_far_transmit_chain",
+          "P6_rx_has_continuous_degradation"
+        ]
+      },
+      "status": "deferred",
+      "branch_correct": false,
+      "failed_or_success_step": "N5c_expert_sop_llm",
+      "tokens": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:rxpower:single_lane",
+        "drop:L2:serdes_snr:single_lane",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "level:L1:media_snr_min:low_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:media_snr_min:high_tail",
+        "level:L2:txpower_mean:low_tail",
+        "serdes:L1:valid",
+        "serdes:L2:valid",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "telemetry:partial_telemetry"
+      ],
+      "caveats": [
+        "LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：这一步既没有引用证据也没有引用约束，属于凭空断言；引用了不存在的约束编号：P10；引用了不存在的约束编号：P13；这一步既没有引用证据也没有引用约束，属于凭空断言；引用了不存在的约束编号：M6",
+        "物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论"
+      ],
+      "final_reason": "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+    }
+  ]
+}

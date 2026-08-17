@@ -182,6 +182,8 @@ border-radius:7px;background:white}}
 .table-wrap{{overflow:auto}} table{{border-collapse:collapse;width:100%;background:white}}
 th,td{{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}}
 thead th,.kv th{{background:#f5f7f9;font-weight:650}} .kv th{{width:220px}}
+.bar{{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;min-width:120px}}
+.bar span{{display:block;height:100%;background:var(--blue)}}
 pre{{margin:8px 0;padding:12px;max-height:520px;overflow:auto;white-space:pre-wrap;word-break:break-word;
 background:#111827;color:#e5edf6;border-radius:7px;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}}
 code,.token{{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}}
@@ -342,7 +344,9 @@ def _metric_cards(policy_summary: Mapping[str, Any], stats: Mapping[str, Any]) -
 
 
 def _class_metrics(policy_summary: Mapping[str, Any], records: Sequence[Mapping[str, Any]]) -> str:
-    metrics = _mapping(_get(policy_summary, "final_decisions", "class_metrics", default={}))
+    metrics = _mapping(policy_summary.get("forced_class_metrics")) or _mapping(
+        _get(policy_summary, "final_decisions", "class_metrics", default={})
+    )
     if not metrics:
         labels = list(_ROOT_CAUSES)
         labels.extend(
@@ -386,6 +390,61 @@ def _class_metrics(policy_summary: Mapping[str, Any], records: Sequence[Mapping[
             )
         )
     return _table(("类别", "真值数", "预测数", "TP", "Precision", "Recall", "F1"), rows)
+
+
+def _confidence_reliability(policy_summary: Mapping[str, Any]) -> str:
+    rows = []
+    for item in _sequence(policy_summary.get("confidence_reliability")):
+        row = _mapping(item)
+        rows.append((
+            row.get("bucket"),
+            row.get("n"),
+            row.get("correct"),
+            _percent(row.get("accuracy")),
+            _percent(row.get("mean_confidence")),
+            _text(row.get("prediction_distribution")),
+        ))
+    return _table(("置信度桶", "n", "答对", "准确率", "平均置信度", "预测分布"), rows)
+
+
+def _threshold_sweep(policy_summary: Mapping[str, Any]) -> str:
+    rows = []
+    for item in _sequence(policy_summary.get("threshold_sweep")):
+        row = _mapping(item)
+        rows.append((
+            _percent(row.get("threshold")),
+            row.get("answered"),
+            row.get("degraded"),
+            _percent(row.get("coverage")),
+            row.get("correct"),
+            _percent(row.get("precision_when_answered")),
+        ))
+    return _table(("阈值", "自动结案", "降级", "覆盖率", "答对", "自动结案准确率"), rows)
+
+
+def _confidence_breakdown_panel(record: Mapping[str, Any]) -> str:
+    decision = _final_decision(record)
+    outcome = _branch_outcome(record)
+    breakdown = _mapping(decision.get("confidence_breakdown")) or _mapping(outcome.get("confidence_breakdown"))
+    if not breakdown:
+        return '<p class="empty">未记录四维置信度</p>'
+    rows = []
+    for key in ("evidence_completeness", "physical_compliance", "reasoning_completeness", "history_similarity"):
+        value = float(breakdown.get(key, 0.0) or 0.0)
+        rows.append(
+            "<tr>"
+            f"<td>{_esc(key)}</td>"
+            f"<td>{_esc(_percent(value))}</td>"
+            f'<td><div class="bar"><span style="width:{max(0.0, min(1.0, value)) * 100:.1f}%"></span></div></td>'
+            "</tr>"
+        )
+    penalties = decision.get("compliance_penalties") or outcome.get("compliance_penalties")
+    body = (
+        '<div class="table-wrap"><table><thead><tr><th>维度</th><th>分数</th><th>条形</th></tr></thead>'
+        "<tbody>" + "".join(rows) + "</tbody></table></div>"
+        + "<h3>约束扣分明细</h3>" + _json_block(penalties)
+    )
+    return body
 
 
 def _routing_table(policy_summary: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
@@ -628,6 +687,8 @@ def _index_page(
                     _deep_analysis(records, policy_summary, policy_traces),
                 ),
                 _panel("分类指标", _class_metrics(policy_summary, records)),
+                _panel("置信度可靠性", _confidence_reliability(policy_summary), open_panel=False),
+                _panel("阈值扫描", _threshold_sweep(policy_summary), open_panel=False),
                 _panel("路由分布", _routing_table(policy_summary, stats)),
             )
         )
@@ -806,7 +867,8 @@ def _render_trace(trace: Any) -> str:
                 ("约束库版本", value.get("constraint_library_version")),
                 ("轮数", value.get("attempt_count", len(attempts))),
                 ("发生重写", value.get("rewrote")),
-                ("弃权原因", value.get("abstain_reason")),
+                ("降级原因", value.get("degradation_reason") or value.get("abstain_reason")),
+                ("兜底来源", value.get("fallback_source")),
             )
         )
     ]
@@ -921,6 +983,7 @@ def _case_page(policy: str, record: Mapping[str, Any], trace: Any) -> str:
         _panel("历史候选", _render_candidates(record)),
         _panel("SOP 预测", _render_sop(record)),
         _panel("物理约束与证据链", _render_evidence(record)),
+        _panel("四维置信度与约束扣分", _confidence_breakdown_panel(record)),
         _panel(
             "M9 决策原因",
             _kv_table(

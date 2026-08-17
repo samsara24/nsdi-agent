@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RCA 离线实验报告</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#18212b;--muted:#66717e;--line:#dce2e8;
+--blue:#2458a6;--green:#147d55;--red:#b42318;--amber:#a15c00;--purple:#6b47a8}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.55 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1440px;margin:auto;padding:24px} h1{font-size:26px;margin:0 0 6px}
+h2{font-size:19px;margin:26px 0 10px} h3{font-size:16px;margin:18px 0 8px}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+.subtitle,.muted,.empty{color:var(--muted)} .empty{font-style:italic}
+.toolbar{display:flex;gap:12px;align-items:center;margin:18px 0}
+input[type=search]{width:min(480px,100%);padding:10px 12px;border:1px solid var(--line);
+border-radius:7px;background:white}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin:12px 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:13px}
+.card .value{font-size:22px;font-weight:700;margin-top:3px} .card .label{color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:9px;margin:10px 0;overflow:hidden}
+.panel>summary{cursor:pointer;font-size:16px;font-weight:650;padding:12px 15px;background:#fafbfc}
+.panel-body{padding:14px 15px;border-top:1px solid var(--line)}
+.table-wrap{overflow:auto} table{border-collapse:collapse;width:100%;background:white}
+th,td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}
+thead th,.kv th{background:#f5f7f9;font-weight:650} .kv th{width:220px}
+pre{margin:8px 0;padding:12px;max-height:520px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+background:#111827;color:#e5edf6;border-radius:7px;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+code,.token{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:650;white-space:nowrap}
+.correct{color:var(--green);background:#e8f5ef} .wrong{color:var(--red);background:#fdecea}
+.degraded_correct{color:#176b47;background:#edf8f2} .degraded_wrong{color:#9b2c20;background:#fff1ef}
+.abstain{color:var(--amber);background:#fff4df} .telemetry{color:var(--purple);background:#f1ebfb}
+.tokens{display:flex;flex-wrap:wrap;gap:6px} .token{padding:3px 7px;border:1px solid var(--line);border-radius:5px;background:#f7f9fb}
+.attempt{border-left:4px solid var(--blue);padding-left:12px;margin:18px 0}
+.violation{border-left:4px solid var(--red);padding:7px 10px;background:#fff6f5;margin:6px 0}
+.ok{color:var(--green);font-weight:650} .warn{color:var(--amber);font-weight:650}
+.crumb{margin-bottom:14px} .group{margin:18px 0 28px} [hidden]{display:none!important}
+@media print{body{background:white} main{max-width:none;padding:0} .toolbar{display:none}
+.panel{break-inside:avoid} details.panel:not([open])>.panel-body{display:block}}
+</style>
+</head>
+<body><main><h1>RCA 离线实验报告</h1><p class="subtitle">选择性诊断、路由分布与逐 case 审计</p><details class="panel"><summary>实验清单</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>Schema</th><td>offline-sop-llm-run-manifest-v1</td></tr><tr><th>创建时间</th><td>2026-08-12T05:12:11.502499+00:00</td></tr><tr><th>数据目录</th><td>/home/chenziang/nsdi-agent/datasets/rca_v2_l2fixed</td></tr><tr><th>训练 / 测试</th><td>161 / 107</td></tr><tr><th>证据图</th><td>evidence-graph-v1:161:79532a8ff767aabc</td></tr><tr><th>特征字典</th><td>feature-dictionary-v3</td></tr><tr><th>约束库</th><td>constraint-library-v6</td></tr><tr><th>SOP</th><td>learned-sop-v1</td></tr><tr><th>Prompt</th><td>rca-constrained-reasoning-v7</td></tr><tr><th>决策策略</th><td>decision-policy-v2</td></tr></tbody></table></div></div></details><details class="panel"><summary>训练摘要</summary><div class="panel-body"><pre>{
+  &quot;evidence_graph_case_count&quot;: 161,
+  &quot;evidence_graph_diagnosis_count&quot;: 161,
+  &quot;expert_calibration&quot;: {
+    &quot;groups&quot;: {
+      &quot;expert:multi_metric&quot;: {
+        &quot;accuracy&quot;: 0.696429,
+        &quot;correct&quot;: 39,
+        &quot;total&quot;: 56,
+        &quot;wilson_lower_bound&quot;: 0.566639
+      },
+      &quot;expert:no_anomaly&quot;: {
+        &quot;accuracy&quot;: 0.703704,
+        &quot;correct&quot;: 19,
+        &quot;total&quot;: 27,
+        &quot;wilson_lower_bound&quot;: 0.51519
+      },
+      &quot;expert:port_status_gate&quot;: {
+        &quot;accuracy&quot;: 0.5,
+        &quot;correct&quot;: 3,
+        &quot;total&quot;: 6,
+        &quot;wilson_lower_bound&quot;: 0.187613
+      },
+      &quot;expert:single:host_snr&quot;: {
+        &quot;accuracy&quot;: 0.8,
+        &quot;correct&quot;: 4,
+        &quot;total&quot;: 5,
+        &quot;wilson_lower_bound&quot;: 0.375528
+      },
+      &quot;expert:single:media_snr&quot;: {
+        &quot;accuracy&quot;: 1.0,
+        &quot;correct&quot;: 6,
+        &quot;total&quot;: 6,
+        &quot;wilson_lower_bound&quot;: 0.609657
+      },
+      &quot;expert:single:rxpower&quot;: {
+        &quot;accuracy&quot;: 0.777778,
+        &quot;correct&quot;: 14,
+        &quot;total&quot;: 18,
+        &quot;wilson_lower_bound&quot;: 0.54785
+      },
+      &quot;expert:single:serdes_snr&quot;: {
+        &quot;accuracy&quot;: 0.578947,
+        &quot;correct&quot;: 22,
+        &quot;total&quot;: 38,
+        &quot;wilson_lower_bound&quot;: 0.421921
+      },
+      &quot;expert:single:txpower&quot;: {
+        &quot;accuracy&quot;: 1.0,
+        &quot;correct&quot;: 1,
+        &quot;total&quot;: 1,
+        &quot;wilson_lower_bound&quot;: 0.206543
+      },
+      &quot;expert:txpower_lane_down&quot;: {
+        &quot;accuracy&quot;: 0.75,
+        &quot;correct&quot;: 3,
+        &quot;total&quot;: 4,
+        &quot;wilson_lower_bound&quot;: 0.300636
+      }
+    },
+    &quot;source&quot;: &quot;manifest-train&quot;,
+    &quot;version&quot;: &quot;expert-rules-v1&quot;
+  },
+  &quot;graph_purity&quot;: {
+    &quot;case_count&quot;: 161,
+    &quot;empty_signature_case_count&quot;: 0,
+    &quot;mixed_label_case_count&quot;: 10,
+    &quot;mixed_label_case_ratio&quot;: 0.062112,
+    &quot;mixed_label_group_count&quot;: 4,
+    &quot;signature_group_count&quot;: 149,
+    &quot;singleton_group_count&quot;: 140
+  },
+  &quot;graph_version&quot;: &quot;evidence-graph-v1:161:79532a8ff767aabc&quot;,
+  &quot;historical_vector_count&quot;: 161,
+  &quot;policies&quot;: {
+    &quot;coverage-v2&quot;: {
+      &quot;answered_count&quot;: 54,
+      &quot;branch_calibration&quot;: {
+        &quot;groups&quot;: {
+          &quot;N5a_mixed&quot;: {
+            &quot;accuracy&quot;: 1.0,
+            &quot;correct&quot;: 3,
+            &quot;total&quot;: 3,
+            &quot;wilson_lower_bound&quot;: 0.438494
+          },
+          &quot;N5a_pure&quot;: {
+            &quot;accuracy&quot;: 0.5625,
+            &quot;correct&quot;: 9,
+            &quot;total&quot;: 16,
+            &quot;wilson_lower_bound&quot;: 0.331782
+          },
+          &quot;N5b_critical_gap&quot;: {
+            &quot;accuracy&quot;: 0.75,
+            &quot;correct&quot;: 3,
+            &quot;total&quot;: 4,
+            &quot;wilson_lower_bound&quot;: 0.300636
+          },
+          &quot;N5b_minor_gap&quot;: {
+            &quot;accuracy&quot;: 0.565217,
+            &quot;correct&quot;: 13,
+            &quot;total&quot;: 23,
+            &quot;wilson_lower_bound&quot;: 0.36811
+          },
+          &quot;N5c_no_exclusion&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 106,
+            &quot;wilson_lower_bound&quot;: 0.0
+          },
+          &quot;N5c_with_exclusion&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 5,
+            &quot;wilson_lower_bound&quot;: 0.0
+          },
+          &quot;N6_abstain&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 4,
+            &quot;wilson_lower_bound&quot;: 0.0
+          }
+        },
+        &quot;source&quot;: &quot;manifest-train-loo:coverage-v2&quot;
+      },
+      &quot;case_count&quot;: 161,
+      &quot;decision_policy&quot;: {
+        &quot;candidate_order&quot;: [
+          &quot;expert&quot;,
+          &quot;branch&quot;,
+          &quot;sop&quot;
+        ],
+        &quot;final_lower_bound&quot;: 0.0,
+        &quot;fitted_on&quot;: &quot;manifest-train-loo:coverage-v2: 目标选择性风险 &lt;= 35.00%，取到最大覆盖率的阈值 0.0000（训练留一法覆盖率 95.03%，实测风险 32.03%，支持数下限 10）&quot;,
+        &quot;minimum_support&quot;: 10,
+        &quot;non_identifiable_evidence&quot;: {
+          &quot;fiber&quot;: [
+            &quot;OTDR 曲线（定位反射与损耗事件的距离）&quot;,
+            &quot;两端 MPO / LC 端面镜检结果&quot;,
+            &quot;同一 lane 的双向功率标定（用于替代不可信的功率相减）&quot;,
+            &quot;光纤跳线更换后的复测结果&quot;
+          ]
+        },
+        &quot;non_identifiable_labels&quot;: [
+          &quot;fiber&quot;
+        ],
+        &quot;per_label_lower_bound&quot;: {},
+        &quot;target_selective_risk&quot;: 0.35,
+        &quot;version&quot;: &quot;decision-policy-v2&quot;
+      },
+      &quot;decision_policy_fit&quot;: {
+        &quot;candidate_order&quot;: [
+          &quot;expert&quot;,
+          &quot;branch&quot;,
+          &quot;sop&quot;
+        ],
+        &quot;chosen_lower_bound&quot;: 0.0,
+        &quot;curve&quot;: [
+          {
+            &quot;answered&quot;: 153,
+            &quot;balanced_recall&quot;: 0.412585,
+            &quot;by_source&quot;: {
+              &quot;branch&quot;: {
+                &quot;answered&quot;: 1,
+                &quot;correct&quot;: 1
+              },
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 139,
+                &quot;correct&quot;: 94
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 13,
+                &quot;correct&quot;: 9
+              }
+            },
+            &quot;correct&quot;: 104,
+            &quot;coverage&quot;: 0.950311,
+            &quot;final_lower_bound&quot;: 0.0,
+            &quot;precision_when_answered&quot;: 0.679739,
+            &quot;selective_risk&quot;: 0.320261
+          },
+          {
+            &quot;answered&quot;: 153,
+            &quot;balanced_recall&quot;: 0.412585,
+            &quot;by_source&quot;: {
+              &quot;branch&quot;: {
+                &quot;answered&quot;: 1,
+                &quot;correct&quot;: 1
+              },
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 139,
+                &quot;correct&quot;: 94
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 13,
+                &quot;correct&quot;: 9
+              }
+            },
+            &quot;correct&quot;: 104,
+            &quot;coverage&quot;: 0.950311,
+            &quot;final_lower_bound&quot;: 0.168178,
+            &quot;precision_when_answered&quot;: 0.679739,
+            &quot;selective_risk&quot;: 0.320261
+          },
+          {
+            &quot;answered&quot;: 153,
+            &quot;balanced_recall&quot;: 0.412585,
+            &quot;by_source&quot;: {
+              &quot;branch&quot;: {
+                &quot;answered&quot;: 1,
+                &quot;correct&quot;: 1
+              },
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 139,
+                &quot;correct&quot;: 94
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 13,
+                &quot;correct&quot;: 9
+              }
+            },
+            &quot;correct&quot;: 104,
+            &quot;coverage&quot;: 0.950311,
+            &quot;final_lower_bound&quot;: 0.3197,
+            &quot;precision_when_answered&quot;: 0.679739,
+            &quot;selective_risk&quot;: 0.320261
+          },
+          {
+            &quot;answered&quot;: 152,
+            &quot;balanced_recall&quot;: 0.392313,
+            &quot;by_source&quot;: {
+              &quot;branch&quot;: {
+                &quot;answered&quot;: 5,
+                &quot;correct&quot;: 3
+              },
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 132,
+                &quot;correct&quot;: 87
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 15,
+                &quot;correct&quot;: 10
+              }
+            },
+            &quot;correct&quot;: 100,
+            &quot;coverage&quot;: 0.944099,
+            &quot;final_lower_bound&quot;: 0.329624,
+            &quot;precision_when_answered&quot;: 0.657895,
+            &quot;selective_risk&quot;: 0.342105
+          },
+          {
+            &quot;answered&quot;: 151,
+            &quot;balanced_recall&quot;: 0.392313,
+            &quot;by_source&quot;: {
+              &quot;branch&quot;: {
+                &quot;answered&quot;: 5,
+                &quot;correct&quot;: 3
+              },
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 132,
+                &quot;correct&quot;: 87
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 14,
+                &quot;correct&quot;: 10
+              }
+            },
+            &quot;correct&quot;: 100,
+            &quot;coverage&quot;: 0.937888,
+            &quot;final_lower_bound&quot;: 0.331782,
+            &quot;precision_when_answered&quot;: 0.662252,
+            &quot;selective_risk&quot;: 0.337748
+          },
+          {
+            &quot;answered&quot;: 149,
+            &quot;balanced_recall&quot;: 0.38551,
+            &quot;by_source&quot;: {
+              &quot;branch&quot;: {
+                &quot;answered&quot;: 3,
+                &quot;correct&quot;: 2
+              },
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 132,
+                &quot;correct&quot;: 87
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 14,
+                &quot;correct&quot;: 10
+              }
+            },
+            &quot;correct&quot;: 99,
+            &quot;coverage&quot;: 0.925466,
+            &quot;final_lower_bound&quot;: 0.36811,
+            &quot;precision_when_answered&quot;: 0.66443,
+            &quot;selective_risk&quot;: 0.33557
+          },
+          {
+            &quot;answered&quot;: 148,
+            &quot;balanced_recall&quot;: 0.382177,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 132,
+                &quot;correct&quot;: 87
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 16,
+                &quot;correct&quot;: 11
+              }
+            },
+            &quot;correct&quot;: 98,
+            &quot;coverage&quot;: 0.919255,
+            &quot;final_lower_bound&quot;: 0.393253,
+            &quot;precision_when_answered&quot;: 0.662162,
+            &quot;selective_risk&quot;: 0.337838
+          },
+          {
+            &quot;answered&quot;: 148,
+            &quot;balanced_recall&quot;: 0.368571,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 126,
+                &quot;correct&quot;: 83
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 22,
+                &quot;correct&quot;: 13
+              }
+            },
+            &quot;correct&quot;: 96,
+            &quot;coverage&quot;: 0.919255,
+            &quot;final_lower_bound&quot;: 0.410392,
+            &quot;precision_when_answered&quot;: 0.648649,
+            &quot;selective_risk&quot;: 0.351351
+          },
+          {
+            &quot;answered&quot;: 148,
+            &quot;balanced_recall&quot;: 0.368571,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 118,
+                &quot;correct&quot;: 76
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 30,
+                &quot;correct&quot;: 20
+              }
+            },
+            &quot;correct&quot;: 96,
+            &quot;coverage&quot;: 0.919255,
+            &quot;final_lower_bound&quot;: 0.413,
+            &quot;precision_when_answered&quot;: 0.648649,
+            &quot;selective_risk&quot;: 0.351351
+          },
+          {
+            &quot;answered&quot;: 147,
+            &quot;balanced_recall&quot;: 0.368571,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 118,
+                &quot;correct&quot;: 76
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 29,
+                &quot;correct&quot;: 20
+              }
+            },
+            &quot;correct&quot;: 96,
+            &quot;coverage&quot;: 0.913043,
+            &quot;final_lower_bound&quot;: 0.424087,
+            &quot;precision_when_answered&quot;: 0.653061,
+            &quot;selective_risk&quot;: 0.346939
+          },
+          {
+            &quot;answered&quot;: 147,
+            &quot;balanced_recall&quot;: 0.378571,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 108,
+                &quot;correct&quot;: 71
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 39,
+                &quot;correct&quot;: 28
+              }
+            },
+            &quot;correct&quot;: 99,
+            &quot;coverage&quot;: 0.913043,
+            &quot;final_lower_bound&quot;: 0.435724,
+            &quot;precision_when_answered&quot;: 0.673469,
+            &quot;selective_risk&quot;: 0.326531
+          },
+          {
+            &quot;answered&quot;: 147,
+            &quot;balanced_recall&quot;: 0.375102,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 105,
+                &quot;correct&quot;: 70
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 42,
+                &quot;correct&quot;: 29
+              }
+            },
+            &quot;correct&quot;: 99,
+            &quot;coverage&quot;: 0.913043,
+            &quot;final_lower_bound&quot;: 0.4489,
+            &quot;precision_when_answered&quot;: 0.673469,
+            &quot;selective_risk&quot;: 0.326531
+          },
+          {
+            &quot;answered&quot;: 147,
+            &quot;balanced_recall&quot;: 0.375102,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 101,
+                &quot;correct&quot;: 66
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 46,
+                &quot;correct&quot;: 33
+              }
+            },
+            &quot;correct&quot;: 99,
+            &quot;coverage&quot;: 0.913043,
+            &quot;final_lower_bound&quot;: 0.462202,
+            &quot;precision_when_answered&quot;: 0.673469,
+            &quot;selective_risk&quot;: 0.326531
+          },
+          {
+            &quot;answered&quot;: 146,
+            &quot;balanced_recall&quot;: 0.368163,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 89,
+                &quot;correct&quot;: 61
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 57,
+                &quot;correct&quot;: 38
+              }
+            },
+            &quot;correct&quot;: 99,
+            &quot;coverage&quot;: 0.906832,
+            &quot;final_lower_bound&quot;: 0.46769,
+            &quot;precision_when_answered&quot;: 0.678082,
+            &quot;selective_risk&quot;: 0.321918
+          },
+          {
+            &quot;answered&quot;: 144,
+            &quot;balanced_recall&quot;: 0.361497,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 83,
+                &quot;correct&quot;: 56
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 61,
+                &quot;correct&quot;: 41
+              }
+            },
+            &quot;correct&quot;: 97,
+            &quot;coverage&quot;: 0.89441,
+            &quot;final_lower_bound&quot;: 0.480491,
+            &quot;precision_when_answered&quot;: 0.673611,
+            &quot;selective_risk&quot;: 0.326389
+          },
+          {
+            &quot;answered&quot;: 142,
+            &quot;balanced_recall&quot;: 0.35483,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 80,
+                &quot;correct&quot;: 53
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 62,
+                &quot;correct&quot;: 42
+              }
+            },
+            &quot;correct&quot;: 95,
+            &quot;coverage&quot;: 0.881988,
+            &quot;final_lower_bound&quot;: 0.486917,
+            &quot;precision_when_answered&quot;: 0.669014,
+            &quot;selective_risk&quot;: 0.330986
+          },
+          {
+            &quot;answered&quot;: 131,
+            &quot;balanced_recall&quot;: 0.328163,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 80,
+                &quot;correct&quot;: 53
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 51,
+                &quot;correct&quot;: 34
+              }
+            },
+            &quot;correct&quot;: 87,
+            &quot;coverage&quot;: 0.813665,
+            &quot;final_lower_bound&quot;: 0.492026,
+            &quot;precision_when_answered&quot;: 0.664122,
+            &quot;selective_risk&quot;: 0.335878
+          },
+          {
+            &quot;answered&quot;: 115,
+            &quot;balanced_recall&quot;: 0.291497,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 80,
+                &quot;correct&quot;: 53
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 35,
+                &quot;correct&quot;: 23
+              }
+            },
+            &quot;correct&quot;: 76,
+            &quot;coverage&quot;: 0.714286,
+            &quot;final_lower_bound&quot;: 0.498355,
+            &quot;precision_when_answered&quot;: 0.66087,
+            &quot;selective_risk&quot;: 0.33913
+          },
+          {
+            &quot;answered&quot;: 113,
+            &quot;balanced_recall&quot;: 0.28483,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 69,
+                &quot;correct&quot;: 43
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 44,
+                &quot;correct&quot;: 31
+              }
+            },
+            &quot;correct&quot;: 74,
+            &quot;coverage&quot;: 0.701863,
+            &quot;final_lower_bound&quot;: 0.515522,
+            &quot;precision_when_answered&quot;: 0.654867,
+            &quot;selective_risk&quot;: 0.345133
+          },
+          {
+            &quot;answered&quot;: 105,
+            &quot;balanced_recall&quot;: 0.251224,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 55,
+                &quot;correct&quot;: 32
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 50,
+                &quot;correct&quot;: 34
+              }
+            },
+            &quot;correct&quot;: 66,
+            &quot;coverage&quot;: 0.652174,
+            &quot;final_lower_bound&quot;: 0.518479,
+            &quot;precision_when_answered&quot;: 0.628571,
+            &quot;selective_risk&quot;: 0.371429
+          },
+          {
+            &quot;answered&quot;: 105,
+            &quot;balanced_recall&quot;: 0.251224,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 50,
+                &quot;correct&quot;: 29
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 55,
+                &quot;correct&quot;: 37
+              }
+            },
+            &quot;correct&quot;: 66,
+            &quot;coverage&quot;: 0.652174,
+            &quot;final_lower_bound&quot;: 0.523014,
+            &quot;precision_when_answered&quot;: 0.628571,
+            &quot;selective_risk&quot;: 0.371429
+          },
+          {
+            &quot;answered&quot;: 99,
+            &quot;balanced_recall&quot;: 0.230952,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 43,
+                &quot;correct&quot;: 24
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 56,
+                &quot;correct&quot;: 38
+              }
+            },
+            &quot;correct&quot;: 62,
+            &quot;coverage&quot;: 0.614907,
+            &quot;final_lower_bound&quot;: 0.527378,
+            &quot;precision_when_answered&quot;: 0.626263,
+            &quot;selective_risk&quot;: 0.373737
+          },
+          {
+            &quot;answered&quot;: 98,
+            &quot;balanced_recall&quot;: 0.22415,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 42,
+                &quot;correct&quot;: 23
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 56,
+                &quot;correct&quot;: 38
+              }
+            },
+            &quot;correct&quot;: 61,
+            &quot;coverage&quot;: 0.608696,
+            &quot;final_lower_bound&quot;: 0.529675,
+            &quot;precision_when_answered&quot;: 0.622449,
+            &quot;selective_risk&quot;: 0.377551
+          },
+          {
+            &quot;answered&quot;: 97,
+            &quot;balanced_recall&quot;: 0.22415,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 32,
+                &quot;correct&quot;: 15
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 65,
+                &quot;correct&quot;: 46
+              }
+            },
+            &quot;correct&quot;: 61,
+            &quot;coverage&quot;: 0.602484,
+            &quot;final_lower_bound&quot;: 0.531295,
+            &quot;precision_when_answered&quot;: 0.628866,
+            &quot;selective_risk&quot;: 0.371134
+          },
+          {
+            &quot;answered&quot;: 97,
+            &quot;balanced_recall&quot;: 0.22415,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 25,
+                &quot;correct&quot;: 11
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 72,
+                &quot;correct&quot;: 50
+              }
+            },
+            &quot;correct&quot;: 61,
+            &quot;coverage&quot;: 0.602484,
+            &quot;final_lower_bound&quot;: 0.545697,
+            &quot;precision_when_answered&quot;: 0.628866,
+            &quot;selective_risk&quot;: 0.371134
+          },
+          {
+            &quot;answered&quot;: 85,
+            &quot;balanced_recall&quot;: 0.190816,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 25,
+                &quot;correct&quot;: 11
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 60,
+                &quot;correct&quot;: 40
+              }
+            },
+            &quot;correct&quot;: 51,
+            &quot;coverage&quot;: 0.52795,
+            &quot;final_lower_bound&quot;: 0.548141,
+            &quot;precision_when_answered&quot;: 0.6,
+            &quot;selective_risk&quot;: 0.4
+          },
+          {
+            &quot;answered&quot;: 78,
+            &quot;balanced_recall&quot;: 0.177483,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 25,
+                &quot;correct&quot;: 11
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 53,
+                &quot;correct&quot;: 36
+              }
+            },
+            &quot;correct&quot;: 47,
+            &quot;coverage&quot;: 0.484472,
+            &quot;final_lower_bound&quot;: 0.551002,
+            &quot;precision_when_answered&quot;: 0.602564,
+            &quot;selective_risk&quot;: 0.397436
+          },
+          {
+            &quot;answered&quot;: 75,
+            &quot;balanced_recall&quot;: 0.17415,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 22,
+                &quot;correct&quot;: 10
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 53,
+                &quot;correct&quot;: 36
+              }
+            },
+            &quot;correct&quot;: 46,
+            &quot;coverage&quot;: 0.465839,
+            &quot;final_lower_bound&quot;: 0.551964,
+            &quot;precision_when_answered&quot;: 0.613333,
+            &quot;selective_risk&quot;: 0.386667
+          },
+          {
+            &quot;answered&quot;: 74,
+            &quot;balanced_recall&quot;: 0.167347,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 22,
+                &quot;correct&quot;: 10
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 52,
+                &quot;correct&quot;: 35
+              }
+            },
+            &quot;correct&quot;: 45,
+            &quot;coverage&quot;: 0.459627,
+            &quot;final_lower_bound&quot;: 0.574512,
+            &quot;precision_when_answered&quot;: 0.608108,
+            &quot;selective_risk&quot;: 0.391892
+          },
+          {
+            &quot;answered&quot;: 68,
+            &quot;balanced_recall&quot;: 0.147075,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 12,
+                &quot;correct&quot;: 4
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 56,
+                &quot;correct&quot;: 37
+              }
+            },
+            &quot;correct&quot;: 41,
+            &quot;coverage&quot;: 0.42236,
+            &quot;final_lower_bound&quot;: 0.589701,
+            &quot;precision_when_answered&quot;: 0.602941,
+            &quot;selective_risk&quot;: 0.397059
+          },
+          {
+            &quot;answered&quot;: 68,
+            &quot;balanced_recall&quot;: 0.147075,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 11,
+                &quot;correct&quot;: 4
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 57,
+                &quot;correct&quot;: 37
+              }
+            },
+            &quot;correct&quot;: 41,
+            &quot;coverage&quot;: 0.42236,
+            &quot;final_lower_bound&quot;: 0.608687,
+            &quot;precision_when_answered&quot;: 0.602941,
+            &quot;selective_risk&quot;: 0.397059
+          },
+          {
+            &quot;answered&quot;: 61,
+            &quot;balanced_recall&quot;: 0.137075,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 11,
+                &quot;correct&quot;: 4
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 50,
+                &quot;correct&quot;: 34
+              }
+            },
+            &quot;correct&quot;: 38,
+            &quot;coverage&quot;: 0.378882,
+            &quot;final_lower_bound&quot;: 0.622635,
+            &quot;precision_when_answered&quot;: 0.622951,
+            &quot;selective_risk&quot;: 0.377049
+          },
+          {
+            &quot;answered&quot;: 58,
+            &quot;balanced_recall&quot;: 0.123469,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 11,
+                &quot;correct&quot;: 4
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 47,
+                &quot;correct&quot;: 32
+              }
+            },
+            &quot;correct&quot;: 36,
+            &quot;coverage&quot;: 0.360248,
+            &quot;final_lower_bound&quot;: 0.630522,
+            &quot;precision_when_answered&quot;: 0.62069,
+            &quot;selective_risk&quot;: 0.37931
+          },
+          {
+            &quot;answered&quot;: 43,
+            &quot;balanced_recall&quot;: 0.100136,
+            &quot;by_source&quot;: {
+              &quot;expert&quot;: {
+                &quot;answered&quot;: 11,
+                &quot;correct&quot;: 4
+              },
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 32,
+                &quot;correct&quot;: 25
+              }
+            },
+            &quot;correct&quot;: 29,
+            &quot;coverage&quot;: 0.267081,
+            &quot;final_lower_bound&quot;: 0.637304,
+            &quot;precision_when_answered&quot;: 0.674419,
+            &quot;selective_risk&quot;: 0.325581
+          },
+          {
+            &quot;answered&quot;: 37,
+            &quot;balanced_recall&quot;: 0.093333,
+            &quot;by_source&quot;: {
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 37,
+                &quot;correct&quot;: 28
+              }
+            },
+            &quot;correct&quot;: 28,
+            &quot;coverage&quot;: 0.229814,
+            &quot;final_lower_bound&quot;: 0.641081,
+            &quot;precision_when_answered&quot;: 0.756757,
+            &quot;selective_risk&quot;: 0.243243
+          },
+          {
+            &quot;answered&quot;: 24,
+            &quot;balanced_recall&quot;: 0.056667,
+            &quot;by_source&quot;: {
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 24,
+                &quot;correct&quot;: 17
+              }
+            },
+            &quot;correct&quot;: 17,
+            &quot;coverage&quot;: 0.149068,
+            &quot;final_lower_bound&quot;: 0.678391,
+            &quot;precision_when_answered&quot;: 0.708333,
+            &quot;selective_risk&quot;: 0.291667
+          },
+          {
+            &quot;answered&quot;: 5,
+            &quot;balanced_recall&quot;: 0.01,
+            &quot;by_source&quot;: {
+              &quot;sop&quot;: {
+                &quot;answered&quot;: 5,
+                &quot;correct&quot;: 3
+              }
+            },
+            &quot;correct&quot;: 3,
+            &quot;coverage&quot;: 0.031056,
+            &quot;final_lower_bound&quot;: 0.7663,
+            &quot;precision_when_answered&quot;: 0.6,
+            &quot;selective_risk&quot;: 0.4
+          }
+        ],
+        &quot;feasible&quot;: true,
+        &quot;minimum_coverage&quot;: 0.0,
+        &quot;minimum_support&quot;: 10,
+        &quot;non_identifiable_labels&quot;: [
+          &quot;fiber&quot;
+        ],
+        &quot;source&quot;: &quot;manifest-train-loo:coverage-v2&quot;,
+        &quot;target_selective_risk&quot;: 0.35
+      },
+      &quot;llm_accepted_count&quot;: 25,
+      &quot;llm_calibration&quot;: {
+        &quot;confidence_bins&quot;: [
+          0.0,
+          0.5,
+          0.7,
+          0.9,
+          1.0
+        ],
+        &quot;groups&quot;: {
+          &quot;llm:N5b:[0.7,0.9)&quot;: {
+            &quot;accuracy&quot;: 1.0,
+            &quot;correct&quot;: 1,
+            &quot;total&quot;: 1,
+            &quot;wilson_lower_bound&quot;: 0.206543
+          },
+          &quot;llm:N5c:[0.0,0.5)&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 1,
+            &quot;wilson_lower_bound&quot;: 0.0
+          },
+          &quot;llm:N5c:[0.5,0.7)&quot;: {
+            &quot;accuracy&quot;: 0.555556,
+            &quot;correct&quot;: 5,
+            &quot;total&quot;: 9,
+            &quot;wilson_lower_bound&quot;: 0.266647
+          },
+          &quot;llm:N5c:[0.7,0.9)&quot;: {
+            &quot;accuracy&quot;: 0.666667,
+            &quot;correct&quot;: 4,
+            &quot;total&quot;: 6,
+            &quot;wilson_lower_bound&quot;: 0.299988
+          }
+        },
+        &quot;source&quot;: &quot;manifest-train-loo-llm:coverage-v2&quot;
+      },
+      &quot;llm_trace_count&quot;: 120,
+      &quot;oof_expert_answered&quot;: 161,
+      &quot;oof_expert_correct&quot;: 111,
+      &quot;oof_sop_answered&quot;: 161,
+      &quot;oof_sop_correct&quot;: 103,
+      &quot;prediction_matches_training_label&quot;: 30
+    }
+  },
+  &quot;schema_version&quot;: &quot;training-knowledge-summary-v1&quot;,
+  &quot;sop&quot;: {
+    &quot;content_hash&quot;: &quot;97cfd7addfb9fab4&quot;,
+    &quot;dictionary_hash&quot;: &quot;6838b8e1de5dd1a2&quot;,
+    &quot;dictionary_version&quot;: &quot;feature-dictionary-v3&quot;,
+    &quot;max_depth&quot;: 3,
+    &quot;min_leaf_size&quot;: 5,
+    &quot;root&quot;: {
+      &quot;absent&quot;: {
+        &quot;absent&quot;: {
+          &quot;absent&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 26,
+              &quot;L2&quot;: 42,
+              &quot;fiber&quot;: 0
+            },
+            &quot;node_id&quot;: &quot;root.absent.absent.absent&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;samples&quot;: 68
+          },
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 26,
+            &quot;L2&quot;: 46,
+            &quot;fiber&quot;: 1
+          },
+          &quot;node_id&quot;: &quot;root.absent.absent&quot;,
+          &quot;prediction&quot;: &quot;L2&quot;,
+          &quot;present&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 0,
+              &quot;L2&quot;: 4,
+              &quot;fiber&quot;: 1
+            },
+            &quot;node_id&quot;: &quot;root.absent.absent.present&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;samples&quot;: 5
+          },
+          &quot;samples&quot;: 73,
+          &quot;token&quot;: &quot;status:L2:RxLOS&quot;
+        },
+        &quot;label_counts&quot;: {
+          &quot;L1&quot;: 34,
+          &quot;L2&quot;: 93,
+          &quot;fiber&quot;: 7
+        },
+        &quot;node_id&quot;: &quot;root.absent&quot;,
+        &quot;prediction&quot;: &quot;L2&quot;,
+        &quot;present&quot;: {
+          &quot;absent&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 8,
+              &quot;L2&quot;: 29,
+              &quot;fiber&quot;: 4
+            },
+            &quot;node_id&quot;: &quot;root.absent.present.absent&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;samples&quot;: 41
+          },
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 8,
+            &quot;L2&quot;: 47,
+            &quot;fiber&quot;: 6
+          },
+          &quot;node_id&quot;: &quot;root.absent.present&quot;,
+          &quot;prediction&quot;: &quot;L2&quot;,
+          &quot;present&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 0,
+              &quot;L2&quot;: 18,
+              &quot;fiber&quot;: 2
+            },
+            &quot;node_id&quot;: &quot;root.absent.present.present&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;samples&quot;: 20
+          },
+          &quot;samples&quot;: 61,
+          &quot;token&quot;: &quot;level:L1:txpower_mean:low_tail&quot;
+        },
+        &quot;samples&quot;: 134,
+        &quot;token&quot;: &quot;expert:points_to:L1:L2&quot;
+      },
+      &quot;label_counts&quot;: {
+        &quot;L1&quot;: 49,
+        &quot;L2&quot;: 100,
+        &quot;fiber&quot;: 12
+      },
+      &quot;node_id&quot;: &quot;root&quot;,
+      &quot;prediction&quot;: &quot;L2&quot;,
+      &quot;present&quot;: {
+        &quot;absent&quot;: {
+          &quot;absent&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 8,
+              &quot;L2&quot;: 1,
+              &quot;fiber&quot;: 2
+            },
+            &quot;node_id&quot;: &quot;root.present.absent.absent&quot;,
+            &quot;prediction&quot;: &quot;L1&quot;,
+            &quot;samples&quot;: 11
+          },
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 9,
+            &quot;L2&quot;: 7,
+            &quot;fiber&quot;: 5
+          },
+          &quot;node_id&quot;: &quot;root.present.absent&quot;,
+          &quot;prediction&quot;: &quot;L1&quot;,
+          &quot;present&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 1,
+              &quot;L2&quot;: 6,
+              &quot;fiber&quot;: 3
+            },
+            &quot;node_id&quot;: &quot;root.present.absent.present&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;samples&quot;: 10
+          },
+          &quot;samples&quot;: 21,
+          &quot;token&quot;: &quot;drop:L2:rxpower:single_lane&quot;
+        },
+        &quot;label_counts&quot;: {
+          &quot;L1&quot;: 15,
+          &quot;L2&quot;: 7,
+          &quot;fiber&quot;: 5
+        },
+        &quot;node_id&quot;: &quot;root.present&quot;,
+        &quot;prediction&quot;: &quot;L1&quot;,
+        &quot;present&quot;: {
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 6,
+            &quot;L2&quot;: 0,
+            &quot;fiber&quot;: 0
+          },
+          &quot;node_id&quot;: &quot;root.present.present&quot;,
+          &quot;prediction&quot;: &quot;L1&quot;,
+          &quot;samples&quot;: 6
+        },
+        &quot;samples&quot;: 27,
+        &quot;token&quot;: &quot;level:L1:rxpower_mean:low_tail&quot;
+      },
+      &quot;samples&quot;: 161,
+      &quot;token&quot;: &quot;expert:points_to:L2:L1&quot;
+    },
+    &quot;source&quot;: &quot;rca_v2_l2fixed:manifest-train&quot;,
+    &quot;training_case_count&quot;: 161,
+    &quot;version&quot;: &quot;learned-sop-v1&quot;
+  },
+  &quot;train_case_count&quot;: 161
+}</pre></div></details><div class="toolbar"><label for="case-filter">筛选 case：</label><input id="case-filter" type="search" placeholder="输入 policy、case ID、真值、预测、分支或状态"></div><h2>Policy：coverage-v2</h2><div class="cards"><div class="card"><div class="label">Case 总数</div><div class="value">107</div></div><div class="card"><div class="label">最终回答</div><div class="value">102</div></div><div class="card"><div class="label">答对</div><div class="value">78</div></div><div class="card"><div class="label">覆盖率</div><div class="value">95.33%</div></div><div class="card"><div class="label">回答准确率</div><div class="value">76.47%</div></div><div class="card"><div class="label">补采</div><div class="value">3</div></div><div class="card"><div class="label">人工介入</div><div class="value">2</div></div><div class="card"><div class="label">降级前候选</div><div class="value">107</div></div><div class="card"><div class="label">候选正确</div><div class="value">81</div></div></div><details class="panel" open><summary>实验深度分析</summary><div class="panel-body"><h3>结论</h3><ul><li>SOP 对类别 fiber 的命中为 0；总体准确率受多数类主导，不能把该总体数值解释为三类均有效。</li><li>冷启动 N5c 形成 80 个候选，仅 59 个正确；它是当前主要质量瓶颈，不能用放宽 M7 校验来掩盖。</li><li>测试侧触发 80 条 LLM 轨迹，12 条通过约束校验，其中 8 条形成结论；累计记录 477 条违规。</li></ul><h3>关键门禁</h3><div class="table-wrap"><table class="kv"><tbody><tr><th>降级前候选 / 正确</th><td>107 / 81</td></tr><tr><th>M9 最终回答</th><td>102</td></tr><tr><th>补采 / 人工</th><td>3 / 2</td></tr><tr><th>LLM 轨迹 / 重写</th><td>80 / 72</td></tr><tr><th>LLM 通过 / 形成结论</th><td>12 / 8</td></tr><tr><th>约束违规总数</th><td>477</td></tr></tbody></table></div><h3>候选质量（M9 降级前）</h3><div class="table-wrap"><table><thead><tr><th>分支</th><th>Case</th><th>候选</th><th>候选正确</th><th>候选准确率</th></tr></thead><tbody><tr><td>N5a</td><td>8</td><td>8</td><td>7</td><td>87.50%</td></tr><tr><td>N5b</td><td>17</td><td>17</td><td>14</td><td>82.35%</td></tr><tr><td>N5c</td><td>80</td><td>80</td><td>59</td><td>73.75%</td></tr><tr><td>N6</td><td>2</td><td>2</td><td>1</td><td>50.00%</td></tr></tbody></table></div><h3>SOP 对照</h3><div class="table-wrap"><table><thead><tr><th>真值</th><th>Case</th><th>SOP 可用</th><th>SOP 正确</th><th>SOP 准确率</th></tr></thead><tbody><tr><td>L1</td><td>32</td><td>32</td><td>12</td><td>37.50%</td></tr><tr><td>L2</td><td>67</td><td>67</td><td>60</td><td>89.55%</td></tr><tr><td>fiber</td><td>8</td><td>8</td><td>0</td><td>0.00%</td></tr></tbody></table></div><h3>LLM 校验失败构成</h3><div class="table-wrap"><table><thead><tr><th>违规类型</th><th>次数</th></tr></thead><tbody><tr><td>constraint_violation</td><td>441</td></tr><tr><td>fabricated_constraint</td><td>20</td></tr><tr><td>fabricated_evidence</td><td>9</td></tr><tr><td>unsupported_step</td><td>7</td></tr></tbody></table></div><h3>LLM 高频失败原因</h3><div class="table-wrap"><table><thead><tr><th>校验消息</th><th>次数</th></tr></thead><tbody><tr><td>引用的证据 token 家族与该约束的适用范围不匹配</td><td>298</td></tr><tr><td>该约束不允许 target=L2；允许值为 L1</td><td>40</td></tr><tr><td>该约束不允许 effect=neutral；允许值为 support</td><td>28</td></tr><tr><td>该约束不允许 target=；允许值为 fiber</td><td>21</td></tr><tr><td>引用了不存在的约束编号：C25_expert_local_chain_anomaly_on_l2_supports_l2</td><td>19</td></tr><tr><td>该约束不允许 target=L1；允许值为 L2</td><td>12</td></tr><tr><td>该约束不允许 effect=support；允许值为 neutral</td><td>7</td></tr><tr><td>该约束不允许 target=；允许值为 L1</td><td>6</td></tr></tbody></table></div></div></details><details class="panel" open><summary>分类指标</summary><div class="panel-body"><div class="table-wrap"><table><thead><tr><th>类别</th><th>真值数</th><th>预测数</th><th>TP</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead><tbody><tr><td>L1</td><td>32</td><td>35</td><td>21</td><td>60.00%</td><td>65.62%</td><td>62.69%</td></tr><tr><td>L2</td><td>67</td><td>67</td><td>57</td><td>85.07%</td><td>85.07%</td><td>85.07%</td></tr><tr><td>fiber</td><td>8</td><td>0</td><td>0</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr></tbody></table></div></div></details><details class="panel" open><summary>路由分布</summary><div class="panel-body"><div class="table-wrap"><table><thead><tr><th>路由/分支</th><th>数量</th><th>回答</th><th>答对</th><th>回答准确率</th><th>需 LLM</th><th>需人工</th></tr></thead><tbody><tr><td>N5a</td><td>8</td><td>8</td><td>7</td><td>87.50%</td><td>0</td><td>0</td></tr><tr><td>N5b</td><td>17</td><td>17</td><td>11</td><td>64.71%</td><td>0</td><td>0</td></tr><tr><td>N5c</td><td>80</td><td>8</td><td>4</td><td>50.00%</td><td>0</td><td>72</td></tr><tr><td>N6</td><td>2</td><td>0</td><td>0</td><td>—</td><td>0</td><td>2</td></tr></tbody></table></div></div></details><section class="group"><h3><span class="badge wrong">模型答错</span> · 24</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_fcacbc45173f.html">case_fcacbc45173f</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_5d80fba2c22f.html">case_5d80fba2c22f</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b53c29f2ed30.html">case_b53c29f2ed30</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f40d7dea10c4.html">case_f40d7dea10c4</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b244b38241f9.html">case_b244b38241f9</a></td><td>L1</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_86eee41de4c9.html">case_86eee41de4c9</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_8448ab686d52.html">case_8448ab686d52</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3a9a11e3c449.html">case_3a9a11e3c449</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0a23e38812e8.html">case_0a23e38812e8</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0c3939c5292e.html">case_0c3939c5292e</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b2d2a66d4b1d.html">case_b2d2a66d4b1d</a></td><td>fiber</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f6ab3c98854d.html">case_f6ab3c98854d</a></td><td>fiber</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_fa72aef06d4d.html">case_fa72aef06d4d</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d338b3cb902c.html">case_d338b3cb902c</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d3cf78b26833.html">case_d3cf78b26833</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4695d660361d.html">case_4695d660361d</a></td><td>fiber</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_7fa3fefa52e3.html">case_7fa3fefa52e3</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_22d4dde687ab.html">case_22d4dde687ab</a></td><td>fiber</td><td>L1</td><td>N5a</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_ac436bbbc898.html">case_ac436bbbc898</a></td><td>fiber</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_85ab9d3bd128.html">case_85ab9d3bd128</a></td><td>fiber</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_788f63a0a0fc.html">case_788f63a0a0fc</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_60e62d6d1052.html">case_60e62d6d1052</a></td><td>fiber</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9e14bb67adf3.html">case_9e14bb67adf3</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e168b4979b39.html">case_e168b4979b39</a></td><td>L1</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr></tbody></table></div></section><section class="group"><h3><span class="badge degraded_wrong">候选错误且被 M9 降级</span> · 2</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_0b40c4048fd7.html">case_0b40c4048fd7</a></td><td>fiber</td><td>L2</td><td>N6</td><td>human_review</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_c770294bd1f2.html">case_c770294bd1f2</a></td><td>L2</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr></tbody></table></div></section><section class="group"><h3><span class="badge abstain">弃权/补采</span> · 0</h3><p class="empty">无 case</p></section><section class="group"><h3><span class="badge telemetry">遥测不足</span> · 0</h3><p class="empty">无 case</p></section><section class="group"><h3><span class="badge degraded_correct">候选正确但被 M9 降级</span> · 3</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_f4db10047757.html">case_f4db10047757</a></td><td>L1</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e2ba8d4715a3.html">case_e2ba8d4715a3</a></td><td>L2</td><td>L2</td><td>N6</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_92919cfab57f.html">case_92919cfab57f</a></td><td>L1</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr></tbody></table></div></section><section class="group"><h3><span class="badge correct">回答正确</span> · 78</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_713754bd3abd.html">case_713754bd3abd</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_784dfd7a8801.html">case_784dfd7a8801</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_6349169c912c.html">case_6349169c912c</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_7ab9c8387860.html">case_7ab9c8387860</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_6ab2ffe70790.html">case_6ab2ffe70790</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_48915d45d5ca.html">case_48915d45d5ca</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_02da79997180.html">case_02da79997180</a></td><td>L1</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_47f612c50f2f.html">case_47f612c50f2f</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_c1f6d74a42c9.html">case_c1f6d74a42c9</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_13ac31d97368.html">case_13ac31d97368</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3160b584dd44.html">case_3160b584dd44</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3e79df29763e.html">case_3e79df29763e</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_195ad8049a88.html">case_195ad8049a88</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_75f46528e107.html">case_75f46528e107</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_7c60d5951f80.html">case_7c60d5951f80</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_a859a2ae4d99.html">case_a859a2ae4d99</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f3594459612d.html">case_f3594459612d</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_88dce8a05674.html">case_88dce8a05674</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9acd0b8c50e8.html">case_9acd0b8c50e8</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b2ec327c7ac7.html">case_b2ec327c7ac7</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f53a4bc3cd6d.html">case_f53a4bc3cd6d</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4e466fb62ba8.html">case_4e466fb62ba8</a></td><td>L1</td><td>L1</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b1dfb752200b.html">case_b1dfb752200b</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_2d2152766ba6.html">case_2d2152766ba6</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_a86363693651.html">case_a86363693651</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1557d57dfde5.html">case_1557d57dfde5</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0c1bce9102c3.html">case_0c1bce9102c3</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_6f0602fcbd04.html">case_6f0602fcbd04</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_04917832a9d6.html">case_04917832a9d6</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9feaccdfdc30.html">case_9feaccdfdc30</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f4151dbd5222.html">case_f4151dbd5222</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_8b3d4baf66f8.html">case_8b3d4baf66f8</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_de30dd81f652.html">case_de30dd81f652</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e92d80fd827b.html">case_e92d80fd827b</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d7c9425ca86c.html">case_d7c9425ca86c</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e7c93097d6e2.html">case_e7c93097d6e2</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0e7598a5fd0a.html">case_0e7598a5fd0a</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9cadaea07460.html">case_9cadaea07460</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_382b7a31a8fb.html">case_382b7a31a8fb</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e7756a64e30d.html">case_e7756a64e30d</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d889b9addd14.html">case_d889b9addd14</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_fb993ef2651e.html">case_fb993ef2651e</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_5009db76a459.html">case_5009db76a459</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9d6e145b9fdc.html">case_9d6e145b9fdc</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4541f9bbc853.html">case_4541f9bbc853</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_2c9963b9a196.html">case_2c9963b9a196</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_345e15396788.html">case_345e15396788</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_ac452049dcfc.html">case_ac452049dcfc</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9fe92e6d47b7.html">case_9fe92e6d47b7</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_61d86d3a287d.html">case_61d86d3a287d</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_aae29bfa4d32.html">case_aae29bfa4d32</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1df9bdf2c0be.html">case_1df9bdf2c0be</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3cd73a13e616.html">case_3cd73a13e616</a></td><td>L1</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1fabf85a5ee2.html">case_1fabf85a5ee2</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_411486e52d45.html">case_411486e52d45</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_83126f9b3650.html">case_83126f9b3650</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_906cbc1553b8.html">case_906cbc1553b8</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4fff96563d56.html">case_4fff96563d56</a></td><td>L1</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1e68b6eb3132.html">case_1e68b6eb3132</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_ec7c50c7fd54.html">case_ec7c50c7fd54</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_bce075edaf82.html">case_bce075edaf82</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_83552129a3cc.html">case_83552129a3cc</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_cfa4db56eb5a.html">case_cfa4db56eb5a</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f519245c7b0f.html">case_f519245c7b0f</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_583149723c3c.html">case_583149723c3c</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_63c7bc42fccc.html">case_63c7bc42fccc</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1d881d28d2a3.html">case_1d881d28d2a3</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9e34cb030209.html">case_9e34cb030209</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4cefd4612d68.html">case_4cefd4612d68</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9c1d3e766e26.html">case_9c1d3e766e26</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_737362825627.html">case_737362825627</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4e07d1148cfd.html">case_4e07d1148cfd</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_80bc3687c4b7.html">case_80bc3687c4b7</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_62b8d2de6e0c.html">case_62b8d2de6e0c</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9daf397bb2f7.html">case_9daf397bb2f7</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_38ee60fd682e.html">case_38ee60fd682e</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4b322d8486b5.html">case_4b322d8486b5</a></td><td>L1</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_2ee657ca7489.html">case_2ee657ca7489</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr></tbody></table></div></section></main>
+<script>
+(() => {
+  const input = document.getElementById("case-filter");
+  if (!input) return;
+  input.addEventListener("input", () => {
+    const query = input.value.toLocaleLowerCase();
+    document.querySelectorAll("[data-case-row]").forEach((row) => {
+      row.hidden = !row.textContent.toLocaleLowerCase().includes(query);
+    });
+  });
+})();
+</script></body>
+</html>

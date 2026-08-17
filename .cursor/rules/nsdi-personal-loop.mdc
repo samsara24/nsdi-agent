@@ -1,0 +1,27 @@
+---
+description: NSDI RCA Loop experiments must follow the personal evidence-graph workflow
+alwaysApply: true
+---
+
+# NSDI RCA Personal Loop Gate
+
+When working in `nsdi-agent/`, treat `docs/个人整体思路.md` as the controlling architecture for Loop experiments and RCA implementation.
+
+Before starting or continuing any Loop experiment:
+
+- Re-read `docs/个人整体思路.md` and state which one of these targets the loop optimizes: evidence-graph shape, evidence-chain/path matching, physics-based key-evidence judgment, or expert-SOP-constrained LLM reasoning.
+- Keep the main path as evidence-graph historical matching: N5a reuses clean historical chains, N5b uses physical constraints to judge whether missing evidence is critical before LLM arbitration, and N5c uses expert SOP to constrain LLM reasoning.
+- Do not use `expert.py`, learned SOP, numeric decision trees, or majority priors as a replacement for the evidence-graph matching path.
+- Do not put train-set ranges, Wilson statistics, or label distributions into the physical constraint layer. They may only be statistical/advisory knowledge.
+- Do not optimize architecture by chasing forced three-class accuracy or lift alone. Reports must include routing distribution, matched evidence-chain quality, missing/key evidence, constraint violations, and whether N5c used expert SOP.
+- Do not advance N8 feedback/self-iteration in this stage. Test bad cases must not update the knowledge bundle, SOP, thresholds, vectors, or evidence graph.
+
+Every experiment must be archived under `experiments/<YYYYMMDD>_<short-name>/` and must include an HTML report. The report must:
+
+- Start from the current main RCA flow diagram and annotate exactly what changed in this run.
+- Classify every change as one of: evidence-graph constraint/schema, threshold/routing, LLM prompt, or bug fix. Do not run open-ended tuning outside these categories.
+- Record the current evidence graph, physical constraints, SOP versions, prompt versions, thresholds, and candidate order.
+- Analyze all test cases, with aggregate statistics for correct cases by branch and by the step that worked well.
+- Focus the narrative on test bad cases: identify the failed step, the missing or misleading evidence, whether the issue is fixable by evidence graph / threshold / prompt / bug fix, and the proposed next action.
+- Mark suspected label problems explicitly in `label_suspects.json` and keep them across later experiments for human review.
+- Mark irreducible cases explicitly in `irreducible_cases.json` when current train data, expert rules, SOP, and test-visible evidence cannot justify a safe improvement. Later loops should preserve them but not keep optimizing for them.

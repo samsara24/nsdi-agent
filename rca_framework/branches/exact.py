@@ -42,6 +42,7 @@ def handle(
     top = result.top_candidates
     labels = [candidate.label for candidate in top if candidate.label is not None]
     verdict = majority_label(labels)
+    history_verdict = verdict
     group = calibration_group(result)
     confidence = calibration.confidence(group)
     confidence_lower_bound = calibration.lower_bound(group)
@@ -81,13 +82,32 @@ def handle(
                 source="evidence_graph.purity",
             )
         )
+    if top and top[0].evidence_chain_summary:
+        chain.append(
+            EvidenceLink(
+                kind="historical_chain_reuse",
+                statement=(
+                    "复用最高相似历史 case 的证据链路："
+                    + " -> ".join(top[0].evidence_chain_summary)
+                ),
+                source=top[0].case_id,
+            )
+        )
 
     arbitration_required = not result.is_label_pure
     needs_human = False
-    if arbitration_required and trace is not None:
+    confidence_breakdown = None
+    self_reported_confidence = 0.0
+    fallback_source = ""
+    compliance_penalties = ()
+    if trace is not None:
         if trace.accepted is not None and trace.accepted.verdict is not None:
             verdict = trace.accepted.verdict
             confidence = trace.accepted.confidence
+            confidence_breakdown = trace.accepted.confidence_breakdown.to_dict()
+            self_reported_confidence = trace.accepted.self_reported_confidence
+            fallback_source = trace.accepted.fallback_source
+            compliance_penalties = trace.accepted.compliance_penalties
             confidence_lower_bound = 0.0
             calibration_support = 0
             group = f"llm_raw:{BRANCH}"
@@ -117,6 +137,11 @@ def handle(
         reused_case_ids=tuple(candidate.case_id for candidate in top),
         missing_evidence=(),
         caveats=tuple(caveats),
-        needs_llm=arbitration_required and trace is None,
+        needs_llm=trace is None,
         needs_human=needs_human,
+        confidence_breakdown=confidence_breakdown,
+        self_reported_confidence=self_reported_confidence,
+        history_verdict=history_verdict,
+        fallback_source=fallback_source,
+        compliance_penalties=compliance_penalties,
     )

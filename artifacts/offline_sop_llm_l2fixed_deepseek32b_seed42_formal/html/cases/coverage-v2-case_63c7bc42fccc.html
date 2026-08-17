@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>coverage-v2 / case_63c7bc42fccc</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#18212b;--muted:#66717e;--line:#dce2e8;
+--blue:#2458a6;--green:#147d55;--red:#b42318;--amber:#a15c00;--purple:#6b47a8}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.55 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1440px;margin:auto;padding:24px} h1{font-size:26px;margin:0 0 6px}
+h2{font-size:19px;margin:26px 0 10px} h3{font-size:16px;margin:18px 0 8px}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+.subtitle,.muted,.empty{color:var(--muted)} .empty{font-style:italic}
+.toolbar{display:flex;gap:12px;align-items:center;margin:18px 0}
+input[type=search]{width:min(480px,100%);padding:10px 12px;border:1px solid var(--line);
+border-radius:7px;background:white}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin:12px 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:13px}
+.card .value{font-size:22px;font-weight:700;margin-top:3px} .card .label{color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:9px;margin:10px 0;overflow:hidden}
+.panel>summary{cursor:pointer;font-size:16px;font-weight:650;padding:12px 15px;background:#fafbfc}
+.panel-body{padding:14px 15px;border-top:1px solid var(--line)}
+.table-wrap{overflow:auto} table{border-collapse:collapse;width:100%;background:white}
+th,td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}
+thead th,.kv th{background:#f5f7f9;font-weight:650} .kv th{width:220px}
+pre{margin:8px 0;padding:12px;max-height:520px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+background:#111827;color:#e5edf6;border-radius:7px;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+code,.token{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:650;white-space:nowrap}
+.correct{color:var(--green);background:#e8f5ef} .wrong{color:var(--red);background:#fdecea}
+.degraded_correct{color:#176b47;background:#edf8f2} .degraded_wrong{color:#9b2c20;background:#fff1ef}
+.abstain{color:var(--amber);background:#fff4df} .telemetry{color:var(--purple);background:#f1ebfb}
+.tokens{display:flex;flex-wrap:wrap;gap:6px} .token{padding:3px 7px;border:1px solid var(--line);border-radius:5px;background:#f7f9fb}
+.attempt{border-left:4px solid var(--blue);padding-left:12px;margin:18px 0}
+.violation{border-left:4px solid var(--red);padding:7px 10px;background:#fff6f5;margin:6px 0}
+.ok{color:var(--green);font-weight:650} .warn{color:var(--amber);font-weight:650}
+.crumb{margin-bottom:14px} .group{margin:18px 0 28px} [hidden]{display:none!important}
+@media print{body{background:white} main{max-width:none;padding:0} .toolbar{display:none}
+.panel{break-inside:avoid} details.panel:not([open])>.panel-body{display:block}}
+</style>
+</head>
+<body><main><nav class="crumb"><a href="../index.html">← 返回实验索引</a></nav><h1>coverage-v2 / case_63c7bc42fccc</h1><p><span class="badge abstain">弃权/补采</span></p><details class="panel" open><summary>结论、真值与路由</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>Policy</th><td>coverage-v2</td></tr><tr><th>Case ID</th><td>case_63c7bc42fccc</td></tr><tr><th>真值</th><td>L2</td></tr><tr><th>最终预测</th><td>—</td></tr><tr><th>候选预测</th><td>—</td></tr><tr><th>最终是否正确</th><td>未给最终结论</td></tr><tr><th>候选是否正确</th><td>无候选</td></tr><tr><th>M9 动作</th><td>human_review</td></tr><tr><th>路由分支</th><td>N5c</td></tr><tr><th>路由原因</th><td>历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障</td></tr><tr><th>相似度 / 覆盖率</th><td>0.82761824 / 0.857143</td></tr><tr><th>置信度</th><td>0.00%</td></tr><tr><th>Wilson 下界 / 支持数</th><td>0.00% / 94</td></tr></tbody></table></div></div></details><details class="panel" open><summary>特征 Token</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>遥测状态</th><td>partial_telemetry</td></tr><tr><th>Token 数</th><td>7</td></tr></tbody></table></div><div class="tokens"><span class="token">drop:L2:serdes_snr:single_lane</span><span class="token">level:L1:rxpower_mean:high_tail</span><span class="token">level:L2:media_snr_min:high_tail</span><span class="token">level:L2:txpower_mean:high_tail</span><span class="token">serdes:L1:valid</span><span class="token">serdes:L2:valid</span><span class="token">telemetry:partial_telemetry</span></div><h3>按特征族</h3><pre>{
+  &quot;level_tail&quot;: [
+    &quot;level:L1:rxpower_mean:high_tail&quot;,
+    &quot;level:L2:media_snr_min:high_tail&quot;,
+    &quot;level:L2:txpower_mean:high_tail&quot;
+  ],
+  &quot;serdes_state&quot;: [
+    &quot;serdes:L1:valid&quot;,
+    &quot;serdes:L2:valid&quot;
+  ],
+  &quot;signal_drop&quot;: [
+    &quot;drop:L2:serdes_snr:single_lane&quot;
+  ],
+  &quot;telemetry_gap&quot;: [
+    &quot;telemetry:partial_telemetry&quot;
+  ]
+}</pre></div></details><details class="panel" open><summary>历史候选</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>最高相似度</th><td>0.82761824</td></tr><tr><th>证据覆盖率</th><td>0.857143</td></tr><tr><th>候选总数</th><td>161</td></tr><tr><th>标签纯净</th><td>—</td></tr></tbody></table></div><div class="table-wrap"><table><thead><tr><th>历史 case</th><th>标签</th><th>相似度</th><th>覆盖率</th><th>重叠证据</th><th>缺失证据</th><th>冲突证据</th></tr></thead><tbody><tr><td>case_ebc4aa121fed</td><td>L2</td><td>0.8276</td><td>—</td><td>drop:L2:serdes_snr:single_lane, level:L2:media_snr_min:high_tail, level:L2:txpower_mean:high_tail, serdes:L1:valid, serdes:L2:valid, telemetry:partial_telemetry</td><td>—</td><td>—</td></tr></tbody></table></div></div></details><details class="panel" open><summary>SOP 预测</summary><div class="panel-body"><pre>{
+  &quot;confidence&quot;: 0.659341,
+  &quot;confidence_lower_bound&quot;: 0.557285,
+  &quot;label_distribution&quot;: {
+    &quot;L1&quot;: 29,
+    &quot;L2&quot;: 60,
+    &quot;fiber&quot;: 2
+  },
+  &quot;leaf_id&quot;: &quot;root.absent.absent.absent&quot;,
+  &quot;path&quot;: [
+    &quot;absent:imbalance:L2:rxpower&quot;,
+    &quot;absent:status:L1:RxLOS&quot;,
+    &quot;absent:imbalance:L2:serdes_snr&quot;
+  ],
+  &quot;reason&quot;: &quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}&quot;,
+  &quot;support&quot;: 91,
+  &quot;verdict&quot;: &quot;L2&quot;
+}</pre></div></details><details class="panel" open><summary>物理约束与证据链</summary><div class="panel-body"><h3>物理约束与证据链</h3><div class="table-wrap"><table><thead><tr><th>类型</th><th>陈述</th><th>证据 token</th><th>来源</th></tr></thead><tbody><tr><td>no_historical_match</td><td>历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障</td><td>drop:L2:serdes_snr:single_lane, level:L1:rxpower_mean:high_tail, level:L2:media_snr_min:high_tail, level:L2:txpower_mean:high_tail, serdes:L1:valid, serdes:L2:valid, telemetry:partial_telemetry</td><td>evidence_graph</td></tr><tr><td>constraint_context</td><td>注入 13 条与本 case 相关的物理约束（constraint-library-v3，全部待专家审核）</td><td>C1_bias_zero_means_laser_off, C2_bias_healthy_band, C5_tx_power_range, C6_tx_down_excludes_medium, C7_rx_power_range, C8_tx_ok_rx_down_indicates_medium, C9_bidirectional_symmetry, C10_all_lanes_vs_single_lane, C11_media_snr_floor, C12_no_absolute_link_loss, C13_serdes_snr_unit_unknown, C14_host_snr_mostly_missing, C15_blackout_sentinel_is_not_laser_off</td><td>constraint-library-v3</td></tr><tr><td>learned_sop</td><td>learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}</td><td>absent:imbalance:L2:rxpower, absent:status:L1:RxLOS, absent:imbalance:L2:serdes_snr</td><td>learned-sop-v1</td></tr></tbody></table></div><h3>Evidence Pack</h3><pre>{
+  &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;,
+  &quot;context&quot;: {
+    &quot;alarm_name&quot;: &quot;频繁升降lane&quot;,
+    &quot;alarm_time&quot;: &quot;2024-01-04 00:57:21&quot;,
+    &quot;chip&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;crc_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fec_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;link_location&quot;: &quot;location_c662e3ed6f20&quot;,
+    &quot;link_side_ip_interface_map&quot;: {
+      &quot;L1&quot;: &quot;L1_ENDPOINT--400G_PORT&quot;,
+      &quot;L2&quot;: &quot;L2_ENDPOINT--200G_PORT&quot;
+    },
+    &quot;port&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;port_down_dt&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    }
+  },
+  &quot;coverage&quot;: 0.88888889,
+  &quot;field_states&quot;: {
+    &quot;L1.RxLOL&quot;: &quot;observed&quot;,
+    &quot;L1.RxLOS&quot;: &quot;observed&quot;,
+    &quot;L1.TxLOL&quot;: &quot;observed&quot;,
+    &quot;L1.TxLOS&quot;: &quot;observed&quot;,
+    &quot;L1.host_snr&quot;: &quot;missing&quot;,
+    &quot;L1.media_snr&quot;: &quot;observed&quot;,
+    &quot;L1.rxpower&quot;: &quot;observed&quot;,
+    &quot;L1.serdes_snr&quot;: &quot;observed&quot;,
+    &quot;L1.txpower&quot;: &quot;observed&quot;,
+    &quot;L2.RxLOL&quot;: &quot;observed&quot;,
+    &quot;L2.RxLOS&quot;: &quot;observed&quot;,
+    &quot;L2.TxLOL&quot;: &quot;observed&quot;,
+    &quot;L2.TxLOS&quot;: &quot;observed&quot;,
+    &quot;L2.host_snr&quot;: &quot;missing&quot;,
+    &quot;L2.media_snr&quot;: &quot;observed&quot;,
+    &quot;L2.rxpower&quot;: &quot;observed&quot;,
+    &quot;L2.serdes_snr&quot;: &quot;observed&quot;,
+    &quot;L2.txpower&quot;: &quot;observed&quot;
+  },
+  &quot;missing_fields&quot;: [
+    &quot;L1.host_snr&quot;,
+    &quot;L2.host_snr&quot;
+  ],
+  &quot;observed_fields&quot;: [
+    &quot;L1.RxLOL&quot;,
+    &quot;L1.RxLOS&quot;,
+    &quot;L1.TxLOL&quot;,
+    &quot;L1.TxLOS&quot;,
+    &quot;L1.media_snr&quot;,
+    &quot;L1.rxpower&quot;,
+    &quot;L1.serdes_snr&quot;,
+    &quot;L1.txpower&quot;,
+    &quot;L2.RxLOL&quot;,
+    &quot;L2.RxLOS&quot;,
+    &quot;L2.TxLOL&quot;,
+    &quot;L2.TxLOS&quot;,
+    &quot;L2.media_snr&quot;,
+    &quot;L2.rxpower&quot;,
+    &quot;L2.serdes_snr&quot;,
+    &quot;L2.txpower&quot;
+  ],
+  &quot;optical_blackout&quot;: false,
+  &quot;readings&quot;: [
+    {
+      &quot;lanes&quot;: {},
+      &quot;metric&quot;: &quot;host_snr&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 26.69,
+        &quot;1&quot;: 25.96,
+        &quot;2&quot;: 26.31,
+        &quot;3&quot;: 25.96,
+        &quot;4&quot;: 26.31,
+        &quot;5&quot;: 25.96,
+        &quot;6&quot;: 25.64,
+        &quot;7&quot;: 25.96
+      },
+      &quot;metric&quot;: &quot;media_snr&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 1.799824,
+        &quot;1&quot;: 1.730696,
+        &quot;2&quot;: 1.713754,
+        &quot;3&quot;: 1.951521,
+        &quot;4&quot;: 1.849752,
+        &quot;5&quot;: 1.70555,
+        &quot;6&quot;: 1.810715,
+        &quot;7&quot;: 1.973908
+      },
+      &quot;metric&quot;: &quot;rxpower&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 711413.0,
+        &quot;1&quot;: 666849.0,
+        &quot;2&quot;: 622985.0,
+        &quot;3&quot;: 641383.0
+      },
+      &quot;metric&quot;: &quot;serdes_snr&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 0.676287,
+        &quot;1&quot;: 0.345483,
+        &quot;2&quot;: 0.524631,
+        &quot;3&quot;: 0.494894,
+        &quot;4&quot;: 0.895519,
+        &quot;5&quot;: 0.863598,
+        &quot;6&quot;: 1.004395,
+        &quot;7&quot;: 1.175364
+      },
+      &quot;metric&quot;: &quot;txpower&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {},
+      &quot;metric&quot;: &quot;host_snr&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 26.31,
+        &quot;1&quot;: 26.31,
+        &quot;2&quot;: 26.69,
+        &quot;3&quot;: 26.31
+      },
+      &quot;metric&quot;: &quot;media_snr&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 1.202448,
+        &quot;1&quot;: 1.333473,
+        &quot;2&quot;: 0.881716,
+        &quot;3&quot;: 1.457246
+      },
+      &quot;metric&quot;: &quot;rxpower&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 0.0,
+        &quot;1&quot;: 810547.0,
+        &quot;2&quot;: 704335.0,
+        &quot;3&quot;: 762135.0
+      },
+      &quot;metric&quot;: &quot;serdes_snr&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 1.210014,
+        &quot;1&quot;: 1.192889,
+        &quot;2&quot;: 1.340815,
+        &quot;3&quot;: 1.540281
+      },
+      &quot;metric&quot;: &quot;txpower&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    }
+  ],
+  &quot;scalars&quot;: {
+    &quot;L1.Temperature&quot;: null,
+    &quot;L1.Voltage&quot;: null,
+    &quot;L2.Temperature&quot;: null,
+    &quot;L2.Voltage&quot;: null
+  },
+  &quot;schema_version&quot;: &quot;evidence-pack-v1&quot;,
+  &quot;source_dataset&quot;: &quot;/home/chenziang/nsdi-agent/datasets/rca_v2_l2fixed&quot;,
+  &quot;statuses&quot;: {
+    &quot;L1.RxLOL&quot;: &quot;Normal&quot;,
+    &quot;L1.RxLOS&quot;: &quot;Normal&quot;,
+    &quot;L1.TxLOL&quot;: &quot;Normal&quot;,
+    &quot;L1.TxLOS&quot;: &quot;Normal&quot;,
+    &quot;L2.RxLOL&quot;: &quot;Normal&quot;,
+    &quot;L2.RxLOS&quot;: &quot;Normal&quot;,
+    &quot;L2.TxLOL&quot;: &quot;Normal&quot;,
+    &quot;L2.TxLOS&quot;: &quot;Normal&quot;
+  },
+  &quot;telemetry&quot;: {
+    &quot;L1_fault&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;L2_fault&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;Lpmode state&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;Rx Disable Status&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;RxLOL&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;RxLOS&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;Tx Disable Status&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;Tx Status&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;TxLOL&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;TxLOS&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;_meta&quot;: {
+      &quot;endpoint_values_swapped&quot;: false,
+      &quot;l2_lane_repair&quot;: {
+        &quot;changed_fields&quot;: [
+          {
+            &quot;after&quot;: 4,
+            &quot;before&quot;: 8,
+            &quot;field&quot;: &quot;rxpower&quot;
+          },
+          {
+            &quot;after&quot;: 4,
+            &quot;before&quot;: 8,
+            &quot;field&quot;: &quot;txpower&quot;
+          },
+          {
+            &quot;after&quot;: 4,
+            &quot;before&quot;: 8,
+            &quot;field&quot;: &quot;media_snr&quot;
+          }
+        ],
+        &quot;rule&quot;: &quot;retain L2 lane keys 0-3; remove excess keys&quot;
+      },
+      &quot;schema_version&quot;: &quot;2.0&quot;,
+      &quot;side_definition&quot;: {
+        &quot;L1&quot;: &quot;400G&quot;,
+        &quot;L2&quot;: &quot;200G&quot;
+      }
+    },
+    &quot;alarm_name&quot;: &quot;频繁升降lane&quot;,
+    &quot;alarm_time&quot;: &quot;2024-01-04 00:57:21&quot;,
+    &quot;bias&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;,
+    &quot;chip&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;crc_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;devm_picm_dt&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fec_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fsm0&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fsm1&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;host_snr&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;link_location&quot;: &quot;location_c662e3ed6f20&quot;,
+    &quot;link_side_ip_interface_map&quot;: {
+      &quot;L1&quot;: &quot;L1_ENDPOINT--400G_PORT&quot;,
+      &quot;L2&quot;: &quot;L2_ENDPOINT--200G_PORT&quot;
+    },
+    &quot;lsm_cfg&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;media_snr&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 26.69,
+        &quot;1&quot;: 25.96,
+        &quot;2&quot;: 26.31,
+        &quot;3&quot;: 25.96,
+        &quot;4&quot;: 26.31,
+        &quot;5&quot;: 25.96,
+        &quot;6&quot;: 25.64,
+        &quot;7&quot;: 25.96
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 26.31,
+        &quot;1&quot;: 26.31,
+        &quot;2&quot;: 26.69,
+        &quot;3&quot;: 26.31
+      }
+    },
+    &quot;non_null_count&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;phy_en&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;phy_fsm&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;phy_lock&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;port&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;port_down_dt&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;region&quot;: &quot;region_1818599036bb&quot;,
+    &quot;rxpower&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 1.799824,
+        &quot;1&quot;: 1.730696,
+        &quot;2&quot;: 1.713754,
+        &quot;3&quot;: 1.951521,
+        &quot;4&quot;: 1.849752,
+        &quot;5&quot;: 1.70555,
+        &quot;6&quot;: 1.810715,
+        &quot;7&quot;: 1.973908
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 1.202448,
+        &quot;1&quot;: 1.333473,
+        &quot;2&quot;: 0.881716,
+        &quot;3&quot;: 1.457246
+      }
+    },
+    &quot;serdes_snr&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 711413,
+        &quot;1&quot;: 666849,
+        &quot;2&quot;: 622985,
+        &quot;3&quot;: 641383
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 0,
+        &quot;1&quot;: 810547,
+        &quot;2&quot;: 704335,
+        &quot;3&quot;: 762135
+      }
+    },
+    &quot;temperature&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;timestamp&quot;: {
+      &quot;L1&quot;: &quot;2024-01-04 00:57:21&quot;,
+      &quot;L2&quot;: &quot;2024-01-04 00:57:21&quot;
+    },
+    &quot;txpower&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 0.676287,
+        &quot;1&quot;: 0.345483,
+        &quot;2&quot;: 0.524631,
+        &quot;3&quot;: 0.494894,
+        &quot;4&quot;: 0.895519,
+        &quot;5&quot;: 0.863598,
+        &quot;6&quot;: 1.004395,
+        &quot;7&quot;: 1.175364
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 1.210014,
+        &quot;1&quot;: 1.192889,
+        &quot;2&quot;: 1.340815,
+        &quot;3&quot;: 1.540281
+      }
+    },
+    &quot;voltage&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    }
+  },
+  &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;
+}</pre></div></details><details class="panel" open><summary>M9 决策原因</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>动作</th><td>human_review</td></tr><tr><th>原因</th><td>当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入</td></tr><tr><th>标定分组</th><td>N5c_no_exclusion</td></tr><tr><th>支持数</th><td>94</td></tr><tr><th>最终结论</th><td>—</td></tr><tr><th>降级前候选</th><td>—</td></tr></tbody></table></div></div></details><details class="panel" open><summary>缺失证据</summary><div class="panel-body"><p class="empty">未记录缺失证据</p></div></details><details class="panel" open><summary>LLM 逐轮推理</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>后端</th><td>vllm</td></tr><tr><th>Prompt 版本</th><td>rca-constrained-reasoning-v4</td></tr><tr><th>约束库版本</th><td>constraint-library-v3</td></tr><tr><th>轮数</th><td>2</td></tr><tr><th>发生重写</th><td>是</td></tr><tr><th>弃权原因</th><td>2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 effect=support；允许值为 neutral；该约束不允许 target=L2；允许值为 ；该约束不允许 effect=support；允许值为 neutral；该约束不允许 target=L2；允许值为 </td></tr></tbody></table></div><h3>输入证据校验</h3><pre>{
+  &quot;fatal_count&quot;: 0,
+  &quot;ok&quot;: true,
+  &quot;violations&quot;: []
+}</pre><section class="attempt"><h3>LLM 第 0 轮</h3><p>结构化解析：<strong>是</strong></p><h3>Prompt</h3><pre>&quot;你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n5. 「训练集归纳 SOP」是训练历史的统计先验，不是当前 case 的物理证据。\n   它可以帮助安排检查顺序，但不能被写入 `cited_evidence`，也不能单独支撑结论。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -&gt; 禁止推断 -&gt; 恒等关系 -&gt; 倾向性 排序）：\n# 光模块物理约束（constraint-library-v3，hash c090f825efe2da67）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \&quot;任务\&quot;: \&quot;光链路根因三分类定界（N5c 分支）\&quot;,\n  \&quot;根因定义\&quot;: {\n    \&quot;L1\&quot;: \&quot;400G 端口一侧的设备或端口根因\&quot;,\n    \&quot;L2\&quot;: \&quot;200G 端口一侧的设备或端口根因\&quot;,\n    \&quot;fiber\&quot;: \&quot;L1 与 L2 之间的光纤 / 链路介质根因\&quot;\n  },\n  \&quot;本 case 证据\&quot;: {\n    \&quot;case_id\&quot;: \&quot;case_63c7bc42fccc\&quot;,\n    \&quot;路由分支\&quot;: \&quot;N5c\&quot;,\n    \&quot;路由原因\&quot;: \&quot;历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障\&quot;,\n    \&quot;可用证据\&quot;: [\n      \&quot;drop:L2:serdes_snr:single_lane\&quot;,\n      \&quot;level:L1:rxpower_mean:high_tail\&quot;,\n      \&quot;level:L2:media_snr_min:high_tail\&quot;,\n      \&quot;level:L2:txpower_mean:high_tail\&quot;,\n      \&quot;serdes:L1:valid\&quot;,\n      \&quot;serdes:L2:valid\&quot;,\n      \&quot;telemetry:partial_telemetry\&quot;\n    ],\n    \&quot;遥测完整性\&quot;: \&quot;partial_telemetry\&quot;,\n    \&quot;未采集字段（常态，仅供填写 missing_information，不是弃权理由）\&quot;: [\n      \&quot;L1.host_snr\&quot;,\n      \&quot;L2.host_snr\&quot;\n    ],\n    \&quot;历史最高相似度\&quot;: 0.82761824,\n    \&quot;历史匹配说明\&quot;: \&quot;历史证据图里没有足够相似的 case，不能复用历史结论，只能依据物理约束推理。\&quot;,\n    \&quot;历史候选 case\&quot;: [\n      \&quot;case_ebc4aa121fed\&quot;\n    ],\n    \&quot;历史候选标签分布（仅作上下文，不能替代物理证据）\&quot;: {\n      \&quot;L2\&quot;: 1\n    },\n    \&quot;训练集归纳 SOP（仅作检查路径与统计先验，不能作为 cited_evidence）\&quot;: {\n      \&quot;verdict\&quot;: \&quot;L2\&quot;,\n      \&quot;confidence\&quot;: 0.659341,\n      \&quot;confidence_lower_bound\&quot;: 0.557285,\n      \&quot;support\&quot;: 91,\n      \&quot;leaf_id\&quot;: \&quot;root.absent.absent.absent\&quot;,\n      \&quot;path\&quot;: [\n        \&quot;absent:imbalance:L2:rxpower\&quot;,\n        \&quot;absent:status:L1:RxLOS\&quot;,\n        \&quot;absent:imbalance:L2:serdes_snr\&quot;\n      ],\n      \&quot;label_distribution\&quot;: {\n        \&quot;L1\&quot;: 29,\n        \&quot;L2\&quot;: 60,\n        \&quot;fiber\&quot;: 2\n      },\n      \&quot;reason\&quot;: \&quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}\&quot;\n    }\n  },\n  \&quot;已由确定性物理排除排掉的根因\&quot;: [],\n  \&quot;可选根因\&quot;: [\n    \&quot;L1\&quot;,\n    \&quot;L2\&quot;,\n    \&quot;fiber\&quot;\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \&quot;steps\&quot;: [\n    {\n      \&quot;claim\&quot;: \&quot;这一步的断言\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;引用的证据 token\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;引用的约束编号\&quot;],\n      \&quot;effect\&quot;: \&quot;support | exclude | neutral\&quot;,\n      \&quot;target\&quot;: \&quot;L1 | L2 | fiber | \\\&quot;\\\&quot;\&quot;\n    }\n  ],\n  \&quot;verdict\&quot;: \&quot;L1 | L2 | fiber | abstain\&quot;,\n  \&quot;confidence\&quot;: 0.0,\n  \&quot;missing_information\&quot;: [\&quot;还需要补采什么才能提高把握\&quot;]\n}&quot;</pre><h3>Raw 输出</h3><pre>&quot;&lt;think&gt;\n好，我现在需要解决这个光链路故障定界的问题。首先，我要仔细阅读用户提供的所有信息，包括物理约束、可用证据以及任务要求。\n\n首先，任务是判断故障根因属于L1、L2还是光纤（fiber），或者在证据不足时弃权。硬性要求包括只能引用可用证据和物理约束，不能编造证据，每一步推理必须引用证据或约束，不能凭空断言。\n\n接下来，我查看可用证据：\n- drop:L2:serdes_snr:single_lane：L2的serdes_snr在单个lane上出现异常。\n- level:L1:rxpower_mean:high_tail：L1的接收光功率均值处于高位尾部。\n- level:L2:media_snr_min:high_tail：L2的介质侧信噪比最小值处于高位尾部。\n- level:L2:txpower_mean:high_tail：L2的发送光功率均值处于高位尾部。\n- serdes:L1:valid：L1的serdes有效。\n- serdes:L2:valid：L2的serdes有效。\n- telemetry:partial_telemetry：遥测数据不完整。\n\n未采集字段包括L1和L2的host_snr，但根据约束C14，这些字段在多数情况下缺失，不能作为推断依据。\n\n物理约束中，排除条件C6_tx_down_excludes_medium指出，如果某一侧的lane没有发出光（txpower为-39 dBm），则该方向的故障不可能由光纤引起。但目前没有证据显示txpower为-39 dBm，所以暂时不考虑这一点。\n\n禁止推断中，C12指出不能直接用两端的光功率差来计算链路损耗，只能用同侧lane的相对差异。C13指出serdes_snr的量纲未知，只能作为有效/失效的二值信号。C14提醒host_snr缺失，不能推断。C15提到如果两端都处于-39 dBm且TxLOS正常，说明遥测失效，但这里没有这种情况。\n\n物理恒等关系中，C1指出偏置电流为0表示激光关闭，但没有相关证据。C5指出发送光功率正常在-1.8到2.1 dBm，异常时为-39 dBm，但目前L2的txpower_mean是high_tail，可能在正常范围内。C7指出接收光功率有连续劣化区间，低于-39 dBm为无光，但L1的rxpower_mean是high_tail，可能正常。\n\n倾向性线索中，C10指出所有lane异常指向端口级问题，单个lane异常指向独立问题。这里L2的serdes_snr是单个lane异常，可能指向L2的独立问题。C11指出介质侧信噪比正常范围约22.5-27 dB，低于此范围可能链路问题，但L2的media_snr_min是high_tail，可能在正常范围内。C2指出偏置电流在7.2-7.8 mA为健康，但没有相关证据。C8指出如果本端发光正常而对端收不到，可能光纤问题，但这里L1的rxpower是high_tail，可能正常。C9指出双向异常指向光纤，但这里只有L2的serdes_snr异常，单向异常。\n\n现在分析证据：\n- L2的serdes_snr在单个lane异常，可能指向L2的独立问题（C10）。\n- L2的txpower_mean和media_snr_min都是high_tail，可能在正常范围内，但需要确认是否超出正常范围。\n- L1的rxpower_mean是high_tail，可能正常，但需要确认是否过高。\n\n根据C10，单个lane异常可能指向L2的独立问题，如激光器或探测器问题。同时，L2的txpower和media_snr都处于高位尾部，可能表明发送或接收有问题。而L1的rxpower正常，可能排除光纤问题，因为如果光纤有问题，接收功率可能会异常。\n\n综合来看，L2的单个lane异常和其自身的txpower及media_snr异常，更可能指向L2的设备或端口问题。因此，根因可能是L2，但需要补采host_snr来进一步确认。\n&lt;/think&gt;\n\n```json\n{\n  \&quot;steps\&quot;: [\n    {\n      \&quot;claim\&quot;: \&quot;L2 的 serdes_snr 在单个 lane 上出现异常\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;drop:L2:serdes_snr:single_lane\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;C10_all_lanes_vs_single_lane\&quot;],\n      \&quot;effect\&quot;: \&quot;support\&quot;,\n      \&quot;target\&quot;: \&quot;L2\&quot;\n    },\n    {\n      \&quot;claim\&quot;: \&quot;L2 的发送光功率和介质侧信噪比均处于高位尾部\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;level:L2:txpower_mean:high_tail\&quot;, \&quot;level:L2:media_snr_min:high_tail\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;C11_media_snr_floor\&quot;],\n      \&quot;effect\&quot;: \&quot;support\&quot;,\n      \&quot;target\&quot;: \&quot;L2\&quot;\n    },\n    {\n      \&quot;claim\&quot;: \&quot;L1 的接收光功率均值处于高位尾部\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;level:L1:rxpower_mean:high_tail\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;C7_rx_power_range\&quot;],\n      \&quot;effect\&quot;: \&quot;neutral\&quot;,\n      \&quot;target\&quot;: \&quot;\&quot;\n    }\n  ],\n  \&quot;verdict\&quot;: \&quot;L2\&quot;,\n  \&quot;confidence\&quot;: 0.6,\n  \&quot;missing_information\&quot;: [\&quot;L1.host_snr\&quot;, \&quot;L2.host_snr\&quot;]\n}\n```&quot;</pre><h3>校验违规</h3><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 effect=support；允许值为 neutral<div class="muted">—</div></div><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 target=L2；允许值为 <div class="muted">—</div></div><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 target=L2；允许值为 fiber<div class="muted">—</div></div><div class="violation"><strong>constraint_violation</strong> [fatal]：引用的证据 token 家族与该约束的适用范围不匹配<div class="muted">expected prefixes=(&#x27;level:L1:media_snr_min:low_tail&#x27;, &#x27;level:L2:media_snr_min:low_tail&#x27;)</div></div></section><section class="attempt"><h3>LLM 第 1 轮</h3><p>结构化解析：<strong>是</strong></p><h3>Prompt</h3><pre>&quot;你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n5. 「训练集归纳 SOP」是训练历史的统计先验，不是当前 case 的物理证据。\n   它可以帮助安排检查顺序，但不能被写入 `cited_evidence`，也不能单独支撑结论。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n上一次回答未通过物理约束校验，问题如下。请针对这些问题重写，不要重复同样的错误：\n- 第 1 步（违反 C10_all_lanes_vs_single_lane）：该约束不允许 effect=support；允许值为 neutral\n- 第 1 步（违反 C10_all_lanes_vs_single_lane）：该约束不允许 target=L2；允许值为 \n- 第 2 步（违反 C11_media_snr_floor）：该约束不允许 target=L2；允许值为 fiber\n- 第 2 步（违反 C11_media_snr_floor）：引用的证据 token 家族与该约束的适用范围不匹配\n\n物理约束（按 排除 -&gt; 禁止推断 -&gt; 恒等关系 -&gt; 倾向性 排序）：\n# 光模块物理约束（constraint-library-v3，hash c090f825efe2da67）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \&quot;任务\&quot;: \&quot;光链路根因三分类定界（N5c 分支）\&quot;,\n  \&quot;根因定义\&quot;: {\n    \&quot;L1\&quot;: \&quot;400G 端口一侧的设备或端口根因\&quot;,\n    \&quot;L2\&quot;: \&quot;200G 端口一侧的设备或端口根因\&quot;,\n    \&quot;fiber\&quot;: \&quot;L1 与 L2 之间的光纤 / 链路介质根因\&quot;\n  },\n  \&quot;本 case 证据\&quot;: {\n    \&quot;case_id\&quot;: \&quot;case_63c7bc42fccc\&quot;,\n    \&quot;路由分支\&quot;: \&quot;N5c\&quot;,\n    \&quot;路由原因\&quot;: \&quot;历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障\&quot;,\n    \&quot;可用证据\&quot;: [\n      \&quot;drop:L2:serdes_snr:single_lane\&quot;,\n      \&quot;level:L1:rxpower_mean:high_tail\&quot;,\n      \&quot;level:L2:media_snr_min:high_tail\&quot;,\n      \&quot;level:L2:txpower_mean:high_tail\&quot;,\n      \&quot;serdes:L1:valid\&quot;,\n      \&quot;serdes:L2:valid\&quot;,\n      \&quot;telemetry:partial_telemetry\&quot;\n    ],\n    \&quot;遥测完整性\&quot;: \&quot;partial_telemetry\&quot;,\n    \&quot;未采集字段（常态，仅供填写 missing_information，不是弃权理由）\&quot;: [\n      \&quot;L1.host_snr\&quot;,\n      \&quot;L2.host_snr\&quot;\n    ],\n    \&quot;历史最高相似度\&quot;: 0.82761824,\n    \&quot;历史匹配说明\&quot;: \&quot;历史证据图里没有足够相似的 case，不能复用历史结论，只能依据物理约束推理。\&quot;,\n    \&quot;历史候选 case\&quot;: [\n      \&quot;case_ebc4aa121fed\&quot;\n    ],\n    \&quot;历史候选标签分布（仅作上下文，不能替代物理证据）\&quot;: {\n      \&quot;L2\&quot;: 1\n    },\n    \&quot;训练集归纳 SOP（仅作检查路径与统计先验，不能作为 cited_evidence）\&quot;: {\n      \&quot;verdict\&quot;: \&quot;L2\&quot;,\n      \&quot;confidence\&quot;: 0.659341,\n      \&quot;confidence_lower_bound\&quot;: 0.557285,\n      \&quot;support\&quot;: 91,\n      \&quot;leaf_id\&quot;: \&quot;root.absent.absent.absent\&quot;,\n      \&quot;path\&quot;: [\n        \&quot;absent:imbalance:L2:rxpower\&quot;,\n        \&quot;absent:status:L1:RxLOS\&quot;,\n        \&quot;absent:imbalance:L2:serdes_snr\&quot;\n      ],\n      \&quot;label_distribution\&quot;: {\n        \&quot;L1\&quot;: 29,\n        \&quot;L2\&quot;: 60,\n        \&quot;fiber\&quot;: 2\n      },\n      \&quot;reason\&quot;: \&quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}\&quot;\n    }\n  },\n  \&quot;已由确定性物理排除排掉的根因\&quot;: [],\n  \&quot;可选根因\&quot;: [\n    \&quot;L1\&quot;,\n    \&quot;L2\&quot;,\n    \&quot;fiber\&quot;\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \&quot;steps\&quot;: [\n    {\n      \&quot;claim\&quot;: \&quot;这一步的断言\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;引用的证据 token\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;引用的约束编号\&quot;],\n      \&quot;effect\&quot;: \&quot;support | exclude | neutral\&quot;,\n      \&quot;target\&quot;: \&quot;L1 | L2 | fiber | \\\&quot;\\\&quot;\&quot;\n    }\n  ],\n  \&quot;verdict\&quot;: \&quot;L1 | L2 | fiber | abstain\&quot;,\n  \&quot;confidence\&quot;: 0.0,\n  \&quot;missing_information\&quot;: [\&quot;还需要补采什么才能提高把握\&quot;]\n}&quot;</pre><h3>Raw 输出</h3><pre>&quot;&lt;think&gt;\n好的，我现在需要解决这个光链路故障定界的问题。首先，我要仔细阅读用户提供的所有信息，包括任务要求、物理约束、可用证据以及之前的错误反馈，确保这次回答符合所有规定。\n\n首先，任务要求是根据给定的证据判断根因，或者在证据不足时明确弃权。硬性要求包括只能引用可用证据清单里的token，不能编造证据，每一步推理必须引用证据或约束，不能凭空断言。此外，还要注意物理约束中的排除条件、禁止推断、恒等关系和倾向性线索。\n\n接下来，我查看了上一次回答的错误，主要是违反了C10和C11约束，特别是在步骤1和步骤2中，引用了不正确的约束或证据。因此，这次需要特别注意引用的约束是否正确，以及证据是否匹配。\n\n现在，我来看当前的可用证据：\n- drop:L2:serdes_snr:single_lane：L2的serdes_snr在单个lane上出现异常。\n- level:L1:rxpower_mean:high_tail：L1的接收光功率均值偏高。\n- level:L2:media_snr_min:high_tail：L2的介质侧信噪比最小值偏高。\n- level:L2:txpower_mean:high_tail：L2的发送光功率均值偏高。\n- serdes:L1:valid：L1的serdes有效。\n- serdes:L2:valid：L2的serdes有效。\n- telemetry:partial_telemetry：遥测数据不完整。\n\n未采集字段包括L1和L2的host_snr，但根据C14，这不影响判断，只是需要说明。\n\n物理约束中，排除条件C6_tx_down_excludes_medium指出，如果某一侧的lane没有发出光，那么故障不可能由光纤引起。禁止推断中，C12指出不能直接用两端光功率相减求损耗，只能用同侧相对差异。C13指出serdes_snr只能作为有效/失效的二值信号，不能按dB解释。C14指出host_snr多数情况下未采集，不能用它支持结论。C15指出如果两端都处于-39dBm哨兵值，且TxLOS正常，说明遥测失效，不能排除光纤。\n\n恒等关系中，C1指出偏置电流为0mA表示激光器未点亮，问题在发送端。C5指出发送光功率正常在-1.8~2.1dBm，异常时掉到-39dBm。C7指出接收光功率有真实范围，低于-39dBm表示无光。\n\n倾向性线索中，C10指出所有lane异常指向端口级问题，单个lane异常指向独立问题。C11指出介质侧信噪比正常范围，低于该范围可能链路问题。C2指出健康偏置电流范围，电流在此范围内说明激光器正常。C8指出本端发光正常而对端收不到，说明光丢失，可能光纤或对端接收器件。C9指出双向异常说明问题在光纤或连接器，单向异常则在端点设备。\n\n现在，分析证据：\n1. L2的serdes_snr在单个lane异常，这可能指向L2的独立问题，如激光器或探测器，根据C10，单个lane异常指向独立问题。\n2. L1的rxpower_mean偏高，可能表示接收端有异常，但需要结合其他证据。\n3. L2的media_snr_min偏高，这可能意味着链路质量有问题，但根据C11，信噪比低于正常范围才指向链路，这里偏高可能不适用。\n4. L2的txpower_mean偏高，可能表示发送端有异常，但根据C5，发送光功率要么正常，要么掉到-39，所以偏高可能不适用，或者可能表示异常。\n5. serdes:L1和L2都有效，说明两端的serdes正常，可能排除了某些设备问题。\n\n接下来，检查约束：\n- C10：单个lane异常，指向独立问题，可能支持L2。\n- C11：media_snr_min偏高，可能不适用，因为C11是针对低于正常范围的情况。\n- C8：如果L2发送正常而L1收不到，可能指向光纤或L1接收问题，但这里L1的rxpower_mean偏高，可能表示有光，但可能质量差。\n- C9：如果双向异常，可能指向光纤，但这里L1和L2的情况不同，L1 rxpower高，L2 txpower高，可能单向异常，指向发送端。\n\n综合来看，L2的txpower和media_snr都偏高，可能表示发送端有问题，而L1的rxpower高可能表示接收到了光，但质量可能有问题。根据C10，单个lane异常指向L2的独立问题，如激光器或探测器。同时，C8指出如果发送正常而接收异常，可能光纤或接收端问题，但这里L2的txpower高，可能发送端有问题，导致接收端异常。\n\n因此，可能的根因是L2的设备或端口问题。但需要确认是否有足够的证据排除光纤问题。根据C9，如果单向异常，问题在发送端，光纤降位。因此，可能支持L2。\n\n不过，由于证据有限，特别是遥测不完整，可能需要更多的信息来确认。因此，信心可能较低，但根据倾向性线索，可能支持L2。\n&lt;/think&gt;\n\n```json\n{\n  \&quot;steps\&quot;: [\n    {\n      \&quot;claim\&quot;: \&quot;L2 的单个 lane 出现 serdes_snr 异常，指向该端口的独立问题\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;drop:L2:serdes_snr:single_lane\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;C10_all_lanes_vs_single_lane\&quot;],\n      \&quot;effect\&quot;: \&quot;support\&quot;,\n      \&quot;target\&quot;: \&quot;L2\&quot;\n    },\n    {\n      \&quot;claim\&quot;: \&quot;L2 的 media_snr_min 和 txpower_mean 偏高，可能指向发送端设备问题\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;level:L2:media_snr_min:high_tail\&quot;, \&quot;level:L2:txpower_mean:high_tail\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;C5_tx_power_range\&quot;],\n      \&quot;effect\&quot;: \&quot;support\&quot;,\n      \&quot;target\&quot;: \&quot;L2\&quot;\n    },\n    {\n      \&quot;claim\&quot;: \&quot;L1 的 rxpower_mean 偏高，但无法确定是否由 L2 的发送问题引起\&quot;,\n      \&quot;cited_evidence\&quot;: [\&quot;level:L1:rxpower_mean:high_tail\&quot;],\n      \&quot;cited_constraints\&quot;: [\&quot;C7_rx_power_range\&quot;],\n      \&quot;effect\&quot;: \&quot;neutral\&quot;,\n      \&quot;target\&quot;: \&quot;\&quot;\n    }\n  ],\n  \&quot;verdict\&quot;: \&quot;L2\&quot;,\n  \&quot;confidence\&quot;: 0.6,\n  \&quot;missing_information\&quot;: [\&quot;L1.host_snr\&quot;, \&quot;L2.host_snr\&quot;]\n}\n```&quot;</pre><h3>校验违规</h3><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 effect=support；允许值为 neutral<div class="muted">—</div></div><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 target=L2；允许值为 <div class="muted">—</div></div><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 effect=support；允许值为 neutral<div class="muted">—</div></div><div class="violation"><strong>constraint_violation</strong> [fatal]：该约束不允许 target=L2；允许值为 <div class="muted">—</div></div></section><h3>接受的结构化输出</h3><p class="empty">无数据</p></div></details><details class="panel" open><summary>诊断图</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>Case</th><td>case_63c7bc42fccc</td></tr><tr><th>SOP 版本</th><td>learned-sop-v1</td></tr><tr><th>约束库版本</th><td>constraint-library-v3</td></tr><tr><th>确认人</th><td>—</td></tr><tr><th>内容指纹</th><td>676769d63ea0d0f3</td></tr></tbody></table></div><h3>节点</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>类型</th><th>属性</th></tr></thead><tbody><tr><td>case</td><td>Case</td><td>{&quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;, &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;}</td></tr><tr><td>outcome</td><td>Outcome</td><td>{&quot;action&quot;: &quot;human_review&quot;, &quot;branch&quot;: &quot;N5c&quot;, &quot;calibration_group&quot;: &quot;N5c_no_exclusion&quot;, &quot;calibration_support&quot;: 94, &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;, &quot;confidence&quot;: 0.0, &quot;confidence_lower_bound&quot;: 0.0, &quot;proposed_verdict&quot;: null, &quot;reason&quot;: &quot;当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入&quot;, &quot;requested_evidence&quot;: [], &quot;verdict&quot;: null}</td></tr><tr><td>feature:0</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;drop:L2:serdes_snr:single_lane&quot;}</td></tr><tr><td>feature:1</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;level:L1:rxpower_mean:high_tail&quot;}</td></tr><tr><td>feature:2</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;level:L2:media_snr_min:high_tail&quot;}</td></tr><tr><td>feature:3</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;level:L2:txpower_mean:high_tail&quot;}</td></tr><tr><td>feature:4</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;serdes:L1:valid&quot;}</td></tr><tr><td>feature:5</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;serdes:L2:valid&quot;}</td></tr><tr><td>feature:6</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;telemetry:partial_telemetry&quot;}</td></tr><tr><td>step:0</td><td>SOPStep</td><td>{&quot;kind&quot;: &quot;no_historical_match&quot;, &quot;source&quot;: &quot;evidence_graph&quot;, &quot;statement&quot;: &quot;历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障&quot;, &quot;tokens&quot;: [&quot;drop:L2:serdes_snr:single_lane&quot;, &quot;level:L1:rxpower_mean:high_tail&quot;, &quot;level:L2:media_snr_min:high_tail&quot;, &quot;level:L2:txpower_mean:high_tail&quot;, &quot;serdes:L1:valid&quot;, &quot;serdes:L2:valid&quot;, &quot;telemetry:partial_telemetry&quot;]}</td></tr><tr><td>step:1</td><td>SOPStep</td><td>{&quot;kind&quot;: &quot;constraint_context&quot;, &quot;source&quot;: &quot;constraint-library-v3&quot;, &quot;statement&quot;: &quot;注入 13 条与本 case 相关的物理约束（constraint-library-v3，全部待专家审核）&quot;, &quot;tokens&quot;: [&quot;C1_bias_zero_means_laser_off&quot;, &quot;C2_bias_healthy_band&quot;, &quot;C5_tx_power_range&quot;, &quot;C6_tx_down_excludes_medium&quot;, &quot;C7_rx_power_range&quot;, &quot;C8_tx_ok_rx_down_indicates_medium&quot;, &quot;C9_bidirectional_symmetry&quot;, &quot;C10_all_lanes_vs_single_lane&quot;, &quot;C11_media_snr_floor&quot;, &quot;C12_no_absolute_link_loss&quot;, &quot;C13_serdes_snr_unit_unknown&quot;, &quot;C14_host_snr_mostly_missing&quot;, &quot;C15_blackout_sentinel_is_not_laser_off&quot;]}</td></tr><tr><td>step:2</td><td>SOPStep</td><td>{&quot;kind&quot;: &quot;learned_sop&quot;, &quot;source&quot;: &quot;learned-sop-v1&quot;, &quot;statement&quot;: &quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}&quot;, &quot;tokens&quot;: [&quot;absent:imbalance:L2:rxpower&quot;, &quot;absent:status:L1:RxLOS&quot;, &quot;absent:imbalance:L2:serdes_snr&quot;]}</td></tr></tbody></table></div><h3>边</h3><div class="table-wrap"><table><thead><tr><th>源</th><th>关系</th><th>目标</th><th>属性</th></tr></thead><tbody><tr><td>case</td><td>concludes</td><td>outcome</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:0</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:1</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:2</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:3</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:4</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:5</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:6</td><td>{}</td></tr><tr><td>case</td><td>has_step</td><td>step:0</td><td>{}</td></tr><tr><td>step:0</td><td>supports_decision</td><td>outcome</td><td>{}</td></tr><tr><td>case</td><td>has_step</td><td>step:1</td><td>{}</td></tr><tr><td>step:1</td><td>supports_decision</td><td>outcome</td><td>{}</td></tr><tr><td>case</td><td>has_step</td><td>step:2</td><td>{}</td></tr><tr><td>step:2</td><td>supports_decision</td><td>outcome</td><td>{}</td></tr></tbody></table></div></div></details><details class="panel"><summary>结构化 RCA 报告</summary><div class="panel-body"><pre>{
+  &quot;action&quot;: &quot;human_review&quot;,
+  &quot;branch&quot;: &quot;N5c&quot;,
+  &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;,
+  &quot;caveats&quot;: [
+    &quot;LLM 未给出可用结论：2 次生成均未通过物理约束校验，最后一次的问题：该约束不允许 effect=support；允许值为 neutral；该约束不允许 target=L2；允许值为 ；该约束不允许 effect=support；允许值为 neutral；该约束不允许 target=L2；允许值为 &quot;,
+    &quot;物理约束只能把候选缩小到 3 个（L1、L2、fiber），确定性推理无法定论&quot;
+  ],
+  &quot;confidence&quot;: 0.0,
+  &quot;confidence_lower_bound&quot;: 0.0,
+  &quot;diagnosis_graph&quot;: {
+    &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;,
+    &quot;confirmed_by&quot;: &quot;&quot;,
+    &quot;constraint_library_version&quot;: &quot;constraint-library-v3&quot;,
+    &quot;content_hash&quot;: &quot;676769d63ea0d0f3&quot;,
+    &quot;edges&quot;: [
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;concludes&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:0&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:1&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:2&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:3&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:4&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:5&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:6&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;step:0&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_step&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;step:0&quot;,
+        &quot;type&quot;: &quot;supports_decision&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;step:1&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_step&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;step:1&quot;,
+        &quot;type&quot;: &quot;supports_decision&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;step:2&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_step&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;step:2&quot;,
+        &quot;type&quot;: &quot;supports_decision&quot;
+      }
+    ],
+    &quot;nodes&quot;: [
+      {
+        &quot;attrs&quot;: {
+          &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;,
+          &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;
+        },
+        &quot;id&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;Case&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;action&quot;: &quot;human_review&quot;,
+          &quot;branch&quot;: &quot;N5c&quot;,
+          &quot;calibration_group&quot;: &quot;N5c_no_exclusion&quot;,
+          &quot;calibration_support&quot;: 94,
+          &quot;case_id&quot;: &quot;case_63c7bc42fccc&quot;,
+          &quot;confidence&quot;: 0.0,
+          &quot;confidence_lower_bound&quot;: 0.0,
+          &quot;proposed_verdict&quot;: null,
+          &quot;reason&quot;: &quot;当前路径未形成可校验结论，且没有明确的自动补采项，转人工介入&quot;,
+          &quot;requested_evidence&quot;: [],
+          &quot;verdict&quot;: null
+        },
+        &quot;id&quot;: &quot;outcome&quot;,
+        &quot;type&quot;: &quot;Outcome&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;drop:L2:serdes_snr:single_lane&quot;
+        },
+        &quot;id&quot;: &quot;feature:0&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;level:L1:rxpower_mean:high_tail&quot;
+        },
+        &quot;id&quot;: &quot;feature:1&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;level:L2:media_snr_min:high_tail&quot;
+        },
+        &quot;id&quot;: &quot;feature:2&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;level:L2:txpower_mean:high_tail&quot;
+        },
+        &quot;id&quot;: &quot;feature:3&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;serdes:L1:valid&quot;
+        },
+        &quot;id&quot;: &quot;feature:4&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;serdes:L2:valid&quot;
+        },
+        &quot;id&quot;: &quot;feature:5&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;telemetry:partial_telemetry&quot;
+        },
+        &quot;id&quot;: &quot;feature:6&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;kind&quot;: &quot;no_historical_match&quot;,
+          &quot;source&quot;: &quot;evidence_graph&quot;,
+          &quot;statement&quot;: &quot;历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障&quot;,
+          &quot;tokens&quot;: [
+            &quot;drop:L2:serdes_snr:single_lane&quot;,
+            &quot;level:L1:rxpower_mean:high_tail&quot;,
+            &quot;level:L2:media_snr_min:high_tail&quot;,
+            &quot;level:L2:txpower_mean:high_tail&quot;,
+            &quot;serdes:L1:valid&quot;,
+            &quot;serdes:L2:valid&quot;,
+            &quot;telemetry:partial_telemetry&quot;
+          ]
+        },
+        &quot;id&quot;: &quot;step:0&quot;,
+        &quot;type&quot;: &quot;SOPStep&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;kind&quot;: &quot;constraint_context&quot;,
+          &quot;source&quot;: &quot;constraint-library-v3&quot;,
+          &quot;statement&quot;: &quot;注入 13 条与本 case 相关的物理约束（constraint-library-v3，全部待专家审核）&quot;,
+          &quot;tokens&quot;: [
+            &quot;C1_bias_zero_means_laser_off&quot;,
+            &quot;C2_bias_healthy_band&quot;,
+            &quot;C5_tx_power_range&quot;,
+            &quot;C6_tx_down_excludes_medium&quot;,
+            &quot;C7_rx_power_range&quot;,
+            &quot;C8_tx_ok_rx_down_indicates_medium&quot;,
+            &quot;C9_bidirectional_symmetry&quot;,
+            &quot;C10_all_lanes_vs_single_lane&quot;,
+            &quot;C11_media_snr_floor&quot;,
+            &quot;C12_no_absolute_link_loss&quot;,
+            &quot;C13_serdes_snr_unit_unknown&quot;,
+            &quot;C14_host_snr_mostly_missing&quot;,
+            &quot;C15_blackout_sentinel_is_not_laser_off&quot;
+          ]
+        },
+        &quot;id&quot;: &quot;step:1&quot;,
+        &quot;type&quot;: &quot;SOPStep&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;kind&quot;: &quot;learned_sop&quot;,
+          &quot;source&quot;: &quot;learned-sop-v1&quot;,
+          &quot;statement&quot;: &quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}&quot;,
+          &quot;tokens&quot;: [
+            &quot;absent:imbalance:L2:rxpower&quot;,
+            &quot;absent:status:L1:RxLOS&quot;,
+            &quot;absent:imbalance:L2:serdes_snr&quot;
+          ]
+        },
+        &quot;id&quot;: &quot;step:2&quot;,
+        &quot;type&quot;: &quot;SOPStep&quot;
+      }
+    ],
+    &quot;sop_version&quot;: &quot;learned-sop-v1&quot;
+  },
+  &quot;evidence_chain&quot;: [
+    {
+      &quot;kind&quot;: &quot;no_historical_match&quot;,
+      &quot;source&quot;: &quot;evidence_graph&quot;,
+      &quot;statement&quot;: &quot;历史匹配度不足（相似度 0.83，证据覆盖率 86%），存在历史未见的证据，走约束与 SOP 的通用排障&quot;,
+      &quot;tokens&quot;: [
+        &quot;drop:L2:serdes_snr:single_lane&quot;,
+        &quot;level:L1:rxpower_mean:high_tail&quot;,
+        &quot;level:L2:media_snr_min:high_tail&quot;,
+        &quot;level:L2:txpower_mean:high_tail&quot;,
+        &quot;serdes:L1:valid&quot;,
+        &quot;serdes:L2:valid&quot;,
+        &quot;telemetry:partial_telemetry&quot;
+      ]
+    },
+    {
+      &quot;kind&quot;: &quot;constraint_context&quot;,
+      &quot;source&quot;: &quot;constraint-library-v3&quot;,
+      &quot;statement&quot;: &quot;注入 13 条与本 case 相关的物理约束（constraint-library-v3，全部待专家审核）&quot;,
+      &quot;tokens&quot;: [
+        &quot;C1_bias_zero_means_laser_off&quot;,
+        &quot;C2_bias_healthy_band&quot;,
+        &quot;C5_tx_power_range&quot;,
+        &quot;C6_tx_down_excludes_medium&quot;,
+        &quot;C7_rx_power_range&quot;,
+        &quot;C8_tx_ok_rx_down_indicates_medium&quot;,
+        &quot;C9_bidirectional_symmetry&quot;,
+        &quot;C10_all_lanes_vs_single_lane&quot;,
+        &quot;C11_media_snr_floor&quot;,
+        &quot;C12_no_absolute_link_loss&quot;,
+        &quot;C13_serdes_snr_unit_unknown&quot;,
+        &quot;C14_host_snr_mostly_missing&quot;,
+        &quot;C15_blackout_sentinel_is_not_laser_off&quot;
+      ]
+    },
+    {
+      &quot;kind&quot;: &quot;learned_sop&quot;,
+      &quot;source&quot;: &quot;learned-sop-v1&quot;,
+      &quot;statement&quot;: &quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}&quot;,
+      &quot;tokens&quot;: [
+        &quot;absent:imbalance:L2:rxpower&quot;,
+        &quot;absent:status:L1:RxLOS&quot;,
+        &quot;absent:imbalance:L2:serdes_snr&quot;
+      ]
+    }
+  ],
+  &quot;proposed_verdict&quot;: null,
+  &quot;requested_evidence&quot;: [],
+  &quot;schema_version&quot;: &quot;rca-report-v1&quot;,
+  &quot;verdict&quot;: null
+}</pre></div></details></main></body>
+</html>

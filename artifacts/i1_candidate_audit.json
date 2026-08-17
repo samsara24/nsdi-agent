@@ -1,0 +1,1392 @@
+{
+  "schema_version": "candidate-audit-v1",
+  "data_dir": "datasets/rca_v2_l2fixed",
+  "feature_dictionary_version": "feature-dictionary-v2",
+  "train_size": 161,
+  "test_size": 107,
+  "train_prior": {
+    "L1": 0.3043,
+    "L2": 0.6211,
+    "fiber": 0.0745
+  },
+  "quiet_case_definition": "训练集中不含任何 drop: 前缀 token 的 case",
+  "label_policy": "标签统计只在 train split；测试集只报触发次数。",
+  "audits": [
+    {
+      "candidate": "probe:txpower_side_gap:L1_worse",
+      "train": {
+        "support": 37,
+        "predicts": "L2",
+        "precision": 0.8108,
+        "wilson_lower_bound": 0.65795,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": true,
+        "label_counts": {
+          "L1": 4,
+          "L2": 30,
+          "fiber": 3
+        }
+      },
+      "test_hits": 21,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "level:L1:txpower_mean:low_tail",
+          "jaccard": 0.6522,
+          "candidate_given_token": 0.7692,
+          "token_given_candidate": 0.8108,
+          "support": 39
+        },
+        {
+          "token": "level:L2:rxpower_mean:low_tail",
+          "jaccard": 0.434,
+          "candidate_given_token": 0.5897,
+          "token_given_candidate": 0.6216,
+          "support": 39
+        },
+        {
+          "token": "drop:L1:rxpower:single_lane",
+          "jaccard": 0.3214,
+          "candidate_given_token": 0.4865,
+          "token_given_candidate": 0.4865,
+          "support": 37
+        },
+        {
+          "token": "drop:L1:media_snr:single_lane",
+          "jaccard": 0.3056,
+          "candidate_given_token": 0.386,
+          "token_given_candidate": 0.5946,
+          "support": 57
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "level:L1:txpower_mean:low_tail",
+          "jaccard": 0.6522,
+          "candidate_within_token_negative_stratum": {
+            "support": 7,
+            "predicts": "L2",
+            "precision": 0.8571,
+            "wilson_lower_bound": 0.486865,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 1,
+              "L2": 6,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 115,
+            "predicts": "L2",
+            "precision": 0.5652,
+            "wilson_lower_bound": 0.473956,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 42,
+              "L2": 65,
+              "fiber": 8
+            }
+          }
+        },
+        {
+          "controlled_for": "level:L2:rxpower_mean:low_tail",
+          "jaccard": 0.434,
+          "candidate_within_token_negative_stratum": {
+            "support": 14,
+            "predicts": "L2",
+            "precision": 0.9286,
+            "wilson_lower_bound": 0.685307,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 1,
+              "L2": 13,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 108,
+            "predicts": "L2",
+            "precision": 0.6111,
+            "wilson_lower_bound": 0.516864,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 36,
+              "L2": 66,
+              "fiber": 6
+            }
+          }
+        },
+        {
+          "controlled_for": "drop:L1:rxpower:single_lane",
+          "jaccard": 0.3214,
+          "candidate_within_token_negative_stratum": {
+            "support": 19,
+            "predicts": "L2",
+            "precision": 0.6842,
+            "wilson_lower_bound": 0.4601,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 4,
+              "L2": 13,
+              "fiber": 2
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 105,
+            "predicts": "L2",
+            "precision": 0.5429,
+            "wilson_lower_bound": 0.447743,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 41,
+              "L2": 57,
+              "fiber": 7
+            }
+          }
+        },
+        {
+          "controlled_for": "drop:L1:media_snr:single_lane",
+          "jaccard": 0.3056,
+          "candidate_within_token_negative_stratum": {
+            "support": 15,
+            "predicts": "L2",
+            "precision": 0.6,
+            "wilson_lower_bound": 0.357464,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 4,
+              "L2": 9,
+              "fiber": 2
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 89,
+            "predicts": "L2",
+            "precision": 0.5618,
+            "wilson_lower_bound": 0.45828,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 32,
+              "L2": 50,
+              "fiber": 7
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 10,
+        "fire_rate_on_quiet_cases": 0.1639,
+        "fire_rate_overall": 0.2298
+      },
+      "verdict": "promote:在 1/4 个控制分层里仍有剩余增益"
+    },
+    {
+      "candidate": "probe:media_snr_spread:L1:wide",
+      "train": {
+        "support": 66,
+        "predicts": "L2",
+        "precision": 0.7121,
+        "wilson_lower_bound": 0.593625,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 14,
+          "L2": 47,
+          "fiber": 5
+        }
+      },
+      "test_hits": 36,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "drop:L1:media_snr:single_lane",
+          "jaccard": 0.8636,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.8636,
+          "support": 57
+        },
+        {
+          "token": "status:L1:RxLOL",
+          "jaccard": 0.7297,
+          "candidate_given_token": 0.871,
+          "token_given_candidate": 0.8182,
+          "support": 62
+        },
+        {
+          "token": "drop:L1:rxpower:single_lane",
+          "jaccard": 0.5606,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.5606,
+          "support": 37
+        },
+        {
+          "token": "lane:L2_to_L1:tx_ok_rx_down",
+          "jaccard": 0.5147,
+          "candidate_given_token": 0.9459,
+          "token_given_candidate": 0.5303,
+          "support": 37
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "drop:L1:media_snr:single_lane",
+          "jaccard": 0.8636,
+          "candidate_within_token_negative_stratum": {
+            "support": 9,
+            "predicts": "L2",
+            "precision": 0.6667,
+            "wilson_lower_bound": 0.354197,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 1,
+              "L2": 6,
+              "fiber": 2
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 95,
+            "predicts": "L2",
+            "precision": 0.5579,
+            "wilson_lower_bound": 0.457709,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 35,
+              "L2": 53,
+              "fiber": 7
+            }
+          }
+        },
+        {
+          "controlled_for": "status:L1:RxLOL",
+          "jaccard": 0.7297,
+          "candidate_within_token_negative_stratum": {
+            "support": 12,
+            "predicts": "L2",
+            "precision": 0.6667,
+            "wilson_lower_bound": 0.390618,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 4,
+              "L2": 8,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 87,
+            "predicts": "L2",
+            "precision": 0.5287,
+            "wilson_lower_bound": 0.424862,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 35,
+              "L2": 46,
+              "fiber": 6
+            }
+          }
+        },
+        {
+          "controlled_for": "drop:L1:rxpower:single_lane",
+          "jaccard": 0.5606,
+          "candidate_within_token_negative_stratum": {
+            "support": 29,
+            "predicts": "L2",
+            "precision": 0.5862,
+            "wilson_lower_bound": 0.407375,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 10,
+              "L2": 17,
+              "fiber": 2
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 95,
+            "predicts": "L2",
+            "precision": 0.5579,
+            "wilson_lower_bound": 0.457709,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 35,
+              "L2": 53,
+              "fiber": 7
+            }
+          }
+        },
+        {
+          "controlled_for": "lane:L2_to_L1:tx_ok_rx_down",
+          "jaccard": 0.5147,
+          "candidate_within_token_negative_stratum": {
+            "support": 31,
+            "predicts": "L2",
+            "precision": 0.6774,
+            "wilson_lower_bound": 0.501407,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 9,
+              "L2": 21,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 93,
+            "predicts": "L2",
+            "precision": 0.5484,
+            "wilson_lower_bound": 0.447331,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 35,
+              "L2": 51,
+              "fiber": 7
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 7,
+        "fire_rate_on_quiet_cases": 0.1148,
+        "fire_rate_overall": 0.4099
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    },
+    {
+      "candidate": "probe:media_snr_side_gap:L1_worse",
+      "train": {
+        "support": 67,
+        "predicts": "L2",
+        "precision": 0.7164,
+        "wilson_lower_bound": 0.599065,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 15,
+          "L2": 48,
+          "fiber": 4
+        }
+      },
+      "test_hits": 37,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "drop:L1:media_snr:single_lane",
+          "jaccard": 0.8507,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.8507,
+          "support": 57
+        },
+        {
+          "token": "status:L1:RxLOL",
+          "jaccard": 0.7432,
+          "candidate_given_token": 0.8871,
+          "token_given_candidate": 0.8209,
+          "support": 62
+        },
+        {
+          "token": "drop:L1:rxpower:single_lane",
+          "jaccard": 0.5522,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.5522,
+          "support": 37
+        },
+        {
+          "token": "lane:L2_to_L1:tx_ok_rx_down",
+          "jaccard": 0.5522,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.5522,
+          "support": 37
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "drop:L1:media_snr:single_lane",
+          "jaccard": 0.8507,
+          "candidate_within_token_negative_stratum": {
+            "support": 10,
+            "predicts": "L2",
+            "precision": 0.7,
+            "wilson_lower_bound": 0.396773,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 2,
+              "L2": 7,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 94,
+            "predicts": "L2",
+            "precision": 0.5532,
+            "wilson_lower_bound": 0.452568,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 34,
+              "L2": 52,
+              "fiber": 8
+            }
+          }
+        },
+        {
+          "controlled_for": "status:L1:RxLOL",
+          "jaccard": 0.7432,
+          "candidate_within_token_negative_stratum": {
+            "support": 12,
+            "predicts": "L2",
+            "precision": 0.5833,
+            "wilson_lower_bound": 0.319507,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 5,
+              "L2": 7,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 87,
+            "predicts": "L2",
+            "precision": 0.5402,
+            "wilson_lower_bound": 0.436026,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 34,
+              "L2": 47,
+              "fiber": 6
+            }
+          }
+        },
+        {
+          "controlled_for": "drop:L1:rxpower:single_lane",
+          "jaccard": 0.5522,
+          "candidate_within_token_negative_stratum": {
+            "support": 30,
+            "predicts": "L2",
+            "precision": 0.6,
+            "wilson_lower_bound": 0.423201,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 11,
+              "L2": 18,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 94,
+            "predicts": "L2",
+            "precision": 0.5532,
+            "wilson_lower_bound": 0.452568,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 34,
+              "L2": 52,
+              "fiber": 8
+            }
+          }
+        },
+        {
+          "controlled_for": "lane:L2_to_L1:tx_ok_rx_down",
+          "jaccard": 0.5522,
+          "candidate_within_token_negative_stratum": {
+            "support": 30,
+            "predicts": "L2",
+            "precision": 0.6667,
+            "wilson_lower_bound": 0.487797,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 10,
+              "L2": 20,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 94,
+            "predicts": "L2",
+            "precision": 0.5532,
+            "wilson_lower_bound": 0.452568,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 34,
+              "L2": 52,
+              "fiber": 8
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 6,
+        "fire_rate_on_quiet_cases": 0.0984,
+        "fire_rate_overall": 0.4161
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    },
+    {
+      "candidate": "probe:rxpower_spread:L1:wide",
+      "train": {
+        "support": 13,
+        "predicts": "L2",
+        "precision": 0.8462,
+        "wilson_lower_bound": 0.577648,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 2,
+          "L2": 11,
+          "fiber": 0
+        }
+      },
+      "test_hits": 15,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "lane:L2_to_L1:single_lane_outlier",
+          "jaccard": 0.7692,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.7692,
+          "support": 10
+        },
+        {
+          "token": "imbalance:L1:rxpower",
+          "jaccard": 0.7692,
+          "candidate_given_token": 1.0,
+          "token_given_candidate": 0.7692,
+          "support": 10
+        },
+        {
+          "token": "level:L1:rxpower_mean:low_tail",
+          "jaccard": 0.2683,
+          "candidate_given_token": 0.2821,
+          "token_given_candidate": 0.8462,
+          "support": 39
+        },
+        {
+          "token": "level:L1:media_snr_min:low_tail",
+          "jaccard": 0.1556,
+          "candidate_given_token": 0.1795,
+          "token_given_candidate": 0.5385,
+          "support": 39
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "lane:L2_to_L1:single_lane_outlier",
+          "jaccard": 0.7692,
+          "candidate_within_token_negative_stratum": {
+            "support": 3,
+            "predicts": "L2",
+            "precision": 0.6667,
+            "wilson_lower_bound": 0.207655,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 1,
+              "L2": 2,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 148,
+            "predicts": "L2",
+            "precision": 0.6014,
+            "wilson_lower_bound": 0.520866,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 47,
+              "L2": 89,
+              "fiber": 12
+            }
+          }
+        },
+        {
+          "controlled_for": "imbalance:L1:rxpower",
+          "jaccard": 0.7692,
+          "candidate_within_token_negative_stratum": {
+            "support": 3,
+            "predicts": "L2",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.438494,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 0,
+              "L2": 3,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 148,
+            "predicts": "L2",
+            "precision": 0.6014,
+            "wilson_lower_bound": 0.520866,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 47,
+              "L2": 89,
+              "fiber": 12
+            }
+          }
+        },
+        {
+          "controlled_for": "level:L1:rxpower_mean:low_tail",
+          "jaccard": 0.2683,
+          "candidate_within_token_negative_stratum": {
+            "support": 2,
+            "predicts": "L2",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.342372,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 0,
+              "L2": 2,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 120,
+            "predicts": "L2",
+            "precision": 0.6333,
+            "wilson_lower_bound": 0.544223,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 34,
+              "L2": 76,
+              "fiber": 10
+            }
+          }
+        },
+        {
+          "controlled_for": "level:L1:media_snr_min:low_tail",
+          "jaccard": 0.1556,
+          "candidate_within_token_negative_stratum": {
+            "support": 6,
+            "predicts": "L2",
+            "precision": 0.8333,
+            "wilson_lower_bound": 0.436491,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 1,
+              "L2": 5,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 116,
+            "predicts": "L2",
+            "precision": 0.6724,
+            "wilson_lower_bound": 0.582676,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 30,
+              "L2": 78,
+              "fiber": 8
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 7,
+        "fire_rate_on_quiet_cases": 0.1148,
+        "fire_rate_overall": 0.0807
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    },
+    {
+      "candidate": "probe:rxpower_side_gap:L1_worse",
+      "train": {
+        "support": 48,
+        "predicts": "L2",
+        "precision": 0.6875,
+        "wilson_lower_bound": 0.546667,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 12,
+          "L2": 33,
+          "fiber": 3
+        }
+      },
+      "test_hits": 34,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "level:L1:rxpower_mean:low_tail",
+          "jaccard": 0.4262,
+          "candidate_given_token": 0.6667,
+          "token_given_candidate": 0.5417,
+          "support": 39
+        },
+        {
+          "token": "level:L2:rxpower_mean:high_tail",
+          "jaccard": 0.375,
+          "candidate_given_token": 0.6,
+          "token_given_candidate": 0.5,
+          "support": 40
+        },
+        {
+          "token": "level:L2:txpower_mean:low_tail",
+          "jaccard": 0.3182,
+          "candidate_given_token": 0.5385,
+          "token_given_candidate": 0.4375,
+          "support": 39
+        },
+        {
+          "token": "telemetry:partial_telemetry",
+          "jaccard": 0.3092,
+          "candidate_given_token": 0.3113,
+          "token_given_candidate": 0.9792,
+          "support": 151
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "level:L1:rxpower_mean:low_tail",
+          "jaccard": 0.4262,
+          "candidate_within_token_negative_stratum": {
+            "support": 22,
+            "predicts": "L2",
+            "precision": 0.8182,
+            "wilson_lower_bound": 0.61483,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 3,
+              "L2": 18,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 100,
+            "predicts": "L2",
+            "precision": 0.6,
+            "wilson_lower_bound": 0.502001,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 31,
+              "L2": 60,
+              "fiber": 9
+            }
+          }
+        },
+        {
+          "controlled_for": "level:L2:rxpower_mean:high_tail",
+          "jaccard": 0.375,
+          "candidate_within_token_negative_stratum": {
+            "support": 24,
+            "predicts": "L2",
+            "precision": 0.5833,
+            "wilson_lower_bound": 0.388343,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 8,
+              "L2": 14,
+              "fiber": 2
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 97,
+            "predicts": "L2",
+            "precision": 0.6082,
+            "wilson_lower_bound": 0.508759,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 29,
+              "L2": 59,
+              "fiber": 9
+            }
+          }
+        },
+        {
+          "controlled_for": "level:L2:txpower_mean:low_tail",
+          "jaccard": 0.3182,
+          "candidate_within_token_negative_stratum": {
+            "support": 27,
+            "predicts": "L2",
+            "precision": 0.7407,
+            "wilson_lower_bound": 0.553211,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 5,
+              "L2": 20,
+              "fiber": 2
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 95,
+            "predicts": "L2",
+            "precision": 0.5789,
+            "wilson_lower_bound": 0.478495,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 32,
+              "L2": 55,
+              "fiber": 8
+            }
+          }
+        },
+        {
+          "controlled_for": "telemetry:partial_telemetry",
+          "jaccard": 0.3092,
+          "candidate_within_token_negative_stratum": {
+            "support": 1,
+            "predicts": "L1",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.206543,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 1,
+              "L2": 0,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 9,
+            "predicts": "L1",
+            "precision": 0.5556,
+            "wilson_lower_bound": 0.266647,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 5,
+              "L2": 3,
+              "fiber": 1
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 19,
+        "fire_rate_on_quiet_cases": 0.3115,
+        "fire_rate_overall": 0.2981
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    },
+    {
+      "candidate": "probe:media_snr_spread:L2:tight",
+      "train": {
+        "support": 135,
+        "predicts": "L2",
+        "precision": 0.6741,
+        "wilson_lower_bound": 0.591142,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 35,
+          "L2": 91,
+          "fiber": 9
+        }
+      },
+      "test_hits": 72,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "serdes:L1:valid",
+          "jaccard": 0.8113,
+          "candidate_given_token": 0.8431,
+          "token_given_candidate": 0.9556,
+          "support": 153
+        },
+        {
+          "token": "telemetry:partial_telemetry",
+          "jaccard": 0.8101,
+          "candidate_given_token": 0.8477,
+          "token_given_candidate": 0.9481,
+          "support": 151
+        },
+        {
+          "token": "serdes:L2:valid",
+          "jaccard": 0.8075,
+          "candidate_given_token": 0.8333,
+          "token_given_candidate": 0.963,
+          "support": 156
+        },
+        {
+          "token": "status:L1:RxLOL",
+          "jaccard": 0.438,
+          "candidate_given_token": 0.9677,
+          "token_given_candidate": 0.4444,
+          "support": 62
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "serdes:L1:valid",
+          "jaccard": 0.8113,
+          "candidate_within_token_negative_stratum": {
+            "support": 6,
+            "predicts": "L2",
+            "precision": 0.5,
+            "wilson_lower_bound": 0.187613,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 2,
+              "L2": 3,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 2,
+            "predicts": "L2",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.342372,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 0,
+              "L2": 2,
+              "fiber": 0
+            }
+          }
+        },
+        {
+          "controlled_for": "telemetry:partial_telemetry",
+          "jaccard": 0.8101,
+          "candidate_within_token_negative_stratum": {
+            "support": 7,
+            "predicts": "L1",
+            "precision": 0.5714,
+            "wilson_lower_bound": 0.250454,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 4,
+              "L2": 2,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 3,
+            "predicts": "L1",
+            "precision": 0.6667,
+            "wilson_lower_bound": 0.207655,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 2,
+              "L2": 1,
+              "fiber": 0
+            }
+          }
+        },
+        {
+          "controlled_for": "serdes:L2:valid",
+          "jaccard": 0.8075,
+          "candidate_within_token_negative_stratum": {
+            "support": 5,
+            "predicts": "L2",
+            "precision": 0.6,
+            "wilson_lower_bound": 0.23072,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 2,
+              "L2": 3,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 0
+          }
+        },
+        {
+          "controlled_for": "status:L1:RxLOL",
+          "jaccard": 0.438,
+          "candidate_within_token_negative_stratum": {
+            "support": 75,
+            "predicts": "L2",
+            "precision": 0.6267,
+            "wilson_lower_bound": 0.513548,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 25,
+              "L2": 47,
+              "fiber": 3
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 24,
+            "predicts": "L1",
+            "precision": 0.5833,
+            "wilson_lower_bound": 0.388343,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 14,
+              "L2": 7,
+              "fiber": 3
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 59,
+        "fire_rate_on_quiet_cases": 0.9672,
+        "fire_rate_overall": 0.8385
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    },
+    {
+      "candidate": "probe:alarm_side:L2_ENDPOINT",
+      "train": {
+        "support": 133,
+        "predicts": "L2",
+        "precision": 0.6466,
+        "wilson_lower_bound": 0.562302,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 36,
+          "L2": 86,
+          "fiber": 11
+        }
+      },
+      "test_hits": 79,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "serdes:L2:valid",
+          "jaccard": 0.8176,
+          "candidate_given_token": 0.8333,
+          "token_given_candidate": 0.9774,
+          "support": 156
+        },
+        {
+          "token": "serdes:L1:valid",
+          "jaccard": 0.7987,
+          "candidate_given_token": 0.8301,
+          "token_given_candidate": 0.9549,
+          "support": 153
+        },
+        {
+          "token": "telemetry:partial_telemetry",
+          "jaccard": 0.764,
+          "candidate_given_token": 0.8146,
+          "token_given_candidate": 0.9248,
+          "support": 151
+        },
+        {
+          "token": "status:L1:RxLOL",
+          "jaccard": 0.4234,
+          "candidate_given_token": 0.9355,
+          "token_given_candidate": 0.4361,
+          "support": 62
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "serdes:L2:valid",
+          "jaccard": 0.8176,
+          "candidate_within_token_negative_stratum": {
+            "support": 3,
+            "predicts": "L2",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.438494,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 0,
+              "L2": 3,
+              "fiber": 0
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 2,
+            "predicts": "L1",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.342372,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 2,
+              "L2": 0,
+              "fiber": 0
+            }
+          }
+        },
+        {
+          "controlled_for": "serdes:L1:valid",
+          "jaccard": 0.7987,
+          "candidate_within_token_negative_stratum": {
+            "support": 6,
+            "predicts": "L2",
+            "precision": 0.8333,
+            "wilson_lower_bound": 0.436491,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 0,
+              "L2": 5,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 2,
+            "predicts": "L1",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.342372,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 2,
+              "L2": 0,
+              "fiber": 0
+            }
+          }
+        },
+        {
+          "controlled_for": "telemetry:partial_telemetry",
+          "jaccard": 0.764,
+          "candidate_within_token_negative_stratum": {
+            "support": 10,
+            "predicts": "L1",
+            "precision": 0.6,
+            "wilson_lower_bound": 0.31267,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 6,
+              "L2": 3,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 0
+          }
+        },
+        {
+          "controlled_for": "status:L1:RxLOL",
+          "jaccard": 0.4234,
+          "candidate_within_token_negative_stratum": {
+            "support": 75,
+            "predicts": "L2",
+            "precision": 0.5733,
+            "wilson_lower_bound": 0.460526,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 27,
+              "L2": 43,
+              "fiber": 5
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 24,
+            "predicts": "L1",
+            "precision": 0.5,
+            "wilson_lower_bound": 0.314271,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 12,
+              "L2": 11,
+              "fiber": 1
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 55,
+        "fire_rate_on_quiet_cases": 0.9016,
+        "fire_rate_overall": 0.8261
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    },
+    {
+      "candidate": "probe:lane_width:equal",
+      "train": {
+        "support": 121,
+        "predicts": "L2",
+        "precision": 0.6446,
+        "wilson_lower_bound": 0.5561,
+        "prior_for_predicted_label": 0.6211,
+        "beats_prior_at_95": false,
+        "label_counts": {
+          "L1": 33,
+          "L2": 78,
+          "fiber": 10
+        }
+      },
+      "test_hits": 74,
+      "test_total": 107,
+      "top_collinear_dictionary_tokens": [
+        {
+          "token": "serdes:L1:valid",
+          "jaccard": 0.7908,
+          "candidate_given_token": 0.7908,
+          "token_given_candidate": 1.0,
+          "support": 153
+        },
+        {
+          "token": "serdes:L2:valid",
+          "jaccard": 0.7756,
+          "candidate_given_token": 0.7756,
+          "token_given_candidate": 1.0,
+          "support": 156
+        },
+        {
+          "token": "telemetry:partial_telemetry",
+          "jaccard": 0.7107,
+          "candidate_given_token": 0.7483,
+          "token_given_candidate": 0.9339,
+          "support": 151
+        },
+        {
+          "token": "status:L1:RxLOL",
+          "jaccard": 0.3864,
+          "candidate_given_token": 0.8226,
+          "token_given_candidate": 0.4215,
+          "support": 62
+        }
+      ],
+      "stratified_residual_gain": [
+        {
+          "controlled_for": "serdes:L1:valid",
+          "jaccard": 0.7908,
+          "candidate_within_token_negative_stratum": {
+            "support": 0
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 8,
+            "predicts": "L2",
+            "precision": 0.625,
+            "wilson_lower_bound": 0.305738,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 2,
+              "L2": 5,
+              "fiber": 1
+            }
+          }
+        },
+        {
+          "controlled_for": "serdes:L2:valid",
+          "jaccard": 0.7756,
+          "candidate_within_token_negative_stratum": {
+            "support": 0
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 5,
+            "predicts": "L2",
+            "precision": 0.6,
+            "wilson_lower_bound": 0.23072,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 2,
+              "L2": 3,
+              "fiber": 0
+            }
+          }
+        },
+        {
+          "controlled_for": "telemetry:partial_telemetry",
+          "jaccard": 0.7107,
+          "candidate_within_token_negative_stratum": {
+            "support": 8,
+            "predicts": "L1",
+            "precision": 0.5,
+            "wilson_lower_bound": 0.215213,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 4,
+              "L2": 3,
+              "fiber": 1
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 2,
+            "predicts": "L1",
+            "precision": 1.0,
+            "wilson_lower_bound": 0.342372,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 2,
+              "L2": 0,
+              "fiber": 0
+            }
+          }
+        },
+        {
+          "controlled_for": "status:L1:RxLOL",
+          "jaccard": 0.3864,
+          "candidate_within_token_negative_stratum": {
+            "support": 70,
+            "predicts": "L2",
+            "precision": 0.5857,
+            "wilson_lower_bound": 0.46881,
+            "prior_for_predicted_label": 0.6211,
+            "beats_prior_at_95": false,
+            "label_counts": {
+              "L1": 24,
+              "L2": 41,
+              "fiber": 5
+            }
+          },
+          "baseline_within_token_negative_stratum": {
+            "support": 29,
+            "predicts": "L1",
+            "precision": 0.5172,
+            "wilson_lower_bound": 0.344307,
+            "prior_for_predicted_label": 0.3043,
+            "beats_prior_at_95": true,
+            "label_counts": {
+              "L1": 15,
+              "L2": 13,
+              "fiber": 1
+            }
+          }
+        }
+      ],
+      "morphology_check": {
+        "quiet_cases": 61,
+        "candidate_fires_on_quiet_cases": 51,
+        "fire_rate_on_quiet_cases": 0.8361,
+        "fire_rate_overall": 0.7516
+      },
+      "verdict": "reject:训练集上就没有超过先验"
+    }
+  ]
+}

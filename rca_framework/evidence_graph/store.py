@@ -245,6 +245,13 @@ class EvidenceGraph:
                 return case.label
         raise KeyError(case_id)
 
+    def diagnosis_for(self, case_id: str) -> Optional[CaseDiagnosis]:
+        """Return the per-case diagnosis graph when training knowledge recorded one."""
+        for diagnosis in self.case_diagnoses:
+            if diagnosis.case_id == case_id:
+                return diagnosis
+        return None
+
     def token_index(self) -> Dict[str, Tuple[str, ...]]:
         """token -> 拥有它的 case id。倒排索引，不含标签。"""
         index: Dict[str, List[str]] = defaultdict(list)

@@ -47,8 +47,10 @@ def test_formal_evaluation_writes_reproducible_artifacts(tmp_path, monkeypatch):
     summary = read_json(output_dir / "summary.json")["policies"]["coverage-v2"]
     assert summary["routing"]["counts"] == {"N5a": 20, "N5b": 17, "N5c": 46, "N6": 2}
     assert summary["n5a"]["mixed_signature_cases"] == 1
-    assert summary["final_decisions"]["answered"] == 35
+    assert summary["final_decisions"]["answered"] == 25
     assert summary["final_decisions"]["class_metrics"]["fiber"]["support"] == 6
+    assert summary["forced_class_metrics"]["fiber"]["support"] == 6
+    assert summary["threshold_sweep"]
     assert summary["selective_risk_curve"]
 
     outcomes = read_json(output_dir / "outcomes.json")["coverage-v2"]

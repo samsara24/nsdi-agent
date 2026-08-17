@@ -1,0 +1,847 @@
+{
+  "version": "learned-predicate-ranges-v1",
+  "fitted_case_count": 122,
+  "label_distribution": {
+    "L1": 39,
+    "L2": 76,
+    "fiber": 7
+  },
+  "parameters": {
+    "max_depth": 1,
+    "min_full_leaf": 10,
+    "min_fold_leaf": 8,
+    "min_observed": 40,
+    "min_gini_gain": 0.03,
+    "max_fold_dispersion_over_span": 0.15,
+    "folds": 5,
+    "require_different_adjacent_majority": true
+  },
+  "candidate_count": 16,
+  "accepted_count": 2,
+  "accepted": {
+    "level:L2:media_snr_min": {
+      "key": "level:L2:media_snr_min",
+      "kind": "level",
+      "side": "L2",
+      "metric": "media_snr_min",
+      "threshold": 23.805,
+      "gini_gain": 0.03686557,
+      "observed_count": 122,
+      "observed_range": [
+        17.51,
+        26.3
+      ],
+      "fold_thresholds": [
+        24.445,
+        23.805,
+        24.66,
+        23.805,
+        24.645
+      ],
+      "fold_dispersion_over_span": 0.09726962,
+      "branches": {
+        "le": {
+          "support": 10,
+          "label_distribution": {
+            "L1": 8,
+            "L2": 2,
+            "fiber": 0
+          },
+          "majority_label": "L1",
+          "purity": 0.8,
+          "distribution_shift": 0.48032787
+        },
+        "gt": {
+          "support": 112,
+          "label_distribution": {
+            "L1": 31,
+            "L2": 74,
+            "fiber": 7
+          },
+          "majority_label": "L2",
+          "purity": 0.660714,
+          "distribution_shift": 0.04288642
+        }
+      },
+      "salient_branch": "le",
+      "accepted": true,
+      "reason": "accepted"
+    },
+    "spread:L2:rxpower": {
+      "key": "spread:L2:rxpower",
+      "kind": "spread",
+      "side": "L2",
+      "metric": "rxpower",
+      "threshold": 2.165,
+      "gini_gain": 0.07626838,
+      "observed_count": 122,
+      "observed_range": [
+        0.0,
+        13.81
+      ],
+      "fold_thresholds": [
+        2.17,
+        1.58,
+        1.58,
+        1.105,
+        1.58
+      ],
+      "fold_dispersion_over_span": 0.07711803,
+      "branches": {
+        "le": {
+          "support": 112,
+          "label_distribution": {
+            "L1": 29,
+            "L2": 76,
+            "fiber": 7
+          },
+          "majority_label": "L2",
+          "purity": 0.678571,
+          "distribution_shift": 0.06074356
+        },
+        "gt": {
+          "support": 10,
+          "label_distribution": {
+            "L1": 10,
+            "L2": 0,
+            "fiber": 0
+          },
+          "majority_label": "L1",
+          "purity": 1.0,
+          "distribution_shift": 0.68032787
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": true,
+      "reason": "accepted"
+    }
+  },
+  "candidates": [
+    {
+      "key": "level:L1:media_snr_min",
+      "kind": "level",
+      "side": "L1",
+      "metric": "media_snr_min",
+      "threshold": 24.905,
+      "gini_gain": 0.01600468,
+      "observed_count": 119,
+      "observed_range": [
+        16.71,
+        26.31
+      ],
+      "fold_thresholds": [
+        24.96,
+        24.795,
+        24.905,
+        24.905,
+        26.13
+      ],
+      "fold_dispersion_over_span": 0.1390625,
+      "branches": {
+        "le": {
+          "support": 41,
+          "label_distribution": {
+            "L1": 18,
+            "L2": 21,
+            "fiber": 2
+          },
+          "majority_label": "L2",
+          "purity": 0.512195,
+          "distribution_shift": 0.11935226
+        },
+        "gt": {
+          "support": 78,
+          "label_distribution": {
+            "L1": 19,
+            "L2": 54,
+            "fiber": 5
+          },
+          "majority_label": "L2",
+          "purity": 0.692308,
+          "distribution_shift": 0.07608239
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "level:L1:rxpower_mean",
+      "kind": "level",
+      "side": "L1",
+      "metric": "rxpower_mean",
+      "threshold": -0.45625,
+      "gini_gain": 0.0110915,
+      "observed_count": 119,
+      "observed_range": [
+        -3.01,
+        2.78
+      ],
+      "fold_thresholds": [
+        -0.46625,
+        -0.45625,
+        1.12375,
+        -0.04375,
+        -0.45625
+      ],
+      "fold_dispersion_over_span": 0.2746114,
+      "branches": {
+        "le": {
+          "support": 14,
+          "label_distribution": {
+            "L1": 2,
+            "L2": 12,
+            "fiber": 0
+          },
+          "majority_label": "L2",
+          "purity": 0.857143,
+          "distribution_shift": 0.23419204
+        },
+        "gt": {
+          "support": 105,
+          "label_distribution": {
+            "L1": 35,
+            "L2": 63,
+            "fiber": 7
+          },
+          "majority_label": "L2",
+          "purity": 0.6,
+          "distribution_shift": 0.02295082
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "level:L1:txpower_mean",
+      "kind": "level",
+      "side": "L1",
+      "metric": "txpower_mean",
+      "threshold": 0.6975,
+      "gini_gain": 0.02254117,
+      "observed_count": 119,
+      "observed_range": [
+        -1.365,
+        1.5899999999999999
+      ],
+      "fold_thresholds": [
+        0.6975,
+        0.715,
+        0.57125,
+        0.57125,
+        0.79875
+      ],
+      "fold_dispersion_over_span": 0.07698816,
+      "branches": {
+        "le": {
+          "support": 44,
+          "label_distribution": {
+            "L1": 7,
+            "L2": 33,
+            "fiber": 4
+          },
+          "majority_label": "L2",
+          "purity": 0.75,
+          "distribution_shift": 0.16058122
+        },
+        "gt": {
+          "support": 75,
+          "label_distribution": {
+            "L1": 30,
+            "L2": 42,
+            "fiber": 3
+          },
+          "majority_label": "L2",
+          "purity": 0.56,
+          "distribution_shift": 0.08032787
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L1:host_snr",
+      "kind": "spread",
+      "side": "L1",
+      "metric": "host_snr",
+      "threshold": 0.915,
+      "gini_gain": 0.01971282,
+      "observed_count": 25,
+      "observed_range": [
+        0.21000000000000085,
+        2.6900000000000013
+      ],
+      "fold_thresholds": [
+        0.89,
+        0.915,
+        0.93,
+        0.915,
+        0.915
+      ],
+      "fold_dispersion_over_span": 0.01612903,
+      "branches": {
+        "le": {
+          "support": 12,
+          "label_distribution": {
+            "L1": 5,
+            "L2": 7,
+            "fiber": 0
+          },
+          "majority_label": "L2",
+          "purity": 0.583333,
+          "distribution_shift": 0.09699454
+        },
+        "gt": {
+          "support": 13,
+          "label_distribution": {
+            "L1": 8,
+            "L2": 5,
+            "fiber": 0
+          },
+          "majority_label": "L1",
+          "purity": 0.615385,
+          "distribution_shift": 0.29571248
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": false,
+      "reason": "observed_count<40;gini_gain<0.03"
+    },
+    {
+      "key": "spread:L1:media_snr",
+      "kind": "spread",
+      "side": "L1",
+      "metric": "media_snr",
+      "threshold": 0.575,
+      "gini_gain": 0.01040059,
+      "observed_count": 119,
+      "observed_range": [
+        0.0,
+        9.18
+      ],
+      "fold_thresholds": [
+        0.6,
+        0.575,
+        1.58,
+        1.58,
+        0.575
+      ],
+      "fold_dispersion_over_span": 0.10947712,
+      "branches": {
+        "le": {
+          "support": 37,
+          "label_distribution": {
+            "L1": 15,
+            "L2": 19,
+            "fiber": 3
+          },
+          "majority_label": "L2",
+          "purity": 0.513514,
+          "distribution_shift": 0.10943731
+        },
+        "gt": {
+          "support": 82,
+          "label_distribution": {
+            "L1": 22,
+            "L2": 56,
+            "fiber": 4
+          },
+          "majority_label": "L2",
+          "purity": 0.682927,
+          "distribution_shift": 0.05997601
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L1:rxpower",
+      "kind": "spread",
+      "side": "L1",
+      "metric": "rxpower",
+      "threshold": 0.9,
+      "gini_gain": 0.02726279,
+      "observed_count": 119,
+      "observed_range": [
+        0.030000000000000027,
+        13.68
+      ],
+      "fold_thresholds": [
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        1.8
+      ],
+      "fold_dispersion_over_span": 0.06593407,
+      "branches": {
+        "le": {
+          "support": 92,
+          "label_distribution": {
+            "L1": 35,
+            "L2": 53,
+            "fiber": 4
+          },
+          "majority_label": "L2",
+          "purity": 0.576087,
+          "distribution_shift": 0.06076265
+        },
+        "gt": {
+          "support": 27,
+          "label_distribution": {
+            "L1": 2,
+            "L2": 22,
+            "fiber": 3
+          },
+          "majority_label": "L2",
+          "purity": 0.814815,
+          "distribution_shift": 0.24559806
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": false,
+      "reason": "gini_gain<0.03;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L1:serdes_snr",
+      "kind": "spread",
+      "side": "L1",
+      "metric": "serdes_snr",
+      "threshold": 580323.5,
+      "gini_gain": 0.009807,
+      "observed_count": 120,
+      "observed_range": [
+        11059.0,
+        686526.0
+      ],
+      "fold_thresholds": [
+        580323.5,
+        99802.0,
+        580323.5,
+        578215.5,
+        580323.5
+      ],
+      "fold_dispersion_over_span": 0.71139153,
+      "branches": {
+        "le": {
+          "support": 98,
+          "label_distribution": {
+            "L1": 29,
+            "L2": 65,
+            "fiber": 4
+          },
+          "majority_label": "L2",
+          "purity": 0.663265,
+          "distribution_shift": 0.04031449
+        },
+        "gt": {
+          "support": 22,
+          "label_distribution": {
+            "L1": 9,
+            "L2": 10,
+            "fiber": 3
+          },
+          "majority_label": "L2",
+          "purity": 0.454545,
+          "distribution_shift": 0.16840537
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L1:txpower",
+      "kind": "spread",
+      "side": "L1",
+      "metric": "txpower",
+      "threshold": 0.03,
+      "gini_gain": 0.01855014,
+      "observed_count": 119,
+      "observed_range": [
+        0.0,
+        1.5299999999999998
+      ],
+      "fold_thresholds": [
+        0.03,
+        0.03,
+        0.33,
+        0.355,
+        0.33
+      ],
+      "fold_dispersion_over_span": 0.2124183,
+      "branches": {
+        "le": {
+          "support": 25,
+          "label_distribution": {
+            "L1": 13,
+            "L2": 12,
+            "fiber": 0
+          },
+          "majority_label": "L1",
+          "purity": 0.52,
+          "distribution_shift": 0.20032787
+        },
+        "gt": {
+          "support": 94,
+          "label_distribution": {
+            "L1": 24,
+            "L2": 63,
+            "fiber": 7
+          },
+          "majority_label": "L2",
+          "purity": 0.670213,
+          "distribution_shift": 0.06435298
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span"
+    },
+    {
+      "key": "level:L2:media_snr_min",
+      "kind": "level",
+      "side": "L2",
+      "metric": "media_snr_min",
+      "threshold": 23.805,
+      "gini_gain": 0.03686557,
+      "observed_count": 122,
+      "observed_range": [
+        17.51,
+        26.3
+      ],
+      "fold_thresholds": [
+        24.445,
+        23.805,
+        24.66,
+        23.805,
+        24.645
+      ],
+      "fold_dispersion_over_span": 0.09726962,
+      "branches": {
+        "le": {
+          "support": 10,
+          "label_distribution": {
+            "L1": 8,
+            "L2": 2,
+            "fiber": 0
+          },
+          "majority_label": "L1",
+          "purity": 0.8,
+          "distribution_shift": 0.48032787
+        },
+        "gt": {
+          "support": 112,
+          "label_distribution": {
+            "L1": 31,
+            "L2": 74,
+            "fiber": 7
+          },
+          "majority_label": "L2",
+          "purity": 0.660714,
+          "distribution_shift": 0.04288642
+        }
+      },
+      "salient_branch": "le",
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "key": "level:L2:rxpower_mean",
+      "kind": "level",
+      "side": "L2",
+      "metric": "rxpower_mean",
+      "threshold": -0.35625,
+      "gini_gain": 0.02025069,
+      "observed_count": 122,
+      "observed_range": [
+        -2.175,
+        2.64
+      ],
+      "fold_thresholds": [
+        -0.67625,
+        -0.35625,
+        0.4425,
+        0.25875,
+        -0.35625
+      ],
+      "fold_dispersion_over_span": 0.23234683,
+      "branches": {
+        "le": {
+          "support": 19,
+          "label_distribution": {
+            "L1": 10,
+            "L2": 7,
+            "fiber": 2
+          },
+          "majority_label": "L1",
+          "purity": 0.526316,
+          "distribution_shift": 0.25452977
+        },
+        "gt": {
+          "support": 103,
+          "label_distribution": {
+            "L1": 29,
+            "L2": 69,
+            "fiber": 5
+          },
+          "majority_label": "L2",
+          "purity": 0.669903,
+          "distribution_shift": 0.04695209
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span"
+    },
+    {
+      "key": "level:L2:txpower_mean",
+      "kind": "level",
+      "side": "L2",
+      "metric": "txpower_mean",
+      "threshold": 0.32875,
+      "gini_gain": 0.00914735,
+      "observed_count": 122,
+      "observed_range": [
+        -1.53,
+        1.9075
+      ],
+      "fold_thresholds": [
+        0.32875,
+        0.32875,
+        0.32875,
+        0.32875,
+        1.30625
+      ],
+      "fold_dispersion_over_span": 0.28436364,
+      "branches": {
+        "le": {
+          "support": 22,
+          "label_distribution": {
+            "L1": 4,
+            "L2": 17,
+            "fiber": 1
+          },
+          "majority_label": "L2",
+          "purity": 0.772727,
+          "distribution_shift": 0.14977645
+        },
+        "gt": {
+          "support": 100,
+          "label_distribution": {
+            "L1": 35,
+            "L2": 59,
+            "fiber": 6
+          },
+          "majority_label": "L2",
+          "purity": 0.59,
+          "distribution_shift": 0.03295082
+        }
+      },
+      "salient_branch": "le",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L2:host_snr",
+      "accepted": false,
+      "reason": "insufficient_support",
+      "observed_count": 14
+    },
+    {
+      "key": "spread:L2:media_snr",
+      "kind": "spread",
+      "side": "L2",
+      "metric": "media_snr",
+      "threshold": 0.905,
+      "gini_gain": 0.00666148,
+      "observed_count": 122,
+      "observed_range": [
+        0.0,
+        7.279999999999998
+      ],
+      "fold_thresholds": [
+        0.93,
+        1.425,
+        0.87,
+        1.105,
+        0.905
+      ],
+      "fold_dispersion_over_span": 0.07623626,
+      "branches": {
+        "le": {
+          "support": 75,
+          "label_distribution": {
+            "L1": 27,
+            "L2": 43,
+            "fiber": 5
+          },
+          "majority_label": "L2",
+          "purity": 0.573333,
+          "distribution_shift": 0.04961749
+        },
+        "gt": {
+          "support": 47,
+          "label_distribution": {
+            "L1": 12,
+            "L2": 33,
+            "fiber": 2
+          },
+          "majority_label": "L2",
+          "purity": 0.702128,
+          "distribution_shift": 0.07917684
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": false,
+      "reason": "gini_gain<0.03;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L2:rxpower",
+      "kind": "spread",
+      "side": "L2",
+      "metric": "rxpower",
+      "threshold": 2.165,
+      "gini_gain": 0.07626838,
+      "observed_count": 122,
+      "observed_range": [
+        0.0,
+        13.81
+      ],
+      "fold_thresholds": [
+        2.17,
+        1.58,
+        1.58,
+        1.105,
+        1.58
+      ],
+      "fold_dispersion_over_span": 0.07711803,
+      "branches": {
+        "le": {
+          "support": 112,
+          "label_distribution": {
+            "L1": 29,
+            "L2": 76,
+            "fiber": 7
+          },
+          "majority_label": "L2",
+          "purity": 0.678571,
+          "distribution_shift": 0.06074356
+        },
+        "gt": {
+          "support": 10,
+          "label_distribution": {
+            "L1": 10,
+            "L2": 0,
+            "fiber": 0
+          },
+          "majority_label": "L1",
+          "purity": 1.0,
+          "distribution_shift": 0.68032787
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "key": "spread:L2:serdes_snr",
+      "kind": "spread",
+      "side": "L2",
+      "metric": "serdes_snr",
+      "threshold": 88139.5,
+      "gini_gain": 0.01105632,
+      "observed_count": 122,
+      "observed_range": [
+        8863.0,
+        671168.0
+      ],
+      "fold_thresholds": [
+        88139.5,
+        134009.0,
+        88293.5,
+        30759.0,
+        88139.5
+      ],
+      "fold_dispersion_over_span": 0.15589494,
+      "branches": {
+        "le": {
+          "support": 75,
+          "label_distribution": {
+            "L1": 28,
+            "L2": 42,
+            "fiber": 5
+          },
+          "majority_label": "L2",
+          "purity": 0.56,
+          "distribution_shift": 0.06295082
+        },
+        "gt": {
+          "support": 47,
+          "label_distribution": {
+            "L1": 11,
+            "L2": 34,
+            "fiber": 2
+          },
+          "majority_label": "L2",
+          "purity": 0.723404,
+          "distribution_shift": 0.10045344
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span;adjacent_ranges_same_majority"
+    },
+    {
+      "key": "spread:L2:txpower",
+      "kind": "spread",
+      "side": "L2",
+      "metric": "txpower",
+      "threshold": 0.48,
+      "gini_gain": 0.01669262,
+      "observed_count": 122,
+      "observed_range": [
+        0.0,
+        0.98
+      ],
+      "fold_thresholds": [
+        0.45,
+        0.48,
+        0.48,
+        0.175,
+        0.48
+      ],
+      "fold_dispersion_over_span": 0.31122449,
+      "branches": {
+        "le": {
+          "support": 83,
+          "label_distribution": {
+            "L1": 31,
+            "L2": 46,
+            "fiber": 6
+          },
+          "majority_label": "L2",
+          "purity": 0.554217,
+          "distribution_shift": 0.06873395
+        },
+        "gt": {
+          "support": 39,
+          "label_distribution": {
+            "L1": 8,
+            "L2": 30,
+            "fiber": 1
+          },
+          "majority_label": "L2",
+          "purity": 0.769231,
+          "distribution_shift": 0.14627995
+        }
+      },
+      "salient_branch": "gt",
+      "accepted": false,
+      "reason": "gini_gain<0.03;fold_threshold_dispersion>0.15_span;adjacent_ranges_same_majority"
+    }
+  ]
+}

@@ -1,8 +1,7 @@
 """T6 测试：M8 输出协议、prompt 模板与受约束推理循环。
 
 重点锁定验收要求「LLM 每步输出可被约束校验；不合规可回退或重写」，
-以及一条比它更重要的性质：**重写用尽后弃权，而不是接受最后一次输出**。
-建立在虚构证据上的结论比没有结论更有害。
+以及全覆盖口径下「重写用尽后低置信强制产出，而不是无结论退出」。
 """
 
 from __future__ import annotations
@@ -75,6 +74,12 @@ def answer(tokens, verdict="L2", constraints=()):
         }],
         "verdict": verdict,
         "confidence": 0.7,
+        "confidence_breakdown": {
+            "evidence_completeness": 0.6,
+            "physical_compliance": 0.7,
+            "reasoning_completeness": 0.6,
+            "history_similarity": 0.5,
+        },
         "missing_information": ["对端同 lane 的收光读数"],
     }, ensure_ascii=False)
 
@@ -125,22 +130,32 @@ def test_parser_is_not_confused_by_braces_inside_strings():
             "cited_evidence": ["level:L2:rxpower_mean:low_tail"],
             "cited_constraints": [], "effect": "support", "target": "L2",
         }],
-        "verdict": "L2", "confidence": 0.5, "missing_information": [],
+        "verdict": "L2", "confidence": 0.5,
+        "confidence_breakdown": {
+            "evidence_completeness": 0.5,
+            "physical_compliance": 0.5,
+            "reasoning_completeness": 0.5,
+            "history_similarity": 0.5,
+        },
+        "missing_information": [],
     }, ensure_ascii=False)
     parsed = parse_response(raw)
     assert parsed is not None and parsed.verdict == "L2"
 
 
-def test_parser_accepts_abstain_and_normalizes_it():
-    parsed = parse_response('{"steps": [], "verdict": "abstain", "confidence": 0.1}')
-    assert parsed is not None
-    assert parsed.verdict is None
-    assert parsed.confidence == pytest.approx(0.1)
+def test_parser_rejects_abstain_for_forced_coverage():
+    parsed = parse_response(
+        '{"steps": [], "verdict": "abstain", "confidence": 0.1, '
+        '"confidence_breakdown": {"evidence_completeness": 0.1, "physical_compliance": 0.1, '
+        '"reasoning_completeness": 0.1, "history_similarity": 0.1}, "missing_information": []}'
+    )
+    assert parsed is None
 
 
 def test_parser_clamps_confidence_and_collects_citations():
     parsed = parse_response(answer(("a", "b")).replace('"confidence": 0.7', '"confidence": 5'))
-    assert parsed.confidence == 1.0
+    assert parsed.self_reported_confidence == 1.0
+    assert parsed.confidence == pytest.approx(0.61)
     assert parsed.cited_evidence == ("a", "b")
     assert parsed.cited_constraints == ()
 
@@ -151,44 +166,52 @@ def test_excluded_root_causes_are_structured_not_textual():
             {"claim": "本端无光", "cited_evidence": ["drop:L1:txpower:all_lanes"],
              "cited_constraints": ["C6_tx_down_excludes_medium"], "effect": "exclude", "target": "fiber"},
         ],
-        "verdict": "L1", "confidence": 0.6, "missing_information": [],
+        "verdict": "L1", "confidence": 0.6,
+        "confidence_breakdown": {
+            "evidence_completeness": 0.6,
+            "physical_compliance": 0.6,
+            "reasoning_completeness": 0.6,
+            "history_similarity": 0.6,
+        },
+        "missing_information": [],
     }, ensure_ascii=False))
     assert parsed.excluded_root_causes() == ("fiber",)
 
 
 def test_output_schema_matches_the_dataclass():
     required = set(DIAGNOSIS_OUTPUT_SCHEMA["required"])
-    assert required == {"steps", "verdict", "confidence", "missing_information"}
-    assert "abstain" in DIAGNOSIS_OUTPUT_SCHEMA["properties"]["verdict"]["enum"]
+    assert required == {"steps", "verdict", "confidence", "confidence_breakdown", "missing_information"}
+    assert "abstain" not in DIAGNOSIS_OUTPUT_SCHEMA["properties"]["verdict"]["enum"]
 
 
 # --- prompt -----------------------------------------------------------------
 
-def test_prompt_contains_evidence_constraints_and_abstain_option(n5c):
+def test_prompt_contains_evidence_constraints_and_forced_option(n5c):
     prompt = build_prompt(n5c["request"])
     for token in n5c["request"].evidence_tokens:
         assert token in prompt
-    for constraint_id in n5c["request"].constraint_ids:
-        assert constraint_id in prompt
-    assert "abstain" in prompt
-    assert "待专家审核" in prompt
+    assert "P5_tx_down_excludes_medium" in prompt
+    assert "M6_fiber_not_identifiable_without_field_evidence" in prompt
+    assert "专家排障 SOP" in prompt
+    assert "S1_collect_anomaly_level" in prompt
+    assert "禁止输出 abstain" in prompt
+    assert "纯物理约束" in prompt
+    assert "量测契约" in prompt
 
 
 def test_prompt_only_injects_relevant_constraints(n5c):
-    """不能把整个库无差别塞进去。"""
+    """低档不再把旧 C 约束库无差别塞进去。"""
     from rca_framework.constraints.library import CONSTRAINT_LIBRARY
 
     prompt = build_prompt(n5c["request"])
     assert len(n5c["request"].constraint_ids) < len(CONSTRAINT_LIBRARY.constraints)
-    absent = set(("C1_bias_zero_means_laser_off", "C2_bias_healthy_band")) - set(n5c["request"].constraint_ids)
-    for constraint_id in absent:
-        assert constraint_id not in prompt
+    assert "C2_bias_healthy_band" not in prompt
+    assert "Wilson" not in prompt
 
 
 def test_prompt_orders_exclusions_before_indicators(n5c):
     prompt = build_prompt(n5c["request"])
-    assert prompt.index("## 排除条件") < prompt.index("## 禁止推断")
-    assert prompt.index("## 禁止推断") < prompt.index("## 倾向性线索")
+    assert prompt.index("# 纯物理约束") < prompt.index("# 量测契约")
 
 
 def test_retry_feedback_is_labelled_as_a_past_mistake(n5c):
@@ -200,7 +223,7 @@ def test_retry_feedback_is_labelled_as_a_past_mistake(n5c):
 
 def test_prompt_is_deterministic(n5c):
     assert build_prompt(n5c["request"]) == build_prompt(n5c["request"])
-    assert PROMPT_TEMPLATE_VERSION == "rca-constrained-reasoning-v7"
+    assert PROMPT_TEMPLATE_VERSION == "rca-forced-multidim-v12"
     assert len(prompt_template_hash()) == 16
 
 
@@ -211,25 +234,25 @@ def test_prompt_exposes_checker_effect_target_and_token_contracts(n5c):
     assert "target 只能为" in prompt
     assert "可用 token 前缀=" in prompt
     assert "严禁写入 `cited_constraints`" in prompt
-    assert "约束编号必须从清单中逐字完整复制" in prompt
+    assert "违反后该推理步骤或结论作废" in prompt
 
 
-def test_prompt_injects_learned_sop_as_advisory_not_evidence(n5c):
+def test_prompt_injects_numeric_tree_as_advisory_not_evidence(n5c):
     from dataclasses import replace
 
     request = replace(
         n5c["request"],
-        sop_prediction={
+        decision_tree_prediction={
             "verdict": "L2",
             "leaf_id": "root.present",
-            "path": ["present:drop:L2:rxpower:all_lanes"],
+            "path": ["L1.rxpower.min <= -2.5"],
             "support": 17,
             "confidence": 0.7,
         },
     )
     prompt = build_prompt(request)
-    assert "训练集归纳 SOP" in prompt
-    assert "不能作为 cited_evidence" in prompt
+    assert "numeric_decision_tree_path" in prompt
+    assert "量测契约只能否决不可信推理" in prompt
     assert '"leaf_id": "root.present"' in prompt
 
 
@@ -246,6 +269,7 @@ def test_prompt_is_branch_aware_for_arbitration(n5c):
     assert "N5a 分支" in prompt
     assert "历史标签不纯" in prompt
     assert '"L1": 2' in prompt and '"L2": 3' in prompt
+    assert "专家排障 SOP" not in prompt
 
 
 def test_prompt_separates_incomplete_telemetry_from_insufficient_evidence(n5c):
@@ -255,20 +279,22 @@ def test_prompt_separates_incomplete_telemetry_from_insufficient_evidence(n5c):
     弃权判据必须落在「可用证据能否区分候选根因」上，这条不能被改回去。
     """
     prompt = build_prompt(n5c["request"])
-    assert "不是弃权理由" in prompt
-    assert "可用证据能不能把候选根因区分开" in prompt
-    # 弃权仍然必须是被允许的选项，修这个偏差不能把弃权一并修没了。
-    assert "abstain" in prompt
-    assert "同样吻合" in prompt
+    assert "不是拒答理由" in prompt
+    assert "证据不足必须体现为低 evidence_completeness" in prompt
+    assert "禁止输出 abstain" in prompt
+    assert "L1/L2/fiber 三选一" in prompt
 
 
 # --- 推理循环 ---------------------------------------------------------------
 
-def test_none_backend_abstains_instead_of_guessing(n5c):
+def test_none_backend_forces_low_confidence_fallback(n5c):
     reasoner = ConstrainedReasoner(backend=NoneBackend())
     trace = reasoner.reason(n5c["request"], n5c["pack"])
-    assert trace.accepted is None
-    assert "未产出可校验的结构化输出" in trace.abstain_reason
+    assert trace.accepted is not None
+    assert trace.accepted.verdict in ("L1", "L2", "fiber")
+    assert trace.accepted.confidence == 0.0
+    assert trace.accepted.fallback_source == "parse_failure"
+    assert "强制低置信兜底" in trace.degradation_reason
     assert trace.backend_name == "none"
 
 
@@ -302,16 +328,23 @@ def test_violating_answer_triggers_a_rewrite_with_feedback(n5c):
     assert "上一次回答未通过物理约束校验" in second_prompt
 
 
-def test_persistent_violation_ends_in_abstention_not_acceptance(n5c):
-    """重写用尽仍不合规时必须弃权。建立在虚构证据上的结论比没有结论更有害。"""
+def test_persistent_violation_ends_in_low_confidence_forced_answer(n5c):
+    """重写用尽仍不合规时保留低置信候选，并把 fatal 作为扣分明细落盘。"""
     backend = ScriptedBackend(responses=[
         [answer(("drop:L9:fake:all_lanes",))],
         [answer(("drop:L8:also_fake:all_lanes",))],
     ])
     trace = ConstrainedReasoner(backend=backend, max_attempts=2).reason(n5c["request"], n5c["pack"])
-    assert trace.accepted is None
+    assert trace.accepted is not None
+    assert trace.accepted.verdict == "L2"
+    assert trace.accepted.confidence_breakdown.physical_compliance == 0.0
+    # history_similarity 不再采信模型自评，改由检索到的最高相似度直接给出。
+    similarity = n5c["request"].nearest_similarity
+    assert trace.accepted.confidence_breakdown.history_similarity == pytest.approx(similarity)
+    assert trace.accepted.confidence == pytest.approx(0.3 + 0.2 * similarity)
+    assert trace.accepted.fallback_source == "last_parsed_after_fatal"
     assert trace.attempt_count == 2
-    assert "均未通过物理约束校验" in trace.abstain_reason
+    assert "强制低置信兜底" in trace.degradation_reason
     assert all(not item.check.ok for item in trace.attempts)
 
 

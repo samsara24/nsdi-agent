@@ -50,7 +50,9 @@ from rca_framework.llm import (  # noqa: E402
     backend_for,
     prompt_template_hash,
 )
+from rca_framework.sop import EXPERT_SOP_VERSION, expert_sop_hash  # noqa: E402
 from rca_framework.types import ROOT_CAUSES  # noqa: E402
+from scripts.evaluate_routing import personal_alignment_gate  # noqa: E402
 from scripts.evaluate_routing import run_policy, show  # noqa: E402
 
 
@@ -223,8 +225,14 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-model-len", type=int, default=8192)
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.90)
     parser.add_argument("--disable-custom-all-reduce", action="store_true")
-    parser.add_argument("--max-attempts", type=int, default=2)
+    parser.add_argument("--max-attempts", type=int, default=3)
     parser.add_argument("--decision-lower-bound", type=float, default=0.5)
+    parser.add_argument(
+        "--decision-confidence-threshold",
+        type=float,
+        dest="decision_lower_bound",
+        help="N6 多维综合置信度阈值；等价于 --decision-lower-bound",
+    )
     parser.add_argument("--decision-min-support", type=int, default=10)
     parser.add_argument(
         "--target-selective-risk",
@@ -240,14 +248,17 @@ def _parser() -> argparse.ArgumentParser:
         nargs="+",
         default=("branch",),
         choices=CANDIDATE_SOURCES,
-        help="M9 候选级联；加入 sop 表示分支不达标时允许退到 learned SOP 叶节点先验",
+        help=(
+            "M9 候选级联。正式默认只接受 branch；加入 sop/expert 仅用于显式消融或"
+            "对照实验，不能作为个人整体思路下的主链路默认值"
+        ),
     )
     parser.add_argument(
         "--non-identifiable-labels",
         nargs="*",
         default=(),
         choices=ROOT_CAUSES,
-        help="在现有遥测下不可识别的根因（C20）。命中候选转成带定向补采清单的 request_evidence",
+        help="保留兼容字段；forced-multidim v11 不再用它硬拦截三分类候选",
     )
     parser.add_argument(
         "--class-conditional-bounds",
@@ -411,6 +422,10 @@ def main() -> None:
                 "self_evolution": False,
                 "feedback_update": False,
                 "flow": "manifest train knowledge build -> persisted bundle reload -> manifest test inference",
+                "loop_target": (
+                    "evidence-graph shape, evidence-chain/path matching, physics key-evidence "
+                    "judgment, or expert-SOP-constrained LLM reasoning"
+                ),
             },
             "data": {
                 "data_dir": str(args.data_dir),
@@ -433,6 +448,8 @@ def main() -> None:
                 "feature_dictionary_hash": bundle.graph.dictionary_hash,
                 "learned_sop_version": bundle.sop.version,
                 "learned_sop_hash": bundle.sop.content_hash(),
+                "expert_sop_version": EXPERT_SOP_VERSION,
+                "expert_sop_hash": expert_sop_hash(),
                 "constraint_library_version": CONSTRAINT_LIBRARY.version,
                 "constraint_library_hash": CONSTRAINT_LIBRARY.content_hash(),
             },
@@ -444,6 +461,8 @@ def main() -> None:
                 "constraint_library_hash": CONSTRAINT_LIBRARY.content_hash(),
                 "sop": bundle.sop.version,
                 "sop_hash": bundle.sop.content_hash(),
+                "expert_sop": EXPERT_SOP_VERSION,
+                "expert_sop_hash": expert_sop_hash(),
                 "prompt_template": PROMPT_TEMPLATE_VERSION,
                 "prompt_template_hash": prompt_template_hash(),
                 "decision_policy": decision_policy.version,
@@ -459,6 +478,7 @@ def main() -> None:
             },
             "retrieval": {"top_k": args.top_k, "policy": policy.to_dict()},
             "decision": decision_policy.to_dict(),
+            "personal_alignment_gate": personal_alignment_gate(decision_policy),
             "llm": {
                 "backend": backend.name,
                 "model_path": args.model_path,

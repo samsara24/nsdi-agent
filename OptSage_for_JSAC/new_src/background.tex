@@ -1,0 +1,22 @@
+\section{Background and Motivation}\label{sec:background}
+
+\subsection{Preliminaries}
+
+\input{table/telemetry}
+
+\noindent \textbf{Heterogeneous Telemetry.} Every bidirectional link in optical networks gathers multi-dimensional telemetry from dual endpoints, forming the fundamental input for RCL. To elaborate their composition and value clearly, we categorize all telemetry into four categories that fully reflect the directional transmission characteristics of optical signals, as listed in \autoref{tab:telemetry}.
+
+\begin{itemize} [itemsep=0pt,leftmargin=*]
+    \item \textbf{Hardware attributes} capture inherent specifications of optical transceivers, serving as stable hardware baseline constraints for failure discrimination. This telemetry also provide reference standards for identifying hardware mismatches and device replacements.
+    \item \textbf{Performance metrics} cover all periodically sampled quantitative physical signals inside optical transceivers. These continuous time-series not only characterize the real-time operating status of dual transceivers, but also implicitly reflect the signal attenuation quality of the fibers along directional transmission paths.
+    \item \textbf{State variables} record instantaneous binary and enumerated port alarms. Such flags supply discrete abnormal state markers to capture abrupt, catastrophic failures.
+    \item \textbf{Operational logs} store discrete exception records and provide auxiliary contextual information. They record the occurrence sequence of abnormal port behaviors, helping the system distinguish accidental jitter from persistent failures.
+\end{itemize}
+
+\noindent \textbf{Optical Network Reliability and Root Cause Localization.} Optical network reliability quantifies the continuous service capability of inter‑accelerator communication. As a core guarantee for stable LLM training and inference, reliable optical transmission demands timely, accurate, and trustworthy RCL. Given heterogeneous telemetry collected across various layers of AI clusters, RCL targets discriminating among faulty transceivers and fibers as potential root causes.
+
+Notably, AI clusters are equipped with native reliability assurance mechanisms to tolerate minor transmission anomalies. When soft errors such as slight signal attenuation and individual lane degradation occur, the system automatically performs lane degrading and traffic rerouting to mitigate performance fluctuations. Such self-recovery operations merely reduce overall communication throughput without triggering link outage, and thus do not require RCL intervention. In contrast, severe hard faults cannot be compensated by built-in network scheduling strategies, inevitably leading to complete link interruption and task suspension. Under such failure scenarios, precise RCL is indispensable to guide targeted component replacement and maintenance.
+
+\subsection{Observations and Insights} 
+
+\subsection{Opportunities}

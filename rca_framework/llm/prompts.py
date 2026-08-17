@@ -8,9 +8,8 @@
    先给能排除的，再给不许推的，最后才给提高可能性的。理由见 T2：
    这套数据里「倾向性证据」很容易把模型推向多数类，先做排除可以在加权之前砍掉不可能的选项。
    这个顺序由 `constraints.library.render_prompt_block` 保证，有测试锁定。
-3. **弃权必须是被明确允许的选项。** 如果 prompt 只给三个根因，模型一定会三选一。
-   阶段 1 已经证明「零证据也给个答案」是 legacy 的主要失败模式，
-   所以 schema 里有 `abstain`，prompt 里也必须写清楚什么时候该用它。
+3. **每个 case 必须给三分类候选。** 证据不足不再用 abstain 表达，而是通过
+   多维置信度把低证据完整度、低物理合规性和推理缺口显式暴露给 N6 阈值门禁。
 """
 
 from __future__ import annotations
@@ -21,7 +20,10 @@ import inspect
 from typing import Any, Dict, Optional, Sequence
 
 from ..constraints.library import CONSTRAINT_LIBRARY, ConstraintLibrary, render_prompt_block
+from ..sop.expert_sop import EXPERT_SOP_VERSION, render_expert_sop_prompt_block
 from ..types import ROOT_CAUSES
+from .confidence_rubric import CONFIDENCE_RUBRIC
+from .prompt_templates.diagnose import DIAGNOSE_PROMPT_VERSION, build_diagnose_prompt
 
 
 #: v2 改写了弃权判据。v1 只说「证据不足就弃权」，真机实测（DeepSeek-R1-32B）
@@ -33,8 +35,8 @@ from ..types import ROOT_CAUSES
 #: 这不是 prompt 措辞问题——v6 的约束清单里确实写了 C16，但它混在 20 多条约束中间，
 #: 模型要先自己意识到「该用方向类约束」才会去读。v7 把方向表提到系统级硬规则，
 #: 让它在读证据之前就已经知道每一类观测指向哪一端。
-PROMPT_TEMPLATE_VERSION = "rca-constrained-reasoning-v7"
-SOP_VERSION = "learned-sop-advisory-v2"
+PROMPT_TEMPLATE_VERSION = "rca-forced-multidim-v12"
+SOP_VERSION = "expert-sop-n5c-v1+learned-sop-advisory-v2"
 
 ROOT_CAUSE_DEFINITIONS = {
     "L1": "400G 端口一侧的设备或端口根因",
@@ -74,8 +76,9 @@ ATTRIBUTION_DIRECTION_RULE = """归因方向（先于一切证据解释，任何
 不要为了凑证据把正常读数说成异常。
 """
 
+
 SYSTEM_PREAMBLE = """你是光链路故障定界专家。你的任务是在给定的物理约束内，
-依据给定证据判断根因，或者在证据不足时明确弃权。
+依据给定证据判断最可能根因，并为后续阈值门禁输出多维置信度。
 
 """ + ATTRIBUTION_DIRECTION_RULE + """
 硬性要求：
@@ -93,20 +96,23 @@ SYSTEM_PREAMBLE = """你是光链路故障定界专家。你的任务是在给�
 8. 约束编号必须从清单中逐字完整复制，例如 `C11_media_snr_floor`，禁止缩写为 `C11`。
 9. 不引用约束的推理步骤必须明确写 `"cited_constraints": []`。
 
-判据（决定给结论还是弃权）：
+判据（强制三选一 + 多维低置信表达）：
 
-- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。
-- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填
-  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。
-  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，
-  那就是对所有 case 都弃权，等于没有判断。
-- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。
-  把握不足应当体现为低 confidence，而不是直接弃权。
-- 只有在下面两种情况才填 `abstain`：
-  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；
-  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。
-- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，
-  同样是一次错误的判断。
+- `verdict` 必须在 L1 / L2 / fiber 中三选一，禁止输出 abstain、unknown、insufficient_evidence。
+- 判断标准是**可用证据更偏向哪个根因**，不是遥测采全没采全。证据不足时仍选最可能的根因，
+  但必须把 `evidence_completeness` 和/或 `reasoning_completeness` 打低分。
+- 遥测不完整是这批数据的常态。「未采集字段」清单只用来填 `missing_information`，
+  说明补采什么能提高把握；它本身不替代物理证据。
+- 关于 fiber（C20）：现有两端遥测通常无法唯一识别介质根因，端点根因是默认解释。
+  只有同时具备「两端均已发光」和「同一 lane 双向对称路径丢失」两条证据时，才可把 fiber 写成
+  `verdict`。只有单向「本端发光正常、对端收不到」时，target 取对端端点，不取 fiber。
+  若在缺少双向现场证据的情况下仍判 fiber，`physical_compliance` 必须 <= 0.3，
+  并在 `missing_information` 中请求 OTDR / 端面镜检 / 双向功率标定 / 换纤复测。
+- `verdict` 必须与 steps 自洽：把所有 `effect=support` 的 target 汇总、减去 `effect=exclude`
+  的 target，`verdict` 取得票最高的那一个。若想给的结论与推理链汇总不一致，
+  先补写能支撑它的 support 步骤，不要直接输出与自己推理链矛盾的结论。
+
+""" + CONFIDENCE_RUBRIC + """
 """
 
 OUTPUT_INSTRUCTION = """只输出一个 JSON 对象，结构如下：
@@ -120,8 +126,14 @@ OUTPUT_INSTRUCTION = """只输出一个 JSON 对象，结构如下：
       "target": "L1 | L2 | fiber | \\"\\""
     }
   ],
-  "verdict": "L1 | L2 | fiber | abstain",
+  "verdict": "L1 | L2 | fiber",
   "confidence": 0.0,
+  "confidence_breakdown": {
+    "evidence_completeness": 0.0,
+    "physical_compliance": 0.0,
+    "reasoning_completeness": 0.0,
+    "history_similarity": 0.0
+  },
   "missing_information": ["还需要补采什么才能提高把握"]
 }"""
 
@@ -161,6 +173,8 @@ def build_prompt(
     `retry_feedback` 是上一轮的约束校验失败原因。它必须被放在最前面且写明是
     「上一次回答的问题」，否则模型会把它当成新的证据。
     """
+    if getattr(request, "branch", "") == "N5c":
+        return build_diagnose_prompt(request, retry_feedback=retry_feedback)
     already_excluded = [
         {"根因": item.root_cause, "依据约束": item.constraint_id, "原因": item.reason}
         for item in request.exclusions
@@ -192,10 +206,14 @@ def prompt_template_hash() -> str:
     payload = "\n".join(
         (
             PROMPT_TEMPLATE_VERSION,
+            DIAGNOSE_PROMPT_VERSION,
             SOP_VERSION,
+            EXPERT_SOP_VERSION,
             ATTRIBUTION_DIRECTION_RULE,
+            CONFIDENCE_RUBRIC,
             SYSTEM_PREAMBLE,
             OUTPUT_INSTRUCTION,
+            render_expert_sop_prompt_block(),
             inspect.getsource(_evidence_section),
             inspect.getsource(build_prompt),
         )

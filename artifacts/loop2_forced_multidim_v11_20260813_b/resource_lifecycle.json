@@ -1,0 +1,151 @@
+{
+  "schema_version": "gpu-resource-lifecycle-v1",
+  "status": "failed",
+  "started_at_utc": "2026-08-13T03:26:00.782577+00:00",
+  "gpu_before": {
+    "available": true,
+    "cuda_visible_devices": "2,3",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-a653a161-ee84-619b-3631-1fed7e462fe1",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 62,
+        "memory_free_mb": 48478
+      },
+      {
+        "index": 1,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-c1623188-6a59-edb8-f281-1907b3ee17d0",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 482,
+        "memory_free_mb": 48059
+      },
+      {
+        "index": 2,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-0d8b6b90-fe82-a015-3519-89cfb4fac76d",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 1,
+        "memory_free_mb": 48539
+      },
+      {
+        "index": 3,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-f9b30ddf-8e1a-7b05-a1bc-4d3590a02304",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 1,
+        "memory_free_mb": 48539
+      },
+      {
+        "index": 4,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-746b9287-e1ed-4544-a911-c6ed5e62e934",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 468,
+        "memory_free_mb": 48073
+      },
+      {
+        "index": 5,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-81dff38c-1a05-713e-a591-90cc85aced35",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 468,
+        "memory_free_mb": 48073
+      },
+      {
+        "index": 6,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-65b0ebf4-6c61-51a2-6598-a4d81db4b4d7",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 1,
+        "memory_free_mb": 48539
+      },
+      {
+        "index": 7,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-25a5b1ae-2b2c-7d27-3b1e-c9d1c85d13ed",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 1,
+        "memory_free_mb": 48539
+      }
+    ],
+    "error": ""
+  },
+  "backend_close_called": true,
+  "gpu_memory_released": true,
+  "error": "RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {'EngineCore_DP0': 0}",
+  "finished_at_utc": "2026-08-13T03:36:14.099885+00:00",
+  "gpu_after": {
+    "available": true,
+    "cuda_visible_devices": "2,3",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-a653a161-ee84-619b-3631-1fed7e462fe1",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 62,
+        "memory_free_mb": 48478
+      },
+      {
+        "index": 1,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-c1623188-6a59-edb8-f281-1907b3ee17d0",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 482,
+        "memory_free_mb": 48059
+      },
+      {
+        "index": 2,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-0d8b6b90-fe82-a015-3519-89cfb4fac76d",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 4,
+        "memory_free_mb": 48536
+      },
+      {
+        "index": 3,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-f9b30ddf-8e1a-7b05-a1bc-4d3590a02304",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 4,
+        "memory_free_mb": 48536
+      },
+      {
+        "index": 4,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-746b9287-e1ed-4544-a911-c6ed5e62e934",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 468,
+        "memory_free_mb": 48073
+      },
+      {
+        "index": 5,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-81dff38c-1a05-713e-a591-90cc85aced35",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 468,
+        "memory_free_mb": 48073
+      },
+      {
+        "index": 6,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-65b0ebf4-6c61-51a2-6598-a4d81db4b4d7",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 1,
+        "memory_free_mb": 48539
+      },
+      {
+        "index": 7,
+        "name": "NVIDIA RTX A6000",
+        "uuid": "GPU-25a5b1ae-2b2c-7d27-3b1e-c9d1c85d13ed",
+        "memory_total_mb": 49140,
+        "memory_used_mb": 1,
+        "memory_free_mb": 48539
+      }
+    ],
+    "error": ""
+  }
+}

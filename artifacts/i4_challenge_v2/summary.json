@@ -1,0 +1,94 @@
+{
+  "schema_version": "challenge-experiment-v1",
+  "prompt_version": "rca-challenge-v2-premise-checks",
+  "backend": "vllm",
+  "feature_profile": "v3",
+  "seed": 42,
+  "parse_failures": 0,
+  "llm_challenger": {
+    "case_count": 107,
+    "challenged": 98,
+    "challenge_rate": 0.915888,
+    "rule_error_count": 25,
+    "rule_error_rate": 0.233645,
+    "hits": 22,
+    "hit_rate": 0.22449,
+    "error_recall": 0.88,
+    "lift_over_error_rate": -0.009155
+  },
+  "score_threshold_curve": [
+    {
+      "min_failed_premises": 0,
+      "flagged": 107,
+      "flag_rate": 1.0,
+      "hits": 25,
+      "hit_rate": 0.233645,
+      "error_recall": 1.0,
+      "lift_over_error_rate": 0.0
+    },
+    {
+      "min_failed_premises": 1,
+      "flagged": 98,
+      "flag_rate": 0.915888,
+      "hits": 22,
+      "hit_rate": 0.22449,
+      "error_recall": 0.88,
+      "lift_over_error_rate": -0.009155
+    },
+    {
+      "min_failed_premises": 2,
+      "flagged": 52,
+      "flag_rate": 0.485981,
+      "hits": 9,
+      "hit_rate": 0.173077,
+      "error_recall": 0.36,
+      "lift_over_error_rate": -0.060568
+    },
+    {
+      "min_failed_premises": 3,
+      "flagged": 10,
+      "flag_rate": 0.093458,
+      "hits": 1,
+      "hit_rate": 0.1,
+      "error_recall": 0.04,
+      "lift_over_error_rate": -0.133645
+    },
+    {
+      "min_failed_premises": 4,
+      "flagged": 1,
+      "flag_rate": 0.009346,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "error_recall": 0.0,
+      "lift_over_error_rate": -0.233645
+    },
+    {
+      "min_failed_premises": 5,
+      "flagged": 0,
+      "flag_rate": 0.0,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "error_recall": 0.0,
+      "lift_over_error_rate": -0.233645
+    }
+  ],
+  "group_reliability_baseline": {
+    "threshold": 0.6,
+    "case_count": 107,
+    "challenged": 32,
+    "challenge_rate": 0.299065,
+    "rule_error_count": 25,
+    "rule_error_rate": 0.233645,
+    "hits": 8,
+    "hit_rate": 0.25,
+    "error_recall": 0.32,
+    "lift_over_error_rate": 0.016355
+  },
+  "premise_distribution": {
+    "scope_too_narrow": 58,
+    "direction_table_applies": 45,
+    "other_side_overlooked": 44,
+    "no_evidence_fallback": 13,
+    "anomaly_is_real": 1
+  }
+}

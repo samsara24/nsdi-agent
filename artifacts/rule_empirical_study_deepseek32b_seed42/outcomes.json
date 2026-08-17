@@ -1,0 +1,4170 @@
+[
+  {
+    "case_id": "case_af0a23d25838",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_bd860db3cc09",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_dc1844257425",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_630c84267302",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_8f70b31d636f",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 9,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_8ef9859f030c",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0c6bc24c3fe7",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_d95088322c05",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_80272e5bf02e",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "无法确定根因，因为证据不足以区分 L1、L2 和 fiber"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "无法区分根因"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_f8705c01d631",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "由于无法确定具体是L1、L2还是光纤问题，证据不足以区分。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "由于证据无法明确区分L1和光纤问题，无法确定根因。"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_591a8de93e1e",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "缺乏L2端的host_snr数据，无法进一步确认光纤问题。"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 9,
+              "detail": "无法确定是L1设备还是光纤问题"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 9,
+              "detail": "无法确定根因，因为证据不足以区分 L1、L2 和光纤"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_aef76fdb4997",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0e0ee81d3c6d",
+    "actual": "L2",
+    "route_stratum": "N6",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 11,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_c7c3503adf4e",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 4,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 7,
+              "detail": "由于L1和L2的发送功率差异较大，且L1的信噪比偏低，无法明确区分是L1设备问题还是光纤问题。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_1a7431301717",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 2,
+          "violations": [
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C11",
+              "constraint_id": "",
+              "step_index": 1,
+              "detail": ""
+            },
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "由于证据无法明确区分是 L1、L2 还是 fiber 的问题，且没有足够的信息排除其他可能性。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C11",
+              "constraint_id": "",
+              "step_index": 1,
+              "detail": ""
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_b2c6d690e5e1",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_df4699a6d75f",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 4,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_82b181f7f216",
+    "actual": "fiber",
+    "route_stratum": "N5b",
+    "telemetry_status": "full_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 1.0,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_655362df439f",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 4,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 3,
+          "violations": [
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C13",
+              "constraint_id": "",
+              "step_index": 0,
+              "detail": ""
+            },
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C7",
+              "constraint_id": "",
+              "step_index": 1,
+              "detail": ""
+            },
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C11",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": ""
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 3,
+          "violations": [
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C13",
+              "constraint_id": "",
+              "step_index": 0,
+              "detail": ""
+            },
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C11",
+              "constraint_id": "",
+              "step_index": 1,
+              "detail": ""
+            },
+            {
+              "kind": "fabricated_constraint",
+              "severity": "fatal",
+              "message": "引用了不存在的约束编号：C7",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": ""
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0274892272e5",
+    "actual": "L1",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_f2c3ad1abb13",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0ca97c6a425a",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 9,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_a5ece180b08f",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_9ba5a2d6cb8e",
+    "actual": "L1",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_bb7e9d07b8aa",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "由于无法确定是L1、L2还是光纤的问题，证据不足以区分。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_60a3d1b7bfa0",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_3e392e75f20c",
+    "actual": "L1",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_d3d5e5cbbaf4",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.6,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_f9f8c8441f86",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_99dd8a24f695",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L1:rxpower_mean:low_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 1,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'drop:L1:rxpower:single_lane', 'level:L1:media_snr_min:low_tail', 'level:L1:txpower_mean:low_tail', 'level:L2:rxpower_mean:low_tail', 'status:L1:RxLOL', 'status:L1:RxLOS']"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_dfdc19c27794",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.85,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "没有直接证据表明光纤问题，因此光纤可能性较低。"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_2977fa82229b",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 1,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_e6c83f5f9344",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.85,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0e9829a2061b",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "full_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_f92c3782baa7",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "无法确定光纤问题"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_072b79453724",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_b3528d1c7d60",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_9a6532971c2a",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "full_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_41a9ba77d097",
+    "actual": "L1",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.85,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0c88c31e492a",
+    "actual": "fiber",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "缺乏光纤相关的直接证据，无法确定光纤问题。"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_cd45d32c98bb",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_b81d18ac89b5",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_3ef50bdf9ef9",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 9,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_ad86230b68ab",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 4,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_650ef8f60c89",
+    "actual": "fiber",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_eb8eb4c6e8f0",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "缺乏光纤相关证据"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_285257aabbe8",
+    "actual": "L1",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_791de44bafec",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "full_telemetry",
+    "evidence_count": 4,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_5af065c8baca",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_c6af08b64caf",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_bf363c1887d9",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_4ac5f2010107",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_445518378681",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_f4e5ca8c6a64",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 4,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "由于证据不足以明确区分 L1 和光纤的问题，因此无法确定根因。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.5,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_3134f91c8f33",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_da829dd0f857",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "没有直接证据指向光纤问题"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_5bd987fbfe68",
+    "actual": "L2",
+    "route_stratum": "N6",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 12,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_90aabef651ea",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.6,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.6,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_3287f7b50c25",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 12,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_36433f95e23d",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.3,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_ab166db804f1",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 7,
+              "detail": "无法确定是 L1 接收端问题还是光纤问题，因为证据不足以区分。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 7,
+              "detail": "证据不足以区分 L1 和 fiber 的问题"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_ca221b865f3b",
+    "actual": "L1",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_9a00156e9c47",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 1.0,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 2,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "无证据支持L2或fiber根因"
+            },
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "无证据支持L2或fiber根因"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_51ce76ed14a2",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "full_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_28fc74ff14ee",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 3,
+              "detail": "缺乏L1和L2的host_snr数据，影响判断。"
+            }
+          ]
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_91bc67dc9c03",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_27e7400e4d15",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_df528edb9f8e",
+    "actual": "fiber",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 8,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_785228ca333a",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_a94b35dbf591",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 10,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_66c8c52b94c2",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_2ee45a243992",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_a367b82729d8",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "L2",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0e12ed53d250",
+    "actual": "fiber",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 7,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 2,
+          "violations": [
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L1:rxpower_mean:low_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'drop:L1:rxpower:single_lane', 'level:L1:txpower_mean:low_tail', 'level:L2:rxpower_mean:low_tail', 'level:L2:txpower_mean:low_tail', 'status:L1:RxLOL', 'status:L1:RxLOS']"
+            },
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L1:rxpower_mean:low_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 5,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'drop:L1:rxpower:single_lane', 'level:L1:txpower_mean:low_tail', 'level:L2:rxpower_mean:low_tail', 'level:L2:txpower_mean:low_tail', 'status:L1:RxLOL', 'status:L1:RxLOS']"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L1:rxpower_mean:low_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'drop:L1:rxpower:single_lane', 'level:L1:txpower_mean:low_tail', 'level:L2:rxpower_mean:low_tail', 'level:L2:txpower_mean:low_tail', 'status:L1:RxLOL', 'status:L1:RxLOS']"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_2d9248e1565e",
+    "actual": "fiber",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L1",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_9c6cfe574a17",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_1a61ead1d930",
+    "actual": "L1",
+    "route_stratum": "N5a",
+    "telemetry_status": "full_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_c9685f253eba",
+    "actual": "L1",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 1,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_161c58d1c2dc",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 3,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_77e4a6c58928",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 5,
+              "detail": "证据不足以明确区分光纤或L2接收问题"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": false,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L2:txpower_mean:high_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 2,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'level:L1:rxpower_mean:high_tail', 'level:L1:txpower_mean:high_tail', 'level:L2:rxpower_mean:high_tail', 'status:L1:RxLOL']"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_0d380a152700",
+    "actual": "L2",
+    "route_stratum": "N5a",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": "fiber",
+        "confidence": 0.7,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 2,
+          "violations": [
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L1:rxpower_mean:low_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 1,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'drop:L1:rxpower:single_lane', 'level:L1:txpower_mean:low_tail', 'level:L2:rxpower_mean:low_tail', 'status:L1:RxLOL', 'status:L1:RxLOS']"
+            },
+            {
+              "kind": "fabricated_evidence",
+              "severity": "fatal",
+              "message": "引用了本 case 不存在的证据：level:L1:rxpower_mean:low_tail。只能引用给定证据清单里的 token",
+              "constraint_id": "",
+              "step_index": 5,
+              "detail": "可用证据=['drop:L1:media_snr:single_lane', 'drop:L1:rxpower:single_lane', 'level:L1:txpower_mean:low_tail', 'level:L2:rxpower_mean:low_tail', 'status:L1:RxLOL', 'status:L1:RxLOS']"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_202f4415a485",
+    "actual": "L2",
+    "route_stratum": "N5b",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_f2b0b7036ff4",
+    "actual": "L1",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 5,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 4,
+              "detail": "无法确定是设备问题还是光纤问题，因为证据不足以区分。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_20f8c394c6fa",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 2,
+    "arms": {
+      "evidence_only": {
+        "verdict": "L2",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": true,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  },
+  {
+    "case_id": "case_2c931e879c5e",
+    "actual": "L2",
+    "route_stratum": "N5c",
+    "telemetry_status": "partial_telemetry",
+    "evidence_count": 6,
+    "arms": {
+      "evidence_only": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      },
+      "rules_prompt": {
+        "verdict": null,
+        "confidence": 0.0,
+        "parsed": true,
+        "answered": false,
+        "correct": false,
+        "rule_check": {
+          "ok": false,
+          "fatal_count": 1,
+          "violations": [
+            {
+              "kind": "unsupported_step",
+              "severity": "fatal",
+              "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+              "constraint_id": "",
+              "step_index": 4,
+              "detail": "无法确定是光纤还是L2的问题，因为证据不足以区分。"
+            }
+          ]
+        }
+      },
+      "rules_prompt_checker": {
+        "verdict": "fiber",
+        "confidence": 0.8,
+        "parsed": true,
+        "answered": true,
+        "correct": false,
+        "rule_check": {
+          "ok": true,
+          "fatal_count": 0,
+          "violations": []
+        }
+      }
+    }
+  }
+]

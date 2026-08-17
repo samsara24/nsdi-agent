@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>20260812_n5b-key-evidence-physics</title>
+  <style>
+    body { font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif; margin: 24px; color: #1a1a1a; background: linear-gradient(#f7f3ea, #eef2f4); }
+    h1,h2 { font-family: "Source Serif 4", "Noto Serif SC", serif; }
+    pre,code { background: #fff; border: 1px solid #d7d2c8; padding: 2px 6px; }
+    pre { padding: 12px; overflow: auto; }
+    table { border-collapse: collapse; width: 100%; background: #fff; }
+    th,td { border: 1px solid #d7d2c8; padding: 6px 8px; font-size: 13px; vertical-align: top; }
+    th { background: #f0ebe0; text-align: left; }
+    .tag { display: inline-block; background: #244a3a; color: #fff; padding: 2px 8px; margin-right: 6px; }
+    .warn { background: #7a3e1d; }
+  </style>
+</head>
+<body>
+  <h1>20260812_n5b-key-evidence-physics</h1>
+  <p>
+    <span class="tag">N8 frozen</span>
+    <span class="tag">candidate_order=branch</span>
+    <span class="tag">bug_fix</span> <span class="tag">evidence_graph</span> <span class="tag">llm_prompt</span>
+  </p>
+  <h2>1. 当前主流程图与本轮调整点</h2>
+  <pre>N1 EvidencePack → N2 Features → N3 EvidenceGraph Match → N4 Route
+  ├─ N5a exact: reuse historical evidence chain
+  ├─ N5b partial: physics key-evidence → LLM arbitration  ⟵ 本轮调整
+  └─ N5c cold: expert SOP constrains LLM                 ⟵ 本轮调整(prompt)
+→ N6 confidence gate → N7 report   (N8 frozen)</pre>
+  <ul><li>P10 applies_to 收窄到接收类 drop/status/level；critical_missing 排除量测 veto 与 P4</li><li>prompt v10 / diagnose-v3 增加 C20 fiber 硬规则</li></ul>
+  <p><b>假设：</b>收窄 P10 前缀并把 critical_missing 限定为归因类物理约束；N5c/N5b prompt 禁止无双向证据时输出 fiber（C20）。验证：接收类缺失进仲裁，txpower 分档缺失不再误抬关键。</p>
+
+  <h2>2. 当前证据图状态</h2>
+  <pre>{
+  "version": "evidence-graph-v1:161:924771a77256cc85",
+  "diagnosis_count": 161,
+  "feature_dictionary_version": "feature-dictionary-v2",
+  "feature_dictionary_hash": "78bbdbbf601fe29e",
+  "historical_vector_count": 161
+}</pre>
+
+  <h2>3. 当前物理约束与量测契约</h2>
+  <pre>{
+  "library_version": "constraint-library-v6",
+  "library_hash": "af09f49aba8039ca",
+  "physics_version": "physics-constraints-v1",
+  "physics_hash": "aa8312d67d2ef12e",
+  "measurement_version": "measurement-contracts-v1",
+  "measurement_hash": "97793b8fa84f682e",
+  "note": "N5b key-evidence uses attribution physics only; measurement contracts are vetoes"
+}</pre>
+
+  <h2>4. SOP 是否变化</h2>
+  <pre>{
+  "expert_sop_version": "expert-sop-playbook-v1",
+  "expert_sop_hash": "a214053df3bcc6b0",
+  "learned_sop_version": "numeric-decision-tree-v1",
+  "learned_sop_hash": "140aaee5fc16b8e7",
+  "expert_sop_changed": false,
+  "learned_sop_changed": false
+}</pre>
+
+  <h2>5. prompt / threshold / candidate_order / N8</h2>
+  <pre>{
+  "prompt_template": "rca-constrained-reasoning-v10",
+  "prompt_template_hash": "ae591d8d69481328",
+  "candidate_order": [
+    "branch"
+  ],
+  "feedback_update": false,
+  "n8_frozen": true
+}</pre>
+
+  <h2>6. 正确 case 分支统计与做对步骤</h2>
+  <pre>{
+  "correct_by_branch": {
+    "N5a": {
+      "n": 10,
+      "branch_correct": 10
+    },
+    "N5b": {
+      "n": 7,
+      "branch_correct": 7
+    },
+    "N5c": {
+      "n": 3,
+      "branch_correct": 3
+    }
+  },
+  "correct_step_counter": {
+    "N5a_historical_reuse": 10,
+    "N5b_critical_key_evidence": 3,
+    "N5b_minor_reuse": 4,
+    "N5c_expert_sop_llm": 3
+  },
+  "summary_metrics": {
+    "schema_version": "rca-loop-summary-v1",
+    "experiment": "n5b-key-evidence-physics",
+    "source_run_dir": "/home/chenziang/nsdi-agent/artifacts/loop1_n5b_key_evidence_v10_20260812_c",
+    "policy": "coverage-v2",
+    "created_at_utc": "2026-08-13T02:37:56.669205+00:00",
+    "routing": {
+      "policy": "coverage-v2",
+      "case_count": 107,
+      "counts": {
+        "N5a": 15,
+        "N5b": 26,
+        "N5c": 64,
+        "N6": 2
+      },
+      "ratios": {
+        "N5a": 0.140187,
+        "N5b": 0.242991,
+        "N5c": 0.598131,
+        "N6": 0.018692
+      },
+      "cases_with_missing_evidence": 68
+    },
+    "decision": null,
+    "answered": 32,
+    "correct": 20,
+    "degeneracy_guard": null,
+    "personal_alignment_gate": {
+      "schema_version": "personal-rca-loop-gate-v1",
+      "authority": "docs/个人整体思路.md",
+      "main_path": "evidence graph match -> N5a historical chain reuse / N5b physics key-evidence LLM arbitration / N5c expert SOP constrained LLM -> M9 degradation",
+      "candidate_order": [
+        "branch"
+      ],
+      "candidate_order_ok": true,
+      "expert_and_sop_are_advisory": true,
+      "expert_sop_version": "expert-sop-playbook-v1",
+      "expert_sop_hash": "a214053df3bcc6b0",
+      "n8_feedback_update": false,
+      "forbidden_loop_target": "forced three-class accuracy or lift alone"
+    },
+    "correct_by_branch": {
+      "N5a": {
+        "n": 10,
+        "branch_correct": 10
+      },
+      "N5b": {
+        "n": 7,
+        "branch_correct": 7
+      },
+      "N5c": {
+        "n": 3,
+        "branch_correct": 3
+      }
+    },
+    "correct_step_counter": {
+      "N5a_historical_reuse": 10,
+      "N5b_critical_key_evidence": 3,
+      "N5b_minor_reuse": 4,
+      "N5c_expert_sop_llm": 3
+    },
+    "bad_case_count": 12,
+    "bad_step_counter": {
+      "N5a_historical_reuse": 4,
+      "N5b_minor_reuse": 4,
+      "N5b_critical_key_evidence": 4
+    },
+    "label_suspect_count": 4,
+    "irreducible_count": 7,
+    "raw_policy_summary_keys": [
+      "answer_rate",
+      "answered",
+      "branches",
+      "calibration",
+      "calibration_check",
+      "correct",
+      "coverage_accuracy",
+      "decision_policy",
+      "final_decisions",
+      "llm_calibration",
+      "n5a",
+      "personal_alignment_gate",
+      "policy",
+      "precision_when_answered",
+      "raw_class_metrics",
+      "routing",
+      "selective_risk_curve"
+    ]
+  }
+}</pre>
+
+  <h2>7. Bad Case 逐条分析</h2>
+  <table>
+    <thead>
+      <tr><th>case_id</th><th>actual</th><th>branch_pred</th><th>final_pred</th><th>branch</th><th>failed_step</th><th>error_class</th><th>fixable</th><th>next</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>case_5d80fba2c22f</td><td>L1</td><td>L2</td><td>None</td><td>N5a</td><td>N5a_historical_reuse</td><td>exact_match_same_evidence_different_label</td><td>no_safe_model_fix</td><td>mark_irreducible_or_label_review</td></tr><tr><td>case_f3594459612d</td><td>L2</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_minor_reuse</td><td>noncritical_reuse_wrong_history</td><td>threshold_or_key_evidence</td><td>revisit_key_evidence_contract</td></tr><tr><td>case_4e466fb62ba8</td><td>L1</td><td>L2</td><td>None</td><td>N5a</td><td>N5a_historical_reuse</td><td>exact_match_same_evidence_different_label</td><td>no_safe_model_fix</td><td>mark_irreducible_or_label_review</td></tr><tr><td>case_b244b38241f9</td><td>L1</td><td>L2</td><td>None</td><td>N5b</td><td>N5b_minor_reuse</td><td>noncritical_reuse_wrong_history</td><td>threshold_or_key_evidence</td><td>revisit_key_evidence_contract</td></tr><tr><td>case_0c3939c5292e</td><td>L2</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_4541f9bbc853</td><td>L2</td><td>L1</td><td>None</td><td>N5a</td><td>N5a_historical_reuse</td><td>exact_match_same_evidence_different_label</td><td>no_safe_model_fix</td><td>mark_irreducible_or_label_review</td></tr><tr><td>case_61d86d3a287d</td><td>L2</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_minor_reuse</td><td>noncritical_reuse_wrong_history</td><td>threshold_or_key_evidence</td><td>revisit_key_evidence_contract</td></tr><tr><td>case_f6ab3c98854d</td><td>fiber</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_minor_reuse</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_4695d660361d</td><td>fiber</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_1d881d28d2a3</td><td>L2</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_60e62d6d1052</td><td>fiber</td><td>L2</td><td>None</td><td>N5a</td><td>N5a_historical_reuse</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_9daf397bb2f7</td><td>L1</td><td>L2</td><td>None</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr>
+    </tbody>
+  </table>
+  <pre>bad_step_counter = {"N5a_historical_reuse": 4, "N5b_minor_reuse": 4, "N5b_critical_key_evidence": 4}</pre>
+
+  <h2>8. 疑似 label 与 irreducible</h2>
+  <h3 class="warn">label_suspects</h3>
+  <ul><li><code>case_5d80fba2c22f</code>: N5a exact signature matches historical case with different label</li><li><code>case_4e466fb62ba8</code>: N5a exact signature matches historical case with different label</li><li><code>case_4541f9bbc853</code>: N5a exact signature matches historical case with different label</li><li><code>case_60e62d6d1052</code>: N5a exact signature matches historical case with different label</li></ul>
+  <h3 class="warn">irreducible_cases</h3>
+  <ul><li><code>case_5d80fba2c22f</code>: Identical evidence signature with conflicting root cause</li><li><code>case_4e466fb62ba8</code>: Identical evidence signature with conflicting root cause</li><li><code>case_4541f9bbc853</code>: Identical evidence signature with conflicting root cause</li><li><code>case_f6ab3c98854d</code>: C20 fiber not identifiable from current telemetry</li><li><code>case_ac436bbbc898</code>: C20 fiber not identifiable from current telemetry</li><li><code>case_60e62d6d1052</code>: Identical evidence signature with conflicting root cause</li><li><code>case_4695d660361d</code>: C20: fiber not identifiable from current two-end telemetry</li></ul>
+</body>
+</html>

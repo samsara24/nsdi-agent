@@ -1,0 +1,1230 @@
+{
+  "feature_set": "v1",
+  "data_dir": "datasets/organized_rca_v2_stratified_60_40_seed42",
+  "train_size": 126,
+  "test_size": 85,
+  "distinct_feature_tokens": 40,
+  "train_label_distribution": {
+    "L1": 35,
+    "L2": 83,
+    "fiber": 8
+  },
+  "test_label_distribution": {
+    "L2": 55,
+    "L1": 24,
+    "fiber": 6
+  },
+  "signature_resolution": {
+    "train_case_count": 126,
+    "distinct_signature_groups": 113,
+    "mixed_label_group_count": 3,
+    "mixed_label_case_count": 10,
+    "mixed_label_case_ratio": 0.079365,
+    "pure_group_count": 110,
+    "singleton_group_count": 104,
+    "singleton_case_ratio": 0.825397,
+    "empty_signature_case_count": 2,
+    "empty_signature_label_distribution": {
+      "L1": 1,
+      "L2": 1
+    },
+    "mean_signature_size": 5.150794,
+    "largest_mixed_groups": [
+      {
+        "size": 5,
+        "labels": {
+          "L2": 4,
+          "fiber": 1
+        },
+        "signature": [
+          "drop:L1:media_snr:single_lane",
+          "drop:L1:rxpower:single_lane",
+          "level:L1:rxpower_mean:high_tail",
+          "level:L1:txpower_mean:low_tail",
+          "level:L2:rxpower_mean:low_tail",
+          "status:L1:RxLOL",
+          "status:L1:RxLOS"
+        ]
+      },
+      {
+        "size": 3,
+        "labels": {
+          "L2": 2,
+          "L1": 1
+        },
+        "signature": [
+          "level:L1:txpower_mean:high_tail",
+          "level:L2:rxpower_mean:high_tail",
+          "level:L2:txpower_mean:high_tail"
+        ]
+      },
+      {
+        "size": 2,
+        "labels": {
+          "L1": 1,
+          "L2": 1
+        },
+        "signature": []
+      }
+    ]
+  },
+  "routing": {
+    "thresholds": {
+      "exact": 1.0,
+      "partial": 0.7
+    },
+    "distribution": {
+      "N5a": 21,
+      "N5b": 26,
+      "N5c": 38
+    },
+    "N5a": {
+      "case_count": 21,
+      "top1_correct": 15,
+      "top1_accuracy": 0.714286,
+      "majority_correct": 16,
+      "majority_accuracy": 0.761905,
+      "oracle_correct": 16,
+      "oracle_accuracy": 0.761905,
+      "pure_tie_bucket_cases": 20,
+      "pure_tie_bucket_ratio": 0.952381,
+      "label_distribution": {
+        "L2": 15,
+        "L1": 5,
+        "fiber": 1
+      },
+      "per_label_majority_correct": {
+        "L1": 4,
+        "L2": 12,
+        "fiber": 0
+      }
+    },
+    "N5b": {
+      "case_count": 26,
+      "top1_correct": 15,
+      "top1_accuracy": 0.576923,
+      "majority_correct": 16,
+      "majority_accuracy": 0.615385,
+      "oracle_correct": 16,
+      "oracle_accuracy": 0.615385,
+      "pure_tie_bucket_cases": 25,
+      "pure_tie_bucket_ratio": 0.961538,
+      "label_distribution": {
+        "L2": 15,
+        "L1": 8,
+        "fiber": 3
+      },
+      "per_label_majority_correct": {
+        "L1": 4,
+        "L2": 12,
+        "fiber": 0
+      }
+    },
+    "N5c": {
+      "case_count": 38,
+      "top1_correct": 26,
+      "top1_accuracy": 0.684211,
+      "majority_correct": 26,
+      "majority_accuracy": 0.684211,
+      "oracle_correct": 26,
+      "oracle_accuracy": 0.684211,
+      "pure_tie_bucket_cases": 36,
+      "pure_tie_bucket_ratio": 0.947368,
+      "label_distribution": {
+        "L2": 25,
+        "L1": 11,
+        "fiber": 2
+      },
+      "per_label_majority_correct": {
+        "L1": 6,
+        "L2": 19,
+        "fiber": 1
+      }
+    },
+    "zero_signature_test_cases": 0,
+    "cases": {
+      "N5a": [
+        {
+          "case_id": "case_af0a23d25838",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_630c84267302",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_f2c3ad1abb13",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_9ba5a2d6cb8e",
+          "actual_label": "L1",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_bb7e9d07b8aa",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_3e392e75f20c",
+          "actual_label": "L1",
+          "similarity": 1.0,
+          "tie_count": 2,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 2
+          }
+        },
+        {
+          "case_id": "case_d3d5e5cbbaf4",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_e6c83f5f9344",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_b81d18ac89b5",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_5af065c8baca",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_4ac5f2010107",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_da829dd0f857",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 5,
+          "top1_label": "fiber",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 4,
+            "fiber": 1
+          }
+        },
+        {
+          "case_id": "case_5bd987fbfe68",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_ca221b865f3b",
+          "actual_label": "L1",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_51ce76ed14a2",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_785228ca333a",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_66c8c52b94c2",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_0e12ed53d250",
+          "actual_label": "fiber",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_1a61ead1d930",
+          "actual_label": "L1",
+          "similarity": 1.0,
+          "tie_count": 2,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 2
+          }
+        },
+        {
+          "case_id": "case_c9685f253eba",
+          "actual_label": "L1",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_0d380a152700",
+          "actual_label": "L2",
+          "similarity": 1.0,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        }
+      ],
+      "N5b": [
+        {
+          "case_id": "case_bd860db3cc09",
+          "actual_label": "L2",
+          "similarity": 0.84993346,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_d95088322c05",
+          "actual_label": "L1",
+          "similarity": 0.84853711,
+          "tie_count": 2,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 2
+          }
+        },
+        {
+          "case_id": "case_591a8de93e1e",
+          "actual_label": "L2",
+          "similarity": 0.73600608,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_aef76fdb4997",
+          "actual_label": "L1",
+          "similarity": 0.86238848,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_0e0ee81d3c6d",
+          "actual_label": "L2",
+          "similarity": 0.89030409,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_82b181f7f216",
+          "actual_label": "fiber",
+          "similarity": 0.77233071,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_655362df439f",
+          "actual_label": "L2",
+          "similarity": 0.81124159,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_0274892272e5",
+          "actual_label": "L1",
+          "similarity": 0.74917399,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_99dd8a24f695",
+          "actual_label": "L2",
+          "similarity": 0.84823432,
+          "tie_count": 2,
+          "top1_label": "fiber",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "fiber": 1,
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_dfdc19c27794",
+          "actual_label": "L1",
+          "similarity": 0.89320614,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_0e9829a2061b",
+          "actual_label": "L2",
+          "similarity": 0.84358209,
+          "tie_count": 2,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 2
+          }
+        },
+        {
+          "case_id": "case_f92c3782baa7",
+          "actual_label": "L2",
+          "similarity": 0.85344226,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_072b79453724",
+          "actual_label": "L2",
+          "similarity": 0.8230202,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_9a6532971c2a",
+          "actual_label": "L2",
+          "similarity": 0.72304074,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_41a9ba77d097",
+          "actual_label": "L1",
+          "similarity": 0.86505309,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_0c88c31e492a",
+          "actual_label": "fiber",
+          "similarity": 0.89320614,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_650ef8f60c89",
+          "actual_label": "fiber",
+          "similarity": 0.80519797,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_eb8eb4c6e8f0",
+          "actual_label": "L2",
+          "similarity": 0.73994262,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_285257aabbe8",
+          "actual_label": "L1",
+          "similarity": 0.7516575,
+          "tie_count": 1,
+          "top1_label": "fiber",
+          "majority_label": "fiber",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "fiber": 1
+          }
+        },
+        {
+          "case_id": "case_791de44bafec",
+          "actual_label": "L1",
+          "similarity": 0.74917399,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_bf363c1887d9",
+          "actual_label": "L1",
+          "similarity": 0.84823432,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_ab166db804f1",
+          "actual_label": "L2",
+          "similarity": 0.84793031,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_9a00156e9c47",
+          "actual_label": "L2",
+          "similarity": 0.72092678,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_91bc67dc9c03",
+          "actual_label": "L2",
+          "similarity": 0.75927925,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_161c58d1c2dc",
+          "actual_label": "L2",
+          "similarity": 0.7483425,
+          "tie_count": 2,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 2
+          }
+        },
+        {
+          "case_id": "case_2c931e879c5e",
+          "actual_label": "L2",
+          "similarity": 0.82137669,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        }
+      ],
+      "N5c": [
+        {
+          "case_id": "case_dc1844257425",
+          "actual_label": "L2",
+          "similarity": 0.64465604,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_8f70b31d636f",
+          "actual_label": "L1",
+          "similarity": 0.68991642,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_8ef9859f030c",
+          "actual_label": "L1",
+          "similarity": 0.66371348,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_0c6bc24c3fe7",
+          "actual_label": "L1",
+          "similarity": 0.64402766,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_80272e5bf02e",
+          "actual_label": "L2",
+          "similarity": 0.56685657,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_f8705c01d631",
+          "actual_label": "L2",
+          "similarity": 0.68856643,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_c7c3503adf4e",
+          "actual_label": "L2",
+          "similarity": 0.34747507,
+          "tie_count": 1,
+          "top1_label": "fiber",
+          "majority_label": "fiber",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "fiber": 1
+          }
+        },
+        {
+          "case_id": "case_1a7431301717",
+          "actual_label": "L1",
+          "similarity": 0.45833013,
+          "tie_count": 2,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 2
+          }
+        },
+        {
+          "case_id": "case_b2c6d690e5e1",
+          "actual_label": "L2",
+          "similarity": 0.38897024,
+          "tie_count": 2,
+          "top1_label": "fiber",
+          "majority_label": "fiber",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "fiber": 2
+          }
+        },
+        {
+          "case_id": "case_df4699a6d75f",
+          "actual_label": "L2",
+          "similarity": 0.42159947,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_0ca97c6a425a",
+          "actual_label": "L2",
+          "similarity": 0.6536231,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_a5ece180b08f",
+          "actual_label": "L2",
+          "similarity": 0.62422563,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_60a3d1b7bfa0",
+          "actual_label": "L2",
+          "similarity": 0.66125911,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_f9f8c8441f86",
+          "actual_label": "L2",
+          "similarity": 0.53233799,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_2977fa82229b",
+          "actual_label": "L2",
+          "similarity": 0.53320956,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_b3528d1c7d60",
+          "actual_label": "L2",
+          "similarity": 0.51612294,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_cd45d32c98bb",
+          "actual_label": "L2",
+          "similarity": 0.54714723,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_3ef50bdf9ef9",
+          "actual_label": "L1",
+          "similarity": 0.69597361,
+          "tie_count": 2,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 2
+          }
+        },
+        {
+          "case_id": "case_ad86230b68ab",
+          "actual_label": "L1",
+          "similarity": 0.64871298,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_c6af08b64caf",
+          "actual_label": "L2",
+          "similarity": 0.65719828,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_445518378681",
+          "actual_label": "L2",
+          "similarity": 0.66371348,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_f4e5ca8c6a64",
+          "actual_label": "L1",
+          "similarity": 0.46782511,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_3134f91c8f33",
+          "actual_label": "L2",
+          "similarity": 0.40188861,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_90aabef651ea",
+          "actual_label": "L1",
+          "similarity": 0.5879146,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_3287f7b50c25",
+          "actual_label": "L1",
+          "similarity": 0.55547527,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_36433f95e23d",
+          "actual_label": "L2",
+          "similarity": 0.47811727,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_28fc74ff14ee",
+          "actual_label": "L1",
+          "similarity": 0.66417648,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_27e7400e4d15",
+          "actual_label": "L2",
+          "similarity": 0.66814326,
+          "tie_count": 3,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 2,
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_df528edb9f8e",
+          "actual_label": "fiber",
+          "similarity": 0.66325054,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_a94b35dbf591",
+          "actual_label": "L2",
+          "similarity": 0.65993181,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_2ee45a243992",
+          "actual_label": "L2",
+          "similarity": 0.66371348,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_a367b82729d8",
+          "actual_label": "L2",
+          "similarity": 0.55124793,
+          "tie_count": 2,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 2
+          }
+        },
+        {
+          "case_id": "case_2d9248e1565e",
+          "actual_label": "fiber",
+          "similarity": 0.42433843,
+          "tie_count": 1,
+          "top1_label": "fiber",
+          "majority_label": "fiber",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "fiber": 1
+          }
+        },
+        {
+          "case_id": "case_9c6cfe574a17",
+          "actual_label": "L2",
+          "similarity": 0.58489608,
+          "tie_count": 1,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 1
+          }
+        },
+        {
+          "case_id": "case_77e4a6c58928",
+          "actual_label": "L2",
+          "similarity": 0.6216715,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_202f4415a485",
+          "actual_label": "L2",
+          "similarity": 0.66814326,
+          "tie_count": 3,
+          "top1_label": "L2",
+          "majority_label": "L2",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L2": 2,
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_f2b0b7036ff4",
+          "actual_label": "L1",
+          "similarity": 0.47824408,
+          "tie_count": 1,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": true,
+          "tie_label_distribution": {
+            "L1": 1
+          }
+        },
+        {
+          "case_id": "case_20f8c394c6fa",
+          "actual_label": "L2",
+          "similarity": 0.50331499,
+          "tie_count": 2,
+          "top1_label": "L1",
+          "majority_label": "L1",
+          "oracle_hit": false,
+          "tie_label_distribution": {
+            "L1": 2
+          }
+        }
+      ]
+    }
+  },
+  "feature_metadata": {
+    "feature_set": "v1",
+    "dictionary_version": "feature-dictionary-v1",
+    "dictionary_hash": "1b2e66ed650ce60e",
+    "families": [
+      "signal_drop",
+      "status_fault",
+      "lane_imbalance",
+      "level_tail"
+    ],
+    "feature_model": {
+      "version": "feature-model-v1",
+      "dictionary_version": "feature-dictionary-v1",
+      "dictionary_hash": "1b2e66ed650ce60e",
+      "fitted_case_count": 126,
+      "tail_quantiles": [
+        0.25,
+        0.75
+      ],
+      "level_edges": {
+        "L1:media_snr_min": [
+          24.715,
+          25.64
+        ],
+        "L1:rxpower_mean": [
+          0.2625,
+          1.78
+        ],
+        "L1:txpower_mean": [
+          0.3725,
+          1.07875
+        ],
+        "L2:media_snr_min": [
+          25.06,
+          25.96
+        ],
+        "L2:rxpower_mean": [
+          0.228125,
+          1.57875
+        ],
+        "L2:txpower_mean": [
+          0.456875,
+          1.0725
+        ]
+      },
+      "asymmetry_edges": {
+        "media_snr_min": 0.88,
+        "rxpower_mean": 1.4575,
+        "txpower_mean": 0.86625
+      }
+    }
+  }
+}

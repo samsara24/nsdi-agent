@@ -1,0 +1,35 @@
+\section{Introduction}\label{sec:introduction}
+
+\IEEEPARstart{L}{arge} language model (LLM) training has scaled to artificial intelligence (AI) clusters comprising tens of thousands of accelerators. 
+These accelerators, spanning servers and switches, are interconnected by multi-tier optical fabrics that carry collective communication on the critical path of every iteration.
+Owing to the bulk-synchronous nature of training, this optical interconnect directly bounds availability, throughput, and efficiency: a single degraded link stalls its communication group and leaves thousands of accelerators idling.
+In 140 production clusters from \textit{Huawei Cloud} and \textit{JD Cloud}, optical network failures account for 95\% of all network failures, and take an average of 24 minutes to repair.
+Moreover, the optical components themselves (\eg high-speed transceivers and multi-lane fibers) incur high costs.
+Sustaining training availability at scale therefore hinges on rapidly localizing root causes in optical networks to curtail costly training stalls and accurately avoid the substantial direct expense of unnecessarily replacing high-priced optical hardware.
+
+
+An electrical network is described primarily by coarse, binary signals (\eg link up/down), rendering a failure comparatively self-locating. 
+In contrast, an optical network adds continuous physical telemetry (\eg transmitting and receiving optical power), independently monitored at both endpoints. 
+Each transmission direction traverses a directed path, so the telemetry reflects the aggregate effect of all components along that path rather than the monitoring endpoint alone.
+Identical symptoms may arise from disparate root causes, meaning no isolated measurement suffices to pinpoint the underlying failures.
+For example, a drop in the optical power received at the monitoring endpoint may result from an impaired receiver at that endpoint, attenuation in the fiber, or a weakened transmitter at the peer endpoint. 
+
+Localizing such optical network failures requires joint reasoning over correlated telemetry under physical constraints governing signal propagation. \textit{Rule-based approaches} encode operator expertise as if-then predicates. While they honor directional and physical constraints and yield interpretable verdicts, their reliance on hand-crafted rules fundamentally limits their generality. They respond only to canonical cases, deteriorate under incomplete telemetry, and demand manual extension for every previously unseen failure mode. \textit{Data-driven classifiers} instead learn a direct mapping from telemetry to root cause. Their efficacy presupposes an abundance of reliable labels, a premise seldom met in production. The resulting supervision is sparse, delayed, semantically ambiguous, and heavily biased toward prevalent root causes. Moreover, their opacity is disqualifying in practice, which cannot warrant a hardware replacement to a specific endpoint or fiber.
+
+Our core objective is root cause localization (RCL) for optical network failures, delivering a verdict together with a traceable evidence chain that is both generalizable and explainable.
+Recent advances demonstrate that LLM‑powered agentic systems enable multi‑step deductive reasoning and tool‑augmented analysis.
+By mimicking human diagnostic workflows, they can reconcile multi‑endpoint telemetry against physical constraints and iteratively verify potential failure hypotheses.
+However, realizing practical agentic RCL systems for optical networks presents three major challenges:
+
+\noindent $\rhd$ \textbf{C1: Constructing unified evidence from heterogeneous telemetry.} Endpoint telemetry is multi-granularity and heterogeneous in format. The optical modules report \textit{hardware attributes} as categorical fields and \textit{performance metrics} as numerical time series. The ports report \textit{state variables} as discrete flags and \textit{operational logs} as unstructured text. This makes it challenging to aggregate all required telemetry and assemble coherent comprehensive evidence to support RCL.
+
+\noindent $\rhd$ \textbf{C2: Distinguishing root causes across diverse failure scenarios.}
+Practical optical network failures include ambiguous patterns with incomplete telemetry and unprecedented patterns lacking historical references. Existing approaches adopt fixed inference paradigms, lacking flexible tool scheduling and adaptive reasoning skills. They fail to generalize across these distinct failures, making them incapable of satisfying diversified diagnostic demands.
+
+\noindent $\rhd$ \textbf{C3: Producing verifiable explanations over evolving diagnostic knowledge.} A verdict must specify which anomalous telemetry, directional paths, and prior cases substantiate it, and whether any counter-evidence or missing evidence exists. Furthermore, the knowledge underlying root cause localization cannot remain static. The evidence and experience confirmed upon repair must be reincorporated so that the diagnostic competence improves over time rather than stagnating.
+
+In this paper, we propose \name{}, an agentic AI system for optical network RCL, aiming to overcome these limitations.
+\name{} integrates three collaborative components to address the aforementioned challenges: 
+\textbf{(1) Heterogeneous Evidence Construction.} To derive consistent diagnostic evidence from heterogeneous telemetry, \name{} integrates scattered monitoring information into a unified graph structure via sophisticated anomaly perception and salient signal extraction, establishing a solid and unified foundation for reliable RCL.
+\textbf{(2) Constrained Iterative Reasoning.} To resolve ambiguous symptom entanglement stemming from directional optical signal propagation and alleviate the cold-start scarcity of real-world failures, \name{} designs a multi-branch reasoning paradigm empowered by specialized tools and skills. It adaptively matches historical cases for common failures, supplements physical constraints to mitigate pattern ambiguity and incomplete evidence, and conducts iterative hypothesis verification for novel failures, thereby eliminating diagnostic ambiguity and reasoning hallucinations.
+\textbf{(3) Traceable Knowledge Evolution.} To support verifiable explanations and sustainable optimization, \name{} generates traceable reasoning chains that incorporate confidence metrics, valid evidence, and causal dependencies. Confirmed localization results and standardized evidence graphs are continuously back-fed into the knowledge repository, enabling the system to accumulate operational experience and enhance diagnostic capability iteratively.

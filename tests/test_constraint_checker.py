@@ -393,13 +393,13 @@ def test_laser_off_claim_only_forbidden_during_blackout(normal_pack, blackout_pa
     assert violation.constraint_id == "C15_blackout_sentinel_is_not_laser_off"
 
 
-def test_any_verdict_during_blackout_is_fatal(blackout_pack):
+def test_any_verdict_during_blackout_is_vetoed(blackout_pack):
     tokens = ("drop:L1:txpower:all_lanes",)
     report = check_response(response(step(claim="收发全断", evidence=tokens)), blackout_pack, tokens)
     assert any(
-        item.constraint_id == "C15_blackout_sentinel_is_not_laser_off"
-        and item.kind == "constraint_violation"
-        for item in report.fatal
+        item.constraint_id == "M4_blackout_sentinel_is_no_reading"
+        and item.kind == "measurement_veto"
+        for item in report.veto
     )
     # 但弃权是允许的。
     assert check_response(DiagnosisResponse(verdict=None), blackout_pack, tokens).ok

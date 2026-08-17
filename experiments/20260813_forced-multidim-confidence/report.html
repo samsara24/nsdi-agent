@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>20260813_forced-multidim-confidence</title>
+  <style>
+    body { font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif; margin: 24px; color: #1a1a1a; background: linear-gradient(#f7f3ea, #eef2f4); }
+    h1,h2 { font-family: "Source Serif 4", "Noto Serif SC", serif; }
+    pre,code { background: #fff; border: 1px solid #d7d2c8; padding: 2px 6px; }
+    pre { padding: 12px; overflow: auto; }
+    table { border-collapse: collapse; width: 100%; background: #fff; }
+    th,td { border: 1px solid #d7d2c8; padding: 6px 8px; font-size: 13px; vertical-align: top; }
+    th { background: #f0ebe0; text-align: left; }
+    .tag { display: inline-block; background: #244a3a; color: #fff; padding: 2px 8px; margin-right: 6px; }
+    .warn { background: #7a3e1d; }
+  </style>
+</head>
+<body>
+  <h1>20260813_forced-multidim-confidence</h1>
+  <p>
+    <span class="tag">N8 frozen</span>
+    <span class="tag">candidate_order=branch</span>
+    <span class="tag">llm_prompt</span> <span class="tag">threshold_or_routing</span> <span class="tag">bug_fix</span>
+  </p>
+  <h2>1. 当前主流程图与本轮调整点</h2>
+  <pre>N1 EvidencePack → N2 Features → N3 EvidenceGraph Match → N4 Route
+  ├─ N5a exact: reuse historical evidence chain
+  ├─ N5b partial: physics key-evidence → LLM arbitration  ⟵ 本轮调整
+  └─ N5c cold: expert SOP constrains LLM                 ⟵ 本轮调整(prompt)
+→ N6 confidence gate → N7 report   (N8 frozen)</pre>
+  <ul><li>verdict 去掉 abstain，强制 L1/L2/fiber 三选一，并输出 evidence_completeness / physical_compliance / reasoning_completeness / history_similarity。</li><li>物理 veto 降级为 physical_compliance 扣分，不再丢弃结论；M9 使用综合置信度阈值区分 final/request_evidence/human_review。</li><li>N5a/N5b/N5c/N6 全量进入 LLM，N5a/N5b 保留 history_verdict 作为对照。</li></ul>
+  <p><b>假设：</b>全覆盖三分类本身不作为优化目标；让 LLM 对 107 个 test case 全部输出 L1/L2/fiber 候选和四维置信度，用阈值扫描选择自动结案工作点。</p>
+
+  <h2>2. 当前证据图状态</h2>
+  <pre>{
+  "version": "evidence-graph-v1:161:7ef9fa04d1871a46",
+  "diagnosis_count": 161,
+  "feature_dictionary_version": "feature-dictionary-v2",
+  "feature_dictionary_hash": "78bbdbbf601fe29e",
+  "historical_vector_count": 161
+}</pre>
+
+  <h2>3. 当前物理约束与量测契约</h2>
+  <pre>{
+  "library_version": "constraint-library-v6",
+  "library_hash": "af09f49aba8039ca",
+  "physics_version": "physics-constraints-v1",
+  "physics_hash": "aa8312d67d2ef12e",
+  "measurement_version": "measurement-contracts-v1",
+  "measurement_hash": "97793b8fa84f682e",
+  "note": "N5b key-evidence uses attribution physics only; measurement contracts are vetoes"
+}</pre>
+
+  <h2>4. SOP 是否变化</h2>
+  <pre>{
+  "expert_sop_version": "expert-sop-playbook-v1",
+  "expert_sop_hash": "a214053df3bcc6b0",
+  "learned_sop_version": "numeric-decision-tree-v1",
+  "learned_sop_hash": "140aaee5fc16b8e7",
+  "expert_sop_changed": false,
+  "learned_sop_changed": false
+}</pre>
+
+  <h2>5. prompt / threshold / candidate_order / N8</h2>
+  <pre>{
+  "prompt_template": "rca-forced-multidim-v11",
+  "prompt_template_hash": "36509d1cd05442ec",
+  "candidate_order": [
+    "branch"
+  ],
+  "feedback_update": false,
+  "n8_frozen": true
+}</pre>
+
+  <h2>6. 正确 case 分支统计与做对步骤</h2>
+  <pre>{
+  "correct_by_branch": {
+    "N5c": {
+      "n": 31,
+      "branch_correct": 31,
+      "final_correct": 26
+    },
+    "N5a": {
+      "n": 12,
+      "branch_correct": 12,
+      "final_correct": 4
+    },
+    "N5b": {
+      "n": 13,
+      "branch_correct": 13,
+      "final_correct": 9
+    },
+    "N6": {
+      "n": 1,
+      "branch_correct": 1
+    }
+  },
+  "correct_step_counter": {
+    "N5c_expert_sop_llm": 31,
+    "N5a_historical_reuse": 12,
+    "N5b_critical_key_evidence": 8,
+    "N6_request_evidence": 1,
+    "N5b_minor_reuse": 5
+  },
+  "summary_metrics": {
+    "schema_version": "rca-loop-summary-v1",
+    "experiment": "forced-multidim-confidence",
+    "source_run_dir": "/home/chenziang/nsdi-agent/artifacts/loop2_forced_multidim_v11_20260813_c",
+    "policy": "coverage-v2",
+    "created_at_utc": "2026-08-13T04:30:32.810308+00:00",
+    "routing": {
+      "policy": "coverage-v2",
+      "case_count": 107,
+      "counts": {
+        "N5a": 15,
+        "N5b": 26,
+        "N5c": 64,
+        "N6": 2
+      },
+      "ratios": {
+        "N5a": 0.140187,
+        "N5b": 0.242991,
+        "N5c": 0.598131,
+        "N6": 0.018692
+      },
+      "cases_with_missing_evidence": 68
+    },
+    "decision": null,
+    "answered": 107,
+    "correct": 57,
+    "degeneracy_guard": null,
+    "personal_alignment_gate": {
+      "schema_version": "personal-rca-loop-gate-v1",
+      "authority": "docs/个人整体思路.md",
+      "main_path": "evidence graph match -> N5a historical chain reuse / N5b physics key-evidence LLM arbitration / N5c expert SOP constrained LLM -> M9 degradation",
+      "candidate_order": [
+        "branch"
+      ],
+      "candidate_order_ok": true,
+      "expert_and_sop_are_advisory": true,
+      "expert_sop_version": "expert-sop-playbook-v1",
+      "expert_sop_hash": "a214053df3bcc6b0",
+      "n8_feedback_update": false,
+      "forbidden_loop_target": "forced three-class accuracy or lift alone without confidence calibration"
+    },
+    "correct_by_branch": {
+      "N5c": {
+        "n": 31,
+        "branch_correct": 31,
+        "final_correct": 26
+      },
+      "N5a": {
+        "n": 12,
+        "branch_correct": 12,
+        "final_correct": 4
+      },
+      "N5b": {
+        "n": 13,
+        "branch_correct": 13,
+        "final_correct": 9
+      },
+      "N6": {
+        "n": 1,
+        "branch_correct": 1
+      }
+    },
+    "correct_step_counter": {
+      "N5c_expert_sop_llm": 31,
+      "N5a_historical_reuse": 12,
+      "N5b_critical_key_evidence": 8,
+      "N6_request_evidence": 1,
+      "N5b_minor_reuse": 5
+    },
+    "bad_case_count": 50,
+    "bad_step_counter": {
+      "N5c_expert_sop_llm": 33,
+      "N5b_critical_key_evidence": 9,
+      "N5b_minor_reuse": 4,
+      "N5a_historical_reuse": 3,
+      "N6_human_review": 1
+    },
+    "label_suspect_count": 5,
+    "irreducible_count": 11,
+    "raw_policy_summary_keys": [
+      "answer_rate",
+      "answered",
+      "branch_class_matrix",
+      "branches",
+      "calibration",
+      "calibration_check",
+      "confidence_reliability",
+      "correct",
+      "coverage_accuracy",
+      "decision_policy",
+      "dimension_reliability",
+      "final_decisions",
+      "forced_class_metrics",
+      "llm_calibration",
+      "llm_vs_history",
+      "n5a",
+      "personal_alignment_gate",
+      "policy",
+      "precision_when_answered",
+      "raw_class_metrics",
+      "routing",
+      "selective_risk_curve",
+      "threshold_sweep"
+    ]
+  }
+}</pre>
+
+  <h2>7. Bad Case 逐条分析</h2>
+  <table>
+    <thead>
+      <tr><th>case_id</th><th>actual</th><th>branch_pred</th><th>final_pred</th><th>branch</th><th>failed_step</th><th>error_class</th><th>fixable</th><th>next</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>case_b53c29f2ed30</td><td>L2</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_7ab9c8387860</td><td>L2</td><td>L1</td><td>L1</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_02da79997180</td><td>L1</td><td>fiber</td><td>None</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_c1f6d74a42c9</td><td>L2</td><td>L1</td><td>L1</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_f40d7dea10c4</td><td>L2</td><td>L1</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_13ac31d97368</td><td>L1</td><td>L2</td><td>L2</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_3160b584dd44</td><td>L2</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_7c60d5951f80</td><td>L2</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_a859a2ae4d99</td><td>L2</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_f3594459612d</td><td>L2</td><td>L1</td><td>L1</td><td>N5b</td><td>N5b_minor_reuse</td><td>noncritical_reuse_wrong_history</td><td>threshold_or_key_evidence</td><td>revisit_key_evidence_contract</td></tr><tr><td>case_f53a4bc3cd6d</td><td>L1</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_b1dfb752200b</td><td>L1</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_b244b38241f9</td><td>L1</td><td>L2</td><td>L2</td><td>N5b</td><td>N5b_minor_reuse</td><td>noncritical_reuse_wrong_history</td><td>threshold_or_key_evidence</td><td>revisit_key_evidence_contract</td></tr><tr><td>case_86eee41de4c9</td><td>L2</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_a86363693651</td><td>L2</td><td>L1</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_8448ab686d52</td><td>L1</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_3a9a11e3c449</td><td>L1</td><td>fiber</td><td>fiber</td><td>N5b</td><td>N5b_minor_reuse</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_f4151dbd5222</td><td>L2</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_de30dd81f652</td><td>L1</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_0e7598a5fd0a</td><td>L2</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_e7756a64e30d</td><td>L2</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_5009db76a459</td><td>L2</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_0c3939c5292e</td><td>L2</td><td>L1</td><td>L1</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_9d6e145b9fdc</td><td>L2</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_4541f9bbc853</td><td>L2</td><td>L1</td><td>L1</td><td>N5a</td><td>N5a_historical_reuse</td><td>exact_match_same_evidence_different_label</td><td>no_safe_model_fix</td><td>mark_irreducible_or_label_review</td></tr><tr><td>case_2c9963b9a196</td><td>L1</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_aae29bfa4d32</td><td>L1</td><td>L2</td><td>L2</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_b2d2a66d4b1d</td><td>fiber</td><td>L2</td><td>L2</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_4fff96563d56</td><td>L1</td><td>L2</td><td>L2</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_1e68b6eb3132</td><td>L2</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_f6ab3c98854d</td><td>fiber</td><td>L2</td><td>L2</td><td>N5b</td><td>N5b_minor_reuse</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_fa72aef06d4d</td><td>L2</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_ec7c50c7fd54</td><td>L2</td><td>L1</td><td>L1</td><td>N5a</td><td>N5a_historical_reuse</td><td>exact_match_same_evidence_different_label</td><td>no_safe_model_fix</td><td>mark_irreducible_or_label_review</td></tr><tr><td>case_83552129a3cc</td><td>L2</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_e2ba8d4715a3</td><td>L2</td><td>fiber</td><td>None</td><td>N6</td><td>N6_human_review</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_f519245c7b0f</td><td>L1</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_4695d660361d</td><td>fiber</td><td>L2</td><td>L2</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_7fa3fefa52e3</td><td>L1</td><td>L2</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_22d4dde687ab</td><td>fiber</td><td>L1</td><td>L1</td><td>N5a</td><td>N5a_historical_reuse</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_ac436bbbc898</td><td>fiber</td><td>L1</td><td>L1</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_85ab9d3bd128</td><td>fiber</td><td>L1</td><td>L1</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_1d881d28d2a3</td><td>L2</td><td>L1</td><td>None</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_9e34cb030209</td><td>L2</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_c770294bd1f2</td><td>L2</td><td>fiber</td><td>fiber</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_62b8d2de6e0c</td><td>L2</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_9daf397bb2f7</td><td>L1</td><td>L2</td><td>L2</td><td>N5b</td><td>N5b_critical_key_evidence</td><td>critical_missing_arbitration_failed</td><td>prompt_or_llm_arbitration</td><td>inspect_llm_trace_and_prompt</td></tr><tr><td>case_9e14bb67adf3</td><td>L1</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_92919cfab57f</td><td>L1</td><td>L2</td><td>L2</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr><tr><td>case_4b322d8486b5</td><td>L1</td><td>fiber</td><td>None</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>fiber_not_identifiable_or_hallucinated</td><td>no_with_current_telemetry</td><td>keep_as_irreducible_request_otdr</td></tr><tr><td>case_2ee657ca7489</td><td>L1</td><td>L2</td><td>L2</td><td>N5c</td><td>N5c_expert_sop_llm</td><td>cold_start_llm_or_gate_failed</td><td>maybe</td><td>keep_observing</td></tr>
+    </tbody>
+  </table>
+  <pre>bad_step_counter = {"N5c_expert_sop_llm": 33, "N5b_critical_key_evidence": 9, "N5b_minor_reuse": 4, "N5a_historical_reuse": 3, "N6_human_review": 1}</pre>
+
+  <h2>8. 疑似 label 与 irreducible</h2>
+  <h3 class="warn">label_suspects</h3>
+  <ul><li><code>case_5d80fba2c22f</code>: N5a exact signature matches historical case with different label</li><li><code>case_4e466fb62ba8</code>: N5a exact signature matches historical case with different label</li><li><code>case_4541f9bbc853</code>: N5a exact signature matches historical case with different label</li><li><code>case_60e62d6d1052</code>: N5a exact signature matches historical case with different label</li><li><code>case_ec7c50c7fd54</code>: N5a exact signature matches a historical case with a different label</li></ul>
+  <h3 class="warn">irreducible_cases</h3>
+  <ul><li><code>case_5d80fba2c22f</code>: Identical evidence signature with conflicting root cause</li><li><code>case_4e466fb62ba8</code>: Identical evidence signature with conflicting root cause</li><li><code>case_4541f9bbc853</code>: Identical evidence signature with conflicting root cause</li><li><code>case_f6ab3c98854d</code>: C20 fiber not identifiable from current telemetry</li><li><code>case_ac436bbbc898</code>: C20 fiber not identifiable from current telemetry</li><li><code>case_60e62d6d1052</code>: Identical evidence signature with conflicting root cause</li><li><code>case_4695d660361d</code>: C20: fiber not identifiable from current two-end telemetry</li><li><code>case_b2d2a66d4b1d</code>: C20: fiber not identifiable from current two-end telemetry</li><li><code>case_ec7c50c7fd54</code>: Identical train/test evidence signature with conflicting root cause</li><li><code>case_22d4dde687ab</code>: C20: fiber not identifiable from current two-end telemetry</li><li><code>case_85ab9d3bd128</code>: C20: fiber not identifiable from current two-end telemetry</li></ul>
+</body>
+</html>

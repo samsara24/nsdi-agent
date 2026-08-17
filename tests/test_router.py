@@ -225,13 +225,24 @@ def test_n5a_outcome_reuses_history_and_reports_purity(world):
         kinds = {link.kind for link in outcome.evidence_chain}
         assert "exact_match" in kinds
         assert kinds & {"purity_check", "purity_warning"}
-        # 混合桶必须带 caveat 并要求 LLM 仲裁。
-        assert outcome.needs_llm == ("purity_warning" in kinds)
+        # 全覆盖口径下，纯桶也要进入 LLM，历史结论并行保留。
+        assert outcome.needs_llm
+        assert outcome.history_verdict in ROOT_CAUSES
 
 
 def test_n5b_flags_critical_missing_evidence(world):
-    assert critical_missing(("status:L1:RxLOS", "level:L2:rxpower_mean:low_tail")) == ("status:L1:RxLOS",)
-    assert critical_missing(("level:L2:rxpower_mean:low_tail",)) == ()
+    assert critical_missing(("status:L1:RxLOS", "level:L2:rxpower_mean:low_tail")) == (
+        "status:L1:RxLOS",
+        "level:L2:rxpower_mean:low_tail",
+    )
+    assert critical_missing(("fence:L2:rxpower_mean:low_tail",)) == ()
+    assert critical_missing(("drop:L1:txpower:all_lanes",)) == ("drop:L1:txpower:all_lanes",)
+    # 正常带内发送电平不是归因证据（P4/C21）；缺失不得触发关键仲裁。
+    assert critical_missing(("level:L2:txpower_mean:low_tail",)) == ()
+    # 接收类 level 仍是关键。
+    assert critical_missing(("level:L1:media_snr_min:high_tail",)) == (
+        "level:L1:media_snr_min:high_tail",
+    )
 
     calibration = fit_calibration(
         world["train_results"], world["train_packs"], world["train_labels"], policy=COVERAGE_POLICY
@@ -324,7 +335,7 @@ def test_n6_abstains_and_asks_for_a_human(world):
         count += 1
         assert outcome.verdict is None
         assert outcome.needs_human
-        assert not outcome.needs_llm
+        assert outcome.needs_llm
         assert outcome.confidence == 0.0
     assert count == 2
 

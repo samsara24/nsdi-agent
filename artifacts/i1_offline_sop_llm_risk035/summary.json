@@ -1,0 +1,948 @@
+{
+  "schema_version": "offline-sop-llm-summary-v1",
+  "knowledge": {
+    "schema_version": "training-knowledge-summary-v1",
+    "train_case_count": 161,
+    "historical_vector_count": 161,
+    "evidence_graph_case_count": 161,
+    "evidence_graph_diagnosis_count": 161,
+    "graph_version": "evidence-graph-v1:161:94ce1adebd9e106a",
+    "graph_purity": {
+      "case_count": 161,
+      "signature_group_count": 147,
+      "mixed_label_group_count": 4,
+      "mixed_label_case_count": 10,
+      "mixed_label_case_ratio": 0.062112,
+      "singleton_group_count": 137,
+      "empty_signature_case_count": 0
+    },
+    "sop": {
+      "version": "learned-sop-v1",
+      "dictionary_version": "feature-dictionary-v2",
+      "dictionary_hash": "78bbdbbf601fe29e",
+      "training_case_count": 161,
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "source": "rca_v2_l2fixed:manifest-train",
+      "content_hash": "9c96d6f5d84e9ad7",
+      "root": {
+        "node_id": "root",
+        "samples": 161,
+        "label_counts": {
+          "L1": 49,
+          "L2": 100,
+          "fiber": 12
+        },
+        "prediction": "L2",
+        "token": "imbalance:L2:rxpower",
+        "present": {
+          "node_id": "root.present",
+          "samples": 7,
+          "label_counts": {
+            "L1": 6,
+            "L2": 0,
+            "fiber": 1
+          },
+          "prediction": "L1"
+        },
+        "absent": {
+          "node_id": "root.absent",
+          "samples": 154,
+          "label_counts": {
+            "L1": 43,
+            "L2": 100,
+            "fiber": 11
+          },
+          "prediction": "L2",
+          "token": "status:L1:RxLOS",
+          "present": {
+            "node_id": "root.absent.present",
+            "samples": 42,
+            "label_counts": {
+              "L1": 5,
+              "L2": 32,
+              "fiber": 5
+            },
+            "prediction": "L2",
+            "token": "level:L2:rxpower_mean:high_tail",
+            "present": {
+              "node_id": "root.absent.present.present",
+              "samples": 7,
+              "label_counts": {
+                "L1": 3,
+                "L2": 4,
+                "fiber": 0
+              },
+              "prediction": "L2"
+            },
+            "absent": {
+              "node_id": "root.absent.present.absent",
+              "samples": 35,
+              "label_counts": {
+                "L1": 2,
+                "L2": 28,
+                "fiber": 5
+              },
+              "prediction": "L2"
+            }
+          },
+          "absent": {
+            "node_id": "root.absent.absent",
+            "samples": 112,
+            "label_counts": {
+              "L1": 38,
+              "L2": 68,
+              "fiber": 6
+            },
+            "prediction": "L2",
+            "token": "imbalance:L2:serdes_snr",
+            "present": {
+              "node_id": "root.absent.absent.present",
+              "samples": 21,
+              "label_counts": {
+                "L1": 9,
+                "L2": 8,
+                "fiber": 4
+              },
+              "prediction": "L1"
+            },
+            "absent": {
+              "node_id": "root.absent.absent.absent",
+              "samples": 91,
+              "label_counts": {
+                "L1": 29,
+                "L2": 60,
+                "fiber": 2
+              },
+              "prediction": "L2"
+            }
+          }
+        }
+      }
+    },
+    "policies": {
+      "coverage-v2": {
+        "case_count": 161,
+        "llm_trace_count": 112,
+        "llm_accepted_count": 23,
+        "prediction_matches_training_label": 29,
+        "answered_count": 53,
+        "branch_calibration": {
+          "source": "manifest-train-loo:coverage-v2",
+          "groups": {
+            "N5a_mixed": {
+              "correct": 3,
+              "total": 3,
+              "accuracy": 1.0,
+              "wilson_lower_bound": 0.438494
+            },
+            "N5a_pure": {
+              "correct": 12,
+              "total": 19,
+              "accuracy": 0.631579,
+              "wilson_lower_bound": 0.410392
+            },
+            "N5b_critical_gap": {
+              "correct": 5,
+              "total": 7,
+              "accuracy": 0.714286,
+              "wilson_lower_bound": 0.358929
+            },
+            "N5b_minor_gap": {
+              "correct": 16,
+              "total": 29,
+              "accuracy": 0.551724,
+              "wilson_lower_bound": 0.375477
+            },
+            "N5c_no_exclusion": {
+              "correct": 0,
+              "total": 94,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            },
+            "N5c_with_exclusion": {
+              "correct": 0,
+              "total": 5,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            },
+            "N6_abstain": {
+              "correct": 0,
+              "total": 4,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            }
+          }
+        },
+        "llm_calibration": {
+          "source": "manifest-train-loo-llm:coverage-v2",
+          "confidence_bins": [
+            0.0,
+            0.5,
+            0.7,
+            0.9,
+            1.0
+          ],
+          "groups": {
+            "llm:N5c:[0.0,0.5)": {
+              "correct": 0,
+              "total": 1,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            },
+            "llm:N5c:[0.5,0.7)": {
+              "correct": 2,
+              "total": 5,
+              "accuracy": 0.4,
+              "wilson_lower_bound": 0.117618
+            },
+            "llm:N5c:[0.7,0.9)": {
+              "correct": 2,
+              "total": 2,
+              "accuracy": 1.0,
+              "wilson_lower_bound": 0.342372
+            }
+          }
+        },
+        "decision_policy": {
+          "version": "decision-policy-v2",
+          "final_lower_bound": 0.410392,
+          "minimum_support": 10,
+          "candidate_order": [
+            "branch",
+            "sop"
+          ],
+          "target_selective_risk": 0.35,
+          "fitted_on": "manifest-train-loo:coverage-v2: 目标选择性风险 <= 35.00%，取到最大覆盖率的阈值 0.4104（训练留一法覆盖率 81.99%，实测风险 32.58%，支持数下限 10）",
+          "non_identifiable_labels": [
+            "fiber"
+          ],
+          "non_identifiable_evidence": {
+            "fiber": [
+              "OTDR 曲线（定位反射与损耗事件的距离）",
+              "两端 MPO / LC 端面镜检结果",
+              "同一 lane 的双向功率标定（用于替代不可信的功率相减）",
+              "光纤跳线更换后的复测结果"
+            ]
+          }
+        },
+        "decision_policy_fit": {
+          "source": "manifest-train-loo:coverage-v2",
+          "target_selective_risk": 0.35,
+          "minimum_support": 10,
+          "minimum_coverage": 0.0,
+          "candidate_order": [
+            "branch",
+            "sop"
+          ],
+          "non_identifiable_labels": [
+            "fiber"
+          ],
+          "chosen_lower_bound": 0.410392,
+          "feasible": true,
+          "curve": [
+            {
+              "final_lower_bound": 0.0,
+              "answered": 153,
+              "coverage": 0.950311,
+              "correct": 93,
+              "precision_when_answered": 0.607843,
+              "selective_risk": 0.392157,
+              "by_source": {
+                "branch": {
+                  "correct": 25,
+                  "answered": 42
+                },
+                "sop": {
+                  "correct": 68,
+                  "answered": 111
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.168178,
+              "answered": 153,
+              "coverage": 0.950311,
+              "correct": 93,
+              "precision_when_answered": 0.607843,
+              "selective_risk": 0.392157,
+              "by_source": {
+                "branch": {
+                  "correct": 25,
+                  "answered": 42
+                },
+                "sop": {
+                  "correct": 68,
+                  "answered": 111
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.218804,
+              "answered": 151,
+              "coverage": 0.937888,
+              "correct": 93,
+              "precision_when_answered": 0.615894,
+              "selective_risk": 0.384106,
+              "by_source": {
+                "branch": {
+                  "correct": 25,
+                  "answered": 42
+                },
+                "sop": {
+                  "correct": 68,
+                  "answered": 109
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.258195,
+              "answered": 144,
+              "coverage": 0.89441,
+              "correct": 86,
+              "precision_when_answered": 0.597222,
+              "selective_risk": 0.402778,
+              "by_source": {
+                "branch": {
+                  "correct": 25,
+                  "answered": 42
+                },
+                "sop": {
+                  "correct": 61,
+                  "answered": 102
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.337161,
+              "answered": 142,
+              "coverage": 0.881988,
+              "correct": 86,
+              "precision_when_answered": 0.605634,
+              "selective_risk": 0.394366,
+              "by_source": {
+                "branch": {
+                  "correct": 25,
+                  "answered": 42
+                },
+                "sop": {
+                  "correct": 61,
+                  "answered": 100
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.375477,
+              "answered": 136,
+              "coverage": 0.84472,
+              "correct": 86,
+              "precision_when_answered": 0.632353,
+              "selective_risk": 0.367647,
+              "by_source": {
+                "branch": {
+                  "correct": 25,
+                  "answered": 42
+                },
+                "sop": {
+                  "correct": 61,
+                  "answered": 94
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.410392,
+              "answered": 132,
+              "coverage": 0.819876,
+              "correct": 89,
+              "precision_when_answered": 0.674242,
+              "selective_risk": 0.325758,
+              "by_source": {
+                "branch": {
+                  "correct": 12,
+                  "answered": 18
+                },
+                "sop": {
+                  "correct": 77,
+                  "answered": 114
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.453505,
+              "answered": 130,
+              "coverage": 0.807453,
+              "correct": 88,
+              "precision_when_answered": 0.676923,
+              "selective_risk": 0.323077,
+              "by_source": {
+                "sop": {
+                  "correct": 88,
+                  "answered": 130
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.491339,
+              "answered": 129,
+              "coverage": 0.801242,
+              "correct": 88,
+              "precision_when_answered": 0.682171,
+              "selective_risk": 0.317829,
+              "by_source": {
+                "sop": {
+                  "correct": 88,
+                  "answered": 129
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.527601,
+              "answered": 126,
+              "coverage": 0.782609,
+              "correct": 88,
+              "precision_when_answered": 0.698413,
+              "selective_risk": 0.301587,
+              "by_source": {
+                "sop": {
+                  "correct": 88,
+                  "answered": 126
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.552833,
+              "answered": 124,
+              "coverage": 0.770186,
+              "correct": 88,
+              "precision_when_answered": 0.709677,
+              "selective_risk": 0.290323,
+              "by_source": {
+                "sop": {
+                  "correct": 88,
+                  "answered": 124
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.564221,
+              "answered": 64,
+              "coverage": 0.397516,
+              "correct": 28,
+              "precision_when_answered": 0.4375,
+              "selective_risk": 0.5625,
+              "by_source": {
+                "sop": {
+                  "correct": 28,
+                  "answered": 64
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.572831,
+              "answered": 40,
+              "coverage": 0.248447,
+              "correct": 28,
+              "precision_when_answered": 0.7,
+              "selective_risk": 0.3,
+              "by_source": {
+                "sop": {
+                  "correct": 28,
+                  "answered": 40
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.632013,
+              "answered": 38,
+              "coverage": 0.236025,
+              "correct": 28,
+              "precision_when_answered": 0.736842,
+              "selective_risk": 0.263158,
+              "by_source": {
+                "sop": {
+                  "correct": 28,
+                  "answered": 38
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.664859,
+              "answered": 10,
+              "coverage": 0.062112,
+              "correct": 0,
+              "precision_when_answered": 0.0,
+              "selective_risk": 1.0,
+              "by_source": {
+                "sop": {
+                  "correct": 0,
+                  "answered": 10
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.666646,
+              "answered": 8,
+              "coverage": 0.049689,
+              "correct": 0,
+              "precision_when_answered": 0.0,
+              "selective_risk": 1.0,
+              "by_source": {
+                "sop": {
+                  "correct": 0,
+                  "answered": 8
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.714855,
+              "answered": 7,
+              "coverage": 0.043478,
+              "correct": 0,
+              "precision_when_answered": 0.0,
+              "selective_risk": 1.0,
+              "by_source": {
+                "sop": {
+                  "correct": 0,
+                  "answered": 7
+                }
+              }
+            },
+            {
+              "final_lower_bound": 0.750997,
+              "answered": 3,
+              "coverage": 0.018634,
+              "correct": 0,
+              "precision_when_answered": 0.0,
+              "selective_risk": 1.0,
+              "by_source": {
+                "sop": {
+                  "correct": 0,
+                  "answered": 3
+                }
+              }
+            }
+          ]
+        },
+        "loo_sop_answered": 161,
+        "loo_sop_correct": 102
+      }
+    }
+  },
+  "policies": {
+    "coverage-v2": {
+      "policy": {
+        "name": "coverage-v2",
+        "description": "T4 标定规则：sim=1.0 进 N5a；证据全覆盖（历史见过我的全部证据）进 N5b；零证据与全链路遥测失效直接进 N6；其余进 N5c。不使用 0.7 这条无数据支持的线。",
+        "exact_similarity": 1.0,
+        "partial_similarity": null,
+        "partial_requires_full_coverage": true,
+        "abstain_on_empty_evidence": true,
+        "abstain_on_optical_blackout": true
+      },
+      "calibration": {
+        "source": "manifest-train-loo:coverage-v2",
+        "groups": {
+          "N5a_mixed": {
+            "correct": 3,
+            "total": 3,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.438494
+          },
+          "N5a_pure": {
+            "correct": 12,
+            "total": 19,
+            "accuracy": 0.631579,
+            "wilson_lower_bound": 0.410392
+          },
+          "N5b_critical_gap": {
+            "correct": 5,
+            "total": 7,
+            "accuracy": 0.714286,
+            "wilson_lower_bound": 0.358929
+          },
+          "N5b_minor_gap": {
+            "correct": 16,
+            "total": 29,
+            "accuracy": 0.551724,
+            "wilson_lower_bound": 0.375477
+          },
+          "N5c_no_exclusion": {
+            "correct": 0,
+            "total": 94,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "correct": 0,
+            "total": 5,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N6_abstain": {
+            "correct": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          }
+        }
+      },
+      "llm_calibration": {
+        "source": "manifest-train-loo-llm:coverage-v2",
+        "confidence_bins": [
+          0.0,
+          0.5,
+          0.7,
+          0.9,
+          1.0
+        ],
+        "groups": {
+          "llm:N5c:[0.0,0.5)": {
+            "correct": 0,
+            "total": 1,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "llm:N5c:[0.5,0.7)": {
+            "correct": 2,
+            "total": 5,
+            "accuracy": 0.4,
+            "wilson_lower_bound": 0.117618
+          },
+          "llm:N5c:[0.7,0.9)": {
+            "correct": 2,
+            "total": 2,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.342372
+          }
+        }
+      },
+      "decision_policy": {
+        "version": "decision-policy-v2",
+        "final_lower_bound": 0.410392,
+        "minimum_support": 10,
+        "candidate_order": [
+          "branch",
+          "sop"
+        ],
+        "target_selective_risk": 0.35,
+        "fitted_on": "manifest-train-loo:coverage-v2: 目标选择性风险 <= 35.00%，取到最大覆盖率的阈值 0.4104（训练留一法覆盖率 81.99%，实测风险 32.58%，支持数下限 10）",
+        "non_identifiable_labels": [
+          "fiber"
+        ],
+        "non_identifiable_evidence": {
+          "fiber": [
+            "OTDR 曲线（定位反射与损耗事件的距离）",
+            "两端 MPO / LC 端面镜检结果",
+            "同一 lane 的双向功率标定（用于替代不可信的功率相减）",
+            "光纤跳线更换后的复测结果"
+          ]
+        }
+      },
+      "routing": {
+        "policy": "coverage-v2",
+        "case_count": 107,
+        "counts": {
+          "N5a": 15,
+          "N5b": 26,
+          "N5c": 64,
+          "N6": 2
+        },
+        "ratios": {
+          "N5a": 0.140187,
+          "N5b": 0.242991,
+          "N5c": 0.598131,
+          "N6": 0.018692
+        },
+        "cases_with_missing_evidence": 68
+      },
+      "n5a": {
+        "case_count": 15,
+        "pure_signature_cases": 13,
+        "mixed_signature_cases": 2,
+        "mixed_signature_ratio": 0.133333,
+        "bucket_majority_correct": 11,
+        "bucket_majority_accuracy": 0.733333
+      },
+      "branches": {
+        "N5c": {
+          "n": 64,
+          "answered": 4,
+          "correct": 2,
+          "abstained": 60,
+          "needs_llm": 0,
+          "needs_human": 60,
+          "precision_when_answered": 0.5
+        },
+        "N5a": {
+          "n": 15,
+          "answered": 13,
+          "correct": 9,
+          "abstained": 2,
+          "needs_llm": 0,
+          "needs_human": 2,
+          "precision_when_answered": 0.692308
+        },
+        "N5b": {
+          "n": 26,
+          "answered": 20,
+          "correct": 12,
+          "abstained": 6,
+          "needs_llm": 0,
+          "needs_human": 6,
+          "precision_when_answered": 0.6
+        },
+        "N6": {
+          "n": 2,
+          "answered": 0,
+          "correct": 0,
+          "abstained": 2,
+          "needs_llm": 0,
+          "needs_human": 2,
+          "precision_when_answered": null
+        }
+      },
+      "calibration_check": {
+        "N5a_mixed": {
+          "claimed_confidence": 1.0,
+          "claimed_lower_bound": 0.438494,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5a_pure": {
+          "claimed_confidence": 0.631579,
+          "claimed_lower_bound": 0.410392,
+          "answered": 13,
+          "correct": 9,
+          "observed_accuracy": 0.692308,
+          "gap": 0.060729
+        },
+        "N5b_critical_gap": {
+          "claimed_confidence": 0.714286,
+          "claimed_lower_bound": 0.358929,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5b_minor_gap": {
+          "claimed_confidence": 0.551724,
+          "claimed_lower_bound": 0.375477,
+          "answered": 19,
+          "correct": 11,
+          "observed_accuracy": 0.578947,
+          "gap": 0.027223
+        },
+        "N5c_no_exclusion": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5c_with_exclusion": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N6_abstain": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "llm:N5c:[0.5,0.7)": {
+          "claimed_confidence": 0.4,
+          "claimed_lower_bound": 0.117618,
+          "answered": 2,
+          "correct": 0,
+          "observed_accuracy": 0.0,
+          "gap": -0.4
+        },
+        "llm:N5c:[0.7,0.9)": {
+          "claimed_confidence": 1.0,
+          "claimed_lower_bound": 0.342372,
+          "answered": 2,
+          "correct": 2,
+          "observed_accuracy": 1.0,
+          "gap": 0.0
+        },
+        "uncalibrated:llm:N5b:[0.5,0.7)": {
+          "claimed_confidence": 0.6,
+          "claimed_lower_bound": 0.0,
+          "answered": 1,
+          "correct": 1,
+          "observed_accuracy": 1.0,
+          "gap": 0.4
+        }
+      },
+      "answered": 37,
+      "answer_rate": 0.345794,
+      "correct": 23,
+      "precision_when_answered": 0.621622,
+      "coverage_accuracy": 0.214953,
+      "raw_class_metrics": {
+        "L1": {
+          "support": 32,
+          "predicted": 11,
+          "true_positive": 5,
+          "precision": 0.454545,
+          "recall": 0.15625,
+          "f1": 0.232558
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 23,
+          "true_positive": 17,
+          "precision": 0.73913,
+          "recall": 0.253731,
+          "f1": 0.377778
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 3,
+          "true_positive": 1,
+          "precision": 0.333333,
+          "recall": 0.125,
+          "f1": 0.181818
+        }
+      },
+      "selective_risk_curve": [
+        {
+          "minimum_lower_bound": 0.0,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.1,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.2,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.3,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.4,
+          "answered": 13,
+          "coverage": 0.121495,
+          "correct": 9,
+          "precision_at_coverage": 0.692308,
+          "selective_risk": 0.307692
+        },
+        {
+          "minimum_lower_bound": 0.5,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.6,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.7,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.8,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.9,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        }
+      ],
+      "final_decisions": {
+        "actions": {
+          "final": 71,
+          "request_evidence": 29,
+          "human_review": 7
+        },
+        "answered": 71,
+        "coverage": 0.663551,
+        "correct": 50,
+        "precision_when_answered": 0.704225,
+        "coverage_accuracy": 0.46729,
+        "low_confidence_degradation_rate": 0.336449,
+        "human_intervention_rate": 0.065421,
+        "class_metrics": {
+          "L1": {
+            "support": 32,
+            "predicted": 3,
+            "true_positive": 2,
+            "precision": 0.666667,
+            "recall": 0.0625,
+            "f1": 0.114286
+          },
+          "L2": {
+            "support": 67,
+            "predicted": 68,
+            "true_positive": 48,
+            "precision": 0.705882,
+            "recall": 0.716418,
+            "f1": 0.711111
+          },
+          "fiber": {
+            "support": 8,
+            "predicted": 0,
+            "true_positive": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        "by_candidate_source": {
+          "branch": {
+            "answered": 12,
+            "correct": 8,
+            "precision_when_answered": 0.666667
+          },
+          "sop": {
+            "answered": 59,
+            "correct": 42,
+            "precision_when_answered": 0.711864
+          }
+        }
+      }
+    }
+  }
+}

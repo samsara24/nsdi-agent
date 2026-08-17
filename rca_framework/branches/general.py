@@ -24,9 +24,11 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple  # noqa: F401
 
 from ..anomaly import DOWN_THRESHOLDS, lane_values
 from ..constraints.library import CONSTRAINT_LIBRARY, Constraint, ConstraintLibrary
+from ..decision_tree.features import numeric_features_from_pack
 from ..evidence_graph.match import MatchResult
 from ..evidence_graph.router import RoutingDecision
 from ..evidence_pack import EvidencePack
+from ..sop.expert_sop import expert_sop_to_dict
 from ..types import ROOT_CAUSES, SIDES
 from .base import BranchCalibration, BranchOutcome, EvidenceLink
 
@@ -89,6 +91,8 @@ class DiagnosisRequest:
     historical_case_ids: Tuple[str, ...]
     historical_label_distribution: Tuple[Tuple[str, int], ...]
     sop_prediction: Optional[Dict[str, Any]] = None
+    decision_tree_prediction: Optional[Dict[str, Any]] = None
+    expert_sop: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -107,6 +111,12 @@ class DiagnosisRequest:
                 label: count for label, count in self.historical_label_distribution
             },
             "sop_prediction": dict(self.sop_prediction) if self.sop_prediction is not None else None,
+            "decision_tree_prediction": (
+                dict(self.decision_tree_prediction)
+                if self.decision_tree_prediction is not None
+                else None
+            ),
+            "expert_sop": dict(self.expert_sop) if self.expert_sop is not None else None,
         }
 
 
@@ -168,6 +178,23 @@ def calibration_group(pack: EvidencePack, exclusions: Sequence[Exclusion]) -> st
     return "N5c_with_exclusion" if exclusions else "N5c_no_exclusion"
 
 
+def _predict_sop_or_tree(
+    model: Optional[Any],
+    pack: EvidencePack,
+    features: Optional[Any],
+) -> Optional[Dict[str, Any]]:
+    if model is None:
+        return None
+    try:
+        if getattr(model, "version", "").startswith("numeric-decision-tree"):
+            return model.predict(numeric_features_from_pack(pack)).to_dict()
+        if features is not None:
+            return model.predict(features).to_dict()
+        return model.predict(numeric_features_from_pack(pack)).to_dict()
+    except Exception:
+        return None
+
+
 def handle(
     result: MatchResult,
     decision: RoutingDecision,
@@ -221,31 +248,50 @@ def handle(
     verdict = candidates[0] if len(candidates) == 1 else None
     caveats: List[str] = []
     missing = list(result.missing_evidence)
-    if sop_model is not None and features is not None:
-        prediction = sop_model.predict(features)
+    tree_prediction = _predict_sop_or_tree(sop_model, pack, features)
+    if tree_prediction is not None:
         chain.append(EvidenceLink(
-            kind="learned_sop",
-            statement=prediction.reason,
-            tokens=tuple(prediction.path),
-            source=sop_model.version,
+            kind="numeric_decision_tree"
+            if getattr(sop_model, "version", "").startswith("numeric-decision-tree")
+            else "learned_sop",
+            statement=str(tree_prediction.get("reason", "")),
+            tokens=tuple(tree_prediction.get("path", ())),
+            source=getattr(sop_model, "version", ""),
         ))
-        if prediction.verdict in candidates:
-            # SOP 是训练集归纳的先验路径。没有 LLM 时允许它作为 dry-run
+        prediction_verdict = tree_prediction.get("verdict")
+        if prediction_verdict in candidates:
+            # 决策树是训练集归纳的先验路径。没有 LLM 时允许它作为 dry-run
             # 候选；正式 SOP+LLM 路径必须由受约束 LLM 给出最终结论。
             if trace is None:
-                verdict = prediction.verdict
-                confidence = prediction.confidence
-                confidence_lower_bound = prediction.confidence_lower_bound
-                calibration_support = prediction.support
-                group = f"sop:{prediction.leaf_id}"
+                verdict = str(prediction_verdict)
+                confidence = float(tree_prediction.get("confidence", 0.0))
+                confidence_lower_bound = float(tree_prediction.get("confidence_lower_bound", 0.0))
+                calibration_support = int(tree_prediction.get("support", 0))
+                group = f"tree:{tree_prediction.get('leaf_id', '')}"
         else:
             caveats.append(
-                f"learned SOP 候选 {prediction.verdict} 已被确定性约束排除或不可用，转入补采/人工复核"
+                f"决策树候选 {prediction_verdict} 已被确定性约束排除或不可用，转入补采/人工复核"
             )
+
+    if BRANCH == "N5c":
+        sop_asset = expert_sop_to_dict()
+        chain.append(EvidenceLink(
+            kind="expert_sop_context",
+            statement=(
+                f"冷启动分支注入专家排障 SOP {sop_asset['version']}，"
+                "用于约束 LLM 检查顺序，不作为当前 case 物理证据"
+            ),
+            tokens=tuple(step["step_id"] for step in sop_asset["steps"]),
+            source=sop_asset["content_hash"],
+        ))
 
     if trace is not None and trace.accepted is not None and trace.accepted.verdict is not None:
         verdict = trace.accepted.verdict
         confidence = trace.accepted.confidence
+        confidence_breakdown = trace.accepted.confidence_breakdown.to_dict()
+        self_reported_confidence = trace.accepted.self_reported_confidence
+        fallback_source = trace.accepted.fallback_source
+        compliance_penalties = trace.accepted.compliance_penalties
         confidence_lower_bound = 0.0
         calibration_support = 0
         group = f"llm_raw:{BRANCH}"
@@ -263,6 +309,15 @@ def handle(
             )
     elif trace is not None:
         caveats.append(f"LLM 未给出可用结论：{trace.abstain_reason}")
+        confidence_breakdown = None
+        self_reported_confidence = 0.0
+        fallback_source = ""
+        compliance_penalties = ()
+    else:
+        confidence_breakdown = None
+        self_reported_confidence = 0.0
+        fallback_source = ""
+        compliance_penalties = ()
 
     if verdict is None:
         caveats.append(
@@ -292,6 +347,11 @@ def handle(
         caveats=tuple(caveats),
         needs_llm=trace is None,
         needs_human=not pack.observed_fields or (trace is not None and verdict is None),
+        confidence_breakdown=confidence_breakdown,
+        self_reported_confidence=self_reported_confidence,
+        history_verdict=None,
+        fallback_source=fallback_source,
+        compliance_penalties=compliance_penalties,
     )
 
 
@@ -311,11 +371,13 @@ def build_request(
     for candidate in result.top_candidates:
         if candidate.label is not None:
             label_counts[candidate.label] = label_counts.get(candidate.label, 0) + 1
-    sop_prediction = (
-        sop_model.predict(features).to_dict()
-        if sop_model is not None and features is not None
+    sop_prediction = _predict_sop_or_tree(sop_model, pack, features)
+    decision_tree_prediction = (
+        sop_prediction
+        if sop_prediction is not None and getattr(sop_model, "version", "").startswith("numeric-decision-tree")
         else None
     )
+    request_branch = decision.branch if decision is not None else BRANCH
     return DiagnosisRequest(
         case_id=result.query_case_id,
         evidence_tokens=result.query_tokens,
@@ -325,9 +387,11 @@ def build_request(
         exclusions=exclusions,
         constraint_ids=tuple(item.constraint_id for item in relevant_constraints(result.query_tokens, library)),
         nearest_similarity=result.max_similarity,
-        branch=decision.branch if decision is not None else BRANCH,
+        branch=request_branch,
         routing_reason=decision.reason if decision is not None else "历史匹配不足，走约束推理",
         historical_case_ids=tuple(item.case_id for item in result.top_candidates),
         historical_label_distribution=tuple(sorted(label_counts.items())),
         sop_prediction=sop_prediction,
+        decision_tree_prediction=decision_tree_prediction,
+        expert_sop=expert_sop_to_dict() if request_branch == BRANCH else None,
     )

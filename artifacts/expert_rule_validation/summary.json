@@ -1,0 +1,241 @@
+{
+  "code": {
+    "variant": "code",
+    "total": 231,
+    "correct": 163,
+    "accuracy": 0.7056,
+    "confusion_matrix": {
+      "local": {
+        "local": 126,
+        "remote": 20
+      },
+      "remote": {
+        "local": 30,
+        "remote": 37
+      },
+      "fiber": {
+        "local": 12,
+        "remote": 6
+      }
+    },
+    "per_class": {
+      "local": {
+        "support": 146,
+        "predicted": 168,
+        "recall": 0.863,
+        "precision": 0.75,
+        "f1": 0.8025
+      },
+      "remote": {
+        "support": 67,
+        "predicted": 63,
+        "recall": 0.5522,
+        "precision": 0.5873,
+        "f1": 0.5692
+      },
+      "fiber": {
+        "support": 18,
+        "predicted": 0,
+        "recall": 0.0,
+        "precision": 0.0,
+        "f1": 0.0
+      }
+    },
+    "source_stats": {
+      "remote:multi_metric": {
+        "count": 57,
+        "correct": 47,
+        "accuracy": 0.8246
+      },
+      "no_anomaly_fallback": {
+        "count": 48,
+        "correct": 29,
+        "accuracy": 0.6042
+      },
+      "local:single:serdes_snr": {
+        "count": 29,
+        "correct": 22,
+        "accuracy": 0.7586
+      },
+      "local:multi_metric": {
+        "count": 20,
+        "correct": 12,
+        "accuracy": 0.6
+      },
+      "remote:single:serdes_snr": {
+        "count": 16,
+        "correct": 8,
+        "accuracy": 0.5
+      },
+      "remote:single:rxpower": {
+        "count": 15,
+        "correct": 11,
+        "accuracy": 0.7333
+      },
+      "local:single:rxpower": {
+        "count": 13,
+        "correct": 9,
+        "accuracy": 0.6923
+      },
+      "port_status_gate": {
+        "count": 10,
+        "correct": 6,
+        "accuracy": 0.6
+      },
+      "remote:single:media_snr": {
+        "count": 8,
+        "correct": 8,
+        "accuracy": 1.0
+      },
+      "local:single:media_snr": {
+        "count": 7,
+        "correct": 4,
+        "accuracy": 0.5714
+      },
+      "remote:txpower_lane_down": {
+        "count": 3,
+        "correct": 2,
+        "accuracy": 0.6667
+      },
+      "local:txpower_lane_down": {
+        "count": 3,
+        "correct": 3,
+        "accuracy": 1.0
+      },
+      "local:single:host_snr": {
+        "count": 1,
+        "correct": 1,
+        "accuracy": 1.0
+      },
+      "remote:single:host_snr": {
+        "count": 1,
+        "correct": 1,
+        "accuracy": 1.0
+      }
+    }
+  },
+  "ai": {
+    "variant": "ai",
+    "total": 231,
+    "correct": 125,
+    "accuracy": 0.5411,
+    "confusion_matrix": {
+      "local": {
+        "local": 99,
+        "remote": 47
+      },
+      "remote": {
+        "local": 41,
+        "remote": 26
+      },
+      "fiber": {
+        "local": 13,
+        "remote": 5
+      }
+    },
+    "per_class": {
+      "local": {
+        "support": 146,
+        "predicted": 153,
+        "recall": 0.6781,
+        "precision": 0.6471,
+        "f1": 0.6622
+      },
+      "remote": {
+        "support": 67,
+        "predicted": 78,
+        "recall": 0.3881,
+        "precision": 0.3333,
+        "f1": 0.3586
+      },
+      "fiber": {
+        "support": 18,
+        "predicted": 0,
+        "recall": 0.0,
+        "precision": 0.0,
+        "f1": 0.0
+      }
+    },
+    "source_stats": {
+      "remote:multi_metric": {
+        "count": 57,
+        "correct": 47,
+        "accuracy": 0.8246
+      },
+      "no_anomaly_fallback": {
+        "count": 48,
+        "correct": 29,
+        "accuracy": 0.6042
+      },
+      "local:single:serdes_snr": {
+        "count": 29,
+        "correct": 6,
+        "accuracy": 0.2069
+      },
+      "local:multi_metric": {
+        "count": 20,
+        "correct": 12,
+        "accuracy": 0.6
+      },
+      "remote:single:serdes_snr": {
+        "count": 16,
+        "correct": 8,
+        "accuracy": 0.5
+      },
+      "remote:single:rxpower": {
+        "count": 15,
+        "correct": 3,
+        "accuracy": 0.2
+      },
+      "local:single:rxpower": {
+        "count": 13,
+        "correct": 2,
+        "accuracy": 0.1538
+      },
+      "port_status_gate": {
+        "count": 10,
+        "correct": 6,
+        "accuracy": 0.6
+      },
+      "remote:single:media_snr": {
+        "count": 8,
+        "correct": 8,
+        "accuracy": 1.0
+      },
+      "local:single:media_snr": {
+        "count": 7,
+        "correct": 4,
+        "accuracy": 0.5714
+      },
+      "remote:txpower_lane_down": {
+        "count": 3,
+        "correct": 0,
+        "accuracy": 0.0
+      },
+      "local:txpower_lane_down": {
+        "count": 3,
+        "correct": 0,
+        "accuracy": 0.0
+      },
+      "local:single:host_snr": {
+        "count": 1,
+        "correct": 0,
+        "accuracy": 0.0
+      },
+      "remote:single:host_snr": {
+        "count": 1,
+        "correct": 0,
+        "accuracy": 0.0
+      }
+    }
+  },
+  "dataset": {
+    "total": 231,
+    "distribution": {
+      "fiber": 18,
+      "local": 146,
+      "remote": 67
+    },
+    "majority_baseline": 0.632
+  }
+}

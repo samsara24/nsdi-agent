@@ -1,0 +1,141 @@
+{
+  "alarm_ip_interface": "L1_ENDPOINT--400G_PORT",
+  "alarm_time": "2024-08-10 10:51:54",
+  "alarm_name": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+  "label": "L2",
+  "bias": {
+    "L1": {
+      "0": 7.35,
+      "1": 7.35,
+      "2": 7.35,
+      "3": 7.35
+    },
+    "L2": {
+      "0": 6.51,
+      "1": 6.51,
+      "2": 6.51,
+      "3": 6.51
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 1.28,
+      "1": 0.41,
+      "2": 1.38,
+      "3": 1.62
+    },
+    "L2": {
+      "0": 1.96,
+      "1": 2.2,
+      "2": 2.13,
+      "3": 2.11
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 0.41,
+      "1": 0.5,
+      "2": 0.91,
+      "3": 0.96
+    },
+    "L2": {
+      "0": 1.31,
+      "1": 1.41,
+      "2": 1.33,
+      "3": 1.29
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 25.34,
+      "1": 20.87,
+      "2": 23.67,
+      "3": 25.64
+    },
+    "L2": {
+      "0": 25.64,
+      "1": 24.31,
+      "2": 25.06,
+      "3": 25.96
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null
+    },
+    "L2": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null
+    }
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 700643,
+      "1": 731302,
+      "2": 686840,
+      "3": 730148
+    },
+    "L2": {
+      "0": 634948,
+      "1": 619571,
+      "2": 629202,
+      "3": 633867
+    }
+  },
+  "link_location": "location_9939c7fc2bc4",
+  "link_side_ip_interface_map": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "vendor": {
+    "L1": "vendor_0af94b2b83f3",
+    "L2": "vendor_0af94b2b83f3"
+  },
+  "vendor_sn": {
+    "L1": "serial_c9bc02ce2cb6",
+    "L2": "serial_a9ee06799c72"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 54.25,
+    "L2": 49.52
+  },
+  "Voltage": {
+    "L1": 3.22,
+    "L2": 3.28
+  },
+  "Lane number": {
+    "L1": 4,
+    "L2": 4
+  },
+  "label_rate": "200G",
+  "case_id": "case_000384",
+  "_meta": {
+    "schema_version": "2.0",
+    "side_definition": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "endpoint_values_swapped": false
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "schema_version": "training-knowledge-summary-v1",
+  "train_case_count": 161,
+  "historical_vector_count": 161,
+  "evidence_graph_case_count": 161,
+  "evidence_graph_diagnosis_count": 161,
+  "graph_version": "evidence-graph-v1:161:f3df9f3c25ea94f0",
+  "graph_purity": {
+    "case_count": 161,
+    "signature_group_count": 147,
+    "mixed_label_group_count": 4,
+    "mixed_label_case_count": 10,
+    "mixed_label_case_ratio": 0.062112,
+    "singleton_group_count": 137,
+    "empty_signature_case_count": 0
+  },
+  "sop": {
+    "version": "learned-sop-v1",
+    "dictionary_version": "feature-dictionary-v2",
+    "dictionary_hash": "78bbdbbf601fe29e",
+    "training_case_count": 161,
+    "max_depth": 3,
+    "min_leaf_size": 5,
+    "source": "rca_v2_l2fixed:manifest-train",
+    "content_hash": "9c96d6f5d84e9ad7",
+    "root": {
+      "node_id": "root",
+      "samples": 161,
+      "label_counts": {
+        "L1": 49,
+        "L2": 100,
+        "fiber": 12
+      },
+      "prediction": "L2",
+      "token": "imbalance:L2:rxpower",
+      "present": {
+        "node_id": "root.present",
+        "samples": 7,
+        "label_counts": {
+          "L1": 6,
+          "L2": 0,
+          "fiber": 1
+        },
+        "prediction": "L1"
+      },
+      "absent": {
+        "node_id": "root.absent",
+        "samples": 154,
+        "label_counts": {
+          "L1": 43,
+          "L2": 100,
+          "fiber": 11
+        },
+        "prediction": "L2",
+        "token": "status:L1:RxLOS",
+        "present": {
+          "node_id": "root.absent.present",
+          "samples": 42,
+          "label_counts": {
+            "L1": 5,
+            "L2": 32,
+            "fiber": 5
+          },
+          "prediction": "L2",
+          "token": "level:L2:rxpower_mean:high_tail",
+          "present": {
+            "node_id": "root.absent.present.present",
+            "samples": 7,
+            "label_counts": {
+              "L1": 3,
+              "L2": 4,
+              "fiber": 0
+            },
+            "prediction": "L2"
+          },
+          "absent": {
+            "node_id": "root.absent.present.absent",
+            "samples": 35,
+            "label_counts": {
+              "L1": 2,
+              "L2": 28,
+              "fiber": 5
+            },
+            "prediction": "L2"
+          }
+        },
+        "absent": {
+          "node_id": "root.absent.absent",
+          "samples": 112,
+          "label_counts": {
+            "L1": 38,
+            "L2": 68,
+            "fiber": 6
+          },
+          "prediction": "L2",
+          "token": "imbalance:L2:serdes_snr",
+          "present": {
+            "node_id": "root.absent.absent.present",
+            "samples": 21,
+            "label_counts": {
+              "L1": 9,
+              "L2": 8,
+              "fiber": 4
+            },
+            "prediction": "L1"
+          },
+          "absent": {
+            "node_id": "root.absent.absent.absent",
+            "samples": 91,
+            "label_counts": {
+              "L1": 29,
+              "L2": 60,
+              "fiber": 2
+            },
+            "prediction": "L2"
+          }
+        }
+      }
+    }
+  },
+  "policies": {
+    "coverage-v2": {
+      "case_count": 161,
+      "llm_trace_count": 112,
+      "llm_accepted_count": 17,
+      "prediction_matches_training_label": 26,
+      "answered_count": 52,
+      "branch_calibration": {
+        "source": "manifest-train-loo:coverage-v2",
+        "groups": {
+          "N5a_mixed": {
+            "correct": 3,
+            "total": 3,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.438494
+          },
+          "N5a_pure": {
+            "correct": 12,
+            "total": 19,
+            "accuracy": 0.631579,
+            "wilson_lower_bound": 0.410392
+          },
+          "N5b_critical_gap": {
+            "correct": 5,
+            "total": 7,
+            "accuracy": 0.714286,
+            "wilson_lower_bound": 0.358929
+          },
+          "N5b_minor_gap": {
+            "correct": 16,
+            "total": 29,
+            "accuracy": 0.551724,
+            "wilson_lower_bound": 0.375477
+          },
+          "N5c_no_exclusion": {
+            "correct": 0,
+            "total": 94,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "correct": 0,
+            "total": 5,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N6_abstain": {
+            "correct": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          }
+        }
+      },
+      "llm_calibration": {
+        "source": "manifest-train-loo-llm:coverage-v2",
+        "confidence_bins": [
+          0.0,
+          0.5,
+          0.7,
+          0.9,
+          1.0
+        ],
+        "groups": {
+          "llm:N5c:[0.5,0.7)": {
+            "correct": 1,
+            "total": 7,
+            "accuracy": 0.142857,
+            "wilson_lower_bound": 0.025679
+          }
+        }
+      }
+    }
+  }
+}

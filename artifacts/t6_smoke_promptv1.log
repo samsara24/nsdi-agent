@@ -1,0 +1,221 @@
+INFO 08-07 09:32:16 [__init__.py:216] Automatically detected platform cuda.
+INFO 08-07 09:32:19 [utils.py:233] non-default args: {'trust_remote_code': True, 'max_model_len': 8192, 'tensor_parallel_size': 2, 'disable_log_stats': True, 'disable_custom_all_reduce': True, 'model': '/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B'}
+The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+INFO 08-07 09:32:19 [model.py:547] Resolved architecture: Qwen2ForCausalLM
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO 08-07 09:32:19 [model.py:1510] Using max model len 8192
+INFO 08-07 09:32:19 [scheduler.py:205] Chunked prefill is enabled with max_num_batched_tokens=8192.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:20 [core.py:644] Waiting for init message from front-end.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:20 [core.py:77] Initializing a V1 LLM engine (v0.11.0) with config: model='/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B', speculative_config=None, tokenizer='/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=2, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser=''), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B, enable_prefix_caching=True, chunked_prefill_enabled=True, pooler_config=None, compilation_config={"level":3,"debug_dump_path":"","cache_dir":"","backend":"","custom_ops":[],"splitting_ops":["vllm.unified_attention","vllm.unified_attention_with_output","vllm.mamba_mixer2","vllm.mamba_mixer","vllm.short_conv","vllm.linear_attention","vllm.plamo2_mamba_mixer","vllm.gdn_attention","vllm.sparse_attn_indexer"],"use_inductor":true,"compile_sizes":[],"inductor_compile_config":{"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":[2,1],"use_cudagraph":true,"cudagraph_num_of_warmups":1,"cudagraph_capture_sizes":[512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"cudagraph_copy_inputs":false,"full_cuda_graph":false,"use_inductor_graph_partition":false,"pass_config":{},"max_capture_size":512,"local_cache_dir":null}
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m WARNING 08-07 09:32:20 [multiproc_executor.py:720] Reducing Torch parallelism from 32 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:20 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[0, 1], buffer_handle=(2, 16777216, 10, 'psm_a5e0e9a5'), local_subscribe_addr='ipc:///tmp/52d7e50d-9e75-4bfa-b4c5-ac809da12439', remote_subscribe_addr=None, remote_addr_ipv6=False)
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:26 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[0], buffer_handle=(1, 10485760, 10, 'psm_1a1538aa'), local_subscribe_addr='ipc:///tmp/7836cf64-574f-492e-aeb6-8d4fc952a4f1', remote_subscribe_addr=None, remote_addr_ipv6=False)
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:26 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[0], buffer_handle=(1, 10485760, 10, 'psm_63fd811b'), local_subscribe_addr='ipc:///tmp/7c06b66a-1267-4d34-8986-f30ac8a545b0', remote_subscribe_addr=None, remote_addr_ipv6=False)
+[Gloo] Rank 0 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank 1 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank [Gloo] Rank 10 is connected to  is connected to 11 peer ranks.  peer ranks. Expected number of connected peer ranks is : Expected number of connected peer ranks is : 11
+
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:26 [__init__.py:1384] Found nccl from library libnccl.so.2
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:26 [pynccl.py:103] vLLM is using nccl==2.27.3
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:26 [__init__.py:1384] Found nccl from library libnccl.so.2
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:26 [pynccl.py:103] vLLM is using nccl==2.27.3
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(EngineCore_DP0 pid=2088786)[0;0m WARNING 08-07 09:32:27 [symm_mem.py:58] SymmMemCommunicator: Device capability 8.6 not supported, communicator is not available.
+WARNING 08-07 09:32:27 [symm_mem.py:58] SymmMemCommunicator: Device capability 8.6 not supported, communicator is not available.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:27 [shm_broadcast.py:289] vLLM message queue communication handle: Handle(local_reader_ranks=[1], buffer_handle=(1, 4194304, 6, 'psm_b3df6f41'), local_subscribe_addr='ipc:///tmp/35affee5-5b03-486e-ade6-ca5a9b6f7dc2', remote_subscribe_addr=None, remote_addr_ipv6=False)
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank [Gloo] Rank 10 is connected to  is connected to 11 peer ranks.  peer ranks. Expected number of connected peer ranks is : Expected number of connected peer ranks is : 11
+
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:27 [__init__.py:1384] Found nccl from library libnccl.so.2
+INFO 08-07 09:32:27 [__init__.py:1384] Found nccl from library libnccl.so.2
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:27 [pynccl.py:103] vLLM is using nccl==2.27.3
+INFO 08-07 09:32:27 [pynccl.py:103] vLLM is using nccl==2.27.3
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:27 [parallel_state.py:1208] rank 0 in world size 2 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:32:27 [parallel_state.py:1208] rank 1 in world size 2 is assigned as DP rank 0, PP rank 0, TP rank 1, EP rank 1
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m WARNING 08-07 09:32:28 [topk_topp_sampler.py:66] FlashInfer is not available. Falling back to the PyTorch-native implementation of top-p & top-k sampling. For the best performance, please install FlashInfer.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m WARNING 08-07 09:32:28 [topk_topp_sampler.py:66] FlashInfer is not available. Falling back to the PyTorch-native implementation of top-p & top-k sampling. For the best performance, please install FlashInfer.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:32:28 [gpu_model_runner.py:2602] Starting to load model /home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:32:28 [gpu_model_runner.py:2602] Starting to load model /home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:32:28 [gpu_model_runner.py:2634] Loading model from scratch...
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:32:28 [gpu_model_runner.py:2634] Loading model from scratch...
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:32:29 [cuda.py:366] Using Flash Attention backend on V1 engine.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:32:29 [cuda.py:366] Using Flash Attention backend on V1 engine.
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:   0% Completed | 0/8 [00:00<?, ?it/s]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  12% Completed | 1/8 [00:20<02:25, 20.77s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  25% Completed | 2/8 [00:39<01:56, 19.42s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  38% Completed | 3/8 [01:17<02:20, 28.14s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  50% Completed | 4/8 [01:36<01:37, 24.37s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  62% Completed | 5/8 [01:47<00:59, 19.67s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  75% Completed | 6/8 [02:12<00:42, 21.25s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards:  88% Completed | 7/8 [02:18<00:16, 16.41s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards: 100% Completed | 8/8 [02:48<00:00, 20.78s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Loading safetensors checkpoint shards: 100% Completed | 8/8 [02:48<00:00, 21.07s/it]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m 
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:35:19 [default_loader.py:267] Loading weights took 168.71 seconds
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:35:19 [default_loader.py:267] Loading weights took 168.77 seconds
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:35:19 [gpu_model_runner.py:2653] Model loading took 30.7294 GiB and 170.285285 seconds
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:35:19 [gpu_model_runner.py:2653] Model loading took 30.7294 GiB and 170.295450 seconds
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:35:33 [backends.py:548] Using cache directory: /home/chenziang/.cache/vllm/torch_compile_cache/32f8438ff3/rank_1_0/backbone for vLLM's torch.compile
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:35:33 [backends.py:559] Dynamo bytecode transform time: 13.19 s
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:35:33 [backends.py:548] Using cache directory: /home/chenziang/.cache/vllm/torch_compile_cache/32f8438ff3/rank_0_0/backbone for vLLM's torch.compile
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:35:33 [backends.py:559] Dynamo bytecode transform time: 13.19 s
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:35:39 [backends.py:197] Cache the graph for dynamic shape for later use
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:35:39 [backends.py:197] Cache the graph for dynamic shape for later use
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:36:08 [backends.py:218] Compiling a graph for dynamic shape takes 34.32 s
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:36:09 [backends.py:218] Compiling a graph for dynamic shape takes 35.15 s
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:36:19 [shm_broadcast.py:466] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation).
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:36:40 [monitor.py:34] torch.compile takes 47.52 s in total
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:36:40 [monitor.py:34] torch.compile takes 48.34 s in total
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:36:42 [gpu_worker.py:298] Available KV cache memory: 10.41 GiB
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:36:42 [gpu_worker.py:298] Available KV cache memory: 10.41 GiB
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:36:42 [kv_cache_utils.py:1087] GPU KV cache size: 85,248 tokens
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:36:42 [kv_cache_utils.py:1091] Maximum concurrency for 8,192 tokens per request: 10.41x
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:36:42 [kv_cache_utils.py:1087] GPU KV cache size: 85,248 tokens
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:36:42 [kv_cache_utils.py:1091] Maximum concurrency for 8,192 tokens per request: 10.41x
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/67 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   1%|▏         | 1/67 [00:00<00:36,  1.79it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   3%|▎         | 2/67 [00:01<00:36,  1.80it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   4%|▍         | 3/67 [00:01<00:35,  1.81it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 4/67 [00:02<00:34,  1.82it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   7%|▋         | 5/67 [00:02<00:33,  1.82it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   9%|▉         | 6/67 [00:03<00:33,  1.83it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  10%|█         | 7/67 [00:04<00:38,  1.56it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  12%|█▏        | 8/67 [00:04<00:39,  1.50it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  13%|█▎        | 9/67 [00:05<00:37,  1.55it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  15%|█▍        | 10/67 [00:06<00:38,  1.49it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  16%|█▋        | 11/67 [00:06<00:35,  1.58it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  18%|█▊        | 12/67 [00:07<00:36,  1.52it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  19%|█▉        | 13/67 [00:08<00:36,  1.48it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  21%|██        | 14/67 [00:08<00:36,  1.45it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  22%|██▏       | 15/67 [00:09<00:34,  1.49it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  24%|██▍       | 16/67 [00:10<00:34,  1.46it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  25%|██▌       | 17/67 [00:10<00:34,  1.43it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  27%|██▋       | 18/67 [00:11<00:30,  1.59it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  28%|██▊       | 19/67 [00:11<00:28,  1.70it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  30%|██▉       | 20/67 [00:12<00:26,  1.80it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  31%|███▏      | 21/67 [00:13<00:27,  1.65it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  33%|███▎      | 22/67 [00:13<00:25,  1.75it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  34%|███▍      | 23/67 [00:14<00:27,  1.62it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  36%|███▌      | 24/67 [00:14<00:24,  1.76it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  37%|███▋      | 25/67 [00:15<00:22,  1.87it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  39%|███▉      | 26/67 [00:15<00:20,  1.96it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  40%|████      | 27/67 [00:16<00:19,  2.04it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  42%|████▏     | 28/67 [00:16<00:18,  2.10it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  43%|████▎     | 29/67 [00:17<00:17,  2.15it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  45%|████▍     | 30/67 [00:17<00:17,  2.16it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  46%|████▋     | 31/67 [00:18<00:18,  1.95it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  48%|████▊     | 32/67 [00:18<00:20,  1.74it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  49%|████▉     | 33/67 [00:19<00:18,  1.88it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  51%|█████     | 34/67 [00:19<00:16,  2.01it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  52%|█████▏    | 35/67 [00:20<00:18,  1.77it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  54%|█████▎    | 36/67 [00:20<00:16,  1.90it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  55%|█████▌    | 37/67 [00:21<00:16,  1.84it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  57%|█████▋    | 38/67 [00:21<00:14,  1.94it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  58%|█████▊    | 39/67 [00:22<00:13,  2.12it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  60%|█████▉    | 40/67 [00:22<00:12,  2.17it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  61%|██████    | 41/67 [00:23<00:11,  2.19it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  63%|██████▎   | 42/67 [00:23<00:11,  2.19it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  64%|██████▍   | 43/67 [00:24<00:11,  2.02it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  66%|██████▌   | 44/67 [00:24<00:12,  1.77it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  67%|██████▋   | 45/67 [00:25<00:10,  2.01it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  69%|██████▊   | 46/67 [00:25<00:11,  1.77it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  70%|███████   | 47/67 [00:26<00:12,  1.63it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  72%|███████▏  | 48/67 [00:27<00:12,  1.55it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  73%|███████▎  | 49/67 [00:27<00:10,  1.71it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  75%|███████▍  | 50/67 [00:28<00:08,  1.99it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  76%|███████▌  | 51/67 [00:28<00:07,  2.26it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  78%|███████▊  | 52/67 [00:28<00:05,  2.50it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  79%|███████▉  | 53/67 [00:29<00:05,  2.71it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  81%|████████  | 54/67 [00:29<00:04,  2.87it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  82%|████████▏ | 55/67 [00:29<00:04,  2.51it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  84%|████████▎ | 56/67 [00:30<00:04,  2.73it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  85%|████████▌ | 57/67 [00:30<00:03,  2.89it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  87%|████████▋ | 58/67 [00:30<00:02,  3.00it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  88%|████████▊ | 59/67 [00:31<00:02,  3.06it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  90%|████████▉ | 60/67 [00:31<00:02,  3.15it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  91%|█████████ | 61/67 [00:31<00:01,  3.19it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  93%|█████████▎| 62/67 [00:31<00:01,  3.22it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  94%|█████████▍| 63/67 [00:32<00:01,  3.28it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  96%|█████████▌| 64/67 [00:32<00:00,  3.36it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  97%|█████████▋| 65/67 [00:32<00:00,  3.45it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  99%|█████████▊| 66/67 [00:33<00:00,  3.32it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 67/67 [00:33<00:00,  2.76it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 67/67 [00:33<00:00,  1.99it/s]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m Capturing CUDA graphs (decode, FULL):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):   3%|▎         | 1/35 [00:00<00:15,  2.19it/s]Capturing CUDA graphs (decode, FULL):   6%|▌         | 2/35 [00:00<00:12,  2.64it/s]Capturing CUDA graphs (decode, FULL):   9%|▊         | 3/35 [00:01<00:11,  2.72it/s]Capturing CUDA graphs (decode, FULL):  11%|█▏        | 4/35 [00:01<00:11,  2.73it/s]Capturing CUDA graphs (decode, FULL):  14%|█▍        | 5/35 [00:01<00:10,  2.73it/s]Capturing CUDA graphs (decode, FULL):  17%|█▋        | 6/35 [00:02<00:10,  2.80it/s]Capturing CUDA graphs (decode, FULL):  20%|██        | 7/35 [00:02<00:09,  2.93it/s]Capturing CUDA graphs (decode, FULL):  23%|██▎       | 8/35 [00:02<00:10,  2.68it/s]Capturing CUDA graphs (decode, FULL):  26%|██▌       | 9/35 [00:03<00:09,  2.72it/s]Capturing CUDA graphs (decode, FULL):  29%|██▊       | 10/35 [00:03<00:08,  2.96it/s]Capturing CUDA graphs (decode, FULL):  31%|███▏      | 11/35 [00:03<00:08,  2.92it/s]Capturing CUDA graphs (decode, FULL):  34%|███▍      | 12/35 [00:04<00:07,  2.90it/s]Capturing CUDA graphs (decode, FULL):  37%|███▋      | 13/35 [00:04<00:07,  2.93it/s]Capturing CUDA graphs (decode, FULL):  40%|████      | 14/35 [00:04<00:07,  2.93it/s]Capturing CUDA graphs (decode, FULL):  43%|████▎     | 15/35 [00:05<00:06,  2.92it/s]Capturing CUDA graphs (decode, FULL):  46%|████▌     | 16/35 [00:05<00:06,  2.92it/s]Capturing CUDA graphs (decode, FULL):  49%|████▊     | 17/35 [00:05<00:06,  2.93it/s]Capturing CUDA graphs (decode, FULL):  51%|█████▏    | 18/35 [00:06<00:05,  2.93it/s]Capturing CUDA graphs (decode, FULL):  54%|█████▍    | 19/35 [00:06<00:06,  2.58it/s]Capturing CUDA graphs (decode, FULL):  57%|█████▋    | 20/35 [00:07<00:05,  2.65it/s]Capturing CUDA graphs (decode, FULL):  60%|██████    | 21/35 [00:07<00:04,  3.07it/s]Capturing CUDA graphs (decode, FULL):  63%|██████▎   | 22/35 [00:07<00:04,  2.99it/s]Capturing CUDA graphs (decode, FULL):  66%|██████▌   | 23/35 [00:07<00:03,  3.38it/s]Capturing CUDA graphs (decode, FULL):  69%|██████▊   | 24/35 [00:08<00:03,  3.33it/s]Capturing CUDA graphs (decode, FULL):  71%|███████▏  | 25/35 [00:08<00:02,  3.70it/s]Capturing CUDA graphs (decode, FULL):  74%|███████▍  | 26/35 [00:08<00:02,  3.50it/s]Capturing CUDA graphs (decode, FULL):  77%|███████▋  | 27/35 [00:09<00:02,  3.30it/s]Capturing CUDA graphs (decode, FULL):  80%|████████  | 28/35 [00:09<00:02,  3.17it/s]Capturing CUDA graphs (decode, FULL):  83%|████████▎ | 29/35 [00:09<00:01,  3.53it/s]Capturing CUDA graphs (decode, FULL):  86%|████████▌ | 30/35 [00:09<00:01,  3.79it/s]Capturing CUDA graphs (decode, FULL):  89%|████████▊ | 31/35 [00:10<00:00,  4.12it/s]Capturing CUDA graphs (decode, FULL):  91%|█████████▏| 32/35 [00:10<00:00,  4.25it/s]Capturing CUDA graphs (decode, FULL):  94%|█████████▍| 33/35 [00:10<00:00,  3.71it/s]Capturing CUDA graphs (decode, FULL):  97%|█████████▋| 34/35 [00:11<00:00,  2.68it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 35/35 [00:11<00:00,  3.11it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 35/35 [00:11<00:00,  3.05it/s]
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP1 pid=2088850)[0;0m INFO 08-07 09:37:28 [gpu_model_runner.py:3480] Graph capturing finished in 46 secs, took 2.33 GiB
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m [1;36m(Worker_TP0 pid=2088823)[0;0m INFO 08-07 09:37:29 [gpu_model_runner.py:3480] Graph capturing finished in 46 secs, took 2.33 GiB
+[1;36m(EngineCore_DP0 pid=2088786)[0;0m INFO 08-07 09:37:29 [core.py:210] init engine (profile, create kv cache, warmup model) took 129.71 seconds
+INFO 08-07 09:37:30 [llm.py:306] Supported_tasks: ['generate']
+Adding requests:   0%|          | 0/3 [00:00<?, ?it/s]Adding requests: 100%|██████████| 3/3 [00:00<00:00, 179.16it/s]
+Processed prompts:   0%|          | 0/3 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  33%|███▎      | 1/3 [01:18<02:37, 78.97s/it, est. speed input: 14.61 toks/s, output: 7.91 toks/s]Processed prompts:  67%|██████▋   | 2/3 [01:51<00:51, 51.64s/it, est. speed input: 25.11 toks/s, output: 13.60 toks/s]Processed prompts: 100%|██████████| 3/3 [02:25<00:00, 43.70s/it, est. speed input: 31.27 toks/s, output: 18.57 toks/s]Processed prompts: 100%|██████████| 3/3 [02:25<00:00, 43.70s/it, est. speed input: 31.27 toks/s, output: 18.57 toks/s]Processed prompts: 100%|██████████| 3/3 [02:25<00:00, 48.58s/it, est. speed input: 31.27 toks/s, output: 18.57 toks/s]
+====================================================================================================
+case case_dc1844257425  真值=L2  可选根因=('L1', 'L2', 'fiber')
+证据 (5): ['drop:L1:media_snr:single_lane', 'drop:L1:serdes_snr:single_lane', 'level:L2:rxpower_mean:high_tail', 'level:L2:txpower_mean:high_tail', 'status:L1:RxLOL']
+
+--- 第 1 轮  输出 2028 字符  解析=成功  校验=通过 ---
+[原始输出前 700 字]
+<think>
+好，我现在需要分析这个光链路故障的问题，找出根因。首先，我看看可用的证据有哪些。证据包括L1的media_snr和serdes_snr都处于下降状态，L2的rxpower_mean和txpower_mean都是高尾，还有L1的RxLOL状态。
+
+首先，L1的media_snr和serdes_snr下降，这可能意味着链路质量有问题，比如光纤或连接器的问题。根据约束C11，media_snr的正常范围是22.5-27 dB，如果收光功率正常但信噪比低，可能指向链路质量，比如色散或反射。不过，这里L2的rxpower_mean是高尾，可能说明接收功率偏高，这可能意味着发送端有问题，或者光纤有问题导致反射。
+
+然后，L2的txpower_mean是高尾，这可能意味着发送功率异常，但根据约束C5，发送光功率要么正常，要么掉到-39 dBm，所以高尾可能意味着发送功率偏高，这可能指向L2设备的问题。同时，L1的RxLOL状态可能表示接收信号丢失，这可能是因为发送端没有正确发送信号，或者光纤有问题导致信号丢失。
+
+接下来，考虑约束C8，如果本端发送正常而对端收不到，可能光纤或对端接收有问题。但这里L2的txpower_mean是高尾，可能发送有问题，而L1的RxLOL可能是因为发送端的问题，所以可能L2有问题。
+
+另外，约束C10提到，如果所有lane都异常，可能指向端口级问题，但这里只提到单个lane异常，所以可能指向独立的激光器或光纤问题。
+
+综合来看，L2的txpower_mean高尾可能指向L2设备的问题，而L1的RxLOL可能是因为L2发送异常导致的。同时，medi
+[原始输出末 500 字]
+evidence": ["status:L1:RxLOL"],
+      "cited_constraints": ["C8_tx_ok_rx_down_indicates_medium"],
+      "effect": "support",
+      "target": "fiber"
+    },
+    {
+      "claim": "由于L2的txpower_mean处于高尾状态，这可能表明发送端存在问题，而不是光纤。",
+      "cited_evidence": ["level:L2:txpower_mean:high_tail"],
+      "cited_constraints": ["C5_tx_power_range"],
+      "effect": "support",
+      "target": "L2"
+    }
+  ],
+  "verdict": "abstain",
+  "confidence": 0.0,
+  "missing_information": ["L1.host_snr", "L2.host_snr"]
+}
+```
+
+结论: None   （真值 L2）
+====================================================================================================
+case case_8f70b31d636f  真值=L1  可选根因=('L1', 'L2')
+证据 (9): ['drop:L1:txpower:single_lane', 'drop:L2:media_snr:single_lane', 'drop:L2:rxpower:single_lane', 'imbalance:L2:serdes_snr', 'level:L1:rxpower_mean:low_tail', 'level:L2:txpower_mean:low_tail', 'status:L1:TxLOL', 'status:L2:RxLOL', 'status:L2:RxLOS']
+
+--- 第 1 轮  输出 2904 字符  解析=成功  校验=通过 ---
+[原始输出前 700 字]
+<think>
+好，我现在需要分析这个光链路故障的问题，找出根因。首先，我得仔细看看提供的证据和物理约束。
+
+首先，证据里提到L1的txpower在single_lane上是drop，也就是发送光功率处于断光哨兵，也就是-39 dBm。根据约束C6_tx_down_excludes_medium，如果某一侧的lane没有发出光，那么该方向的故障不可能由光纤引起，应该归到发送端设备。所以，这一步可以排除fiber作为根因。
+
+接下来，L2的media_snr在single_lane上是drop，这可能意味着信噪比异常。但根据约束C13_serdes_snr_unit_unknown，media_snr的量纲不清楚，只能作为有效或失效的二值信号，不能用来详细分析。所以，这可能指向L2的问题，但不确定。
+
+然后，L2的rxpower在single_lane上是drop，说明接收光功率异常。根据约束C7_rx_power_range，接收光功率低于-39 dBm表示完全无光。这可能意味着L2接收不到光，但结合L1的txpower是断光，可能L1没有发送光，所以L2收不到。
+
+还有imbalance:L2:serdes_snr，这可能表示L2的信噪比不平衡，但同样因为量纲问题，无法详细分析。L1的rxpower_mean是low_tail，说明接收功率偏低，但L1的TxLOL状态可能表示发送端有问题。
+
+L2的RxLOL和RxLOS状态异常，说明接收端有问题。但因为L1的txpower是断光，所以L2收不到光，导致这些状态异常。
+
+综合来看，L1的txpower处于断光哨兵，排除了光纤的
+[原始输出末 500 字]
+pport",
+      "target": "L1"
+    },
+    {
+      "claim": "L2 侧 RxLOL 状态异常",
+      "cited_evidence": ["status:L2:RxLOL"],
+      "cited_constraints": [],
+      "effect": "support",
+      "target": "L2"
+    },
+    {
+      "claim": "L2 侧 RxLOS 状态异常",
+      "cited_evidence": ["status:L2:RxLOS"],
+      "cited_constraints": [],
+      "effect": "support",
+      "target": "L2"
+    }
+  ],
+  "verdict": "abstain",
+  "confidence": 0.0,
+  "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+  ]
+}
+```
+
+结论: None   （真值 L1）
+====================================================================================================
+case case_8ef9859f030c  真值=L1  可选根因=('L1', 'L2', 'fiber')
+证据 (3): ['level:L2:media_snr_min:low_tail', 'level:L2:rxpower_mean:high_tail', 'level:L2:txpower_mean:high_tail']
+
+--- 第 1 轮  输出 1453 字符  解析=成功  校验=通过 ---
+[原始输出前 700 字]
+<think>
+好，我现在需要分析这个光链路故障的问题，判断根因是L1、L2还是光纤。首先，我看看可用的证据：L2的media_snr_min是low_tail，rxpower_mean和txpower_mean都是high_tail。遥测完整性是partial_telemetry，说明有些数据缺失，比如L2的host_snr没有采集。
+
+根据物理约束，C14提到host_snr在多数情况下没有采集，所以不能用它来推断。C13说serdes_snr的量纲不清楚，只能作为有效或失效的信号，不能用来比较。C7指出接收光功率低于-39 dBm表示无光，但发送侧不能讨论功率衰减。
+
+现在，L2的rxpower_mean和txpower_mean都是high_tail，这可能意味着发送和接收的光功率都偏高。但根据C7，发送侧的光功率不能用来判断衰减，所以这可能不是问题所在。而media_snr_min是low_tail，说明信噪比偏低，这可能指向链路质量的问题，比如光纤或连接器的问题，但C11提到信噪比低可能偏向链路质量，而不是功率衰减。
+
+不过，由于host_snr没有采集，无法进一步确认。同时，C15提到如果两端的光功率都是-39 dBm哨兵，但TxLOS正常，这可能不是激光关断，而是遥测问题，但这里的情况是高尾，所以可能不是这种情况。
+
+综合来看，L2的信噪比低可能指向光纤问题，但缺乏host_snr的数据，无法确定。因此，无法确定根因，只能弃权。
+</think>
+
+```json
+{
+  "steps": [
+    {
+      "claim": "L2的media_snr
+[原始输出末 500 字]
+tail，表明光功率偏高",
+      "cited_evidence": ["level:L2:rxpower_mean:high_tail", "level:L2:txpower_mean:high_tail"],
+      "cited_constraints": ["C7_rx_power_range"],
+      "effect": "neutral",
+      "target": ""
+    },
+    {
+      "claim": "L2的host_snr未采集，无法判断主机侧信噪比",
+      "cited_evidence": [],
+      "cited_constraints": ["C14_host_snr_mostly_missing"],
+      "effect": "neutral",
+      "target": ""
+    }
+  ],
+  "verdict": "abstain",
+  "confidence": 0.0,
+  "missing_information": ["L2.host_snr"]
+}
+```
+
+结论: None   （真值 L1）
+
+wrote artifacts/t6_smoke.json

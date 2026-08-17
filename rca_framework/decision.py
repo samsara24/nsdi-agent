@@ -13,22 +13,22 @@ from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 from .branches.base import BranchOutcome, wilson_lower_bound
 
 
-DECISION_POLICY_VERSION = "decision-policy-v2"
+DECISION_POLICY_VERSION = "decision-policy-v3-forced-multidim"
 LLM_CONFIDENCE_BINS: Tuple[float, ...] = (0.0, 0.5, 0.7, 0.9, 1.0)
 DECISION_ACTIONS: Tuple[str, ...] = ("final", "request_evidence", "human_review")
 
-#: M9 可用的候选来源，按可审计性排序。
+#: M9 可用的候选来源。
 #:
 #: `branch` 是历史匹配或 LLM 得出的 case 特异结论；`sop` 是训练集归纳路径的叶节点先验。
 #: 两者的可靠性口径不同但都来自训练集：前者是 train-LOO 分组频率，
-#: 后者是叶节点自身的标签分布。把 SOP 列为合法候选而不是仅仅当 prompt 上下文，
-#: 是因为实测中分支路线在每一条分支上都不如 SOP 叶子；把它藏在 prompt 里
-#: 等于让系统在明明有更可靠的先验时仍然输出更差的结论。
+#: 后者是叶节点自身的标签分布。按照 `docs/个人整体思路.md`，正式主链路
+#: 只能默认接受 `branch`；`sop` 可作为显式消融、报告字段或 N5c 的统计先验，
+#: 不能替代证据图匹配与专家 SOP 约束下的 LLM 推理。
 #:
 #: `expert` 是现网人工经验规则（`rca_framework.expert`），迭代 3 加入。它与前两者
 #: 有一处根本不同：**规则本身不从本数据学任何参数**，训练集只用来统计各规则组的
-#: 可靠性。它在测试集上相对多数类 +14.02pp，而 branch / sop 两条路线的上限是 +1.4pp，
-#: 差距全部来自它携带的归因方向知识（消融见 Progress §9.33）。
+#: 可靠性。它证明归因方向知识有价值，但正式方法不能让专家规则级联顶替证据图
+#: 历史匹配主干；因此只允许在对照实验中显式加入。
 CANDIDATE_SOURCES: Tuple[str, ...] = ("branch", "sop", "expert")
 
 
@@ -115,7 +115,7 @@ def apply_llm_calibration(
     trace: Optional[Any],
     calibration: Optional[LLMCalibration],
 ) -> BranchOutcome:
-    """把模型自报 confidence 替换为独立标定频率；无标定时保留原值但下界置零。"""
+    """保留 LLM 多维原始分，同时并行记录 Wilson 标定分组。"""
     accepted = getattr(trace, "accepted", None) if trace is not None else None
     if accepted is None or accepted.verdict is None:
         return outcome
@@ -124,7 +124,6 @@ def apply_llm_calibration(
     if support:
         return replace(
             outcome,
-            confidence=calibration.confidence(group),
             confidence_lower_bound=calibration.lower_bound(group),
             calibration_group=group,
             calibration_support=support,
@@ -173,9 +172,9 @@ class DecisionPolicy:
     达到 0.5——想在 p=0.63 处让下界过 0.5 需要约 50 个同组样本。
     结果是安全门禁把 100% 的 case 挡在外面，系统不产出任何结论。
 
-    v2 把阈值改成「在训练留一法上按目标选择性风险反解出来的工作点」，
-    并允许在分支结论不可用时退到 SOP 叶子先验。`fitted_on` 记录这个工作点
-    是怎么定出来的；没有拟合过程时它为空，表示阈值是人工指定的。
+    v2 把阈值改成「在训练留一法上按目标选择性风险反解出来的工作点」。
+    按个人整体思路，正式默认不再退到 SOP 或 expert 候选；`fitted_on` 记录这个
+    工作点是怎么定出来的；没有拟合过程时它为空，表示阈值是人工指定的。
     """
 
     version: str = DECISION_POLICY_VERSION
@@ -250,10 +249,10 @@ DEFAULT_DECISION_POLICY = DecisionPolicy()
 
 
 def sop_candidate(sop_prediction: Optional[Mapping[str, Any]]) -> Optional[DecisionCandidate]:
-    """把 learned SOP 叶节点包装成候选。
+    """把训练归纳树叶节点包装成候选。
 
-    叶节点的支持数与 Wilson 下界都来自训练集标签分布，因此与分支标定同源可比；
-    但它是**群体先验**而不是当前 case 的证据，报告里必须区分这两种来源。
+    兼容旧 learned SOP 与新 numeric decision tree。叶节点的支持数与 Wilson 下界
+    都来自训练集标签分布，因此它是群体先验，不是当前 case 的物理证据。
     """
     if not sop_prediction or sop_prediction.get("verdict") is None:
         return None
@@ -263,7 +262,11 @@ def sop_candidate(sop_prediction: Optional[Mapping[str, Any]]) -> Optional[Decis
         confidence=float(sop_prediction.get("confidence", 0.0)),
         confidence_lower_bound=float(sop_prediction.get("confidence_lower_bound", 0.0)),
         support=int(sop_prediction.get("support", 0)),
-        group=f"sop_leaf:{sop_prediction.get('leaf_id', '')}",
+        group=(
+            f"tree_leaf:{sop_prediction.get('leaf_id', '')}"
+            if str(sop_prediction.get("model", "")).startswith("numeric-decision-tree")
+            else f"sop_leaf:{sop_prediction.get('leaf_id', '')}"
+        ),
         reason=str(sop_prediction.get("reason", "")),
     )
 
@@ -394,7 +397,7 @@ def fit_decision_policy(
     target_selective_risk: float = 0.30,
     minimum_support: int = 10,
     minimum_coverage: float = 0.0,
-    candidate_order: Tuple[str, ...] = ("branch", "sop"),
+    candidate_order: Tuple[str, ...] = ("branch",),
     non_identifiable_labels: Tuple[str, ...] = (),
     non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
     source: str = "train-loo",
@@ -629,6 +632,10 @@ class FinalDecision:
     requested_evidence: Tuple[str, ...] = ()
     candidate_source: str = "branch"
     considered_candidates: Tuple[DecisionCandidate, ...] = ()
+    confidence_breakdown: Optional[Mapping[str, float]] = None
+    history_verdict: Optional[str] = None
+    fallback_source: str = ""
+    compliance_penalties: Tuple[Mapping[str, Any], ...] = ()
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -645,6 +652,10 @@ class FinalDecision:
             "requested_evidence": list(self.requested_evidence),
             "candidate_source": self.candidate_source,
             "considered_candidates": [item.to_dict() for item in self.considered_candidates],
+            "confidence_breakdown": dict(self.confidence_breakdown or {}),
+            "history_verdict": self.history_verdict,
+            "fallback_source": self.fallback_source,
+            "compliance_penalties": [dict(item) for item in self.compliance_penalties],
         }
 
 
@@ -658,10 +669,12 @@ CANDIDATE_ORIGINS: Mapping[str, str] = {
 
 
 def passes_gate(candidate: DecisionCandidate, policy: DecisionPolicy) -> bool:
+    if candidate.verdict is None:
+        return False
+    if candidate.group.startswith(("llm:", "llm_raw:", "uncalibrated:")):
+        return candidate.confidence >= policy.lower_bound_for(candidate.verdict)
     return (
-        candidate.verdict is not None
-        and candidate.verdict not in policy.non_identifiable_labels
-        and candidate.support >= policy.minimum_support
+        candidate.support >= policy.minimum_support
         and candidate.confidence_lower_bound >= policy.lower_bound_for(candidate.verdict)
     )
 
@@ -676,8 +689,8 @@ def decide(
     """把任意 N5 输出收敛成最终结论、补采请求或人工介入。
 
     候选按 `policy.candidate_order` 依次过门禁，第一个通过的胜出。
-    级联顺序是有意的：case 特异的分支证据链优先于群体先验，
-    只有分支不可用或不达标时才让 SOP 叶子接手。
+    正式默认只接受 `branch`，也就是历史匹配分支或 LLM 仲裁后的 case 特异证据链。
+    `sop` / `expert` 只能通过显式 `candidate_order` 加入对照或消融。
     """
     candidates = build_candidates(
         outcome,
@@ -700,43 +713,22 @@ def decide(
             calibration_group=candidate.group,
             calibration_support=candidate.support,
             reason=(
-                f"采用{origin}：Wilson 95% 下界 {candidate.confidence_lower_bound:.2%} 达到"
-                f"阈值 {policy.final_lower_bound:.2%}，且支持数"
-                f" {candidate.support} >= {policy.minimum_support}"
+                f"采用{origin}：多维综合置信度 {candidate.confidence:.2%} 达到"
+                f"阈值 {policy.lower_bound_for(candidate.verdict):.2%}"
             ),
             candidate_source=candidate.source,
             considered_candidates=candidates,
+            confidence_breakdown=outcome.confidence_breakdown,
+            history_verdict=outcome.history_verdict,
+            fallback_source=outcome.fallback_source,
+            compliance_penalties=outcome.compliance_penalties,
         )
 
     best = candidates[0] if candidates else None
-    blocked = next(
-        (item for item in candidates if item.verdict in policy.non_identifiable_labels),
-        None,
-    )
-    if blocked is not None:
-        requested = tuple(policy.non_identifiable_evidence.get(str(blocked.verdict), ()))
-        return FinalDecision(
-            case_id=outcome.case_id,
-            branch=outcome.branch,
-            action="request_evidence",
-            verdict=None,
-            proposed_verdict=blocked.verdict,
-            confidence=blocked.confidence,
-            confidence_lower_bound=blocked.confidence_lower_bound,
-            calibration_group=blocked.group,
-            calibration_support=blocked.support,
-            reason=(
-                f"候选根因 {blocked.verdict} 在现有遥测下不可识别（见 C20）："
-                "最强富集条件的 Wilson 下界与类别先验无法区分，"
-                "因此不输出结论，改为请求可判别该根因的定向测量"
-            ),
-            requested_evidence=requested or outcome.missing_evidence,
-            candidate_source=blocked.source,
-            considered_candidates=candidates,
-        )
-    if outcome.missing_evidence:
+    evidence_score = float((outcome.confidence_breakdown or {}).get("evidence_completeness", 1.0))
+    if evidence_score < 0.3 or outcome.missing_evidence:
         action = "request_evidence"
-        reason = "所有候选均未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断"
+        reason = "候选未达到自动结案阈值，且证据完整度偏低；先补齐缺失证据再重新诊断"
     else:
         action = "human_review"
         if best is None:
@@ -744,7 +736,7 @@ def decide(
         else:
             reason = (
                 f"最优候选（来源 {best.source}）未通过可靠性门槛"
-                f"（Wilson 下界 {best.confidence_lower_bound:.2%}，支持数 {best.support}），转人工复核"
+                f"（多维综合置信度 {best.confidence:.2%}），转人工复核"
             )
     return FinalDecision(
         case_id=outcome.case_id,
@@ -762,6 +754,10 @@ def decide(
         requested_evidence=outcome.missing_evidence if action == "request_evidence" else (),
         candidate_source=best.source if best is not None else "none",
         considered_candidates=candidates,
+        confidence_breakdown=outcome.confidence_breakdown,
+        history_verdict=outcome.history_verdict,
+        fallback_source=outcome.fallback_source,
+        compliance_penalties=outcome.compliance_penalties,
     )
 
 

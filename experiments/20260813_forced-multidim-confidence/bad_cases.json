@@ -1,0 +1,1073 @@
+{
+  "schema_version": "rca-loop-bad-cases-v1",
+  "bad_cases": [
+    {
+      "case_id": "case_b53c29f2ed30",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": []
+    },
+    {
+      "case_id": "case_7ab9c8387860",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "status:L1:RxLOL"
+      ],
+      "critical_missing": [
+        "drop:L1:media_snr:single_lane",
+        "level:L1:rxpower_mean:low_tail",
+        "status:L1:RxLOL"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 3 条证据被物理归因约束判为关键，结论需要补采后复核：drop:L1:media_snr:single_lane(P10_receive_symptom_points_to_far_transmit_chain, P11_single_lane_does_not_exclude_fiber, P9_scope_all_lanes_vs_single_lane)、level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、status:L1:RxLOL(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_02da79997180",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:media_snr_min:low_tail(P10_receive_symptom_points_to_far_transmit_chain)、level:L2:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ]
+    },
+    {
+      "case_id": "case_c1f6d74a42c9",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:low_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ]
+    },
+    {
+      "case_id": "case_f40d7dea10c4",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_13ac31d97368",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "status:L2:RxLOL",
+        "两端均已发光和双向对称路径丢失证据"
+      ],
+      "critical_missing": [
+        "drop:L2:media_snr:single_lane",
+        "drop:L2:serdes_snr:single_lane",
+        "level:L1:media_snr_min:low_tail",
+        "status:L2:RxLOL"
+      ],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_3160b584dd44",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail",
+        "OTDR test results",
+        "Bidirectional power calibration"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_7c60d5951f80",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "status:L1:RxLOS",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [
+        "status:L1:RxLOS"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_a859a2ae4d99",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:low_tail",
+        "两端均已发光和双向对称路径丢失证据"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_f3594459612d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "threshold_or_key_evidence",
+      "next_action": "revisit_key_evidence_contract",
+      "notes": [
+        "并列候选的历史标签不一致，结论取多数投票"
+      ]
+    },
+    {
+      "case_id": "case_f53a4bc3cd6d",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "L1.host_snr",
+        "L2.host_snr",
+        "OTDR 测试结果",
+        "端面镜检结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_b1dfb752200b",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "两端均已发光和双向对称路径丢失证据"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_b244b38241f9",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "threshold_or_key_evidence",
+      "next_action": "revisit_key_evidence_contract",
+      "notes": []
+    },
+    {
+      "case_id": "case_86eee41de4c9",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果",
+        "换纤复测结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_a86363693651",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果",
+        "换纤复测结果"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_8448ab686d52",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "证据包本身存在 1 条量测有效性告警，相关读数需谨慎采信"
+      ]
+    },
+    {
+      "case_id": "case_3a9a11e3c449",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "并列候选的历史标签不一致，结论取多数投票"
+      ]
+    },
+    {
+      "case_id": "case_f4151dbd5222",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:low_tail",
+        "两端均已发光的证据",
+        "双向对称路径丢失的证据",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果",
+        "换纤复测结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_de30dd81f652",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "OTDR测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_0e7598a5fd0a",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果",
+        "换纤复测结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_e7756a64e30d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": []
+    },
+    {
+      "case_id": "case_5009db76a459",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_0c3939c5292e",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ]
+    },
+    {
+      "case_id": "case_9d6e145b9fdc",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_4541f9bbc853",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_safe_model_fix",
+      "next_action": "mark_irreducible_or_label_review",
+      "notes": []
+    },
+    {
+      "case_id": "case_2c9963b9a196",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_aae29bfa4d32",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "OTDR 测试结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_b2d2a66d4b1d",
+      "actual": "fiber",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "status:L1:RxLOS",
+        "L1.host_snr",
+        "L2.host_snr",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [
+        "status:L1:RxLOS"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_4fff96563d56",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)"
+      ]
+    },
+    {
+      "case_id": "case_1e68b6eb3132",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:media_snr_min:high_tail",
+        "OTDR 测试",
+        "端面镜检",
+        "双向功率标定"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:high_tail"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_f6ab3c98854d",
+      "actual": "fiber",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_fa72aef06d4d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_ec7c50c7fd54",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_safe_model_fix",
+      "next_action": "mark_irreducible_or_label_review",
+      "notes": []
+    },
+    {
+      "case_id": "case_83552129a3cc",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": []
+    },
+    {
+      "case_id": "case_e2ba8d4715a3",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N6",
+      "failed_step": "N6_human_review",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "证据极低或全链路遥测失效，结论只能作为低置信候选"
+      ]
+    },
+    {
+      "case_id": "case_f519245c7b0f",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "drop:L2:rxpower:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果",
+        "换纤复测结果"
+      ],
+      "critical_missing": [
+        "drop:L2:rxpower:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_4695d660361d",
+      "actual": "fiber",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：status:L2:RxLOL(P10_receive_symptom_points_to_far_transmit_chain)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_7fa3fefa52e3",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "L1.RxLOL",
+        "L1.RxLOS",
+        "L1.TxLOL",
+        "L1.TxLOS",
+        "L1.host_snr",
+        "L2.RxLOL",
+        "L2.RxLOS",
+        "L2.TxLOL",
+        "L2.TxLOS",
+        "L2.host_snr"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_22d4dde687ab",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_ac436bbbc898",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "imbalance:L1:host_snr",
+        "level:L1:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "缺失的 1 条证据被物理归因约束判为关键，结论需要补采后复核：level:L1:media_snr_min:low_tail(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_85ab9d3bd128",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": "L1",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:txpower_mean:high_tail",
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_1d881d28d2a3",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail",
+        "status:L2:RxLOS"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：level:L2:rxpower_mean:high_tail(P10_receive_symptom_points_to_far_transmit_chain, P6_rx_has_continuous_degradation)、status:L2:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_9e34cb030209",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "OTDR 测试",
+        "端面镜检",
+        "双向功率标定",
+        "换纤复测"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_c770294bd1f2",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": "fiber",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L2:media_snr_min:low_tail",
+        "OTDR 测试结果",
+        "端面镜检结果",
+        "双向功率标定结果"
+      ],
+      "critical_missing": [
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_62b8d2de6e0c",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "两端均已发光状态",
+        "双向功率标定结果",
+        "OTDR 测试结果",
+        "端面镜检结果"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    },
+    {
+      "case_id": "case_9daf397bb2f7",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "drop:L1:rxpower:single_lane",
+        "status:L1:RxLOS"
+      ],
+      "critical_missing": [
+        "drop:L1:rxpower:single_lane",
+        "status:L1:RxLOS"
+      ],
+      "fixable": "prompt_or_llm_arbitration",
+      "next_action": "inspect_llm_trace_and_prompt",
+      "notes": [
+        "缺失的 2 条证据被物理归因约束判为关键，结论需要补采后复核：drop:L1:rxpower:single_lane(P10_receive_symptom_points_to_far_transmit_chain, P11_single_lane_does_not_exclude_fiber, P6_rx_has_continuous_degradation, P9_scope_all_lanes_vs_single_lane)、status:L1:RxLOS(P10_receive_symptom_points_to_far_transmit_chain)"
+      ]
+    },
+    {
+      "case_id": "case_9e14bb67adf3",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "OTDR test results",
+        "end-face inspection",
+        "bidirectional power calibration",
+        "replacement fiber test"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_92919cfab57f",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "imbalance:L2:serdes_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": []
+    },
+    {
+      "case_id": "case_4b322d8486b5",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "两端均已发光状态",
+        "双向对称路径丢失证据"
+      ],
+      "critical_missing": [],
+      "fixable": "no_with_current_telemetry",
+      "next_action": "keep_as_irreducible_request_otdr",
+      "notes": []
+    },
+    {
+      "case_id": "case_2ee657ca7489",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": "L2",
+      "final_action": "final",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail",
+        "L1.host_snr"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "fixable": "maybe",
+      "next_action": "keep_observing",
+      "notes": [
+        "该结论经过 3 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ]
+    }
+  ]
+}

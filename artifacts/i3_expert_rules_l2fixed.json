@@ -1,0 +1,2780 @@
+{
+  "version": "expert-rules-v1",
+  "data_dir": "datasets/rca_v2_l2fixed",
+  "train": {
+    "split": "train",
+    "variant": "doc",
+    "version": "expert-rules-v1",
+    "total": 161,
+    "correct": 111,
+    "accuracy": 0.689441,
+    "answered": 161,
+    "coverage": 1.0,
+    "precision_when_answered": 0.689441,
+    "majority_on_answered": 0.621118,
+    "lift_on_answered": 0.068323,
+    "majority_label": "L2",
+    "majority_baseline": 0.621118,
+    "lift_over_majority": 0.068323,
+    "balanced_recall": 0.453265,
+    "alarm_side_unresolved": 28,
+    "confusion_matrix": {
+      "L1": {
+        "L2": 25,
+        "L1": 24
+      },
+      "L2": {
+        "L2": 87,
+        "L1": 13
+      },
+      "fiber": {
+        "L2": 7,
+        "L1": 5
+      }
+    },
+    "per_class": {
+      "L1": {
+        "support": 49,
+        "predicted": 42,
+        "recall": 0.489796,
+        "precision": 0.571429
+      },
+      "L2": {
+        "support": 100,
+        "predicted": 119,
+        "recall": 0.87,
+        "precision": 0.731092
+      },
+      "fiber": {
+        "support": 12,
+        "predicted": 0,
+        "recall": 0.0,
+        "precision": 0.0
+      }
+    },
+    "discriminative_subset": {
+      "n": 128,
+      "correct": 89,
+      "accuracy": 0.695312,
+      "majority_baseline": 0.59375,
+      "lift": 0.101562
+    },
+    "by_group": {
+      "expert:multi_metric": {
+        "correct": 39,
+        "total": 56,
+        "accuracy": 0.696429
+      },
+      "expert:single:serdes_snr": {
+        "correct": 22,
+        "total": 38,
+        "accuracy": 0.578947
+      },
+      "expert:no_anomaly": {
+        "correct": 19,
+        "total": 27,
+        "accuracy": 0.703704
+      },
+      "expert:single:rxpower": {
+        "correct": 14,
+        "total": 18,
+        "accuracy": 0.777778
+      },
+      "expert:single:media_snr": {
+        "correct": 6,
+        "total": 6,
+        "accuracy": 1.0
+      },
+      "expert:port_status_gate": {
+        "correct": 3,
+        "total": 6,
+        "accuracy": 0.5
+      },
+      "expert:single:host_snr": {
+        "correct": 4,
+        "total": 5,
+        "accuracy": 0.8
+      },
+      "expert:txpower_lane_down": {
+        "correct": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "expert:single:txpower": {
+        "correct": 1,
+        "total": 1,
+        "accuracy": 1.0
+      }
+    }
+  },
+  "rows": {
+    "train": [
+      {
+        "case_id": "case_c78c696c0aae",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9c27deec3e73",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_44020175a114",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6069a2fca6fb",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e5450d952025",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f0cfc4bad065",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_93453023ec38",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_353e1f21b192",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9ff035febc4a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_540f81e61916",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_bf4a9d09fe47",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e8bece11ccc5",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_972835d20e32",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1c8bbdc79eec",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d7ed1c0037f8",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9572943a8b7e",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c7cd3b89e57d",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d8ed37a79445",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_aabdf5afd27b",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_24ce46ffff1a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_a3ec45cd7f15",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_ebf08ca2725f",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0632da0778e3",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_94fa161169d4",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_65f0f3689884",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_dba9862041d6",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5e4633624868",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_7744880ab13a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:txpower_lane_down",
+        "priority": "0",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4bbb361ee028",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_727391554a69",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_936ecfb3ff01",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b1658312a465",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_926693d885a8",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_65f3c485da21",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e93f2668ff7a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_18b8a0c99f97",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f43684a58062",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_46fbefce62ed",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "32",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1982c99e1199",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_8ca110ec4239",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3f5d911ce48e",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_ec43c02e4f6b",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_882234cb164d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_573ec93cdf04",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5b0dc7dd6ea4",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_90e7f410fa65",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9bec630f508c",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c76caed3d26b",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_dedc214c946d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4d1335bb280a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c8261a079c08",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3849f0133567",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_129c1c0718e2",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_39956ea2a8a7",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:host_snr",
+        "priority": "20",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_af4155425c1b",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_eaeb1bb22c8a",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9e2777997d13",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2d416dc0994c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5e0d946136f6",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "51",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_355cf4625605",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_89cc12b4ac50",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_afa952e9c1f8",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6f4552e58586",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2a351e41e025",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_23e0a03518bf",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_7ccc244a73e6",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_604e9e2299b8",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e58965036e99",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:txpower_lane_down",
+        "priority": "0",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6d59793febec",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f4f151eda42f",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f2c4ae969f71",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "51",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_95bd33bf285f",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1765bb096b33",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4efc8f2bf287",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_8c2180e1d523",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2ee8e4069f5b",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b6a6207b8fa1",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9cee65e22185",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_ded93efa77a1",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_ef18eaa88a31",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4ce21d97119b",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d8da4c62ecb4",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "32",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_dfe7396c4922",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c483a0c42071",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5cbe4eebf0fb",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e9a4e2965251",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:txpower_lane_down",
+        "priority": "0",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_fc6ba196b19d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_cdd2f22fdd9c",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_819fd559a1a2",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f4fb4cf8c21f",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e93773492fb2",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_bdbccdf57bee",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_53c84a703743",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6d93545111b3",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5249508bd280",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_079c3bc22362",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_76b48bca8f39",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_af4d8b73cb9d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c511c082dd55",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e997c4ba3fa7",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4d9e64b7c3cf",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3b2a872d3a9c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_398c73bf2ad5",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6a6d81fc1dad",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1331c596f248",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b608e8d4d422",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_44f42ba6fec6",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "51",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_8623b9a16a18",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_856a2c4e99ea",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6d573c7f3665",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_27f0b5112a48",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5336a0cf4749",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_459484690618",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_21154d1b724a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_63b4d1dfdf14",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_297fae8b5d7d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0f49fae3d526",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1e7da3e2d617",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_63df44ed061c",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_61a3ded8c922",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c6685baffefd",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_19091c899256",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d78ab7cdd6d6",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f5f313323640",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2cfc1c68fb0e",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_fe7898831778",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_863e4ed3aa03",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_394174571d12",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_74def1a98970",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_59f71f659ac7",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9ba8a00ac29a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_93bf1a9f8149",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b534127b92dd",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f8955563f795",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_ebc4aa121fed",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_7eb949655402",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_1a2bf61e220a",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_03033c345fbf",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_ae9e054e86a7",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_ebbe29787a44",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_bc0bcdc8ad1d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_b8e22446c3d1",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_9ce773f5cea4",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_eda6ce05c18c",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_0273d5d0a84b",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:host_snr",
+        "priority": "20",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_86563e10a386",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_3f7f13d8a938",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:host_snr",
+        "priority": "20",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_f0e7e10a16de",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_0dfe33886f06",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:host_snr",
+        "priority": "21",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_224ca4dd577c",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_1a56f70e541c",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:txpower",
+        "priority": "62",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_9536dfce89ce",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_8a9790a7e3ca",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:host_snr",
+        "priority": "20",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_22234abb37f0",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_6a83e593d0e2",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "42",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_7a7f116d700c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_3380daa891a5",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_0df147c7f93f",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_f9a6059bb977",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_f7f2853723f2",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_102809177c6f",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:txpower_lane_down",
+        "priority": "0",
+        "alarm_side_resolved": false
+      }
+    ],
+    "test": [
+      {
+        "case_id": "case_fcacbc45173f",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_713754bd3abd",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5d80fba2c22f",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:host_snr",
+        "priority": "21",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_784dfd7a8801",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b53c29f2ed30",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6349169c912c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_7ab9c8387860",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0b40c4048fd7",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6ab2ffe70790",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_48915d45d5ca",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_02da79997180",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_47f612c50f2f",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_c1f6d74a42c9",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f40d7dea10c4",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_13ac31d97368",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "51",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3160b584dd44",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f4db10047757",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:txpower_lane_down",
+        "priority": "0",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3e79df29763e",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_195ad8049a88",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_75f46528e107",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_7c60d5951f80",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_a859a2ae4d99",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f3594459612d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_88dce8a05674",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9acd0b8c50e8",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b2ec327c7ac7",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f53a4bc3cd6d",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4e466fb62ba8",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b1dfb752200b",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2d2152766ba6",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b244b38241f9",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_86eee41de4c9",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_a86363693651",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1557d57dfde5",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_8448ab686d52",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0c1bce9102c3",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_6f0602fcbd04",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3a9a11e3c449",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_04917832a9d6",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9feaccdfdc30",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f4151dbd5222",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_8b3d4baf66f8",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_de30dd81f652",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e92d80fd827b",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d7c9425ca86c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e7c93097d6e2",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0e7598a5fd0a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9cadaea07460",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_382b7a31a8fb",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0a23e38812e8",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e7756a64e30d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d889b9addd14",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_fb993ef2651e",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_5009db76a459",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_0c3939c5292e",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9d6e145b9fdc",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4541f9bbc853",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2c9963b9a196",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_345e15396788",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_ac452049dcfc",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_9fe92e6d47b7",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:txpower_lane_down",
+        "priority": "0",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_61d86d3a287d",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_aae29bfa4d32",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1df9bdf2c0be",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_3cd73a13e616",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1fabf85a5ee2",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:media_snr",
+        "priority": "41",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_b2d2a66d4b1d",
+        "label": "fiber",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_411486e52d45",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_83126f9b3650",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_906cbc1553b8",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_4fff96563d56",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_1e68b6eb3132",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_f6ab3c98854d",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_fa72aef06d4d",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_ec7c50c7fd54",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:no_anomaly",
+        "priority": "8",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_bce075edaf82",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_83552129a3cc",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_cfa4db56eb5a",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_e2ba8d4715a3",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:port_status_gate",
+        "priority": "gate",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_d338b3cb902c",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_f519245c7b0f",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_d3cf78b26833",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_4695d660361d",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_7fa3fefa52e3",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_583149723c3c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_22d4dde687ab",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_ac436bbbc898",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_63c7bc42fccc",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_85ab9d3bd128",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_1d881d28d2a3",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_9e34cb030209",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_4cefd4612d68",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_9c1d3e766e26",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_737362825627",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_788f63a0a0fc",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_c770294bd1f2",
+        "label": "L2",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "40",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_60e62d6d1052",
+        "label": "fiber",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_4e07d1148cfd",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_80bc3687c4b7",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:rxpower",
+        "priority": "52",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_62b8d2de6e0c",
+        "label": "L2",
+        "verdict": "L2",
+        "group": "expert:single:host_snr",
+        "priority": "20",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_9daf397bb2f7",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_9e14bb67adf3",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_38ee60fd682e",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_92919cfab57f",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:media_snr",
+        "priority": "40",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_e168b4979b39",
+        "label": "L1",
+        "verdict": "L2",
+        "group": "expert:single:serdes_snr",
+        "priority": "30",
+        "alarm_side_resolved": false
+      },
+      {
+        "case_id": "case_4b322d8486b5",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:single:serdes_snr",
+        "priority": "31",
+        "alarm_side_resolved": true
+      },
+      {
+        "case_id": "case_2ee657ca7489",
+        "label": "L1",
+        "verdict": "L1",
+        "group": "expert:multi_metric",
+        "priority": "1",
+        "alarm_side_resolved": true
+      }
+    ]
+  },
+  "test": {
+    "split": "test",
+    "variant": "doc",
+    "version": "expert-rules-v1",
+    "total": 107,
+    "correct": 82,
+    "accuracy": 0.766355,
+    "answered": 107,
+    "coverage": 1.0,
+    "precision_when_answered": 0.766355,
+    "majority_on_answered": 0.626168,
+    "lift_on_answered": 0.140187,
+    "majority_label": "L2",
+    "majority_baseline": 0.626168,
+    "lift_over_majority": 0.140187,
+    "balanced_recall": 0.538557,
+    "alarm_side_unresolved": 26,
+    "confusion_matrix": {
+      "L1": {
+        "L2": 8,
+        "L1": 24
+      },
+      "L2": {
+        "L2": 58,
+        "L1": 9
+      },
+      "fiber": {
+        "L2": 2,
+        "L1": 6
+      }
+    },
+    "per_class": {
+      "L1": {
+        "support": 32,
+        "predicted": 39,
+        "recall": 0.75,
+        "precision": 0.615385
+      },
+      "L2": {
+        "support": 67,
+        "predicted": 68,
+        "recall": 0.865672,
+        "precision": 0.852941
+      },
+      "fiber": {
+        "support": 8,
+        "predicted": 0,
+        "recall": 0.0,
+        "precision": 0.0
+      }
+    },
+    "discriminative_subset": {
+      "n": 94,
+      "correct": 71,
+      "accuracy": 0.755319,
+      "majority_baseline": 0.606383,
+      "lift": 0.148936
+    },
+    "by_group": {
+      "expert:multi_metric": {
+        "correct": 28,
+        "total": 39,
+        "accuracy": 0.717949
+      },
+      "expert:single:serdes_snr": {
+        "correct": 22,
+        "total": 29,
+        "accuracy": 0.758621
+      },
+      "expert:single:rxpower": {
+        "correct": 9,
+        "total": 12,
+        "accuracy": 0.75
+      },
+      "expert:single:media_snr": {
+        "correct": 8,
+        "total": 10,
+        "accuracy": 0.8
+      },
+      "expert:no_anomaly": {
+        "correct": 9,
+        "total": 10,
+        "accuracy": 0.9
+      },
+      "expert:port_status_gate": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.666667
+      },
+      "expert:single:host_snr": {
+        "correct": 2,
+        "total": 2,
+        "accuracy": 1.0
+      },
+      "expert:txpower_lane_down": {
+        "correct": 2,
+        "total": 2,
+        "accuracy": 1.0
+      }
+    }
+  },
+  "ablations_test": {
+    "doc": {
+      "split": "test",
+      "variant": "doc",
+      "version": "expert-rules-v1",
+      "total": 107,
+      "correct": 82,
+      "accuracy": 0.766355,
+      "answered": 107,
+      "coverage": 1.0,
+      "precision_when_answered": 0.766355,
+      "majority_on_answered": 0.626168,
+      "lift_on_answered": 0.140187,
+      "majority_label": "L2",
+      "majority_baseline": 0.626168,
+      "lift_over_majority": 0.140187,
+      "balanced_recall": 0.538557,
+      "alarm_side_unresolved": 26,
+      "confusion_matrix": {
+        "L1": {
+          "L2": 8,
+          "L1": 24
+        },
+        "L2": {
+          "L2": 58,
+          "L1": 9
+        },
+        "fiber": {
+          "L2": 2,
+          "L1": 6
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 32,
+          "predicted": 39,
+          "recall": 0.75,
+          "precision": 0.615385
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 68,
+          "recall": 0.865672,
+          "precision": 0.852941
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      },
+      "discriminative_subset": {
+        "n": 94,
+        "correct": 71,
+        "accuracy": 0.755319,
+        "majority_baseline": 0.606383,
+        "lift": 0.148936
+      }
+    },
+    "reverse_direction": {
+      "split": "test",
+      "variant": "reverse_direction",
+      "version": "expert-rules-v1",
+      "total": 107,
+      "correct": 27,
+      "accuracy": 0.252336,
+      "answered": 107,
+      "coverage": 1.0,
+      "precision_when_answered": 0.252336,
+      "majority_on_answered": 0.626168,
+      "lift_on_answered": -0.373832,
+      "majority_label": "L2",
+      "majority_baseline": 0.626168,
+      "lift_over_majority": -0.373832,
+      "balanced_recall": 0.177861,
+      "alarm_side_unresolved": 26,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 8,
+          "L2": 24
+        },
+        "L2": {
+          "L1": 48,
+          "L2": 19
+        },
+        "fiber": {
+          "L2": 7,
+          "L1": 1
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 32,
+          "predicted": 57,
+          "recall": 0.25,
+          "precision": 0.140351
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 50,
+          "recall": 0.283582,
+          "precision": 0.38
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      },
+      "discriminative_subset": {
+        "n": 94,
+        "correct": 16,
+        "accuracy": 0.170213,
+        "majority_baseline": 0.606383,
+        "lift": -0.43617
+      }
+    },
+    "always_same_side": {
+      "split": "test",
+      "variant": "always_same_side",
+      "version": "expert-rules-v1",
+      "total": 107,
+      "correct": 48,
+      "accuracy": 0.448598,
+      "answered": 107,
+      "coverage": 1.0,
+      "precision_when_answered": 0.448598,
+      "majority_on_answered": 0.626168,
+      "lift_on_answered": -0.17757,
+      "majority_label": "L2",
+      "majority_baseline": 0.626168,
+      "lift_over_majority": -0.17757,
+      "balanced_recall": 0.304104,
+      "alarm_side_unresolved": 26,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 12,
+          "L2": 20
+        },
+        "L2": {
+          "L2": 36,
+          "L1": 31
+        },
+        "fiber": {
+          "L2": 5,
+          "L1": 3
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 32,
+          "predicted": 46,
+          "recall": 0.375,
+          "precision": 0.26087
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 61,
+          "recall": 0.537313,
+          "precision": 0.590164
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      },
+      "discriminative_subset": {
+        "n": 94,
+        "correct": 37,
+        "accuracy": 0.393617,
+        "majority_baseline": 0.606383,
+        "lift": -0.212766
+      }
+    },
+    "always_opposite_side": {
+      "split": "test",
+      "variant": "always_opposite_side",
+      "version": "expert-rules-v1",
+      "total": 107,
+      "correct": 61,
+      "accuracy": 0.570093,
+      "answered": 107,
+      "coverage": 1.0,
+      "precision_when_answered": 0.570093,
+      "majority_on_answered": 0.626168,
+      "lift_on_answered": -0.056075,
+      "majority_label": "L2",
+      "majority_baseline": 0.626168,
+      "lift_over_majority": -0.056075,
+      "balanced_recall": 0.412313,
+      "alarm_side_unresolved": 26,
+      "confusion_matrix": {
+        "L1": {
+          "L2": 12,
+          "L1": 20
+        },
+        "L2": {
+          "L1": 26,
+          "L2": 41
+        },
+        "fiber": {
+          "L2": 4,
+          "L1": 4
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 32,
+          "predicted": 50,
+          "recall": 0.625,
+          "precision": 0.4
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 57,
+          "recall": 0.61194,
+          "precision": 0.719298
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      },
+      "discriminative_subset": {
+        "n": 94,
+        "correct": 50,
+        "accuracy": 0.531915,
+        "majority_baseline": 0.606383,
+        "lift": -0.074468
+      }
+    },
+    "no_alarm_resolution": {
+      "split": "test",
+      "variant": "no_alarm_resolution",
+      "version": "expert-rules-v1",
+      "total": 107,
+      "correct": 82,
+      "accuracy": 0.766355,
+      "answered": 107,
+      "coverage": 1.0,
+      "precision_when_answered": 0.766355,
+      "majority_on_answered": 0.626168,
+      "lift_on_answered": 0.140187,
+      "majority_label": "L2",
+      "majority_baseline": 0.626168,
+      "lift_over_majority": 0.140187,
+      "balanced_recall": 0.538557,
+      "alarm_side_unresolved": 26,
+      "confusion_matrix": {
+        "L1": {
+          "L2": 8,
+          "L1": 24
+        },
+        "L2": {
+          "L2": 58,
+          "L1": 9
+        },
+        "fiber": {
+          "L2": 2,
+          "L1": 6
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 32,
+          "predicted": 39,
+          "recall": 0.75,
+          "precision": 0.615385
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 68,
+          "recall": 0.865672,
+          "precision": 0.852941
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      },
+      "discriminative_subset": {
+        "n": 94,
+        "correct": 71,
+        "accuracy": 0.755319,
+        "majority_baseline": 0.606383,
+        "lift": 0.148936
+      }
+    },
+    "no_fallback": {
+      "split": "test",
+      "variant": "no_fallback",
+      "version": "expert-rules-v1",
+      "total": 107,
+      "correct": 71,
+      "accuracy": 0.663551,
+      "answered": 94,
+      "coverage": 0.878505,
+      "precision_when_answered": 0.755319,
+      "majority_on_answered": 0.606383,
+      "lift_on_answered": 0.148936,
+      "majority_label": "L2",
+      "majority_baseline": 0.626168,
+      "lift_over_majority": 0.037383,
+      "balanced_recall": 0.478389,
+      "alarm_side_unresolved": 26,
+      "confusion_matrix": {
+        "L1": {
+          "L2": 7,
+          "L1": 23,
+          "abstain": 2
+        },
+        "L2": {
+          "L2": 48,
+          "L1": 9,
+          "abstain": 10
+        },
+        "fiber": {
+          "abstain": 1,
+          "L2": 1,
+          "L1": 6
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 32,
+          "predicted": 38,
+          "recall": 0.71875,
+          "precision": 0.605263
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 56,
+          "recall": 0.716418,
+          "precision": 0.857143
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      },
+      "discriminative_subset": {
+        "n": 94,
+        "correct": 71,
+        "accuracy": 0.755319,
+        "majority_baseline": 0.606383,
+        "lift": 0.148936
+      }
+    }
+  },
+  "calibration_train_in_sample": {
+    "version": "expert-rules-v1",
+    "source": "train-in-sample",
+    "groups": {
+      "expert:multi_metric": {
+        "correct": 39,
+        "total": 56,
+        "accuracy": 0.696429,
+        "wilson_lower_bound": 0.566639
+      },
+      "expert:no_anomaly": {
+        "correct": 19,
+        "total": 27,
+        "accuracy": 0.703704,
+        "wilson_lower_bound": 0.51519
+      },
+      "expert:port_status_gate": {
+        "correct": 3,
+        "total": 6,
+        "accuracy": 0.5,
+        "wilson_lower_bound": 0.187613
+      },
+      "expert:single:host_snr": {
+        "correct": 4,
+        "total": 5,
+        "accuracy": 0.8,
+        "wilson_lower_bound": 0.375528
+      },
+      "expert:single:media_snr": {
+        "correct": 6,
+        "total": 6,
+        "accuracy": 1.0,
+        "wilson_lower_bound": 0.609657
+      },
+      "expert:single:rxpower": {
+        "correct": 14,
+        "total": 18,
+        "accuracy": 0.777778,
+        "wilson_lower_bound": 0.54785
+      },
+      "expert:single:serdes_snr": {
+        "correct": 22,
+        "total": 38,
+        "accuracy": 0.578947,
+        "wilson_lower_bound": 0.421921
+      },
+      "expert:single:txpower": {
+        "correct": 1,
+        "total": 1,
+        "accuracy": 1.0,
+        "wilson_lower_bound": 0.206543
+      },
+      "expert:txpower_lane_down": {
+        "correct": 3,
+        "total": 4,
+        "accuracy": 0.75,
+        "wilson_lower_bound": 0.300636
+      }
+    }
+  }
+}

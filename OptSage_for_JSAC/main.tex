@@ -1,0 +1,63 @@
+\documentclass[journal]{IEEEtran}
+% to be able to draw some self-contained figs
+\usepackage{amsmath,amsfonts}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{orcidlink}
+\usepackage{cite}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{kvoptions}
+\usepackage{booktabs} % For formal tables
+\newcommand{\eg}{\textit{e.g.},~}
+\newcommand{\ie}{\textit{i.e.},~}
+\newcommand{\et}{\textit{et al.}~}
+\newcommand{\etc}{\textit{etc}}
+\newcommand{\name}{\textit{OptSage}}
+\graphicspath{{figure/}{figures/}}
+
+\begin{document}
+
+
+\title{OptSage}
+
+\author{
+    \input{new_src/authors}
+}
+
+\markboth{IEEE Journal on Selected Areas in Communications}%
+{}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+
+\end{IEEEkeywords}
+
+\input{new_src/introduction}
+\input{new_src/background}
+\input{new_src/overview}
+\input{new_src/design}
+\input{new_src/deployment}
+\input{new_src/lesson}
+\input{new_src/evaluation}
+\input{new_src/related-work}
+\input{new_src/conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{reference} 
+\nocite{*}
+\end{document}

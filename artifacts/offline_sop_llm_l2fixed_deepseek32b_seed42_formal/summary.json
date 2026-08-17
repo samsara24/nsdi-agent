@@ -1,0 +1,586 @@
+{
+  "schema_version": "offline-sop-llm-summary-v1",
+  "knowledge": {
+    "schema_version": "training-knowledge-summary-v1",
+    "train_case_count": 161,
+    "historical_vector_count": 161,
+    "evidence_graph_case_count": 161,
+    "evidence_graph_diagnosis_count": 161,
+    "graph_version": "evidence-graph-v1:161:fd25cb35704f9c8d",
+    "graph_purity": {
+      "case_count": 161,
+      "signature_group_count": 147,
+      "mixed_label_group_count": 4,
+      "mixed_label_case_count": 10,
+      "mixed_label_case_ratio": 0.062112,
+      "singleton_group_count": 137,
+      "empty_signature_case_count": 0
+    },
+    "sop": {
+      "version": "learned-sop-v1",
+      "dictionary_version": "feature-dictionary-v2",
+      "dictionary_hash": "78bbdbbf601fe29e",
+      "training_case_count": 161,
+      "max_depth": 3,
+      "min_leaf_size": 5,
+      "source": "rca_v2_l2fixed:manifest-train",
+      "content_hash": "9c96d6f5d84e9ad7",
+      "root": {
+        "node_id": "root",
+        "samples": 161,
+        "label_counts": {
+          "L1": 49,
+          "L2": 100,
+          "fiber": 12
+        },
+        "prediction": "L2",
+        "token": "imbalance:L2:rxpower",
+        "present": {
+          "node_id": "root.present",
+          "samples": 7,
+          "label_counts": {
+            "L1": 6,
+            "L2": 0,
+            "fiber": 1
+          },
+          "prediction": "L1"
+        },
+        "absent": {
+          "node_id": "root.absent",
+          "samples": 154,
+          "label_counts": {
+            "L1": 43,
+            "L2": 100,
+            "fiber": 11
+          },
+          "prediction": "L2",
+          "token": "status:L1:RxLOS",
+          "present": {
+            "node_id": "root.absent.present",
+            "samples": 42,
+            "label_counts": {
+              "L1": 5,
+              "L2": 32,
+              "fiber": 5
+            },
+            "prediction": "L2",
+            "token": "level:L2:rxpower_mean:high_tail",
+            "present": {
+              "node_id": "root.absent.present.present",
+              "samples": 7,
+              "label_counts": {
+                "L1": 3,
+                "L2": 4,
+                "fiber": 0
+              },
+              "prediction": "L2"
+            },
+            "absent": {
+              "node_id": "root.absent.present.absent",
+              "samples": 35,
+              "label_counts": {
+                "L1": 2,
+                "L2": 28,
+                "fiber": 5
+              },
+              "prediction": "L2"
+            }
+          },
+          "absent": {
+            "node_id": "root.absent.absent",
+            "samples": 112,
+            "label_counts": {
+              "L1": 38,
+              "L2": 68,
+              "fiber": 6
+            },
+            "prediction": "L2",
+            "token": "imbalance:L2:serdes_snr",
+            "present": {
+              "node_id": "root.absent.absent.present",
+              "samples": 21,
+              "label_counts": {
+                "L1": 9,
+                "L2": 8,
+                "fiber": 4
+              },
+              "prediction": "L1"
+            },
+            "absent": {
+              "node_id": "root.absent.absent.absent",
+              "samples": 91,
+              "label_counts": {
+                "L1": 29,
+                "L2": 60,
+                "fiber": 2
+              },
+              "prediction": "L2"
+            }
+          }
+        }
+      }
+    },
+    "policies": {
+      "coverage-v2": {
+        "case_count": 161,
+        "llm_trace_count": 112,
+        "llm_accepted_count": 16,
+        "prediction_matches_training_label": 27,
+        "answered_count": 50,
+        "branch_calibration": {
+          "source": "manifest-train-loo:coverage-v2",
+          "groups": {
+            "N5a_mixed": {
+              "correct": 3,
+              "total": 3,
+              "accuracy": 1.0,
+              "wilson_lower_bound": 0.438494
+            },
+            "N5a_pure": {
+              "correct": 12,
+              "total": 19,
+              "accuracy": 0.631579,
+              "wilson_lower_bound": 0.410392
+            },
+            "N5b_critical_gap": {
+              "correct": 5,
+              "total": 7,
+              "accuracy": 0.714286,
+              "wilson_lower_bound": 0.358929
+            },
+            "N5b_minor_gap": {
+              "correct": 16,
+              "total": 29,
+              "accuracy": 0.551724,
+              "wilson_lower_bound": 0.375477
+            },
+            "N5c_no_exclusion": {
+              "correct": 0,
+              "total": 94,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            },
+            "N5c_with_exclusion": {
+              "correct": 0,
+              "total": 5,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            },
+            "N6_abstain": {
+              "correct": 0,
+              "total": 4,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            }
+          }
+        },
+        "llm_calibration": {
+          "source": "manifest-train-loo-llm:coverage-v2",
+          "confidence_bins": [
+            0.0,
+            0.5,
+            0.7,
+            0.9,
+            1.0
+          ],
+          "groups": {
+            "llm:N5c:[0.0,0.5)": {
+              "correct": 0,
+              "total": 1,
+              "accuracy": 0.0,
+              "wilson_lower_bound": 0.0
+            },
+            "llm:N5c:[0.5,0.7)": {
+              "correct": 2,
+              "total": 4,
+              "accuracy": 0.5,
+              "wilson_lower_bound": 0.150036
+            }
+          }
+        }
+      }
+    }
+  },
+  "policies": {
+    "coverage-v2": {
+      "policy": {
+        "name": "coverage-v2",
+        "description": "T4 标定规则：sim=1.0 进 N5a；证据全覆盖（历史见过我的全部证据）进 N5b；零证据与全链路遥测失效直接进 N6；其余进 N5c。不使用 0.7 这条无数据支持的线。",
+        "exact_similarity": 1.0,
+        "partial_similarity": null,
+        "partial_requires_full_coverage": true,
+        "abstain_on_empty_evidence": true,
+        "abstain_on_optical_blackout": true
+      },
+      "calibration": {
+        "source": "manifest-train-loo:coverage-v2",
+        "groups": {
+          "N5a_mixed": {
+            "correct": 3,
+            "total": 3,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.438494
+          },
+          "N5a_pure": {
+            "correct": 12,
+            "total": 19,
+            "accuracy": 0.631579,
+            "wilson_lower_bound": 0.410392
+          },
+          "N5b_critical_gap": {
+            "correct": 5,
+            "total": 7,
+            "accuracy": 0.714286,
+            "wilson_lower_bound": 0.358929
+          },
+          "N5b_minor_gap": {
+            "correct": 16,
+            "total": 29,
+            "accuracy": 0.551724,
+            "wilson_lower_bound": 0.375477
+          },
+          "N5c_no_exclusion": {
+            "correct": 0,
+            "total": 94,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "correct": 0,
+            "total": 5,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N6_abstain": {
+            "correct": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          }
+        }
+      },
+      "llm_calibration": {
+        "source": "manifest-train-loo-llm:coverage-v2",
+        "confidence_bins": [
+          0.0,
+          0.5,
+          0.7,
+          0.9,
+          1.0
+        ],
+        "groups": {
+          "llm:N5c:[0.0,0.5)": {
+            "correct": 0,
+            "total": 1,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "llm:N5c:[0.5,0.7)": {
+            "correct": 2,
+            "total": 4,
+            "accuracy": 0.5,
+            "wilson_lower_bound": 0.150036
+          }
+        }
+      },
+      "decision_policy": {
+        "version": "decision-policy-v1",
+        "final_lower_bound": 0.5,
+        "minimum_support": 10
+      },
+      "routing": {
+        "policy": "coverage-v2",
+        "case_count": 107,
+        "counts": {
+          "N5a": 15,
+          "N5b": 26,
+          "N5c": 64,
+          "N6": 2
+        },
+        "ratios": {
+          "N5a": 0.140187,
+          "N5b": 0.242991,
+          "N5c": 0.598131,
+          "N6": 0.018692
+        },
+        "cases_with_missing_evidence": 68
+      },
+      "n5a": {
+        "case_count": 15,
+        "pure_signature_cases": 13,
+        "mixed_signature_cases": 2,
+        "mixed_signature_ratio": 0.133333,
+        "bucket_majority_correct": 11,
+        "bucket_majority_accuracy": 0.733333
+      },
+      "branches": {
+        "N5c": {
+          "n": 64,
+          "answered": 5,
+          "correct": 3,
+          "abstained": 59,
+          "needs_llm": 0,
+          "needs_human": 59,
+          "precision_when_answered": 0.6
+        },
+        "N5a": {
+          "n": 15,
+          "answered": 13,
+          "correct": 9,
+          "abstained": 2,
+          "needs_llm": 0,
+          "needs_human": 2,
+          "precision_when_answered": 0.692308
+        },
+        "N5b": {
+          "n": 26,
+          "answered": 21,
+          "correct": 12,
+          "abstained": 5,
+          "needs_llm": 0,
+          "needs_human": 5,
+          "precision_when_answered": 0.571429
+        },
+        "N6": {
+          "n": 2,
+          "answered": 0,
+          "correct": 0,
+          "abstained": 2,
+          "needs_llm": 0,
+          "needs_human": 2,
+          "precision_when_answered": null
+        }
+      },
+      "calibration_check": {
+        "N5a_mixed": {
+          "claimed_confidence": 1.0,
+          "claimed_lower_bound": 0.438494,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5a_pure": {
+          "claimed_confidence": 0.631579,
+          "claimed_lower_bound": 0.410392,
+          "answered": 13,
+          "correct": 9,
+          "observed_accuracy": 0.692308,
+          "gap": 0.060729
+        },
+        "N5b_critical_gap": {
+          "claimed_confidence": 0.714286,
+          "claimed_lower_bound": 0.358929,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5b_minor_gap": {
+          "claimed_confidence": 0.551724,
+          "claimed_lower_bound": 0.375477,
+          "answered": 19,
+          "correct": 11,
+          "observed_accuracy": 0.578947,
+          "gap": 0.027223
+        },
+        "N5c_no_exclusion": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5c_with_exclusion": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N6_abstain": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "llm:N5c:[0.5,0.7)": {
+          "claimed_confidence": 0.5,
+          "claimed_lower_bound": 0.150036,
+          "answered": 4,
+          "correct": 2,
+          "observed_accuracy": 0.5,
+          "gap": 0.0
+        },
+        "uncalibrated:llm:N5b:[0.5,0.7)": {
+          "claimed_confidence": 0.6,
+          "claimed_lower_bound": 0.0,
+          "answered": 2,
+          "correct": 1,
+          "observed_accuracy": 0.5,
+          "gap": -0.1
+        },
+        "uncalibrated:llm:N5c:[0.7,0.9)": {
+          "claimed_confidence": 0.8,
+          "claimed_lower_bound": 0.0,
+          "answered": 1,
+          "correct": 1,
+          "observed_accuracy": 1.0,
+          "gap": 0.2
+        }
+      },
+      "answered": 39,
+      "answer_rate": 0.364486,
+      "correct": 24,
+      "precision_when_answered": 0.615385,
+      "coverage_accuracy": 0.224299,
+      "raw_class_metrics": {
+        "L1": {
+          "support": 32,
+          "predicted": 11,
+          "true_positive": 5,
+          "precision": 0.454545,
+          "recall": 0.15625,
+          "f1": 0.232558
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 25,
+          "true_positive": 18,
+          "precision": 0.72,
+          "recall": 0.268657,
+          "f1": 0.391304
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 3,
+          "true_positive": 1,
+          "precision": 0.333333,
+          "recall": 0.125,
+          "f1": 0.181818
+        }
+      },
+      "selective_risk_curve": [
+        {
+          "minimum_lower_bound": 0.0,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.1,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.2,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.3,
+          "answered": 32,
+          "coverage": 0.299065,
+          "correct": 20,
+          "precision_at_coverage": 0.625,
+          "selective_risk": 0.375
+        },
+        {
+          "minimum_lower_bound": 0.4,
+          "answered": 13,
+          "coverage": 0.121495,
+          "correct": 9,
+          "precision_at_coverage": 0.692308,
+          "selective_risk": 0.307692
+        },
+        {
+          "minimum_lower_bound": 0.5,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.6,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.7,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.8,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.9,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        }
+      ],
+      "final_decisions": {
+        "actions": {
+          "final": 0,
+          "request_evidence": 66,
+          "human_review": 41
+        },
+        "answered": 0,
+        "coverage": 0.0,
+        "correct": 0,
+        "precision_when_answered": null,
+        "coverage_accuracy": 0.0,
+        "low_confidence_degradation_rate": 1.0,
+        "human_intervention_rate": 0.383178,
+        "class_metrics": {
+          "L1": {
+            "support": 32,
+            "predicted": 0,
+            "true_positive": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "L2": {
+            "support": 67,
+            "predicted": 0,
+            "true_positive": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "fiber": {
+            "support": 8,
+            "predicted": 0,
+            "true_positive": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      }
+    }
+  }
+}

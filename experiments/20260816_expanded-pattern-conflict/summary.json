@@ -1,0 +1,389 @@
+{
+  "schema_version": "expanded-pattern-summary-v5-expert-clean",
+  "old_data_dir": "datasets/organized_rca_v2_stratified_60_40_seed42",
+  "new_data_dir": "datasets/all_data_rca_v2_stratified_60_40_seed42",
+  "old_train_size": 126,
+  "old_test_size": 85,
+  "clean_train_size": 122,
+  "retained_old_count": 205,
+  "missing_old_count": 6,
+  "excluded_old_count": 6,
+  "added_count": 258,
+  "expanded_test_size": 341,
+  "data_contract_version": "expanded-expert-clean-v1",
+  "expert_reviewed_case_count": 66,
+  "expert_changed_case_count": 35,
+  "reviewed_clean_test_count": 42,
+  "unreviewed_clean_test_count": 299,
+  "secondary_physics_review_pair_count": 6,
+  "feature_similarity_threshold": 0.7,
+  "graph_similarity_threshold": 0.7,
+  "top_k_per_dimension": 5,
+  "pattern_count": 117,
+  "all_high_in_at_least_one_dimension_count": 284,
+  "listed_pattern_policy": "both_high_only",
+  "train_cases_in_conflicts": 63,
+  "test_cases_in_conflicts": 117,
+  "dual_exact_label_conflicts": 0,
+  "evidence_graph_version": "evidence-graph-v1:122:00f80b4f376353d4",
+  "observable_graph_version": "observable-evidence-subgraph-v4-quality-physical-relation-learned",
+  "evidence_state_version": "expanded-evidence-state-v1",
+  "learned_predicate_model_version": "learned-predicate-ranges-v1",
+  "learned_predicate_candidates": 16,
+  "learned_predicate_accepted": 2,
+  "review_priority_counts": {
+    "critical": 16,
+    "high": 11,
+    "standard": 90
+  },
+  "difference_ranking": "absolute delta / clean-adjudicated-train IQR scale; large>=2.0, medium>=0.75, small<0.75",
+  "feature_dictionary_version": "feature-dictionary-v1",
+  "feature_dictionary_hash": "1b2e66ed650ce60e",
+  "feature_evaluation": {
+    "top1_label_agreement": 0.648094,
+    "exact_top1_count": 44,
+    "high_top1_count": 195,
+    "formula": "IDF-weighted Jaccard over v1 tokens plus label-free Q0/P/R explainable tokens",
+    "feature_space_version": "expanded-explainable-features-v1"
+  },
+  "graph_evaluation": {
+    "top1_label_agreement": 0.601173,
+    "high_top1_count": 318,
+    "average_feature_to_graph_coverage": 0.463383,
+    "average_learned_range_paths": 0.131965,
+    "formula": "IDF-weighted Jaccard over typed edges; nodes are explanation-only",
+    "schema": "side -> measurement -> predicate -> symptom -> physical-layer",
+    "predicate_policy": "Q0 data quality + P physical boundaries + R side-level relations + L supervised stable ranges learned on clean adjudicated train",
+    "confirmed_training_paths_available": 0,
+    "confirmed_training_paths_total": 122
+  },
+  "conflict_quadrants": {
+    "both_high": 117,
+    "feature_only": 7,
+    "graph_only": 160,
+    "both_low": 0
+  },
+  "threshold_sensitivity": [
+    {
+      "threshold": 0.5,
+      "both_high_different_label_pairs": 624
+    },
+    {
+      "threshold": 0.6,
+      "both_high_different_label_pairs": 384
+    },
+    {
+      "threshold": 0.7,
+      "both_high_different_label_pairs": 197
+    },
+    {
+      "threshold": 0.8,
+      "both_high_different_label_pairs": 76
+    },
+    {
+      "threshold": 0.9,
+      "both_high_different_label_pairs": 37
+    },
+    {
+      "threshold": 1.0,
+      "both_high_different_label_pairs": 27
+    }
+  ],
+  "remote_metrics": {
+    "original_343": {
+      "case_count": 343,
+      "correct": 209,
+      "accuracy": 0.60932945,
+      "label_distribution": {
+        "L2": 210,
+        "L1": 126,
+        "fiber": 7
+      },
+      "prediction_distribution": {
+        "L2": 279,
+        "L1": 63,
+        "fiber": 1
+      },
+      "majority_label": "L2",
+      "majority_accuracy": 0.6122449,
+      "balanced_recall": 0.36243386,
+      "macro_f1": 0.34769154,
+      "per_label": {
+        "L1": {
+          "support": 126,
+          "predicted": 63,
+          "precision": 0.46031746,
+          "recall": 0.23015873,
+          "f1": 0.30687831
+        },
+        "L2": {
+          "support": 210,
+          "predicted": 279,
+          "precision": 0.64516129,
+          "recall": 0.85714286,
+          "f1": 0.73619632
+        },
+        "fiber": {
+          "support": 7,
+          "predicted": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "L1": {
+          "L1": 29,
+          "L2": 97,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 29,
+          "L2": 180,
+          "fiber": 1
+        },
+        "fiber": {
+          "L1": 5,
+          "L2": 2,
+          "fiber": 0
+        }
+      }
+    },
+    "clean_original": {
+      "case_count": 341,
+      "correct": 207,
+      "accuracy": 0.60703812,
+      "label_distribution": {
+        "L2": 208,
+        "L1": 126,
+        "fiber": 7
+      },
+      "prediction_distribution": {
+        "L2": 277,
+        "L1": 63,
+        "fiber": 1
+      },
+      "majority_label": "L2",
+      "majority_accuracy": 0.60997067,
+      "balanced_recall": 0.36197599,
+      "macro_f1": 0.34696631,
+      "per_label": {
+        "L1": {
+          "support": 126,
+          "predicted": 63,
+          "precision": 0.46031746,
+          "recall": 0.23015873,
+          "f1": 0.30687831
+        },
+        "L2": {
+          "support": 208,
+          "predicted": 277,
+          "precision": 0.64259928,
+          "recall": 0.85576923,
+          "f1": 0.73402062
+        },
+        "fiber": {
+          "support": 7,
+          "predicted": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "L1": {
+          "L1": 29,
+          "L2": 97,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 29,
+          "L2": 178,
+          "fiber": 1
+        },
+        "fiber": {
+          "L1": 5,
+          "L2": 2,
+          "fiber": 0
+        }
+      }
+    },
+    "clean_partially_adjudicated": {
+      "case_count": 341,
+      "correct": 206,
+      "accuracy": 0.60410557,
+      "label_distribution": {
+        "fiber": 9,
+        "L2": 208,
+        "L1": 124
+      },
+      "prediction_distribution": {
+        "L2": 277,
+        "L1": 63,
+        "fiber": 1
+      },
+      "majority_label": "L2",
+      "majority_accuracy": 0.60997067,
+      "balanced_recall": 0.36269644,
+      "macro_f1": 0.34887627,
+      "per_label": {
+        "L1": {
+          "support": 124,
+          "predicted": 63,
+          "precision": 0.47619048,
+          "recall": 0.24193548,
+          "f1": 0.32085561
+        },
+        "L2": {
+          "support": 208,
+          "predicted": 277,
+          "precision": 0.63537906,
+          "recall": 0.84615385,
+          "f1": 0.7257732
+        },
+        "fiber": {
+          "support": 9,
+          "predicted": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "L1": {
+          "L1": 30,
+          "L2": 94,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 31,
+          "L2": 176,
+          "fiber": 1
+        },
+        "fiber": {
+          "L1": 2,
+          "L2": 7,
+          "fiber": 0
+        }
+      }
+    },
+    "expert_reviewed_clean_subset": {
+      "case_count": 42,
+      "correct": 15,
+      "accuracy": 0.35714286,
+      "label_distribution": {
+        "fiber": 6,
+        "L1": 18,
+        "L2": 18
+      },
+      "prediction_distribution": {
+        "L2": 27,
+        "L1": 15
+      },
+      "majority_label": "L1",
+      "majority_accuracy": 0.42857143,
+      "balanced_recall": 0.27777778,
+      "macro_f1": 0.25454545,
+      "per_label": {
+        "L1": {
+          "support": 18,
+          "predicted": 15,
+          "precision": 0.4,
+          "recall": 0.33333333,
+          "f1": 0.36363636
+        },
+        "L2": {
+          "support": 18,
+          "predicted": 27,
+          "precision": 0.33333333,
+          "recall": 0.5,
+          "f1": 0.4
+        },
+        "fiber": {
+          "support": 6,
+          "predicted": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "L1": {
+          "L1": 6,
+          "L2": 12,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 9,
+          "L2": 9,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 6,
+          "fiber": 0
+        }
+      }
+    },
+    "clean_deterministic_rebuilt": {
+      "case_count": 341,
+      "correct": 207,
+      "accuracy": 0.60703812,
+      "label_distribution": {
+        "fiber": 9,
+        "L2": 208,
+        "L1": 124
+      },
+      "prediction_distribution": {
+        "L2": 274,
+        "L1": 67
+      },
+      "majority_label": "L2",
+      "majority_accuracy": 0.60997067,
+      "balanced_recall": 0.36647022,
+      "macro_f1": 0.35373987,
+      "per_label": {
+        "L1": {
+          "support": 124,
+          "predicted": 67,
+          "precision": 0.47761194,
+          "recall": 0.25806452,
+          "f1": 0.33507853
+        },
+        "L2": {
+          "support": 208,
+          "predicted": 274,
+          "precision": 0.63868613,
+          "recall": 0.84134615,
+          "f1": 0.72614108
+        },
+        "fiber": {
+          "support": 9,
+          "predicted": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "L1": {
+          "L1": 32,
+          "L2": 92,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 33,
+          "L2": 175,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 2,
+          "L2": 7,
+          "fiber": 0
+        }
+      }
+    }
+  },
+  "remote_predictions_loaded": true,
+  "remote_status": "已加载远端预测结果。"
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "explain-experiment-v1",
+  "prompt_version": "rca-explain-v1",
+  "backend": "vllm",
+  "feature_profile": "v3",
+  "seed": 42,
+  "checkability": {
+    "case_count": 107,
+    "parse_rate": 1.0,
+    "token_existence": 1.0,
+    "token_relevance": 1.0,
+    "direction_consistency": 0.962617,
+    "verdict_consistency": 0.990654,
+    "all_pass": 0.953271,
+    "fabricated_token_count": 0
+  },
+  "by_rule_correctness": {
+    "rule_correct": {
+      "case_count": 82,
+      "parse_rate": 1.0,
+      "token_existence": 1.0,
+      "token_relevance": 1.0,
+      "direction_consistency": 0.963415,
+      "verdict_consistency": 0.987805,
+      "all_pass": 0.95122,
+      "fabricated_token_count": 0
+    },
+    "rule_wrong": {
+      "case_count": 25,
+      "parse_rate": 1.0,
+      "token_existence": 1.0,
+      "token_relevance": 1.0,
+      "direction_consistency": 0.96,
+      "verdict_consistency": 1.0,
+      "all_pass": 0.96,
+      "fabricated_token_count": 0
+    }
+  }
+}

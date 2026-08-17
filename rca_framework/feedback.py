@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Sequence
+from typing import Any, Dict, Sequence, Tuple
 
 from .branches.base import BranchOutcome
 from .decision import FinalDecision
@@ -39,15 +39,40 @@ def build_case_diagnosis(
         DiagnosisNode("outcome", "Outcome", outcome_attrs),
     ]
     edges = [DiagnosisEdge("case", "outcome", "concludes")]
+    feature_node_by_token: Dict[str, str] = {}
     for index, token in enumerate(features.tokens):
         node_id = f"feature:{index}"
+        feature_node_by_token[token] = node_id
         nodes.append(DiagnosisNode(node_id, "FeatureToken", {"token": token}))
         edges.append(DiagnosisEdge("case", node_id, "has_token"))
+    previous_step_id = ""
     for index, link in enumerate(outcome.evidence_chain):
         node_id = f"step:{index}"
         nodes.append(DiagnosisNode(node_id, "SOPStep", link.to_dict()))
         edges.append(DiagnosisEdge("case", node_id, "has_step"))
         edges.append(DiagnosisEdge(node_id, "outcome", "supports_decision"))
+        if previous_step_id:
+            edges.append(DiagnosisEdge(previous_step_id, node_id, "precedes"))
+        previous_step_id = node_id
+        for token in link.tokens:
+            feature_node = feature_node_by_token.get(token)
+            if feature_node is not None:
+                edges.append(DiagnosisEdge(node_id, feature_node, "uses_token"))
+        for constraint_id in _constraint_ids(link.source):
+            check_id = f"constraint:{index}:{constraint_id}"
+            nodes.append(
+                DiagnosisNode(
+                    check_id,
+                    "ConstraintCheck",
+                    {
+                        "constraint_id": constraint_id,
+                        "step_id": node_id,
+                        "evidence_link_kind": link.kind,
+                    },
+                )
+            )
+            edges.append(DiagnosisEdge(node_id, check_id, "checked_by"))
+            edges.append(DiagnosisEdge(check_id, "outcome", "constrains_decision"))
     return CaseDiagnosis(
         case_id=pack.case_id,
         sop_version=sop_version,
@@ -56,6 +81,15 @@ def build_case_diagnosis(
         edges=tuple(edges),
         confirmed_by=confirmed_by,
     )
+
+
+def _constraint_ids(source: str) -> Tuple[str, ...]:
+    ids = []
+    for item in source.split("|"):
+        item = item.strip()
+        if item.startswith(("C", "P", "M")) and "_" in item:
+            ids.append(item)
+    return tuple(ids)
 
 
 def apply_confirmed_feedback(

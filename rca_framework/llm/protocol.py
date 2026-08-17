@@ -28,6 +28,18 @@ from ..types import ROOT_CAUSES
 
 
 EFFECTS: Tuple[str, ...] = ("support", "exclude", "neutral")
+CONFIDENCE_DIMENSIONS: Tuple[str, ...] = (
+    "evidence_completeness",
+    "physical_compliance",
+    "reasoning_completeness",
+    "history_similarity",
+)
+DEFAULT_CONFIDENCE_WEIGHTS: Dict[str, float] = {
+    "evidence_completeness": 0.30,
+    "physical_compliance": 0.30,
+    "reasoning_completeness": 0.20,
+    "history_similarity": 0.20,
+}
 
 #: 供 vLLM guided decoding 使用。字段与 `DiagnosisResponse` 一一对应。
 DIAGNOSIS_OUTPUT_SCHEMA: Dict[str, Any] = {
@@ -48,11 +60,20 @@ DIAGNOSIS_OUTPUT_SCHEMA: Dict[str, Any] = {
                 "additionalProperties": False,
             },
         },
-        "verdict": {"type": "string", "enum": list(ROOT_CAUSES) + ["abstain"]},
+        "verdict": {"type": "string", "enum": list(ROOT_CAUSES)},
         "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "confidence_breakdown": {
+            "type": "object",
+            "properties": {
+                name: {"type": "number", "minimum": 0.0, "maximum": 1.0}
+                for name in CONFIDENCE_DIMENSIONS
+            },
+            "required": list(CONFIDENCE_DIMENSIONS),
+            "additionalProperties": False,
+        },
         "missing_information": {"type": "array", "items": {"type": "string"}},
     },
-    "required": ["steps", "verdict", "confidence", "missing_information"],
+    "required": ["steps", "verdict", "confidence", "confidence_breakdown", "missing_information"],
     "additionalProperties": False,
 }
 
@@ -75,15 +96,111 @@ class ReasoningStep:
         }
 
 
+def _clamp_score(value: Any) -> float:
+    try:
+        return min(1.0, max(0.0, float(value)))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+@dataclass(frozen=True)
+class ConfidenceBreakdown:
+    evidence_completeness: float = 0.0
+    physical_compliance: float = 0.0
+    reasoning_completeness: float = 0.0
+    history_similarity: float = 0.0
+
+    @classmethod
+    def from_mapping(cls, value: Any) -> "ConfidenceBreakdown":
+        if not isinstance(value, dict):
+            return cls()
+        return cls(
+            evidence_completeness=_clamp_score(value.get("evidence_completeness", 0.0)),
+            physical_compliance=_clamp_score(value.get("physical_compliance", 0.0)),
+            reasoning_completeness=_clamp_score(value.get("reasoning_completeness", 0.0)),
+            history_similarity=_clamp_score(value.get("history_similarity", 0.0)),
+        )
+
+    def weighted_score(self, weights: Optional[Dict[str, float]] = None) -> float:
+        selected = weights or DEFAULT_CONFIDENCE_WEIGHTS
+        total_weight = sum(max(0.0, float(selected.get(name, 0.0))) for name in CONFIDENCE_DIMENSIONS)
+        if total_weight <= 0.0:
+            return 0.0
+        weighted = sum(
+            getattr(self, name) * max(0.0, float(selected.get(name, 0.0)))
+            for name in CONFIDENCE_DIMENSIONS
+        )
+        return round(weighted / total_weight, 6)
+
+    def with_physical_cap(self, cap: float) -> "ConfidenceBreakdown":
+        return ConfidenceBreakdown(
+            evidence_completeness=self.evidence_completeness,
+            physical_compliance=min(self.physical_compliance, _clamp_score(cap)),
+            reasoning_completeness=self.reasoning_completeness,
+            history_similarity=self.history_similarity,
+        )
+
+    def with_overrides(self, **values: Optional[float]) -> "ConfidenceBreakdown":
+        """用代码侧客观算得的分数覆盖模型自评的维度。
+
+        模型自评会大量塌陷到 rubric 的中间锚点，`physical_compliance` 与
+        `history_similarity` 都能由校验器和检索相似度直接算出，不必让模型猜。
+        """
+        resolved = {
+            name: (
+                getattr(self, name)
+                if values.get(name) is None
+                else _clamp_score(values[name])
+            )
+            for name in CONFIDENCE_DIMENSIONS
+        }
+        return ConfidenceBreakdown(**resolved)
+
+    def to_dict(self) -> Dict[str, float]:
+        return {name: getattr(self, name) for name in CONFIDENCE_DIMENSIONS}
+
+
 @dataclass(frozen=True)
 class DiagnosisResponse:
-    """一次 N5c 推理的结构化结果。`verdict=None` 表示模型主动弃权。"""
+    """一次推理的结构化结果。verdict 必须是 L1/L2/fiber 三选一。"""
 
     steps: Tuple[ReasoningStep, ...] = ()
     verdict: Optional[str] = None
     confidence: float = 0.0
+    confidence_breakdown: ConfidenceBreakdown = field(default_factory=ConfidenceBreakdown)
+    self_reported_confidence: float = 0.0
     missing_information: Tuple[str, ...] = ()
     raw_output: str = ""
+    forced: bool = False
+    fallback_source: str = ""
+    compliance_penalties: Tuple[Dict[str, Any], ...] = ()
+
+    def with_adjustments(
+        self,
+        *,
+        confidence_breakdown: Optional[ConfidenceBreakdown] = None,
+        forced: Optional[bool] = None,
+        fallback_source: Optional[str] = None,
+        compliance_penalties: Optional[Sequence[Dict[str, Any]]] = None,
+        verdict: Optional[str] = None,
+    ) -> "DiagnosisResponse":
+        breakdown = confidence_breakdown or self.confidence_breakdown
+        return DiagnosisResponse(
+            steps=self.steps,
+            verdict=self.verdict if verdict is None else verdict,
+            confidence=breakdown.weighted_score(),
+            confidence_breakdown=breakdown,
+            self_reported_confidence=self.self_reported_confidence,
+            missing_information=self.missing_information,
+            raw_output=self.raw_output,
+            forced=self.forced if forced is None else forced,
+            fallback_source=self.fallback_source if fallback_source is None else fallback_source,
+            compliance_penalties=(
+                self.compliance_penalties
+                if compliance_penalties is None
+                else tuple(dict(item) for item in compliance_penalties)
+            ),
+        )
 
     @property
     def cited_evidence(self) -> Tuple[str, ...]:
@@ -108,12 +225,38 @@ class DiagnosisResponse:
             sorted({step.target for step in self.steps if step.effect == "exclude" and step.target})
         )
 
+    def step_votes(self) -> Dict[str, int]:
+        """把推理步骤折算成对每个根因的净票数：support 加一票，exclude 减一票。"""
+        votes: Dict[str, int] = {}
+        for step in self.steps:
+            if step.target not in ROOT_CAUSES:
+                continue
+            if step.effect == "support":
+                votes[step.target] = votes.get(step.target, 0) + 1
+            elif step.effect == "exclude":
+                votes[step.target] = votes.get(step.target, 0) - 1
+        return votes
+
+    def step_majority(self) -> Optional[str]:
+        """推理链自身指向的根因。并列或无有效步骤时返回 None，表示不足以推翻 verdict。"""
+        votes = self.step_votes()
+        if not votes:
+            return None
+        best = max(votes.values())
+        winners = [name for name, count in votes.items() if count == best]
+        return winners[0] if len(winners) == 1 else None
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "steps": [step.to_dict() for step in self.steps],
             "verdict": self.verdict,
             "confidence": self.confidence,
+            "confidence_breakdown": self.confidence_breakdown.to_dict(),
+            "self_reported_confidence": self.self_reported_confidence,
             "missing_information": list(self.missing_information),
+            "forced": self.forced,
+            "fallback_source": self.fallback_source,
+            "compliance_penalties": [dict(item) for item in self.compliance_penalties],
         }
 
 
@@ -209,18 +352,19 @@ def parse_response(text: str) -> Optional[DiagnosisResponse]:
             )
         )
 
-    verdict_raw = str(value.get("verdict", "abstain")).strip()
-    if verdict_raw not in tuple(ROOT_CAUSES) + ("abstain",):
+    verdict_raw = str(value.get("verdict", "")).strip()
+    if verdict_raw not in tuple(ROOT_CAUSES):
         return None
-    try:
-        confidence = min(1.0, max(0.0, float(value.get("confidence", 0.0))))
-    except (TypeError, ValueError):
-        confidence = 0.0
+    self_reported_confidence = _clamp_score(value.get("confidence", 0.0))
+    breakdown = ConfidenceBreakdown.from_mapping(value.get("confidence_breakdown"))
+    confidence = breakdown.weighted_score()
 
     return DiagnosisResponse(
         steps=tuple(steps),
-        verdict=None if verdict_raw == "abstain" else verdict_raw,
+        verdict=verdict_raw,
         confidence=confidence,
+        confidence_breakdown=breakdown,
+        self_reported_confidence=self_reported_confidence,
         missing_information=tuple(str(item) for item in value.get("missing_information", []) or ()),
         raw_output=text,
     )

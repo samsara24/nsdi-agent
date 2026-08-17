@@ -79,26 +79,58 @@ def fit_calibration(
     return BranchCalibration.fit(groups, flags, source=f"{source}:{policy.name}")
 
 
-def abstain_outcome(
+def low_evidence_outcome(
     result: MatchResult,
     decision: RoutingDecision,
     calibration: BranchCalibration,
+    *,
+    trace: Optional[Any] = None,
 ) -> BranchOutcome:
+    verdict = None
+    confidence = 0.0
+    confidence_breakdown = None
+    self_reported_confidence = 0.0
+    fallback_source = ""
+    compliance_penalties = ()
+    caveats = ["证据极低或全链路遥测失效，结论只能作为低置信候选"]
+    chain = [
+        EvidenceLink(kind="low_evidence_route", statement=decision.reason, source="router"),
+    ]
+    if trace is not None and trace.accepted is not None:
+        verdict = trace.accepted.verdict
+        confidence = trace.accepted.confidence
+        confidence_breakdown = trace.accepted.confidence_breakdown.to_dict()
+        self_reported_confidence = trace.accepted.self_reported_confidence
+        fallback_source = trace.accepted.fallback_source
+        compliance_penalties = trace.accepted.compliance_penalties
+        for index, step in enumerate(trace.accepted.steps):
+            chain.append(EvidenceLink(
+                kind="llm_low_evidence_step",
+                statement=f"低证据第 {index + 1} 步：{step.claim}",
+                tokens=tuple(step.cited_evidence),
+                source="|".join(step.cited_constraints) or "llm",
+            ))
     return BranchOutcome(
         case_id=result.query_case_id,
         branch="N6",
-        verdict=None,
-        confidence=0.0,
+        verdict=verdict,
+        confidence=confidence,
         confidence_lower_bound=0.0,
         calibration_group="N6_abstain",
         calibration_support=calibration.support("N6_abstain"),
-        evidence_chain=(
-            EvidenceLink(kind="abstain", statement=decision.reason, source="router"),
-        ),
-        caveats=("证据不足以支撑任何根因判断，不做猜测",),
-        needs_llm=False,
+        evidence_chain=tuple(chain),
+        caveats=tuple(caveats),
+        needs_llm=trace is None,
         needs_human=True,
+        confidence_breakdown=confidence_breakdown,
+        self_reported_confidence=self_reported_confidence,
+        history_verdict=None,
+        fallback_source=fallback_source,
+        compliance_penalties=compliance_penalties,
     )
+
+
+abstain_outcome = low_evidence_outcome
 
 
 def handle(
@@ -128,7 +160,7 @@ def handle(
             features=features,
             sop_model=sop_model,
         )
-    return decision, abstain_outcome(result, decision, calibration)
+    return decision, low_evidence_outcome(result, decision, calibration, trace=trace)
 
 
 def handle_many(
@@ -144,7 +176,7 @@ def handle_many(
     features: Optional[Sequence[Any]] = None,
     sop_model: Optional[Any] = None,
 ) -> List[Tuple[RoutingDecision, BranchOutcome]]:
-    """`reasoner` 是 `llm.ConstrainedReasoner`。给了就批量处理所有需要 LLM 的分支。
+    """`reasoner` 是 `llm.ConstrainedReasoner`。给了就批量处理所有 case。
 
     刻意做成批量：先用确定性处理器识别 N5a 混合桶、N5b 关键缺失/标签冲突和 N5c，
     一次性生成，再把 trace 分发回去。这样 `needs_llm` 不再只是一个无人消费的标志。
@@ -152,23 +184,10 @@ def handle_many(
     decisions = route_many(results, policy)
     traces: Dict[str, Any] = {}
     if reasoner is not None:
-        preliminary = [
-            handle(
-                result,
-                pack,
-                calibration,
-                policy=policy,
-                library=library,
-                features=features[index] if features is not None else None,
-                sop_model=sop_model,
-            )
-            for index, (result, pack) in enumerate(zip(results, packs))
-        ]
         targets = [
             (index, result, pack, decision)
-            for index, (result, pack, decision, (_, outcome))
-            in enumerate(zip(results, packs, decisions, preliminary))
-            if outcome.needs_llm
+            for index, (result, pack, decision)
+            in enumerate(zip(results, packs, decisions))
         ]
         if targets:
             requests = [

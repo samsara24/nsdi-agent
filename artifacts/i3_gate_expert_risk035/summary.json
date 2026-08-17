@@ -1,0 +1,406 @@
+{
+  "graph_version": "evidence-graph-v1:161:f4dc173817f10f8b",
+  "policies": {
+    "coverage-v2": {
+      "policy": {
+        "name": "coverage-v2",
+        "description": "T4 标定规则：sim=1.0 进 N5a；证据全覆盖（历史见过我的全部证据）进 N5b；零证据与全链路遥测失效直接进 N6；其余进 N5c。不使用 0.7 这条无数据支持的线。",
+        "exact_similarity": 1.0,
+        "partial_similarity": null,
+        "partial_requires_full_coverage": true,
+        "abstain_on_empty_evidence": true,
+        "abstain_on_optical_blackout": true
+      },
+      "calibration": {
+        "source": "train-loo:coverage-v2",
+        "groups": {
+          "N5a_mixed": {
+            "correct": 3,
+            "total": 3,
+            "accuracy": 1.0,
+            "wilson_lower_bound": 0.438494
+          },
+          "N5a_pure": {
+            "correct": 12,
+            "total": 19,
+            "accuracy": 0.631579,
+            "wilson_lower_bound": 0.410392
+          },
+          "N5b_critical_gap": {
+            "correct": 5,
+            "total": 7,
+            "accuracy": 0.714286,
+            "wilson_lower_bound": 0.358929
+          },
+          "N5b_minor_gap": {
+            "correct": 16,
+            "total": 29,
+            "accuracy": 0.551724,
+            "wilson_lower_bound": 0.375477
+          },
+          "N5c_no_exclusion": {
+            "correct": 0,
+            "total": 94,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "correct": 0,
+            "total": 5,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N6_abstain": {
+            "correct": 0,
+            "total": 4,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          }
+        }
+      },
+      "llm_calibration": null,
+      "decision_policy": {
+        "version": "decision-policy-v2",
+        "final_lower_bound": 0.0,
+        "minimum_support": 10,
+        "candidate_order": [
+          "expert",
+          "branch",
+          "sop"
+        ],
+        "target_selective_risk": 0.35,
+        "fitted_on": "manifest-train-loo:coverage-v2: 目标选择性风险 <= 35.00%，取到最大覆盖率的阈值 0.0000（训练留一法覆盖率 99.38%，实测风险 32.50%，支持数下限 10）",
+        "non_identifiable_labels": [],
+        "non_identifiable_evidence": {},
+        "per_label_lower_bound": {}
+      },
+      "routing": {
+        "policy": "coverage-v2",
+        "case_count": 107,
+        "counts": {
+          "N5a": 15,
+          "N5b": 26,
+          "N5c": 64,
+          "N6": 2
+        },
+        "ratios": {
+          "N5a": 0.140187,
+          "N5b": 0.242991,
+          "N5c": 0.598131,
+          "N6": 0.018692
+        },
+        "cases_with_missing_evidence": 68
+      },
+      "n5a": {
+        "case_count": 15,
+        "pure_signature_cases": 13,
+        "mixed_signature_cases": 2,
+        "mixed_signature_ratio": 0.133333,
+        "bucket_majority_correct": 11,
+        "bucket_majority_accuracy": 0.733333
+      },
+      "branches": {
+        "N5c": {
+          "n": 64,
+          "answered": 64,
+          "correct": 38,
+          "abstained": 0,
+          "needs_llm": 64,
+          "needs_human": 0,
+          "precision_when_answered": 0.59375
+        },
+        "N5a": {
+          "n": 15,
+          "answered": 15,
+          "correct": 11,
+          "abstained": 0,
+          "needs_llm": 2,
+          "needs_human": 0,
+          "precision_when_answered": 0.733333
+        },
+        "N5b": {
+          "n": 26,
+          "answered": 26,
+          "correct": 15,
+          "abstained": 0,
+          "needs_llm": 7,
+          "needs_human": 0,
+          "precision_when_answered": 0.576923
+        },
+        "N6": {
+          "n": 2,
+          "answered": 0,
+          "correct": 0,
+          "abstained": 2,
+          "needs_llm": 0,
+          "needs_human": 2,
+          "precision_when_answered": null
+        }
+      },
+      "calibration_check": {
+        "N5a_mixed": {
+          "claimed_confidence": 1.0,
+          "claimed_lower_bound": 0.438494,
+          "answered": 2,
+          "correct": 2,
+          "observed_accuracy": 1.0,
+          "gap": 0.0
+        },
+        "N5a_pure": {
+          "claimed_confidence": 0.631579,
+          "claimed_lower_bound": 0.410392,
+          "answered": 13,
+          "correct": 9,
+          "observed_accuracy": 0.692308,
+          "gap": 0.060729
+        },
+        "N5b_critical_gap": {
+          "claimed_confidence": 0.714286,
+          "claimed_lower_bound": 0.358929,
+          "answered": 5,
+          "correct": 3,
+          "observed_accuracy": 0.6,
+          "gap": -0.114286
+        },
+        "N5b_minor_gap": {
+          "claimed_confidence": 0.551724,
+          "claimed_lower_bound": 0.375477,
+          "answered": 21,
+          "correct": 12,
+          "observed_accuracy": 0.571429,
+          "gap": 0.019705
+        },
+        "N6_abstain": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "sop:root.absent.absent.absent": {
+          "claimed_confidence": 0.659341,
+          "claimed_lower_bound": 0.557285,
+          "answered": 36,
+          "correct": 25,
+          "observed_accuracy": 0.694444,
+          "gap": 0.035103
+        },
+        "sop:root.absent.absent.present": {
+          "claimed_confidence": 0.428571,
+          "claimed_lower_bound": 0.244697,
+          "answered": 19,
+          "correct": 6,
+          "observed_accuracy": 0.315789,
+          "gap": -0.112782
+        },
+        "sop:root.absent.present.absent": {
+          "claimed_confidence": 0.8,
+          "claimed_lower_bound": 0.641081,
+          "answered": 2,
+          "correct": 2,
+          "observed_accuracy": 1.0,
+          "gap": 0.2
+        },
+        "sop:root.absent.present.present": {
+          "claimed_confidence": 0.571429,
+          "claimed_lower_bound": 0.250454,
+          "answered": 3,
+          "correct": 2,
+          "observed_accuracy": 0.666667,
+          "gap": 0.095238
+        },
+        "sop:root.present": {
+          "claimed_confidence": 0.857143,
+          "claimed_lower_bound": 0.486865,
+          "answered": 4,
+          "correct": 3,
+          "observed_accuracy": 0.75,
+          "gap": -0.107143
+        }
+      },
+      "answered": 105,
+      "answer_rate": 0.981308,
+      "correct": 64,
+      "precision_when_answered": 0.609524,
+      "coverage_accuracy": 0.598131,
+      "raw_class_metrics": {
+        "L1": {
+          "support": 32,
+          "predicted": 33,
+          "true_positive": 14,
+          "precision": 0.424242,
+          "recall": 0.4375,
+          "f1": 0.430769
+        },
+        "L2": {
+          "support": 67,
+          "predicted": 70,
+          "true_positive": 49,
+          "precision": 0.7,
+          "recall": 0.731343,
+          "f1": 0.715328
+        },
+        "fiber": {
+          "support": 8,
+          "predicted": 2,
+          "true_positive": 1,
+          "precision": 0.5,
+          "recall": 0.125,
+          "f1": 0.2
+        }
+      },
+      "selective_risk_curve": [
+        {
+          "minimum_lower_bound": 0.0,
+          "answered": 91,
+          "coverage": 0.850467,
+          "correct": 54,
+          "precision_at_coverage": 0.593407,
+          "selective_risk": 0.406593
+        },
+        {
+          "minimum_lower_bound": 0.1,
+          "answered": 91,
+          "coverage": 0.850467,
+          "correct": 54,
+          "precision_at_coverage": 0.593407,
+          "selective_risk": 0.406593
+        },
+        {
+          "minimum_lower_bound": 0.2,
+          "answered": 91,
+          "coverage": 0.850467,
+          "correct": 54,
+          "precision_at_coverage": 0.593407,
+          "selective_risk": 0.406593
+        },
+        {
+          "minimum_lower_bound": 0.3,
+          "answered": 72,
+          "coverage": 0.672897,
+          "correct": 48,
+          "precision_at_coverage": 0.666667,
+          "selective_risk": 0.333333
+        },
+        {
+          "minimum_lower_bound": 0.4,
+          "answered": 51,
+          "coverage": 0.476636,
+          "correct": 36,
+          "precision_at_coverage": 0.705882,
+          "selective_risk": 0.294118
+        },
+        {
+          "minimum_lower_bound": 0.5,
+          "answered": 38,
+          "coverage": 0.35514,
+          "correct": 27,
+          "precision_at_coverage": 0.710526,
+          "selective_risk": 0.289474
+        },
+        {
+          "minimum_lower_bound": 0.6,
+          "answered": 2,
+          "coverage": 0.018692,
+          "correct": 2,
+          "precision_at_coverage": 1.0,
+          "selective_risk": 0.0
+        },
+        {
+          "minimum_lower_bound": 0.7,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.8,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.9,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        }
+      ],
+      "final_decisions": {
+        "actions": {
+          "final": 106,
+          "request_evidence": 1,
+          "human_review": 0
+        },
+        "answered": 106,
+        "coverage": 0.990654,
+        "correct": 80,
+        "precision_when_answered": 0.754717,
+        "coverage_accuracy": 0.747664,
+        "low_confidence_degradation_rate": 0.009346,
+        "human_intervention_rate": 0.0,
+        "class_metrics": {
+          "L1": {
+            "support": 32,
+            "predicted": 33,
+            "true_positive": 20,
+            "precision": 0.606061,
+            "recall": 0.625,
+            "f1": 0.615385
+          },
+          "L2": {
+            "support": 67,
+            "predicted": 73,
+            "true_positive": 60,
+            "precision": 0.821918,
+            "recall": 0.895522,
+            "f1": 0.857143
+          },
+          "fiber": {
+            "support": 8,
+            "predicted": 0,
+            "true_positive": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        "by_candidate_source": {
+          "branch": {
+            "answered": 14,
+            "correct": 11,
+            "precision_when_answered": 0.785714
+          },
+          "expert": {
+            "answered": 90,
+            "correct": 68,
+            "precision_when_answered": 0.755556
+          },
+          "sop": {
+            "answered": 2,
+            "correct": 1,
+            "precision_when_answered": 0.5
+          }
+        },
+        "degeneracy_guard": {
+          "majority_label": "L2",
+          "majority_rate_over_all": 0.626168,
+          "majority_on_kept": 0.632075,
+          "lift_over_majority_on_kept": 0.122642,
+          "balanced_recall": 0.506841,
+          "abstention_effectiveness": {
+            "abstained": 1,
+            "with_sop_fallback": 1,
+            "sop_would_be_wrong": 0,
+            "effectiveness": 0.0
+          }
+        }
+      }
+    }
+  }
+}

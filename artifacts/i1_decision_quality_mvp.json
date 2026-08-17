@@ -1,0 +1,56 @@
+{
+  "schema_version": "decision-quality-v1",
+  "runs": {
+    "artifacts/offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6": {
+      "coverage-v2": {
+        "cases": 107,
+        "majority_label": "L2",
+        "majority_rate": 0.6262,
+        "answered": 0,
+        "coverage": 0.0,
+        "manual_or_evidence_rate": 1.0,
+        "precision_when_answered": null,
+        "precision_wilson_lower_bound": null,
+        "majority_on_kept": null,
+        "lift_over_majority_on_kept": null,
+        "balanced_recall": 0.0,
+        "per_label": {
+          "L1": {
+            "support": 32,
+            "recall": 0.0
+          },
+          "L2": {
+            "support": 67,
+            "recall": 0.0
+          },
+          "fiber": {
+            "support": 8,
+            "recall": 0.0
+          }
+        },
+        "abstention_effectiveness": {
+          "abstained": 107,
+          "with_sop_fallback": 107,
+          "sop_would_be_wrong": 37,
+          "effectiveness": 0.3458,
+          "note": "弃答集里 SOP 兜底会答错的比例。高于保留集的错误率才说明人工被用在了对的地方。"
+        },
+        "sop_reference": {
+          "predicted": 107,
+          "correct": 70,
+          "accuracy_over_all_cases": 0.6542
+        },
+        "majority_reference": {
+          "accuracy_over_all_cases": 0.6262,
+          "manual_rate": 0.0,
+          "balanced_recall": 0.3333,
+          "note": "一律报多数类、从不弃答。它的 balanced_recall 上限就是 1/类别数。"
+        },
+        "action_breakdown": {
+          "human_review": 36,
+          "request_evidence": 71
+        }
+      }
+    }
+  }
+}

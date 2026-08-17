@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RCA 离线实验报告</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#18212b;--muted:#66717e;--line:#dce2e8;
+--blue:#2458a6;--green:#147d55;--red:#b42318;--amber:#a15c00;--purple:#6b47a8}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.55 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1440px;margin:auto;padding:24px} h1{font-size:26px;margin:0 0 6px}
+h2{font-size:19px;margin:26px 0 10px} h3{font-size:16px;margin:18px 0 8px}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+.subtitle,.muted,.empty{color:var(--muted)} .empty{font-style:italic}
+.toolbar{display:flex;gap:12px;align-items:center;margin:18px 0}
+input[type=search]{width:min(480px,100%);padding:10px 12px;border:1px solid var(--line);
+border-radius:7px;background:white}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin:12px 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:13px}
+.card .value{font-size:22px;font-weight:700;margin-top:3px} .card .label{color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:9px;margin:10px 0;overflow:hidden}
+.panel>summary{cursor:pointer;font-size:16px;font-weight:650;padding:12px 15px;background:#fafbfc}
+.panel-body{padding:14px 15px;border-top:1px solid var(--line)}
+.table-wrap{overflow:auto} table{border-collapse:collapse;width:100%;background:white}
+th,td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}
+thead th,.kv th{background:#f5f7f9;font-weight:650} .kv th{width:220px}
+.bar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;min-width:120px}
+.bar span{display:block;height:100%;background:var(--blue)}
+pre{margin:8px 0;padding:12px;max-height:520px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+background:#111827;color:#e5edf6;border-radius:7px;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+code,.token{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:650;white-space:nowrap}
+.correct{color:var(--green);background:#e8f5ef} .wrong{color:var(--red);background:#fdecea}
+.degraded_correct{color:#176b47;background:#edf8f2} .degraded_wrong{color:#9b2c20;background:#fff1ef}
+.abstain{color:var(--amber);background:#fff4df} .telemetry{color:var(--purple);background:#f1ebfb}
+.tokens{display:flex;flex-wrap:wrap;gap:6px} .token{padding:3px 7px;border:1px solid var(--line);border-radius:5px;background:#f7f9fb}
+.attempt{border-left:4px solid var(--blue);padding-left:12px;margin:18px 0}
+.violation{border-left:4px solid var(--red);padding:7px 10px;background:#fff6f5;margin:6px 0}
+.ok{color:var(--green);font-weight:650} .warn{color:var(--amber);font-weight:650}
+.crumb{margin-bottom:14px} .group{margin:18px 0 28px} [hidden]{display:none!important}
+@media print{body{background:white} main{max-width:none;padding:0} .toolbar{display:none}
+.panel{break-inside:avoid} details.panel:not([open])>.panel-body{display:block}}
+</style>
+</head>
+<body><main><h1>RCA 离线实验报告</h1><p class="subtitle">选择性诊断、路由分布与逐 case 审计</p><details class="panel"><summary>实验清单</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>Schema</th><td>offline-sop-llm-run-manifest-v1</td></tr><tr><th>创建时间</th><td>2026-08-13T04:29:05.515786+00:00</td></tr><tr><th>数据目录</th><td>/home/chenziang/nsdi-agent/datasets/rca_v2_l2fixed</td></tr><tr><th>训练 / 测试</th><td>161 / 107</td></tr><tr><th>证据图</th><td>evidence-graph-v1:161:7ef9fa04d1871a46</td></tr><tr><th>特征字典</th><td>feature-dictionary-v2</td></tr><tr><th>约束库</th><td>constraint-library-v6</td></tr><tr><th>SOP</th><td>numeric-decision-tree-v1</td></tr><tr><th>Prompt</th><td>rca-forced-multidim-v11</td></tr><tr><th>决策策略</th><td>decision-policy-v3-forced-multidim</td></tr></tbody></table></div></div></details><details class="panel"><summary>训练摘要</summary><div class="panel-body"><pre>{
+  &quot;evidence_graph_case_count&quot;: 161,
+  &quot;evidence_graph_diagnosis_count&quot;: 161,
+  &quot;expert_calibration&quot;: {
+    &quot;groups&quot;: {
+      &quot;expert:multi_metric&quot;: {
+        &quot;accuracy&quot;: 0.696429,
+        &quot;correct&quot;: 39,
+        &quot;total&quot;: 56,
+        &quot;wilson_lower_bound&quot;: 0.566639
+      },
+      &quot;expert:no_anomaly&quot;: {
+        &quot;accuracy&quot;: 0.703704,
+        &quot;correct&quot;: 19,
+        &quot;total&quot;: 27,
+        &quot;wilson_lower_bound&quot;: 0.51519
+      },
+      &quot;expert:port_status_gate&quot;: {
+        &quot;accuracy&quot;: 0.5,
+        &quot;correct&quot;: 3,
+        &quot;total&quot;: 6,
+        &quot;wilson_lower_bound&quot;: 0.187613
+      },
+      &quot;expert:single:host_snr&quot;: {
+        &quot;accuracy&quot;: 0.8,
+        &quot;correct&quot;: 4,
+        &quot;total&quot;: 5,
+        &quot;wilson_lower_bound&quot;: 0.375528
+      },
+      &quot;expert:single:media_snr&quot;: {
+        &quot;accuracy&quot;: 1.0,
+        &quot;correct&quot;: 6,
+        &quot;total&quot;: 6,
+        &quot;wilson_lower_bound&quot;: 0.609657
+      },
+      &quot;expert:single:rxpower&quot;: {
+        &quot;accuracy&quot;: 0.777778,
+        &quot;correct&quot;: 14,
+        &quot;total&quot;: 18,
+        &quot;wilson_lower_bound&quot;: 0.54785
+      },
+      &quot;expert:single:serdes_snr&quot;: {
+        &quot;accuracy&quot;: 0.578947,
+        &quot;correct&quot;: 22,
+        &quot;total&quot;: 38,
+        &quot;wilson_lower_bound&quot;: 0.421921
+      },
+      &quot;expert:single:txpower&quot;: {
+        &quot;accuracy&quot;: 1.0,
+        &quot;correct&quot;: 1,
+        &quot;total&quot;: 1,
+        &quot;wilson_lower_bound&quot;: 0.206543
+      },
+      &quot;expert:txpower_lane_down&quot;: {
+        &quot;accuracy&quot;: 0.75,
+        &quot;correct&quot;: 3,
+        &quot;total&quot;: 4,
+        &quot;wilson_lower_bound&quot;: 0.300636
+      }
+    },
+    &quot;source&quot;: &quot;manifest-train&quot;,
+    &quot;version&quot;: &quot;expert-rules-v1&quot;
+  },
+  &quot;graph_purity&quot;: {
+    &quot;case_count&quot;: 161,
+    &quot;empty_signature_case_count&quot;: 0,
+    &quot;mixed_label_case_count&quot;: 10,
+    &quot;mixed_label_case_ratio&quot;: 0.062112,
+    &quot;mixed_label_group_count&quot;: 4,
+    &quot;signature_group_count&quot;: 147,
+    &quot;singleton_group_count&quot;: 137
+  },
+  &quot;graph_version&quot;: &quot;evidence-graph-v1:161:7ef9fa04d1871a46&quot;,
+  &quot;historical_vector_count&quot;: 161,
+  &quot;policies&quot;: {
+    &quot;coverage-v2&quot;: {
+      &quot;answered_count&quot;: 161,
+      &quot;branch_calibration&quot;: {
+        &quot;groups&quot;: {
+          &quot;N5a_mixed&quot;: {
+            &quot;accuracy&quot;: 1.0,
+            &quot;correct&quot;: 3,
+            &quot;total&quot;: 3,
+            &quot;wilson_lower_bound&quot;: 0.438494
+          },
+          &quot;N5a_pure&quot;: {
+            &quot;accuracy&quot;: 0.631579,
+            &quot;correct&quot;: 12,
+            &quot;total&quot;: 19,
+            &quot;wilson_lower_bound&quot;: 0.410392
+          },
+          &quot;N5b_critical_gap&quot;: {
+            &quot;accuracy&quot;: 0.535714,
+            &quot;correct&quot;: 15,
+            &quot;total&quot;: 28,
+            &quot;wilson_lower_bound&quot;: 0.358124
+          },
+          &quot;N5b_minor_gap&quot;: {
+            &quot;accuracy&quot;: 0.75,
+            &quot;correct&quot;: 6,
+            &quot;total&quot;: 8,
+            &quot;wilson_lower_bound&quot;: 0.40927
+          },
+          &quot;N5c_no_exclusion&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 94,
+            &quot;wilson_lower_bound&quot;: 0.0
+          },
+          &quot;N5c_with_exclusion&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 5,
+            &quot;wilson_lower_bound&quot;: 0.0
+          },
+          &quot;N6_abstain&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 4,
+            &quot;wilson_lower_bound&quot;: 0.0
+          }
+        },
+        &quot;source&quot;: &quot;manifest-train-loo:coverage-v2&quot;
+      },
+      &quot;case_count&quot;: 161,
+      &quot;decision_policy&quot;: {
+        &quot;candidate_order&quot;: [
+          &quot;branch&quot;
+        ],
+        &quot;final_lower_bound&quot;: 0.5,
+        &quot;fitted_on&quot;: &quot;&quot;,
+        &quot;minimum_support&quot;: 10,
+        &quot;non_identifiable_evidence&quot;: {},
+        &quot;non_identifiable_labels&quot;: [],
+        &quot;per_label_lower_bound&quot;: {},
+        &quot;target_selective_risk&quot;: null,
+        &quot;version&quot;: &quot;decision-policy-v3-forced-multidim&quot;
+      },
+      &quot;decision_policy_fit&quot;: null,
+      &quot;llm_accepted_count&quot;: 161,
+      &quot;llm_calibration&quot;: {
+        &quot;confidence_bins&quot;: [
+          0.0,
+          0.5,
+          0.7,
+          0.9,
+          1.0
+        ],
+        &quot;groups&quot;: {
+          &quot;llm:N5a:[0.0,0.5)&quot;: {
+            &quot;accuracy&quot;: 0.2,
+            &quot;correct&quot;: 1,
+            &quot;total&quot;: 5,
+            &quot;wilson_lower_bound&quot;: 0.036223
+          },
+          &quot;llm:N5a:[0.5,0.7)&quot;: {
+            &quot;accuracy&quot;: 0.6,
+            &quot;correct&quot;: 9,
+            &quot;total&quot;: 15,
+            &quot;wilson_lower_bound&quot;: 0.357464
+          },
+          &quot;llm:N5a:[0.7,0.9)&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 2,
+            &quot;wilson_lower_bound&quot;: 0.0
+          },
+          &quot;llm:N5b:[0.0,0.5)&quot;: {
+            &quot;accuracy&quot;: 0.8,
+            &quot;correct&quot;: 8,
+            &quot;total&quot;: 10,
+            &quot;wilson_lower_bound&quot;: 0.490157
+          },
+          &quot;llm:N5b:[0.5,0.7)&quot;: {
+            &quot;accuracy&quot;: 0.653846,
+            &quot;correct&quot;: 17,
+            &quot;total&quot;: 26,
+            &quot;wilson_lower_bound&quot;: 0.462202
+          },
+          &quot;llm:N5c:[0.0,0.5)&quot;: {
+            &quot;accuracy&quot;: 0.333333,
+            &quot;correct&quot;: 7,
+            &quot;total&quot;: 21,
+            &quot;wilson_lower_bound&quot;: 0.171945
+          },
+          &quot;llm:N5c:[0.5,0.7)&quot;: {
+            &quot;accuracy&quot;: 0.384615,
+            &quot;correct&quot;: 20,
+            &quot;total&quot;: 52,
+            &quot;wilson_lower_bound&quot;: 0.264703
+          },
+          &quot;llm:N5c:[0.7,0.9)&quot;: {
+            &quot;accuracy&quot;: 0.692308,
+            &quot;correct&quot;: 18,
+            &quot;total&quot;: 26,
+            &quot;wilson_lower_bound&quot;: 0.500114
+          },
+          &quot;llm:N6:[0.0,0.5)&quot;: {
+            &quot;accuracy&quot;: 0.0,
+            &quot;correct&quot;: 0,
+            &quot;total&quot;: 4,
+            &quot;wilson_lower_bound&quot;: 0.0
+          }
+        },
+        &quot;source&quot;: &quot;manifest-train-loo-llm:coverage-v2&quot;
+      },
+      &quot;llm_trace_count&quot;: 161,
+      &quot;oof_expert_answered&quot;: 161,
+      &quot;oof_expert_correct&quot;: 111,
+      &quot;oof_sop_answered&quot;: 161,
+      &quot;oof_sop_correct&quot;: 102,
+      &quot;prediction_matches_training_label&quot;: 80
+    }
+  },
+  &quot;schema_version&quot;: &quot;training-knowledge-summary-v1&quot;,
+  &quot;sop&quot;: {
+    &quot;content_hash&quot;: &quot;140aaee5fc16b8e7&quot;,
+    &quot;dictionary_hash&quot;: &quot;numeric&quot;,
+    &quot;dictionary_version&quot;: &quot;numeric&quot;,
+    &quot;feature_schema&quot;: &quot;numeric-decision-tree-features-v1&quot;,
+    &quot;max_depth&quot;: 3,
+    &quot;min_leaf_size&quot;: 5,
+    &quot;root&quot;: {
+      &quot;feature&quot;: &quot;L2.rxpower.spread&quot;,
+      &quot;gt&quot;: {
+        &quot;feature&quot;: &quot;L1.serdes_snr.max&quot;,
+        &quot;gt&quot;: {
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 4,
+            &quot;L2&quot;: 2,
+            &quot;fiber&quot;: 2
+          },
+          &quot;node_id&quot;: &quot;root.gt.gt&quot;,
+          &quot;prediction&quot;: &quot;L1&quot;,
+          &quot;pruned_reason&quot;: &quot;&quot;,
+          &quot;samples&quot;: 8
+        },
+        &quot;label_counts&quot;: {
+          &quot;L1&quot;: 12,
+          &quot;L2&quot;: 2,
+          &quot;fiber&quot;: 2
+        },
+        &quot;leq&quot;: {
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 8,
+            &quot;L2&quot;: 0,
+            &quot;fiber&quot;: 0
+          },
+          &quot;node_id&quot;: &quot;root.gt.leq&quot;,
+          &quot;prediction&quot;: &quot;L1&quot;,
+          &quot;pruned_reason&quot;: &quot;&quot;,
+          &quot;samples&quot;: 8
+        },
+        &quot;node_id&quot;: &quot;root.gt&quot;,
+        &quot;prediction&quot;: &quot;L1&quot;,
+        &quot;pruned_reason&quot;: &quot;&quot;,
+        &quot;samples&quot;: 16,
+        &quot;threshold&quot;: 717639.0,
+        &quot;threshold_source&quot;: &quot;quantile&quot;
+      },
+      &quot;label_counts&quot;: {
+        &quot;L1&quot;: 49,
+        &quot;L2&quot;: 100,
+        &quot;fiber&quot;: 12
+      },
+      &quot;leq&quot;: {
+        &quot;feature&quot;: &quot;L2.Temperature&quot;,
+        &quot;gt&quot;: {
+          &quot;feature&quot;: &quot;L2.txpower.spread&quot;,
+          &quot;gt&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 2,
+              &quot;L2&quot;: 38,
+              &quot;fiber&quot;: 0
+            },
+            &quot;node_id&quot;: &quot;root.leq.gt.gt&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;pruned_reason&quot;: &quot;&quot;,
+            &quot;samples&quot;: 40
+          },
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 7,
+            &quot;L2&quot;: 54,
+            &quot;fiber&quot;: 4
+          },
+          &quot;leq&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 5,
+              &quot;L2&quot;: 16,
+              &quot;fiber&quot;: 4
+            },
+            &quot;node_id&quot;: &quot;root.leq.gt.leq&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;pruned_reason&quot;: &quot;&quot;,
+            &quot;samples&quot;: 25
+          },
+          &quot;node_id&quot;: &quot;root.leq.gt&quot;,
+          &quot;prediction&quot;: &quot;L2&quot;,
+          &quot;pruned_reason&quot;: &quot;&quot;,
+          &quot;samples&quot;: 65,
+          &quot;threshold&quot;: 0.19499999999999998,
+          &quot;threshold_source&quot;: &quot;quantile&quot;
+        },
+        &quot;label_counts&quot;: {
+          &quot;L1&quot;: 37,
+          &quot;L2&quot;: 98,
+          &quot;fiber&quot;: 10
+        },
+        &quot;leq&quot;: {
+          &quot;feature&quot;: &quot;L2.txpower.spread&quot;,
+          &quot;gt&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 16,
+              &quot;L2&quot;: 39,
+              &quot;fiber&quot;: 5
+            },
+            &quot;node_id&quot;: &quot;root.leq.leq.gt&quot;,
+            &quot;prediction&quot;: &quot;L2&quot;,
+            &quot;pruned_reason&quot;: &quot;&quot;,
+            &quot;samples&quot;: 60
+          },
+          &quot;label_counts&quot;: {
+            &quot;L1&quot;: 30,
+            &quot;L2&quot;: 44,
+            &quot;fiber&quot;: 6
+          },
+          &quot;leq&quot;: {
+            &quot;label_counts&quot;: {
+              &quot;L1&quot;: 14,
+              &quot;L2&quot;: 5,
+              &quot;fiber&quot;: 1
+            },
+            &quot;node_id&quot;: &quot;root.leq.leq.leq&quot;,
+            &quot;prediction&quot;: &quot;L1&quot;,
+            &quot;pruned_reason&quot;: &quot;&quot;,
+            &quot;samples&quot;: 20
+          },
+          &quot;node_id&quot;: &quot;root.leq.leq&quot;,
+          &quot;prediction&quot;: &quot;L2&quot;,
+          &quot;pruned_reason&quot;: &quot;&quot;,
+          &quot;samples&quot;: 80,
+          &quot;threshold&quot;: 0.025000000000000022,
+          &quot;threshold_source&quot;: &quot;quantile&quot;
+        },
+        &quot;node_id&quot;: &quot;root.leq&quot;,
+        &quot;prediction&quot;: &quot;L2&quot;,
+        &quot;pruned_reason&quot;: &quot;&quot;,
+        &quot;samples&quot;: 145,
+        &quot;threshold&quot;: 50.2,
+        &quot;threshold_source&quot;: &quot;quantile&quot;
+      },
+      &quot;node_id&quot;: &quot;root&quot;,
+      &quot;prediction&quot;: &quot;L2&quot;,
+      &quot;pruned_reason&quot;: &quot;&quot;,
+      &quot;samples&quot;: 161,
+      &quot;threshold&quot;: 1.025,
+      &quot;threshold_source&quot;: &quot;quantile&quot;
+    },
+    &quot;source&quot;: &quot;rca_v2_l2fixed:manifest-train&quot;,
+    &quot;training_case_count&quot;: 161,
+    &quot;version&quot;: &quot;numeric-decision-tree-v1&quot;
+  },
+  &quot;train_case_count&quot;: 161
+}</pre></div></details><div class="toolbar"><label for="case-filter">筛选 case：</label><input id="case-filter" type="search" placeholder="输入 policy、case ID、真值、预测、分支或状态"></div><h2>Policy：coverage-v2</h2><div class="cards"><div class="card"><div class="label">Case 总数</div><div class="value">107</div></div><div class="card"><div class="label">最终回答</div><div class="value">76</div></div><div class="card"><div class="label">答对</div><div class="value">39</div></div><div class="card"><div class="label">覆盖率</div><div class="value">71.03%</div></div><div class="card"><div class="label">回答准确率</div><div class="value">51.32%</div></div><div class="card"><div class="label">补采</div><div class="value">22</div></div><div class="card"><div class="label">人工介入</div><div class="value">9</div></div><div class="card"><div class="label">降级前候选</div><div class="value">107</div></div><div class="card"><div class="label">候选正确</div><div class="value">57</div></div></div><details class="panel" open><summary>实验深度分析</summary><div class="panel-body"><h3>结论</h3><ul><li>训练集归纳 SOP 单独命中 67/107（62.62%），高于分支候选的 57/107（53.27%）。当前 LLM 仲裁没有把统计先验稳定转化为更高质量的物理结论。</li><li>SOP 对类别 L1、fiber 的命中为 0；总体准确率受多数类主导，不能把该总体数值解释为三类均有效。</li><li>冷启动 N5c 形成 64 个候选，仅 31 个正确；它是当前主要质量瓶颈，不能用放宽 M7 校验来掩盖。</li><li>测试侧触发 107 条 LLM 轨迹，107 条通过约束校验，其中 107 条形成结论；累计记录 352 条违规。</li></ul><h3>关键门禁</h3><div class="table-wrap"><table class="kv"><tbody><tr><th>降级前候选 / 正确</th><td>107 / 57</td></tr><tr><th>M9 最终回答</th><td>76</td></tr><tr><th>补采 / 人工</th><td>22 / 9</td></tr><tr><th>LLM 轨迹 / 重写</th><td>107 / 61</td></tr><tr><th>LLM 通过 / 形成结论</th><td>107 / 107</td></tr><tr><th>约束违规总数</th><td>352</td></tr></tbody></table></div><h3>候选质量（M9 降级前）</h3><div class="table-wrap"><table><thead><tr><th>分支</th><th>Case</th><th>候选</th><th>候选正确</th><th>候选准确率</th></tr></thead><tbody><tr><td>N5a</td><td>15</td><td>15</td><td>12</td><td>80.00%</td></tr><tr><td>N5b</td><td>26</td><td>26</td><td>13</td><td>50.00%</td></tr><tr><td>N5c</td><td>64</td><td>64</td><td>31</td><td>48.44%</td></tr><tr><td>N6</td><td>2</td><td>2</td><td>1</td><td>50.00%</td></tr></tbody></table></div><h3>SOP 对照</h3><div class="table-wrap"><table><thead><tr><th>真值</th><th>Case</th><th>SOP 可用</th><th>SOP 正确</th><th>SOP 准确率</th></tr></thead><tbody><tr><td>L1</td><td>32</td><td>32</td><td>0</td><td>0.00%</td></tr><tr><td>L2</td><td>67</td><td>67</td><td>67</td><td>100.00%</td></tr><tr><td>fiber</td><td>8</td><td>8</td><td>0</td><td>0.00%</td></tr></tbody></table></div><h3>LLM 校验失败构成</h3><div class="table-wrap"><table><thead><tr><th>违规类型</th><th>次数</th></tr></thead><tbody><tr><td>constraint_violation</td><td>242</td></tr><tr><td>measurement_veto</td><td>65</td></tr><tr><td>unsupported_step</td><td>19</td></tr><tr><td>fabricated_constraint</td><td>12</td></tr><tr><td>fabricated_evidence</td><td>10</td></tr><tr><td>forbidden_claim</td><td>4</td></tr></tbody></table></div><h3>LLM 高频失败原因</h3><div class="table-wrap"><table><thead><tr><th>校验消息</th><th>次数</th></tr></thead><tbody><tr><td>引用的证据 token 家族与该约束的适用范围不匹配</td><td>118</td></tr><tr><td>当前遥测缺少 OTDR、端面镜检或双向功率标定，fiber 只能作为候选与补采请求，不得成为自动结论</td><td>55</td></tr><tr><td>该约束不允许 effect=neutral；允许值为 support。中性步骤应当不引用任何约束</td><td>17</td></tr><tr><td>这一步既没有引用证据也没有引用约束，属于凭空断言</td><td>16</td></tr><tr><td>该约束不允许 effect=support；允许值为 neutral</td><td>15</td></tr><tr><td>该约束不允许 target=L2；允许值为 L1</td><td>15</td></tr><tr><td>该约束不允许 effect=neutral；允许值为 support</td><td>13</td></tr><tr><td>该约束在 v2 中没有对应 token，只能作为不绑定证据 token 的中性上下文引用</td><td>11</td></tr></tbody></table></div></div></details><details class="panel" open><summary>分类指标</summary><div class="panel-body"><div class="table-wrap"><table><thead><tr><th>类别</th><th>真值数</th><th>预测数</th><th>TP</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead><tbody><tr><td>L1</td><td>32</td><td>32</td><td>14</td><td>43.75%</td><td>43.75%</td><td>43.75%</td></tr><tr><td>L2</td><td>67</td><td>52</td><td>41</td><td>78.85%</td><td>61.19%</td><td>68.91%</td></tr><tr><td>fiber</td><td>8</td><td>23</td><td>2</td><td>8.70%</td><td>25.00%</td><td>12.90%</td></tr></tbody></table></div></div></details><details class="panel"><summary>置信度可靠性</summary><div class="panel-body"><div class="table-wrap"><table><thead><tr><th>置信度桶</th><th>n</th><th>答对</th><th>准确率</th><th>平均置信度</th><th>预测分布</th></tr></thead><tbody><tr><td>[0.0,0.1)</td><td>1</td><td>1</td><td>100.00%</td><td>6.00%</td><td>{&quot;fiber&quot;: 1}</td></tr><tr><td>[0.2,0.3)</td><td>3</td><td>1</td><td>33.33%</td><td>28.33%</td><td>{&quot;L1&quot;: 1, &quot;fiber&quot;: 2}</td></tr><tr><td>[0.3,0.4)</td><td>4</td><td>2</td><td>50.00%</td><td>36.00%</td><td>{&quot;L1&quot;: 1, &quot;L2&quot;: 1, &quot;fiber&quot;: 2}</td></tr><tr><td>[0.4,0.5)</td><td>23</td><td>14</td><td>60.87%</td><td>44.55%</td><td>{&quot;L1&quot;: 8, &quot;L2&quot;: 9, &quot;fiber&quot;: 6}</td></tr><tr><td>[0.5,0.6)</td><td>43</td><td>18</td><td>41.86%</td><td>56.32%</td><td>{&quot;L1&quot;: 15, &quot;L2&quot;: 21, &quot;fiber&quot;: 7}</td></tr><tr><td>[0.6,0.7)</td><td>18</td><td>10</td><td>55.56%</td><td>63.67%</td><td>{&quot;L1&quot;: 5, &quot;L2&quot;: 8, &quot;fiber&quot;: 5}</td></tr><tr><td>[0.7,0.8)</td><td>12</td><td>9</td><td>75.00%</td><td>73.66%</td><td>{&quot;L1&quot;: 1, &quot;L2&quot;: 11}</td></tr><tr><td>[0.8,0.9)</td><td>2</td><td>1</td><td>50.00%</td><td>81.88%</td><td>{&quot;L1&quot;: 1, &quot;L2&quot;: 1}</td></tr><tr><td>[0.9,1.0]</td><td>1</td><td>1</td><td>100.00%</td><td>94.18%</td><td>{&quot;L2&quot;: 1}</td></tr></tbody></table></div></div></details><details class="panel"><summary>阈值扫描</summary><div class="panel-body"><div class="table-wrap"><table><thead><tr><th>阈值</th><th>自动结案</th><th>降级</th><th>覆盖率</th><th>答对</th><th>自动结案准确率</th></tr></thead><tbody><tr><td>0.00%</td><td>107</td><td>0</td><td>100.00%</td><td>57</td><td>53.27%</td></tr><tr><td>5.00%</td><td>107</td><td>0</td><td>100.00%</td><td>57</td><td>53.27%</td></tr><tr><td>10.00%</td><td>106</td><td>1</td><td>99.07%</td><td>56</td><td>52.83%</td></tr><tr><td>15.00%</td><td>106</td><td>1</td><td>99.07%</td><td>56</td><td>52.83%</td></tr><tr><td>20.00%</td><td>106</td><td>1</td><td>99.07%</td><td>56</td><td>52.83%</td></tr><tr><td>25.00%</td><td>106</td><td>1</td><td>99.07%</td><td>56</td><td>52.83%</td></tr><tr><td>30.00%</td><td>104</td><td>3</td><td>97.20%</td><td>56</td><td>53.85%</td></tr><tr><td>35.00%</td><td>103</td><td>4</td><td>96.26%</td><td>55</td><td>53.40%</td></tr><tr><td>40.00%</td><td>99</td><td>8</td><td>92.52%</td><td>53</td><td>53.54%</td></tr><tr><td>45.00%</td><td>87</td><td>20</td><td>81.31%</td><td>43</td><td>49.43%</td></tr><tr><td>50.00%</td><td>76</td><td>31</td><td>71.03%</td><td>39</td><td>51.32%</td></tr><tr><td>55.00%</td><td>57</td><td>50</td><td>53.27%</td><td>32</td><td>56.14%</td></tr><tr><td>60.00%</td><td>51</td><td>56</td><td>47.66%</td><td>29</td><td>56.86%</td></tr><tr><td>65.00%</td><td>21</td><td>86</td><td>19.63%</td><td>14</td><td>66.67%</td></tr><tr><td>70.00%</td><td>15</td><td>92</td><td>14.02%</td><td>11</td><td>73.33%</td></tr><tr><td>75.00%</td><td>6</td><td>101</td><td>5.61%</td><td>5</td><td>83.33%</td></tr><tr><td>80.00%</td><td>3</td><td>104</td><td>2.80%</td><td>2</td><td>66.67%</td></tr><tr><td>85.00%</td><td>1</td><td>106</td><td>0.93%</td><td>1</td><td>100.00%</td></tr><tr><td>90.00%</td><td>1</td><td>106</td><td>0.93%</td><td>1</td><td>100.00%</td></tr><tr><td>95.00%</td><td>0</td><td>107</td><td>0.00%</td><td>0</td><td>—</td></tr><tr><td>100.00%</td><td>0</td><td>107</td><td>0.00%</td><td>0</td><td>—</td></tr></tbody></table></div></div></details><details class="panel" open><summary>路由分布</summary><div class="panel-body"><div class="table-wrap"><table><thead><tr><th>路由/分支</th><th>数量</th><th>回答</th><th>答对</th><th>回答准确率</th><th>需 LLM</th><th>需人工</th></tr></thead><tbody><tr><td>N5a</td><td>15</td><td>15</td><td>12</td><td>80.00%</td><td>0</td><td>0</td></tr><tr><td>N5b</td><td>26</td><td>26</td><td>13</td><td>50.00%</td><td>0</td><td>0</td></tr><tr><td>N5c</td><td>64</td><td>64</td><td>31</td><td>48.44%</td><td>0</td><td>0</td></tr><tr><td>N6</td><td>2</td><td>2</td><td>1</td><td>50.00%</td><td>0</td><td>2</td></tr></tbody></table></div></div></details><section class="group"><h3><span class="badge wrong">模型答错</span> · 37</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_b53c29f2ed30.html">case_b53c29f2ed30</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_7ab9c8387860.html">case_7ab9c8387860</a></td><td>L2</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_c1f6d74a42c9.html">case_c1f6d74a42c9</a></td><td>L2</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_13ac31d97368.html">case_13ac31d97368</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3160b584dd44.html">case_3160b584dd44</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_7c60d5951f80.html">case_7c60d5951f80</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f3594459612d.html">case_f3594459612d</a></td><td>L2</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f53a4bc3cd6d.html">case_f53a4bc3cd6d</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b1dfb752200b.html">case_b1dfb752200b</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b244b38241f9.html">case_b244b38241f9</a></td><td>L1</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_8448ab686d52.html">case_8448ab686d52</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3a9a11e3c449.html">case_3a9a11e3c449</a></td><td>L1</td><td>fiber</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f4151dbd5222.html">case_f4151dbd5222</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_de30dd81f652.html">case_de30dd81f652</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0e7598a5fd0a.html">case_0e7598a5fd0a</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e7756a64e30d.html">case_e7756a64e30d</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_5009db76a459.html">case_5009db76a459</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0c3939c5292e.html">case_0c3939c5292e</a></td><td>L2</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9d6e145b9fdc.html">case_9d6e145b9fdc</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4541f9bbc853.html">case_4541f9bbc853</a></td><td>L2</td><td>L1</td><td>N5a</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_aae29bfa4d32.html">case_aae29bfa4d32</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b2d2a66d4b1d.html">case_b2d2a66d4b1d</a></td><td>fiber</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4fff96563d56.html">case_4fff96563d56</a></td><td>L1</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1e68b6eb3132.html">case_1e68b6eb3132</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f6ab3c98854d.html">case_f6ab3c98854d</a></td><td>fiber</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_fa72aef06d4d.html">case_fa72aef06d4d</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_ec7c50c7fd54.html">case_ec7c50c7fd54</a></td><td>L2</td><td>L1</td><td>N5a</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_83552129a3cc.html">case_83552129a3cc</a></td><td>L2</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f519245c7b0f.html">case_f519245c7b0f</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4695d660361d.html">case_4695d660361d</a></td><td>fiber</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_22d4dde687ab.html">case_22d4dde687ab</a></td><td>fiber</td><td>L1</td><td>N5a</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_ac436bbbc898.html">case_ac436bbbc898</a></td><td>fiber</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_85ab9d3bd128.html">case_85ab9d3bd128</a></td><td>fiber</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_c770294bd1f2.html">case_c770294bd1f2</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9daf397bb2f7.html">case_9daf397bb2f7</a></td><td>L1</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_92919cfab57f.html">case_92919cfab57f</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_2ee657ca7489.html">case_2ee657ca7489</a></td><td>L1</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge wrong">模型答错</span></td></tr></tbody></table></div></section><section class="group"><h3><span class="badge degraded_wrong">候选错误且被 M9 降级</span> · 13</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_02da79997180.html">case_02da79997180</a></td><td>L1</td><td>fiber</td><td>N5b</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f40d7dea10c4.html">case_f40d7dea10c4</a></td><td>L2</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_a859a2ae4d99.html">case_a859a2ae4d99</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_86eee41de4c9.html">case_86eee41de4c9</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_a86363693651.html">case_a86363693651</a></td><td>L2</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_2c9963b9a196.html">case_2c9963b9a196</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e2ba8d4715a3.html">case_e2ba8d4715a3</a></td><td>L2</td><td>fiber</td><td>N6</td><td>human_review</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_7fa3fefa52e3.html">case_7fa3fefa52e3</a></td><td>L1</td><td>L2</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1d881d28d2a3.html">case_1d881d28d2a3</a></td><td>L2</td><td>L1</td><td>N5b</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9e34cb030209.html">case_9e34cb030209</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_62b8d2de6e0c.html">case_62b8d2de6e0c</a></td><td>L2</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9e14bb67adf3.html">case_9e14bb67adf3</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4b322d8486b5.html">case_4b322d8486b5</a></td><td>L1</td><td>fiber</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_wrong">候选错误且被 M9 降级</span></td></tr></tbody></table></div></section><section class="group"><h3><span class="badge abstain">弃权/补采</span> · 0</h3><p class="empty">无 case</p></section><section class="group"><h3><span class="badge telemetry">遥测不足</span> · 0</h3><p class="empty">无 case</p></section><section class="group"><h3><span class="badge degraded_correct">候选正确但被 M9 降级</span> · 18</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_fcacbc45173f.html">case_fcacbc45173f</a></td><td>L1</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_5d80fba2c22f.html">case_5d80fba2c22f</a></td><td>L1</td><td>L1</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_784dfd7a8801.html">case_784dfd7a8801</a></td><td>L1</td><td>L1</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0b40c4048fd7.html">case_0b40c4048fd7</a></td><td>fiber</td><td>fiber</td><td>N6</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_48915d45d5ca.html">case_48915d45d5ca</a></td><td>L1</td><td>L1</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_195ad8049a88.html">case_195ad8049a88</a></td><td>L2</td><td>L2</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9acd0b8c50e8.html">case_9acd0b8c50e8</a></td><td>L2</td><td>L2</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4e466fb62ba8.html">case_4e466fb62ba8</a></td><td>L1</td><td>L1</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1557d57dfde5.html">case_1557d57dfde5</a></td><td>L2</td><td>L2</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_fb993ef2651e.html">case_fb993ef2651e</a></td><td>L2</td><td>L2</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_345e15396788.html">case_345e15396788</a></td><td>L1</td><td>L1</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_ac452049dcfc.html">case_ac452049dcfc</a></td><td>L2</td><td>L2</td><td>N5b</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3cd73a13e616.html">case_3cd73a13e616</a></td><td>L1</td><td>L1</td><td>N5b</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1fabf85a5ee2.html">case_1fabf85a5ee2</a></td><td>L2</td><td>L2</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4cefd4612d68.html">case_4cefd4612d68</a></td><td>L2</td><td>L2</td><td>N5c</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9c1d3e766e26.html">case_9c1d3e766e26</a></td><td>L2</td><td>L2</td><td>N5b</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_60e62d6d1052.html">case_60e62d6d1052</a></td><td>fiber</td><td>fiber</td><td>N5a</td><td>human_review</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_80bc3687c4b7.html">case_80bc3687c4b7</a></td><td>L2</td><td>L2</td><td>N5b</td><td>request_evidence</td><td><span class="badge degraded_correct">候选正确但被 M9 降级</span></td></tr></tbody></table></div></section><section class="group"><h3><span class="badge correct">回答正确</span> · 39</h3><div class="table-wrap"><table><thead><tr><th>Case</th><th>真值</th><th>预测/候选</th><th>分支</th><th>M9 动作</th><th>归类</th></tr></thead><tbody><tr data-case-row><td><a href="cases/coverage-v2-case_713754bd3abd.html">case_713754bd3abd</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_6349169c912c.html">case_6349169c912c</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_6ab2ffe70790.html">case_6ab2ffe70790</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_47f612c50f2f.html">case_47f612c50f2f</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_f4db10047757.html">case_f4db10047757</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_3e79df29763e.html">case_3e79df29763e</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_75f46528e107.html">case_75f46528e107</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_88dce8a05674.html">case_88dce8a05674</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_b2ec327c7ac7.html">case_b2ec327c7ac7</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_2d2152766ba6.html">case_2d2152766ba6</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0c1bce9102c3.html">case_0c1bce9102c3</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_6f0602fcbd04.html">case_6f0602fcbd04</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_04917832a9d6.html">case_04917832a9d6</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9feaccdfdc30.html">case_9feaccdfdc30</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_8b3d4baf66f8.html">case_8b3d4baf66f8</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e92d80fd827b.html">case_e92d80fd827b</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d7c9425ca86c.html">case_d7c9425ca86c</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e7c93097d6e2.html">case_e7c93097d6e2</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9cadaea07460.html">case_9cadaea07460</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_382b7a31a8fb.html">case_382b7a31a8fb</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_0a23e38812e8.html">case_0a23e38812e8</a></td><td>L1</td><td>L1</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d889b9addd14.html">case_d889b9addd14</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_9fe92e6d47b7.html">case_9fe92e6d47b7</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_61d86d3a287d.html">case_61d86d3a287d</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_1df9bdf2c0be.html">case_1df9bdf2c0be</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_411486e52d45.html">case_411486e52d45</a></td><td>L2</td><td>L2</td><td>N5a</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_83126f9b3650.html">case_83126f9b3650</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_906cbc1553b8.html">case_906cbc1553b8</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_bce075edaf82.html">case_bce075edaf82</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_cfa4db56eb5a.html">case_cfa4db56eb5a</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d338b3cb902c.html">case_d338b3cb902c</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_d3cf78b26833.html">case_d3cf78b26833</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_583149723c3c.html">case_583149723c3c</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_63c7bc42fccc.html">case_63c7bc42fccc</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_737362825627.html">case_737362825627</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_788f63a0a0fc.html">case_788f63a0a0fc</a></td><td>L2</td><td>L2</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_4e07d1148cfd.html">case_4e07d1148cfd</a></td><td>L2</td><td>L2</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_38ee60fd682e.html">case_38ee60fd682e</a></td><td>L1</td><td>L1</td><td>N5c</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr><tr data-case-row><td><a href="cases/coverage-v2-case_e168b4979b39.html">case_e168b4979b39</a></td><td>L1</td><td>L1</td><td>N5b</td><td>final</td><td><span class="badge correct">回答正确</span></td></tr></tbody></table></div></section></main>
+<script>
+(() => {
+  const input = document.getElementById("case-filter");
+  if (!input) return;
+  input.addEventListener("input", () => {
+    const query = input.value.toLocaleLowerCase();
+    document.querySelectorAll("[data-case-row]").forEach((row) => {
+      row.hidden = !row.textContent.toLocaleLowerCase().includes(query);
+    });
+  });
+})();
+</script></body>
+</html>

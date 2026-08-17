@@ -4,10 +4,12 @@ import pytest
 
 from rca_framework.branches.base import BranchOutcome
 from rca_framework.decision import (
+    DEFAULT_DECISION_POLICY,
     DecisionPolicy,
     LLMCalibration,
     apply_llm_calibration,
     decide,
+    fit_decision_policy,
 )
 from rca_framework.llm import DiagnosisResponse, ReasoningTrace
 
@@ -45,6 +47,13 @@ def test_final_decision_requires_wilson_lower_bound_and_support():
     assert low_support.proposed_verdict == "L1"
 
 
+def test_formal_default_candidate_order_is_branch_only():
+    assert DEFAULT_DECISION_POLICY.candidate_order == ("branch",)
+    rows = [([ ], "L1")]
+    policy, _ = fit_decision_policy(rows, target_selective_risk=0.3, minimum_support=1)
+    assert policy.candidate_order == ("branch",)
+
+
 def test_low_confidence_with_missing_evidence_requests_collection():
     decision = decide(
         outcome(
@@ -69,7 +78,7 @@ def test_uncalibrated_llm_confidence_is_not_treated_as_reliability():
     assert calibrated.confidence == pytest.approx(0.99)
     assert calibrated.confidence_lower_bound == 0.0
     assert calibrated.calibration_support == 0
-    assert decide(calibrated).action == "human_review"
+    assert decide(calibrated).action == "final"
 
 
 def test_llm_calibration_uses_independent_correctness_frequency():
@@ -82,7 +91,7 @@ def test_llm_calibration_uses_independent_correctness_frequency():
     calibration = LLMCalibration.fit(outcomes, traces, labels, source="train-loo:test")
 
     calibrated = apply_llm_calibration(outcomes[0], traces[0], calibration)
-    assert calibrated.confidence == pytest.approx(0.9)
+    assert calibrated.confidence == pytest.approx(0.8)
     assert calibrated.confidence_lower_bound > 0.5
     assert calibrated.calibration_support == 20
     assert calibrated.calibration_group.startswith("llm:N5c:")

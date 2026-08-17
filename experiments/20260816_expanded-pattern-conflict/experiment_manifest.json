@@ -1,0 +1,47 @@
+{
+  "schema_version": "rca-loop-experiment-manifest-v1",
+  "experiment_id": "20260816_expanded-pattern-conflict",
+  "authority": "docs/个人整体思路.md",
+  "hypothesis": "清洗低质量 blackout、导入专家裁决并把 Q0/P/R/L 证据分层后，可以更可靠地发现特征和五层证据图均相似但标签不同的 case。",
+  "change_categories": ["evidence_graph"],
+  "main_flow_change_summary": "主流程不改；N3 离线审计加入 Q0 数据质量、P 物理边界、R 端间关系与 L 训练学习范围，图相似度只比较 IDF 加权 typed edges。",
+  "n8_feedback_update": false,
+  "candidate_order": ["branch"],
+  "remote_execution": {
+    "model_family": "DeepSeek-R1-Distill-Qwen-32B",
+    "model_path": "/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B",
+    "backend": "embedded vLLM via legacy rca_framework.cli train-evaluate",
+    "default_tensor_parallel_size": 2,
+    "gpu_selection": "automatic idle-GPU selection; >=44000 MiB free, <=2048 MiB used, <=10% utilization",
+    "train_case_count": 122,
+    "test_case_count": 341,
+    "network_required": false
+  },
+  "versions": {
+    "data_contract": "expanded-expert-clean-v1",
+    "evidence_graph": "evidence-graph-v1:122:00f80b4f376353d4",
+    "observable_graph_projection": "observable-evidence-subgraph-v4-quality-physical-relation-learned: side->measurement->predicate->symptom->physical-layer; no root-cause nodes",
+    "evidence_state": "expanded-evidence-state-v1",
+    "learned_predicate_model": "learned-predicate-ranges-v1: 16 candidates, 2 accepted",
+    "feature_dictionary": "feature-dictionary-v1:1b2e66ed650ce60e",
+    "physical_constraints": "unchanged",
+    "measurement_contracts": "unchanged",
+    "constraint_library": "unchanged",
+    "expert_sop": "unchanged",
+    "learned_sop": "not used",
+    "prompt_template": "legacy build_path_prompt; rca_framework/llm/legacy.py sha256=3777dd3683f13ce04c7212ead680c7127889e6b4465bed19a5db98b32116b384",
+    "decision_policy": "unchanged legacy fusion"
+  },
+  "parameters": {"top_n_per_dimension": 5, "feature_similarity_threshold": 0.7, "graph_similarity_threshold_report_only": 0.7, "listed_pattern_policy": "both_high_only", "review_purpose": "expert adjudication of highly similar cases with conflicting labels", "difference_ranking": "absolute delta normalized by clean-adjudicated-train IQR; large>=2.0, medium>=0.75, small<0.75", "expert_annotation_schema": "rca-expert-label-review-v1", "data_contract_schema": "expanded-expert-clean-v1", "graph_type": "five-layer observable typed relation graph; not a decision tree; no candidate-root nodes", "graph_schema": ["side", "measurement", "predicate", "symptom", "physical-layer"], "predicate_threshold_source": "clean adjudicated 122 train: Q0/P/R contracts plus supervised one-dimensional splits on valid readings", "learned_predicate_gate": {"min_observed": 40, "min_full_leaf": 10, "min_gini_gain": 0.03, "folds": 5, "max_fold_dispersion_over_span": 0.15, "different_adjacent_majority": true, "salient_branch_only": true}, "graph_score": "IDF-weighted Jaccard over typed edges; nodes explanation-only", "confirmed_path_similarity": "unavailable: 0/122 confirmed diagnosis paths", "train_size": 122, "test_size": 341, "seed": 42, "n8_frozen": true, "old_split_manifest_sha256": "af5a90999160be686118ad86bf6b82efb8431e82bf8934854fa9bea12738e7a1"},
+  "required_outputs": {
+    "html_report": "report.html",
+    "summary": "summary.json",
+    "data_contract": "data_contract.json",
+    "expert_adjudications": "expert_adjudications.json",
+    "secondary_physics_review": "secondary_physics_review_pairs.json",
+    "learned_predicate_model": "learned_predicate_model.json",
+    "expert_annotation_template": "expert_annotation_template.json",
+    "case_analysis": "case_analysis.json",
+    "bad_cases": "bad_cases.json"
+  }
+}

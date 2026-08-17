@@ -1,0 +1,956 @@
+[
+  {
+    "truth": "L2",
+    "trace": {
+      "case_id": "case_dc1844257425",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_dc1844257425\",\n    \"可用证据\": [\n      \"drop:L1:media_snr:single_lane\",\n      \"drop:L1:serdes_snr:single_lane\",\n      \"level:L2:rxpower_mean:high_tail\",\n      \"level:L2:txpower_mean:high_tail\",\n      \"status:L1:RxLOL\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L1.host_snr\",\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.64465604,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要分析这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、任务说明以及当前case的证据。\n\n首先，任务是将故障定界为L1设备问题、L2设备问题，还是光纤问题。根因定义明确，L1是400G端口一侧，L2是200G端口一侧，fiber则是两者之间的光纤或链路介质。\n\n接下来，看看可用证据：\n- drop:L1:media_snr:single_lane：L1的介质侧信噪比出现单通道下降。\n- drop:L1:serdes_snr:single_lane：L1的SERDES信噪比单通道下降。\n- level:L2:rxpower_mean:high_tail：L2的接收光功率均值偏高，尾部异常。\n- level:L2:txpower_mean:high_tail：L2的发送光功率均值偏高，尾部异常。\n- status:L1:RxLOL：L1的接收光丢失状态。\n\n未采集的字段是L1和L2的host_snr，但根据约束C14，这些字段大多数情况下不采集，所以不能作为依据。\n\n现在，我需要根据物理约束来分析这些证据。\n\n首先，L1的media_snr和serdes_snr都出现单通道下降。根据约束C11，介质侧信噪比正常范围是22.5-27 dB，如果收光功率正常但信噪比低，可能指向链路质量，如色散、反射或连接器问题。但这里L1的RxLOL状态可能意味着接收不到光，这可能与发送端有关，或者光纤问题。\n\nL2的rxpower_mean和txpower_mean都处于high_tail，这可能意味着发送或接收功率异常。根据约束C5和C7，发送功率在正常范围内，异常时会掉到-39 dBm，而接收功率有连续劣化区间。这里L2的发送和接收功率都偏高，可能说明发送端有问题，或者光纤衰减导致接收端过载。\n\n另外，L1的RxLOL状态可能表明L1接收不到光，这可能是因为L2发送端有问题，或者光纤中断。但根据约束C6，如果发送端txpower处于-39 dBm，才排除光纤问题。但这里L2的txpower_mean是high_tail，可能意味着发送正常，但功率偏高，这可能影响接收端。\n\n约束C8提到，如果本端发送正常而对端收不到，可能光纤问题。但这里L2的发送功率偏高，可能影响L1的接收，导致RxLOL。同时，L1的media_snr和serdes_snr下降，可能表明链路质量差，如光纤问题。\n\n约束C9提到，如果同一lane在两个方向都异常，可能光纤问题。但这里L1和L2的异常可能指向设备问题，尤其是L2的发送功率偏高，可能L2设备有问题。\n\n综合来看，L2的发送功率偏高可能影响L1的接收，导致RxLOL，同时L1的信噪比下降可能与光纤质量有关。但证据不足以明确区分是L2设备问题还是光纤问题，因为两者都有可能。因此，无法确定根因，只能弃权。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L1的介质侧信噪比和SERDES信噪比单通道下降，可能指向链路质量或接收端问题。\",\n      \"cited_evidence\": [\"drop:L1:media_snr:single_lane\", \"drop:L1:serdes_snr:single_lane\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L2的接收和发送光功率均值偏高，可能表明发送端或接收端异常。\",\n      \"cited_evidence\": [\"level:L2:rxpower_mean:high_tail\", \"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\", \"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1的RxLOL状态表明接收不到光，可能与发送端或光纤问题有关。\",\n      \"cited_evidence\": [\"status:L1:RxLOL\"],\n      \"cited_constraints\": [\"C6_tx_down_excludes_medium\"],\n      \"effect\": \"neutral\",\n      \"target\": \"\"\n    }\n  ],\n  \"verdict\": \"abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"L1.host_snr\", \"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L1的介质侧信噪比和SERDES信噪比单通道下降，可能指向链路质量或接收端问题。",
+            "cited_evidence": [
+              "drop:L1:media_snr:single_lane",
+              "drop:L1:serdes_snr:single_lane"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L2的接收和发送光功率均值偏高，可能表明发送端或接收端异常。",
+            "cited_evidence": [
+              "level:L2:rxpower_mean:high_tail",
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range",
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1的RxLOL状态表明接收不到光，可能与发送端或光纤问题有关。",
+            "cited_evidence": [
+              "status:L1:RxLOL"
+            ],
+            "cited_constraints": [
+              "C6_tx_down_excludes_medium"
+            ],
+            "effect": "neutral",
+            "target": ""
+          }
+        ],
+        "verdict": null,
+        "confidence": 0.0,
+        "missing_information": [
+          "L1.host_snr",
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "模型主动弃权：证据不足以支撑任何根因",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L1",
+    "trace": {
+      "case_id": "case_8f70b31d636f",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_8f70b31d636f\",\n    \"可用证据\": [\n      \"drop:L1:txpower:single_lane\",\n      \"drop:L2:media_snr:single_lane\",\n      \"drop:L2:rxpower:single_lane\",\n      \"imbalance:L2:serdes_snr\",\n      \"level:L1:rxpower_mean:low_tail\",\n      \"level:L2:txpower_mean:low_tail\",\n      \"status:L1:TxLOL\",\n      \"status:L2:RxLOL\",\n      \"status:L2:RxLOS\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L1.host_snr\",\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.68991642,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [\n    {\n      \"根因\": \"fiber\",\n      \"依据约束\": \"C6_tx_down_excludes_medium\",\n      \"原因\": \"L1 侧存在发送光功率处于断光哨兵（<= -39 dBm）的 lane，光纤无法解释一束从未被发出的光，故排除介质根因\"\n    }\n  ],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要分析这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、可用证据以及任务要求。\n\n首先，任务是判断根因是L1、L2还是光纤，或者无法判断（abstain）。根据提供的物理约束，光纤已经被排除了，因为L1侧的txpower处于断光哨兵，所以光纤不可能是问题所在。\n\n接下来，看看可用证据。L1的txpower在single_lane上是drop，说明发送端有问题。L2的media_snr和rxpower也是drop，同时L2的serdes_snr不平衡，这可能意味着接收端有问题。此外，L1的rxpower_mean处于low_tail，L2的txpower_mean也是low_tail，这可能表明两端都有问题。状态方面，L1的TxLOL和L2的RxLOL、RxLOS都报错，这可能意味着接收端无法正确接收信号。\n\n根据物理约束，C6已经排除了光纤，所以现在需要在L1和L2之间判断。C10提到，如果所有lane同时异常，可能指向端口级问题，但这里只有一条lane异常，可能指向独立的激光器或探测器。C8提到，如果本端发光正常而对端收不到，可能光纤问题，但这里光纤已经被排除了，所以可能问题在发送或接收端。\n\nL1的txpower drop可能意味着发送端有问题，而L2的rxpower drop和media_snr drop可能意味着接收端有问题。同时，L2的serdes_snr不平衡可能进一步支持接收端的问题。然而，L1的rxpower_mean low_tail可能表明接收端也有问题，但L1的发送端已经出现问题，所以可能L1是问题所在。\n\n不过，由于L2的txpower_mean也是low_tail，这可能意味着L2的发送端也有问题，但根据C5，发送光功率要么正常，要么断光，所以L2的txpower_mean low_tail可能不适用，因为C5说明发送侧只区分有光和无光，没有中间态。因此，L2的txpower_mean可能不是关键因素。\n\n综合来看，L1的txpower drop直接指向发送端的问题，而L2的接收端问题可能由L1的发送问题引起。因此，根因更可能是L1。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L1 侧的发送光功率处于断光哨兵，排除光纤根因\",\n      \"cited_evidence\": [\"drop:L1:txpower:single_lane\"],\n      \"cited_constraints\": [\"C6_tx_down_excludes_medium\"],\n      \"effect\": \"exclude\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L1 侧的发送光功率异常，可能指向 L1 设备问题\",\n      \"cited_evidence\": [\"drop:L1:txpower:single_lane\"],\n      \"cited_constraints\": [\"C5_tx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 侧的接收光功率和信噪比异常，可能指向 L2 设备问题\",\n      \"cited_evidence\": [\"drop:L2:rxpower:single_lane\", \"drop:L2:media_snr:single_lane\"],\n      \"cited_constraints\": [\"C7_rx_power_range\", \"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2 侧的 serdes_snr 不平衡，进一步支持 L2 设备问题\",\n      \"cited_evidence\": [\"imbalance:L2:serdes_snr\"],\n      \"cited_constraints\": [\"C13_serdes_snr_unit_unknown\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1 侧的接收光功率偏低，可能与 L1 设备问题相关\",\n      \"cited_evidence\": [\"level:L1:rxpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 侧的发送光功率偏低，可能与 L2 设备问题相关\",\n      \"cited_evidence\": [\"level:L2:txpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1 侧的 TxLOL 状态异常，可能指向 L1 设备问题\",\n      \"cited_evidence\": [\"status:L1:TxLOL\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 侧的 RxLOL 和 RxLOS 状态异常，可能指向 L2 设备问题\",\n      \"cited_evidence\": [\"status:L2:RxLOL\", \"status:L2:RxLOS\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    }\n  ],\n  \"verdict\": \"L1\",\n  \"confidence\": 0.7,\n  \"missing_information\": [\"L1.host_snr\", \"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L1 侧的发送光功率处于断光哨兵，排除光纤根因",
+            "cited_evidence": [
+              "drop:L1:txpower:single_lane"
+            ],
+            "cited_constraints": [
+              "C6_tx_down_excludes_medium"
+            ],
+            "effect": "exclude",
+            "target": "fiber"
+          },
+          {
+            "claim": "L1 侧的发送光功率异常，可能指向 L1 设备问题",
+            "cited_evidence": [
+              "drop:L1:txpower:single_lane"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 侧的接收光功率和信噪比异常，可能指向 L2 设备问题",
+            "cited_evidence": [
+              "drop:L2:rxpower:single_lane",
+              "drop:L2:media_snr:single_lane"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range",
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L2 侧的 serdes_snr 不平衡，进一步支持 L2 设备问题",
+            "cited_evidence": [
+              "imbalance:L2:serdes_snr"
+            ],
+            "cited_constraints": [
+              "C13_serdes_snr_unit_unknown"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1 侧的接收光功率偏低，可能与 L1 设备问题相关",
+            "cited_evidence": [
+              "level:L1:rxpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 侧的发送光功率偏低，可能与 L2 设备问题相关",
+            "cited_evidence": [
+              "level:L2:txpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1 侧的 TxLOL 状态异常，可能指向 L1 设备问题",
+            "cited_evidence": [
+              "status:L1:TxLOL"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 侧的 RxLOL 和 RxLOS 状态异常，可能指向 L2 设备问题",
+            "cited_evidence": [
+              "status:L2:RxLOL",
+              "status:L2:RxLOS"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L2"
+          }
+        ],
+        "verdict": "L1",
+        "confidence": 0.7,
+        "missing_information": [
+          "L1.host_snr",
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L1",
+    "trace": {
+      "case_id": "case_8ef9859f030c",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_8ef9859f030c\",\n    \"可用证据\": [\n      \"level:L2:media_snr_min:low_tail\",\n      \"level:L2:rxpower_mean:high_tail\",\n      \"level:L2:txpower_mean:high_tail\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.66371348,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要解决这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括任务、根因定义、可用证据、物理约束等等。\n\n首先，任务是三分类定界，根因可能是L1、L2或fiber。根因定义中，L1是400G端口一侧的问题，L2是200G端口一侧的问题，而fiber则是两者之间的光纤或链路介质问题。\n\n接下来，看看可用证据。这里有三个证据：level:L2:media_snr_min:low_tail，level:L2:rxpower_mean:high_tail，level:L2:txpower_mean:high_tail。这些证据都集中在L2端，显示介质侧信噪比偏低，接收和发送光功率偏高。\n\n然后，遥测完整性是partial_telemetry，说明数据不全，但根据判据，这不构成弃权的理由，只是需要考虑是否需要补采信息。未采集的字段是L2.host_snr，但根据约束C14，这个字段在多数情况下缺失，不能用来支持结论，所以只能说明需要补采。\n\n物理约束部分，有几个关键点。首先，C12禁止直接用两端的光功率差来计算损耗，只能用同侧的相对差异。C13指出serdes_snr的量纲未知，只能作为有效或失效的二值信号。C14说明host_snr通常缺失，不能推断它正常。C15提到如果两端的光功率都是-39dBm的哨兵值，而TxLOS正常，说明遥测失效，不能推断激光关闭。恒等关系C7指出接收光功率的范围，低于-39dBm表示无光。倾向性线索C11提到介质侧信噪比的正常范围，如果收光正常但信噪比低，问题可能在链路质量而非功率衰减。\n\n现在，分析证据。L2的media_snr_min是low_tail，意味着信噪比偏低。根据C11，如果收光正常但信噪比低，问题可能在链路质量，比如色散、反射或连接器端面。同时，L2的rxpower_mean和txpower_mean都是high_tail，说明接收和发送光功率偏高。这可能意味着L2端的设备发送功率过高，或者接收端的灵敏度有问题，或者光纤链路存在衰减。\n\n接下来，考虑可能的根因。L2端的设备问题可能包括发送功率过高或接收灵敏度问题，而光纤问题可能包括衰减或连接器问题。由于L2的信噪比低，结合C11，可能更倾向于光纤问题，因为链路质量可能影响信噪比。然而，L2的高发送和接收功率也可能指向设备问题，比如发送模块异常或接收模块灵敏度下降。\n\n但根据C12，不能直接用两端的光功率差来判断损耗，只能用同侧的相对差异。这里只有L2的数据，没有L1的数据，所以无法直接比较两端的差异。因此，无法确定是否是光纤问题还是设备问题。\n\n此外，C14指出host_snr缺失，不能用来支持结论，所以只能说明需要补采。而C13提到serdes_snr的量纲未知，不能用于详细分析，只能作为有效或失效的信号。\n\n综上所述，证据显示L2端的信噪比低，且发送和接收功率偏高，但无法确定是设备问题还是光纤问题。因此，无法将候选根因区分开，只能弃权，并建议补采L2.host_snr和L1的相关数据以提高判断的把握。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L2端的介质侧信噪比偏低\",\n      \"cited_evidence\": [\"level:L2:media_snr_min:low_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L2端的接收光功率偏高\",\n      \"cited_evidence\": [\"level:L2:rxpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2端的发送光功率偏高\",\n      \"cited_evidence\": [\"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    }\n  ],\n  \"verdict\": \"abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"L2.host_snr\", \"L1.rxpower_mean\", \"L1.txpower_mean\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L2端的介质侧信噪比偏低",
+            "cited_evidence": [
+              "level:L2:media_snr_min:low_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L2端的接收光功率偏高",
+            "cited_evidence": [
+              "level:L2:rxpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L2端的发送光功率偏高",
+            "cited_evidence": [
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L2"
+          }
+        ],
+        "verdict": null,
+        "confidence": 0.0,
+        "missing_information": [
+          "L2.host_snr",
+          "L1.rxpower_mean",
+          "L1.txpower_mean"
+        ]
+      },
+      "abstain_reason": "模型主动弃权：证据不足以支撑任何根因",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L1",
+    "trace": {
+      "case_id": "case_0c6bc24c3fe7",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_0c6bc24c3fe7\",\n    \"可用证据\": [\n      \"drop:L2:media_snr:single_lane\",\n      \"imbalance:L2:serdes_snr\",\n      \"level:L1:txpower_mean:low_tail\",\n      \"level:L2:rxpower_mean:low_tail\",\n      \"level:L2:txpower_mean:high_tail\",\n      \"status:L2:RxLOL\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L1.host_snr\",\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.64402766,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要分析这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、可用证据以及任务要求。\n\n首先，任务是判断根因属于L1、L2还是光纤（fiber），或者在证据不足时弃权。硬性要求中提到只能引用可用证据和物理约束，不能编造证据，每一步推理必须有依据。\n\n接下来，看看可用证据：\n- drop:L2:media_snr:single_lane：L2的媒体信噪比单条lane异常。\n- imbalance:L2:serdes_snr：L2的SerDes信噪比不平衡。\n- level:L1:txpower_mean:low_tail：L1的发送光功率偏低。\n- level:L2:rxpower_mean:low_tail：L2的接收光功率偏低。\n- level:L2:txpower_mean:high_tail：L2的发送光功率偏高。\n- status:L2:RxLOL：L2的RxLOL状态异常。\n\n未采集的字段是L1和L2的host_snr，但根据约束C14，这些字段大多数情况下不采集，所以不能作为依据。\n\n物理约束中，排除条件C6_tx_down_excludes_medium指出，如果某一侧的lane没有发出光（txpower为-39 dBm），则该方向的故障不可能由光纤引起。但这里L1的txpower是low_tail，不是-39，所以不能排除光纤。\n\n禁止推断中，C12指出不能直接用两端的光功率差来判断链路损耗，只能看同侧的相对差异。C13提到serdes_snr只能作为有效/失效的二值信号，不能按dB比较。C14已经说明host_snr缺失，不能推断。C15提到如果两端都处于-39且TxLOS正常，说明遥测失效，但这里情况不适用。\n\n物理恒等关系中，C1指出偏置电流为0表示激光关闭，但这里没有提到偏置电流。C5指出发送光功率正常在-1.8到2.1，异常则为-39，但L1的txpower是low_tail，可能在正常范围内。C7指出接收光功率有连续劣化区间，低于-39为无光，但L2的rxpower是low_tail，可能在正常范围内。\n\n倾向性线索中，C10指出所有lane异常指向端口级问题，单个lane异常则指向独立问题。这里L2的media_snr是单个lane异常，可能指向独立问题。C11提到媒体信噪比低于正常范围可能指向链路质量。C2指出偏置电流在7.2-7.8为正常，但没有相关证据。C8指出本端发光正常而对端收不到，可能指向光纤或对端接收。C9指出双向异常指向光纤，单向则指向端点设备。\n\n现在分析证据：\n- L1的txpower偏低，可能影响发送，但C5指出发送侧只区分有光和无光，这里可能在正常范围内。\n- L2的rxpower偏低，可能接收问题，但C7允许讨论接收功率偏低。\n- L2的txpower偏高，可能发送问题。\n- L2的media_snr单lane异常，可能链路问题。\n- L2的serdes_snr不平衡，可能内部问题。\n- L2的RxLOL异常，可能接收端问题。\n\n综合来看，L2的多个指标异常，包括发送和接收，可能指向L2设备的问题。同时，C10指出单个lane异常可能指向独立问题，如L2的发送或接收器件。C8提到如果本端发光正常而对端收不到，可能光纤问题，但这里L1的txpower只是偏低，不是无光，所以不能确定。C9提到单向异常指向端点设备，这里L2的发送和接收都有问题，可能指向L2设备。\n\n因此，根因更可能是L2设备的问题，但证据不够充分，所以confidence设为0.6，表示中等把握。同时，建议补采L1和L2的host_snr以提高判断。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L2 的 media_snr 出现单条 lane 异常，可能指向光纤或 L2 设备问题。\",\n      \"cited_evidence\": [\"drop:L2:media_snr:single_lane\"],\n      \"cited_constraints\": [\"C10_all_lanes_vs_single_lane\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L2 的 serdes_snr 不平衡，可能指向 L2 设备内部问题。\",\n      \"cited_evidence\": [\"imbalance:L2:serdes_snr\"],\n      \"cited_constraints\": [\"C13_serdes_snr_unit_unknown\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1 的 txpower 偏低，可能影响发送质量。\",\n      \"cited_evidence\": [\"level:L1:txpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 的 rxpower 偏低，可能影响接收质量。\",\n      \"cited_evidence\": [\"level:L2:rxpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2 的 txpower 偏高，可能影响发送质量。\",\n      \"cited_evidence\": [\"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2 的 RxLOL 状态异常，可能指向接收端问题。\",\n      \"cited_evidence\": [\"status:L2:RxLOL\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    }\n  ],\n  \"verdict\": \"L2\",\n  \"confidence\": 0.6,\n  \"missing_information\": [\"L1.host_snr\", \"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L2 的 media_snr 出现单条 lane 异常，可能指向光纤或 L2 设备问题。",
+            "cited_evidence": [
+              "drop:L2:media_snr:single_lane"
+            ],
+            "cited_constraints": [
+              "C10_all_lanes_vs_single_lane"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L2 的 serdes_snr 不平衡，可能指向 L2 设备内部问题。",
+            "cited_evidence": [
+              "imbalance:L2:serdes_snr"
+            ],
+            "cited_constraints": [
+              "C13_serdes_snr_unit_unknown"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1 的 txpower 偏低，可能影响发送质量。",
+            "cited_evidence": [
+              "level:L1:txpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range"
+            ],
+            "effect": "neutral",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 的 rxpower 偏低，可能影响接收质量。",
+            "cited_evidence": [
+              "level:L2:rxpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "neutral",
+            "target": "L2"
+          },
+          {
+            "claim": "L2 的 txpower 偏高，可能影响发送质量。",
+            "cited_evidence": [
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range"
+            ],
+            "effect": "neutral",
+            "target": "L2"
+          },
+          {
+            "claim": "L2 的 RxLOL 状态异常，可能指向接收端问题。",
+            "cited_evidence": [
+              "status:L2:RxLOL"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L2"
+          }
+        ],
+        "verdict": "L2",
+        "confidence": 0.6,
+        "missing_information": [
+          "L1.host_snr",
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L1",
+    "trace": {
+      "case_id": "case_d95088322c05",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_d95088322c05\",\n    \"可用证据\": [\n      \"drop:L1:media_snr:single_lane\",\n      \"drop:L1:rxpower:single_lane\",\n      \"level:L1:media_snr_min:low_tail\",\n      \"level:L1:rxpower_mean:high_tail\",\n      \"level:L2:media_snr_min:low_tail\",\n      \"status:L1:RxLOL\",\n      \"status:L1:RxLOS\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.84853711,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要分析这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、可用证据以及任务要求。\n\n首先，任务是判断故障根因属于L1、L2还是光纤（fiber），或者无法判断（abstain）。根因定义中，L1是400G端口一侧的设备或端口问题，L2是200G端口一侧的问题，而fiber则是两者之间的光纤或链路介质问题。\n\n接下来，看看可用证据：\n- drop:L1:media_snr:single_lane：L1的介质信噪比在单个lane上出现下降。\n- drop:L1:rxpower:single_lane：L1的接收光功率在单个lane上下降。\n- level:L1:media_snr_min:low_tail：L1的介质信噪比最低值处于低尾。\n- level:L1:rxpower_mean:high_tail：L1的接收光功率平均值处于高尾。\n- level:L2:media_snr_min:low_tail：L2的介质信噪比最低值也处于低尾。\n- status:L1:RxLOL：L1的接收信号丢失（RxLOL）状态。\n- status:L1:RxLOS：L1的接收信号丢失（RxLOS）状态。\n\n还有未采集的字段是L2.host_snr，但根据约束C14，这个字段大多数情况下缺失，所以不能作为判断依据。\n\n现在，我需要根据这些证据和物理约束来推理。\n\n首先，L1的RxLOS和RxLOL状态表明L1端的接收出现了问题。根据约束C5_tx_power_range，发送光功率要么正常（-1.8~2.1 dBm），要么处于哨兵值（-39 dBm）。如果L1的发送端没有问题，那么问题可能出在接收端或者光纤上。\n\nL1的rxpower在单个lane上下降，而平均值却处于高尾，这可能意味着某个特定lane的问题，而不是所有lane都异常。根据约束C10，如果只有一个lane异常，可能指向该通道的独立问题，比如激光器或探测器，或者单根光纤的问题。\n\n同时，L1的media_snr在单个lane上下降，且最低值处于低尾，这可能表明该lane的信噪比有问题。根据约束C11，介质侧信噪比正常范围是22.5-27 dB，如果收光功率正常但信噪比低，可能指向链路质量的问题，如色散或连接器问题，这可能支持光纤作为候选根因。\n\n然而，L2的media_snr_min也处于低尾，这可能意味着L2端也有问题。但L2的host_snr未采集，无法判断其信噪比情况。根据约束C14，不能依赖host_snr，所以L2的问题可能无法确定。\n\n另外，约束C9提到，如果同一lane在两个方向都异常，问题可能在光纤或连接器。但这里只有L1端有RxLOS和RxLOL，L2的情况不明确，所以可能无法确定是否是双向问题。\n\n综合来看，L1的单个lane问题可能指向光纤或L1的接收端问题。但因为L2的media_snr_min也低，可能光纤存在问题。然而，由于L2的host_snr缺失，无法进一步确认。因此，证据不足以明确区分L1和fiber，只能认为两者都有可能，所以应该弃权。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L1端的RxLOS和RxLOL状态表明接收端存在问题。\",\n      \"cited_evidence\": [\"status:L1:RxLOL\", \"status:L1:RxLOS\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L1端的rxpower在单个lane上下降，可能指向该lane的问题。\",\n      \"cited_evidence\": [\"drop:L1:rxpower:single_lane\"],\n      \"cited_constraints\": [\"C10_all_lanes_vs_single_lane\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L1端的media_snr在单个lane上下降，可能指向光纤问题。\",\n      \"cited_evidence\": [\"drop:L1:media_snr:single_lane\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L2端的media_snr_min处于低尾，可能表明L2端也有问题。\",\n      \"cited_evidence\": [\"level:L2:media_snr_min:low_tail\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"由于L2的host_snr未采集，无法进一步确认L2端的问题。\",\n      \"cited_evidence\": [],\n      \"cited_constraints\": [\"C14_host_snr_mostly_missing\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L2\"\n    }\n  ],\n  \"verdict\": \"abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L1端的RxLOS和RxLOL状态表明接收端存在问题。",
+            "cited_evidence": [
+              "status:L1:RxLOL",
+              "status:L1:RxLOS"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L1端的rxpower在单个lane上下降，可能指向该lane的问题。",
+            "cited_evidence": [
+              "drop:L1:rxpower:single_lane"
+            ],
+            "cited_constraints": [
+              "C10_all_lanes_vs_single_lane"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L1端的media_snr在单个lane上下降，可能指向光纤问题。",
+            "cited_evidence": [
+              "drop:L1:media_snr:single_lane"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L2端的media_snr_min处于低尾，可能表明L2端也有问题。",
+            "cited_evidence": [
+              "level:L2:media_snr_min:low_tail"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "由于L2的host_snr未采集，无法进一步确认L2端的问题。",
+            "cited_evidence": [],
+            "cited_constraints": [
+              "C14_host_snr_mostly_missing"
+            ],
+            "effect": "neutral",
+            "target": "L2"
+          }
+        ],
+        "verdict": null,
+        "confidence": 0.0,
+        "missing_information": [
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "模型主动弃权：证据不足以支撑任何根因",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L2",
+    "trace": {
+      "case_id": "case_80272e5bf02e",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_80272e5bf02e\",\n    \"可用证据\": [\n      \"drop:L2:serdes_snr:single_lane\",\n      \"level:L1:media_snr_min:low_tail\",\n      \"level:L2:media_snr_min:low_tail\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.56685657,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要解决这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、任务说明以及当前case的证据。\n\n首先，任务是将故障定界为L1设备问题、L2设备问题，还是光纤问题。根因定义明确，L1是400G端口一侧，L2是200G端口一侧，fiber则是两者之间的光纤或链路介质。\n\n接下来，看看可用证据：\n1. drop:L2:serdes_snr:single_lane：这表示L2端口的某个单个lane的serdes_snr出现了下降。\n2. level:L1:media_snr_min:low_tail：L1端口的media_snr_min处于低尾，说明可能有链路质量的问题。\n3. level:L2:media_snr_min:low_tail：同样，L2端口的media_snr_min也处于低尾。\n\n未采集字段是L2.host_snr，但根据约束C14，这个字段大多数情况下缺失，所以不能作为判断依据，只能记录下来作为缺失信息。\n\n现在，我需要根据这些证据和物理约束来推理。\n\n首先，C10提到，如果端口内所有lane同时异常，可能指向端口级问题，如模块本体或光纤。但这里的情况是L2的单个lane异常，所以可能指向该lane的独立问题，比如激光器或探测器，或者单根光纤。\n\nC11指出，media_snr_min的正常范围是22.5-27 dB。如果收光功率正常但信噪比低，问题可能在链路质量，如色散、反射或连接器端面。这里L1和L2的media_snr_min都处于低尾，说明信噪比低于正常范围，这可能指向链路问题，比如光纤或连接器。\n\nC8提到，如果本端某lane发光正常而对端收不到，说明光在路径中丢失，可能光纤或对端接收器件问题。但这里的情况是L2的serdes_snr下降，而L1和L2的media_snr都低，可能说明链路整体有问题，而不仅仅是单端。\n\nC9指出，如果同一lane在两个方向都异常，问题可能在光纤或连接器。这里L1和L2的media_snr都低，可能说明光纤有问题，但需要进一步确认。\n\n另外，C12禁止直接用两端光功率相减求损耗，只能看相对差异。这里没有光功率数据，所以无法直接应用。\n\nC13提到serdes_snr只能作为有效/失效的二值信号，不能按dB解释。所以L2的serdes_snr下降可能表示该lane有问题，但具体原因不明。\n\n综合来看，L1和L2的media_snr都低，可能指向光纤问题，但L2的单个lane异常可能指向该端的设备问题。因此，无法确定是L1、L2还是光纤，因为证据不足以区分这些可能性。\n\n所以，结论是无法确定，应该弃权，并说明需要补采L2.host_snr来提高判断把握。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L2端口的单个lane的serdes_snr出现下降\",\n      \"cited_evidence\": [\"drop:L2:serdes_snr:single_lane\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1端口的media_snr_min处于低尾\",\n      \"cited_evidence\": [\"level:L1:media_snr_min:low_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L2端口的media_snr_min处于低尾\",\n      \"cited_evidence\": [\"level:L2:media_snr_min:low_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    }\n  ],\n  \"verdict\": \"abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L2端口的单个lane的serdes_snr出现下降",
+            "cited_evidence": [
+              "drop:L2:serdes_snr:single_lane"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1端口的media_snr_min处于低尾",
+            "cited_evidence": [
+              "level:L1:media_snr_min:low_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L2端口的media_snr_min处于低尾",
+            "cited_evidence": [
+              "level:L2:media_snr_min:low_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          }
+        ],
+        "verdict": null,
+        "confidence": 0.0,
+        "missing_information": [
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "模型主动弃权：证据不足以支撑任何根因",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L2",
+    "trace": {
+      "case_id": "case_f8705c01d631",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_f8705c01d631\",\n    \"可用证据\": [\n      \"level:L1:media_snr_min:high_tail\",\n      \"level:L1:txpower_mean:high_tail\",\n      \"level:L2:rxpower_mean:high_tail\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L1.host_snr\",\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.68856643,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要解决这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括任务、根因定义、可用证据、物理约束等等。\n\n首先，任务是三分类定界，根因可能是L1、L2或fiber。根因定义中，L1是400G端口一侧的设备或端口问题，L2是200G端口一侧的问题，而fiber则是两者之间的光纤或链路介质问题。\n\n接下来，看看可用证据。这里有三个证据：\n1. level:L1:media_snr_min:high_tail\n2. level:L1:txpower_mean:high_tail\n3. level:L2:rxpower_mean:high_tail\n\n这些证据显示L1的媒体信噪比最低值在高尾，L1的发送功率均值在高尾，L2的接收功率均值也在高尾。同时，遥测完整性是partial_telemetry，说明数据不全，但根据判据，这不构成弃权的理由，只是需要考虑补采信息。\n\n未采集的字段是L1和L2的host_snr，根据约束C14，host_snr在多数情况下缺失，不能用来支持结论，所以只能说明需要补采。\n\n物理约束方面，有几个关键点：\n- C12禁止直接用两端的光功率差计算链路损耗，只能用同侧的相对差异。\n- C13指出serdes_snr的量纲未知，只能作为有效/失效的二值信号。\n- C14说明host_snr通常缺失，不能推断正常。\n- C15提到如果两端的发送和接收光功率都处于-39dBm的哨兵值，而TxLOS正常，说明遥测失效，不能推断激光关闭。\n- C7指出接收光功率的范围，低于-39dBm表示无光。\n- C11提到介质侧信噪比的正常范围，如果收光正常但信噪比低，问题可能在链路质量而非功率衰减。\n\n现在，分析证据。L1的media_snr_min在高尾，可能意味着信噪比异常高，这可能指向设备问题，因为正常范围是22.5-27dB，高尾可能超出这个范围。L1的txpower_mean高尾，可能发送功率过高，这可能表明L1设备有问题，比如发送模块异常。L2的rxpower_mean高尾，接收功率过高，这可能意味着L2设备接收异常，或者光纤有问题导致反射或信号增强。\n\n根据C11，如果收光正常但信噪比低，问题可能在链路。但这里的情况是信噪比高，这可能不太符合，所以可能需要重新考虑。或者，高信噪比可能意味着信号质量好，但发送功率过高可能影响链路。\n\n另外，C12禁止直接用两端的光功率差，所以不能直接比较L1的发送和L2的接收来判断链路损耗。只能看同侧的相对差异，比如L1的发送功率是否异常，L2的接收功率是否异常。\n\n综合来看，L1的发送功率和信噪比都异常，可能表明L1设备有问题。而L2的接收功率异常，可能是因为L1发送的问题，或者光纤问题导致信号增强。但无法确定是设备还是光纤的问题，因为两者都有可能。\n\n因此，证据不足以明确区分L1和fiber，所以应该弃权，并建议补采host_snr等信息来提高判断的准确性。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L1 的 media_snr_min 在高尾，表明信噪比异常高，可能指向设备问题。\",\n      \"cited_evidence\": [\"level:L1:media_snr_min:high_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L1 的 txpower_mean 在高尾，表明发送功率异常高，可能指向设备问题。\",\n      \"cited_evidence\": [\"level:L1:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 的 rxpower_mean 在高尾，表明接收功率异常高，可能指向光纤问题。\",\n      \"cited_evidence\": [\"level:L2:rxpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    }\n  ],\n  \"verdict\": \"abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"L1.host_snr\", \"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L1 的 media_snr_min 在高尾，表明信噪比异常高，可能指向设备问题。",
+            "cited_evidence": [
+              "level:L1:media_snr_min:high_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L1 的 txpower_mean 在高尾，表明发送功率异常高，可能指向设备问题。",
+            "cited_evidence": [
+              "level:L1:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 的 rxpower_mean 在高尾，表明接收功率异常高，可能指向光纤问题。",
+            "cited_evidence": [
+              "level:L2:rxpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          }
+        ],
+        "verdict": null,
+        "confidence": 0.0,
+        "missing_information": [
+          "L1.host_snr",
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "模型主动弃权：证据不足以支撑任何根因",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": [
+          {
+            "kind": "invalid_measurement",
+            "severity": "warning",
+            "message": "L1 侧 txpower 有 1 个非断光读数落在实测区间 [-1.8, 2.1] 之外",
+            "constraint_id": "C5_tx_power_range",
+            "step_index": null,
+            "detail": "越界值=[2.27]"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "truth": "L2",
+    "trace": {
+      "case_id": "case_591a8de93e1e",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_591a8de93e1e\",\n    \"可用证据\": [\n      \"drop:L1:media_snr:single_lane\",\n      \"drop:L1:rxpower:single_lane\",\n      \"level:L1:rxpower_mean:low_tail\",\n      \"level:L1:txpower_mean:high_tail\",\n      \"level:L2:rxpower_mean:high_tail\",\n      \"level:L2:txpower_mean:high_tail\",\n      \"status:L1:RxLOL\",\n      \"status:L1:RxLOS\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.73600608,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要分析这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、可用证据以及任务要求。\n\n首先，任务是判断故障根因属于L1、L2还是光纤（fiber），或者无法判断（abstain）。根因定义中，L1是400G端口一侧的设备或端口问题，L2是200G端口一侧的问题，而fiber则是两者之间的光纤或链路介质问题。\n\n接下来，看看可用证据：\n- drop:L1:media_snr:single_lane：L1的介质侧信噪比在单个lane上出现下降。\n- drop:L1:rxpower:single_lane：L1的接收光功率在单个lane上下降。\n- level:L1:rxpower_mean:low_tail：L1的接收光功率均值处于低尾。\n- level:L1:txpower_mean:high_tail：L1的发送光功率均值处于高尾。\n- level:L2:rxpower_mean:high_tail：L2的接收光功率均值处于高尾。\n- level:L2:txpower_mean:high_tail：L2的发送光功率均值处于高尾。\n- status:L1:RxLOL：L1的RxLOL状态异常。\n- status:L1:RxLOS：L1的RxLOS状态异常。\n\n未采集的字段是L2的host_snr，但根据约束C14，这个字段大多数情况下缺失，所以不能作为判断依据。\n\n现在，我需要根据这些证据和物理约束来推理。\n\n首先，L1的RxLOS和RxLOL状态异常，这通常表示接收端出现了问题。根据约束C5_tx_power_range，发送光功率在正常范围内，而异常时会掉到-39dBm。但这里L1的txpower_mean是high_tail，可能意味着发送功率偏高，但根据C5，发送侧只区分有光和无光，所以可能发送端正常。\n\nL1的rxpower_mean是low_tail，说明接收功率较低，这可能意味着光纤问题或接收端问题。同时，L1的media_snr在单个lane下降，根据约束C11，这可能指向链路质量，如光纤问题。\n\nL2的rxpower_mean和txpower_mean都是high_tail，这可能意味着L2的发送和接收都正常，或者可能有其他问题。但L2的host_snr未采集，无法判断。\n\n根据约束C10，如果单个lane异常，可能指向该通道的独立问题，如激光器或光纤单根纤芯。而L1的异常是单个lane，这可能指向光纤问题。\n\n另外，约束C8提到，如果本端发送正常而对端接收不到，可能光纤问题。但这里L1的发送功率是high_tail，可能正常，而L2的接收功率也是high_tail，这可能意味着L2接收正常，但L1接收异常，这可能指向光纤问题。\n\n然而，由于L2的host_snr未采集，无法确认L2的信噪比情况，这可能影响判断。同时，L1的RxLOS和RxLOL异常，可能指向接收端设备问题，如L1的端口或设备问题。\n\n综合来看，L1的接收问题可能由光纤或L1设备引起，但证据不足以明确区分。因此，可能需要更多的信息，如L2的host_snr，来进一步判断。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L1的RxLOS和RxLOL状态异常，表明接收端存在问题。\",\n      \"cited_evidence\": [\"status:L1:RxLOL\", \"status:L1:RxLOS\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L1的接收光功率均值处于低尾，可能表明接收端或光纤问题。\",\n      \"cited_evidence\": [\"level:L1:rxpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L1的发送光功率均值处于高尾，可能表明发送端正常。\",\n      \"cited_evidence\": [\"level:L1:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2的接收和发送光功率均值处于高尾，可能表明L2端正常。\",\n      \"cited_evidence\": [\"level:L2:rxpower_mean:high_tail\", \"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\", \"C7_rx_power_range\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1的介质侧信噪比在单个lane上下降，可能指向光纤问题。\",\n      \"cited_evidence\": [\"drop:L1:media_snr:single_lane\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L1的单个lane接收光功率下降，可能指向光纤问题。\",\n      \"cited_evidence\": [\"drop:L1:rxpower:single_lane\"],\n      \"cited_constraints\": [\"C10_all_lanes_vs_single_lane\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"由于L2的host_snr未采集，无法确认L2端的信噪比情况。\",\n      \"cited_evidence\": [],\n      \"cited_constraints\": [\"C14_host_snr_mostly_missing\"],\n      \"effect\": \"neutral\",\n      \"target\": \"L2\"\n    }\n  ],\n  \"verdict\": \"abstain\",\n  \"confidence\": 0.3,\n  \"missing_information\": [\"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L1的RxLOS和RxLOL状态异常，表明接收端存在问题。",
+            "cited_evidence": [
+              "status:L1:RxLOL",
+              "status:L1:RxLOS"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L1的接收光功率均值处于低尾，可能表明接收端或光纤问题。",
+            "cited_evidence": [
+              "level:L1:rxpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L1的发送光功率均值处于高尾，可能表明发送端正常。",
+            "cited_evidence": [
+              "level:L1:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range"
+            ],
+            "effect": "neutral",
+            "target": "L1"
+          },
+          {
+            "claim": "L2的接收和发送光功率均值处于高尾，可能表明L2端正常。",
+            "cited_evidence": [
+              "level:L2:rxpower_mean:high_tail",
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range",
+              "C7_rx_power_range"
+            ],
+            "effect": "neutral",
+            "target": "L2"
+          },
+          {
+            "claim": "L1的介质侧信噪比在单个lane上下降，可能指向光纤问题。",
+            "cited_evidence": [
+              "drop:L1:media_snr:single_lane"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L1的单个lane接收光功率下降，可能指向光纤问题。",
+            "cited_evidence": [
+              "drop:L1:rxpower:single_lane"
+            ],
+            "cited_constraints": [
+              "C10_all_lanes_vs_single_lane"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "由于L2的host_snr未采集，无法确认L2端的信噪比情况。",
+            "cited_evidence": [],
+            "cited_constraints": [
+              "C14_host_snr_mostly_missing"
+            ],
+            "effect": "neutral",
+            "target": "L2"
+          }
+        ],
+        "verdict": null,
+        "confidence": 0.3,
+        "missing_information": [
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "模型主动弃权：证据不足以支撑任何根因",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L1",
+    "trace": {
+      "case_id": "case_aef76fdb4997",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 排除条件：命中后可以直接排除对应根因\n\n- [C6_tx_down_excludes_medium] 如果某一侧的 lane 根本没有发出光（txpower 处于 -39 dBm 哨兵），那么该方向的故障不可能由光纤引起，应归到该发送端设备。（待专家审核）\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C1_bias_zero_means_laser_off] 偏置电流为 0 mA 的 lane 表示激光器未点亮，该 lane 没有光输出。此时该方向的问题在发送端设备，不能归因于光纤。（待专家审核）\n- [C5_tx_power_range] 发送光功率正常时在 -1.8~2.1 dBm，异常时直接掉到 -39 dBm 哨兵值，两者之间没有中间态。因此发送侧只区分有光与无光，不要讨论发送功率轻微偏低。（待专家审核）\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C10_all_lanes_vs_single_lane] 端口内所有 lane 同时异常，指向端口级共享部分：模块本体、供电、或整束光纤。只有一条 lane 异常，指向该通道独立的激光器、探测器或单根纤芯。（待专家审核）\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n- [C2_bias_healthy_band] 健康 lane 的偏置电流在 7.2-7.8 mA。电流在此范围内说明激光器驱动正常，不要把根因归到发送端器件老化。（待专家审核）\n- [C8_tx_ok_rx_down_indicates_medium] 如果本端某 lane 发光正常而对端同一 lane 完全收不到光，说明光在路径中丢失，候选根因是光纤介质或对端接收器件。这条线索会提高光纤的可能性，但不足以定论，必须再结合双向一致性判断。（待专家审核）\n- [C9_bidirectional_symmetry] 同一条 lane 在两个方向上同时异常，说明问题出在双向共享的部分，即光纤对或连接器，光纤是首位候选。如果只有一个方向异常，则问题在该方向的端点设备，光纤应当降位。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_aef76fdb4997\",\n    \"可用证据\": [\n      \"drop:L2:media_snr:single_lane\",\n      \"drop:L2:rxpower:single_lane\",\n      \"imbalance:L2:serdes_snr\",\n      \"level:L1:txpower_mean:high_tail\",\n      \"status:L2:RxLOL\",\n      \"status:L2:RxLOS\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L1.host_snr\",\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.86238848,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要分析这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括物理约束、可用证据以及任务要求。\n\n首先，任务是判断故障根因属于L1、L2还是光纤（fiber），或者无法判断（abstain）。根因定义中，L1是400G端口一侧的设备或端口问题，L2是200G端口一侧的问题，而fiber则是两者之间的光纤或链路介质问题。\n\n接下来，看看可用证据：\n- drop:L2:media_snr:single_lane：L2的介质侧信噪比单条lane异常。\n- drop:L2:rxpower:single_lane：L2的接收光功率单条lane异常。\n- imbalance:L2:serdes_snr：L2的SerDes信噪比不平衡。\n- level:L1:txpower_mean:high_tail：L1的发送光功率均值处于高位尾部。\n- status:L2:RxLOL：L2的RxLOL状态异常。\n- status:L2:RxLOS：L2的RxLOS状态异常。\n\n未采集的字段是L1和L2的host_snr，但根据约束C14，这些字段大多数情况下不采集，所以不能作为依据。\n\n现在，我需要根据物理约束来分析这些证据。\n\n首先，L2的RxLOS和RxLOL状态异常，这通常表示接收端检测到信号丢失或同步丢失。这可能意味着L2端接收不到光信号，或者信号质量太差。根据约束C5，发送光功率要么正常（-1.8~2.1 dBm），要么处于哨兵值（-39 dBm）。如果L1的txpower_mean是high_tail，可能意味着L1发送的光功率较高，但根据C5，这可能只是处于正常范围的高端，并不直接说明问题。\n\n接下来，L2的rxpower单条lane异常，可能意味着接收功率不足。根据C7，接收光功率有真实的连续劣化区间，低于-39 dBm表示无光。但这里只是单条lane异常，可能指向该lane的问题，比如光纤单根纤芯的问题，或者L2端的接收器件问题。\n\n同时，L2的media_snr单条lane异常，根据C11，介质侧信噪比正常范围约22.5-27 dB。如果收光功率正常但信噪比低，可能指向链路质量，如光纤问题。但这里rxpower异常，可能同时影响信噪比。\n\n另外，L2的serdes_snr不平衡，这可能表示L2端的SerDes性能有问题，但根据C13，serdes_snr的量纲未确认，只能作为有效/失效的二值信号，不能详细分析。\n\n现在，考虑物理约束中的排除条件。C6提到，如果某一侧的lane没有发出光（txpower为-39 dBm），则该方向的故障不可能由光纤引起。但这里L1的txpower_mean是high_tail，可能处于正常范围内，所以不能排除光纤问题。\n\n再看C8，如果本端某lane发光正常而对端收不到，说明光在路径中丢失，可能光纤或对端接收器件问题。这里L1的txpower正常，而L2收不到，可能支持光纤问题。\n\nC9提到，如果同一lane在两个方向都异常，问题可能在光纤或连接器。但这里只有L2的接收异常，L1的发送可能正常，所以可能问题在L2端或光纤。\n\n综合来看，L2端的多个指标异常，包括rxpower、media_snr、serdes_snr，以及RxLOS/RxLOL状态，可能指向L2端的设备或端口问题。但同时，L1的txpower正常，可能支持光纤问题。然而，由于只有单条lane异常，根据C10，可能指向该lane的独立问题，如光纤单根纤芯或L2端的接收器件。\n\n但根据C8，如果L1发送正常而L2收不到，可能光纤或L2接收器件问题。而C9提到，如果同一lane双向异常，可能光纤问题，但这里只有L2异常，所以可能问题在L2端。\n\n因此，综合考虑，L2端的多个指标异常，可能更倾向于L2端的问题，但光纤也不能完全排除。由于证据不足以明确区分L2和光纤，可能需要更多的信息，比如L1的host_snr或其他遥测数据。\n\n不过，根据约束，不能因为未采集字段而弃权，只能说明需要补采。因此，可能需要更多的证据来确定，但目前倾向于L2端的问题，因为多个指标在L2端异常，而L1的发送看起来正常。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L2端的RxLOS和RxLOL状态异常，表明接收端检测到信号丢失或同步丢失。\",\n      \"cited_evidence\": [\"status:L2:RxLOL\", \"status:L2:RxLOS\"],\n      \"cited_constraints\": [],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2端的rxpower单条lane异常，可能表示接收功率不足。\",\n      \"cited_evidence\": [\"drop:L2:rxpower:single_lane\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2端的media_snr单条lane异常，可能指向链路质量或接收端问题。\",\n      \"cited_evidence\": [\"drop:L2:media_snr:single_lane\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"fiber\"\n    },\n    {\n      \"claim\": \"L2端的serdes_snr不平衡，可能表示SerDes性能问题。\",\n      \"cited_evidence\": [\"imbalance:L2:serdes_snr\"],\n      \"cited_constraints\": [\"C13_serdes_snr_unit_unknown\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1端的txpower_mean处于高位尾部，可能表示发送功率正常。\",\n      \"cited_evidence\": [\"level:L1:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C5_tx_power_range\"],\n      \"effect\": \"neutral\",\n      \"target\": \"\"\n    }\n  ],\n  \"verdict\": \"L2\",\n  \"confidence\": 0.7,\n  \"missing_information\": [\"L1.host_snr\", \"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L2端的RxLOS和RxLOL状态异常，表明接收端检测到信号丢失或同步丢失。",
+            "cited_evidence": [
+              "status:L2:RxLOL",
+              "status:L2:RxLOS"
+            ],
+            "cited_constraints": [],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L2端的rxpower单条lane异常，可能表示接收功率不足。",
+            "cited_evidence": [
+              "drop:L2:rxpower:single_lane"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L2端的media_snr单条lane异常，可能指向链路质量或接收端问题。",
+            "cited_evidence": [
+              "drop:L2:media_snr:single_lane"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "fiber"
+          },
+          {
+            "claim": "L2端的serdes_snr不平衡，可能表示SerDes性能问题。",
+            "cited_evidence": [
+              "imbalance:L2:serdes_snr"
+            ],
+            "cited_constraints": [
+              "C13_serdes_snr_unit_unknown"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1端的txpower_mean处于高位尾部，可能表示发送功率正常。",
+            "cited_evidence": [
+              "level:L1:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C5_tx_power_range"
+            ],
+            "effect": "neutral",
+            "target": ""
+          }
+        ],
+        "verdict": "L2",
+        "confidence": 0.7,
+        "missing_information": [
+          "L1.host_snr",
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  },
+  {
+    "truth": "L2",
+    "trace": {
+      "case_id": "case_c7c3503adf4e",
+      "backend": "vllm",
+      "prompt_version": "n5c-constrained-reasoning-v2",
+      "constraint_library_version": "constraint-library-v2",
+      "attempt_count": 1,
+      "rewrote": false,
+      "attempts": [
+        {
+          "index": 0,
+          "prompt": "你是光链路故障定界专家。你的任务是在给定的物理约束内，\n依据给定证据判断根因，或者在证据不足时明确弃权。\n\n硬性要求：\n1. 只能引用「可用证据」清单里列出的 token。不得引用清单之外的任何证据，\n   也不得描述清单里没有的观测。编造证据会导致整次回答被判为不合规。\n2. 只能引用「物理约束」清单里的约束编号。\n3. 每一步推理都必须至少引用一条证据或一条约束，不允许凭空断言。\n4. 标注为「待专家审核」的约束可以参考，但不能作为唯一定论依据。\n\n判据（决定给结论还是弃权）：\n\n- 判断标准是**可用证据能不能把候选根因区分开**，不是遥测采全没采全。\n- 遥测不完整是这批数据的常态，不是弃权理由。「未采集字段」清单只用来填\n  `missing_information`，说明补采什么能提高把握；它本身不构成弃权依据。\n  约束 C14 已经写明 host_snr 大多数 case 不采集——若因为它缺失就弃权，\n  那就是对所有 case 都弃权，等于没有判断。\n- 可用证据明确指向某一个根因时，就给出该根因，并用 `confidence` 表达把握大小。\n  把握不足应当体现为低 confidence，而不是直接弃权。\n- 只有在下面两种情况才填 `abstain`：\n  (a) 可用证据与两个及以上候选根因同样吻合，没有任何证据能把它们区分开；\n  (b) 可用证据与所有候选根因都矛盾，或证据本身自相矛盾。\n- 弃权本身不是失败，给出没有证据支撑的结论才是；但在证据足以区分时弃权，\n  同样是一次错误的判断。\n\n\n物理约束（按 排除 -> 禁止推断 -> 恒等关系 -> 倾向性 排序）：\n# 光模块物理约束（constraint-library-v2，hash abb395e9371abc36）\n\n\n## 禁止推断：以下推断在本数据集上不成立\n\n- [C12_no_absolute_link_loss] 本数据集两端的光功率读数不能直接相减求链路损耗：实测结果会出现负损耗，说明两端 lane 编号不对应或标定口径不同。不要根据「损耗多少 dB」下结论，只使用同侧 lane 之间的相对差异和有光/无光判断。（待专家审核）\n- [C13_serdes_snr_unit_unknown] serdes_snr 字段的量纲未确认，健康值在 6.6e5-8.3e5 量级，失效时为 1。只能把它当作有效 / 失效的二值信号，不要按 dB 信噪比解释或比较。（待专家审核）\n- [C14_host_snr_mostly_missing] 主机侧信噪比 host_snr 在多数 case 中没有采集。看不到该字段时应说明「未采集」，不要推断它正常，也不要用它支持任何结论。（待专家审核）\n- [C15_blackout_sentinel_is_not_laser_off] 如果两端的发送与接收光功率全部处于 -39 dBm 哨兵，而 TxLOS 仍报 Normal，说明这是遥测整体失效而不是激光关断。此时不要断言任何一端「没有发光」，也不要据此排除光纤，应当说明证据不足并请求现场确认。（待专家审核）\n\n## 物理恒等关系\n\n- [C7_rx_power_range] 接收光功率有真实的连续劣化区间（本数据集健康值 -12.3~3.0 dBm），低于 -39 dBm 表示完全无光。接收侧可以讨论功率偏低的程度，发送侧不可以。（待专家审核）\n\n## 倾向性线索：提高可能性，但不足以定论\n\n- [C11_media_snr_floor] 介质侧信噪比正常范围约 22.5-27 dB。如果收光功率正常但信噪比明显低于该范围，问题偏向链路质量（色散、反射、连接器端面），而不是功率衰减。（待专家审核）\n\n\n{\n  \"任务\": \"光链路根因三分类定界（N5c 低匹配分支）\",\n  \"根因定义\": {\n    \"L1\": \"400G 端口一侧的设备或端口根因\",\n    \"L2\": \"200G 端口一侧的设备或端口根因\",\n    \"fiber\": \"L1 与 L2 之间的光纤 / 链路介质根因\"\n  },\n  \"本 case 证据\": {\n    \"case_id\": \"case_c7c3503adf4e\",\n    \"可用证据\": [\n      \"level:L1:media_snr_min:low_tail\",\n      \"level:L1:txpower_mean:low_tail\",\n      \"level:L2:media_snr_min:high_tail\",\n      \"level:L2:txpower_mean:high_tail\"\n    ],\n    \"遥测完整性\": \"partial_telemetry\",\n    \"未采集字段（常态，仅供填写 missing_information，不是弃权理由）\": [\n      \"L1.host_snr\",\n      \"L2.host_snr\"\n    ],\n    \"历史最高相似度\": 0.34747507,\n    \"历史匹配说明\": \"历史证据图里没有足够相似的 case，因此不能复用历史结论，只能依据物理约束推理。\"\n  },\n  \"已由确定性物理排除排掉的根因\": [],\n  \"可选根因\": [\n    \"L1\",\n    \"L2\",\n    \"fiber\"\n  ]\n}\n\n只输出一个 JSON 对象，结构如下：\n{\n  \"steps\": [\n    {\n      \"claim\": \"这一步的断言\",\n      \"cited_evidence\": [\"引用的证据 token\"],\n      \"cited_constraints\": [\"引用的约束编号\"],\n      \"effect\": \"support | exclude | neutral\",\n      \"target\": \"L1 | L2 | fiber | \\\"\\\"\"\n    }\n  ],\n  \"verdict\": \"L1 | L2 | fiber | abstain\",\n  \"confidence\": 0.0,\n  \"missing_information\": [\"还需要补采什么才能提高把握\"]\n}",
+          "raw_output": "<think>\n好，我现在需要解决这个光链路故障定界的问题。首先，我得仔细阅读用户提供的所有信息，包括任务、根因定义、可用证据、物理约束等等。\n\n首先，任务是三分类定界，根因可能是L1、L2或fiber。根因定义中，L1是400G端口一侧的设备或端口问题，L2是200G端口一侧的问题，而fiber则是两者之间的光纤或链路介质问题。\n\n接下来，看看可用证据。这里有四个证据：\n1. level:L1:media_snr_min:low_tail\n2. level:L1:txpower_mean:low_tail\n3. level:L2:media_snr_min:high_tail\n4. level:L2:txpower_mean:high_tail\n\n这些证据显示，L1的媒体信噪比最低值处于低尾，发送功率均值也处于低尾；而L2的媒体信噪比最低值处于高尾，发送功率均值处于高尾。\n\n然后，物理约束部分有几个关键点：\n- C12禁止直接用两端的光功率差计算链路损耗，只能用同侧的相对差异。\n- C13提到serdes_snr的量纲未知，只能作为有效/失效的二值信号。\n- C14指出host_snr在多数情况下缺失，不能用它来推断。\n- C15说明如果两端的发送和接收光功率都处于-39dBm的哨兵值，而TxLOS正常，这表示遥测失效，不能推断激光关闭或光纤问题。\n- C7指出接收光功率的范围，低于-39dBm表示无光，发送侧不能讨论功率衰减。\n- C11提到介质侧信噪比的正常范围，如果收光正常但信噪比低，问题可能在链路质量而非功率衰减。\n\n现在，分析证据。L1的media_snr_min是low_tail，而L2的是high_tail。这可能意味着L1的信噪比较低，而L2的较高。同时，L1的txpower_mean低，L2的高。这可能表明L1发送功率不足，而L2发送正常。\n\n根据C11，如果收光正常但信噪比低，问题可能在链路质量。但这里L1的信噪比低，而L2的高，这可能意味着L1的问题，或者光纤的问题。因为如果光纤有问题，可能会影响接收端的信噪比，但这里L2的信噪比是高的，这可能排除了光纤的问题，因为光纤问题通常会导致两端的信噪比都受到影响，或者至少L2的信噪比也会低。\n\n另外，L1的txpower_mean低，可能表明L1的发送端有问题，比如光模块故障或配置错误，导致发送功率不足，从而影响接收端的信噪比。而L2的发送功率正常，可能说明问题不在L2端。\n\n同时，C12禁止直接用两端的光功率差，所以不能直接比较L1和L2的发送功率，但可以比较同侧的相对差异。L1的发送功率低，可能表明L1有问题。\n\n综上所述，L1的信噪比低和发送功率低，可能指向L1端的设备或端口问题，而不是光纤问题。因此，根因可能是L1。\n</think>\n\n```json\n{\n  \"steps\": [\n    {\n      \"claim\": \"L1 的 media_snr_min 处于 low_tail，表明其信噪比偏低。\",\n      \"cited_evidence\": [\"level:L1:media_snr_min:low_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L1 的 txpower_mean 处于 low_tail，表明其发送功率偏低。\",\n      \"cited_evidence\": [\"level:L1:txpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 的 media_snr_min 处于 high_tail，表明其信噪比偏高。\",\n      \"cited_evidence\": [\"level:L2:media_snr_min:high_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L2 的 txpower_mean 处于 high_tail，表明其发送功率偏高。\",\n      \"cited_evidence\": [\"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"L1 的低信噪比和低发送功率可能表明 L1 端存在设备或端口问题。\",\n      \"cited_evidence\": [\"level:L1:media_snr_min:low_tail\", \"level:L1:txpower_mean:low_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\", \"C7_rx_power_range\"],\n      \"effect\": \"support\",\n      \"target\": \"L1\"\n    },\n    {\n      \"claim\": \"L2 的高信噪比和高发送功率表明 L2 端正常。\",\n      \"cited_evidence\": [\"level:L2:media_snr_min:high_tail\", \"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\", \"C7_rx_power_range\"],\n      \"effect\": \"exclude\",\n      \"target\": \"L2\"\n    },\n    {\n      \"claim\": \"光纤问题通常会导致两端的信噪比和发送功率同时异常，但 L2 端正常，因此光纤问题可能性较低。\",\n      \"cited_evidence\": [\"level:L2:media_snr_min:high_tail\", \"level:L2:txpower_mean:high_tail\"],\n      \"cited_constraints\": [\"C11_media_snr_floor\", \"C7_rx_power_range\"],\n      \"effect\": \"exclude\",\n      \"target\": \"fiber\"\n    }\n  ],\n  \"verdict\": \"L1\",\n  \"confidence\": 0.8,\n  \"missing_information\": [\"L1.host_snr\", \"L2.host_snr\"]\n}\n```",
+          "parsed": true,
+          "check": {
+            "ok": true,
+            "fatal_count": 0,
+            "violations": []
+          }
+        }
+      ],
+      "accepted": {
+        "steps": [
+          {
+            "claim": "L1 的 media_snr_min 处于 low_tail，表明其信噪比偏低。",
+            "cited_evidence": [
+              "level:L1:media_snr_min:low_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L1 的 txpower_mean 处于 low_tail，表明其发送功率偏低。",
+            "cited_evidence": [
+              "level:L1:txpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 的 media_snr_min 处于 high_tail，表明其信噪比偏高。",
+            "cited_evidence": [
+              "level:L2:media_snr_min:high_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L2 的 txpower_mean 处于 high_tail，表明其发送功率偏高。",
+            "cited_evidence": [
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L2"
+          },
+          {
+            "claim": "L1 的低信噪比和低发送功率可能表明 L1 端存在设备或端口问题。",
+            "cited_evidence": [
+              "level:L1:media_snr_min:low_tail",
+              "level:L1:txpower_mean:low_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor",
+              "C7_rx_power_range"
+            ],
+            "effect": "support",
+            "target": "L1"
+          },
+          {
+            "claim": "L2 的高信噪比和高发送功率表明 L2 端正常。",
+            "cited_evidence": [
+              "level:L2:media_snr_min:high_tail",
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor",
+              "C7_rx_power_range"
+            ],
+            "effect": "exclude",
+            "target": "L2"
+          },
+          {
+            "claim": "光纤问题通常会导致两端的信噪比和发送功率同时异常，但 L2 端正常，因此光纤问题可能性较低。",
+            "cited_evidence": [
+              "level:L2:media_snr_min:high_tail",
+              "level:L2:txpower_mean:high_tail"
+            ],
+            "cited_constraints": [
+              "C11_media_snr_floor",
+              "C7_rx_power_range"
+            ],
+            "effect": "exclude",
+            "target": "fiber"
+          }
+        ],
+        "verdict": "L1",
+        "confidence": 0.8,
+        "missing_information": [
+          "L1.host_snr",
+          "L2.host_snr"
+        ]
+      },
+      "abstain_reason": "",
+      "evidence_check": {
+        "ok": true,
+        "fatal_count": 0,
+        "violations": []
+      }
+    }
+  }
+]

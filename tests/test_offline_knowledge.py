@@ -106,7 +106,9 @@ def test_sop_path_is_injected_before_constrained_llm(offline_fixture):
     )
     _, outcome = paired[0]
     assert backend.prompts_seen
-    assert "训练集归纳 SOP" in backend.prompts_seen[0][0]
-    assert any(link.kind == "learned_sop" for link in outcome.evidence_chain)
+    assert "numeric_decision_tree_path" in backend.prompts_seen[0][0]
+    assert "专家排障 SOP" in backend.prompts_seen[0][0]
+    assert any(link.kind == "expert_sop_context" for link in outcome.evidence_chain)
+    assert any(link.kind == "numeric_decision_tree" for link in outcome.evidence_chain)
     assert any(link.kind == "llm_step" for link in outcome.evidence_chain)
     assert outcome.needs_llm is False

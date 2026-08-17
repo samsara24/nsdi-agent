@@ -1,0 +1,2085 @@
+{
+  "schema_version": "expanded-added-cases-v1",
+  "matching_policy": "physical-content-sha256-v1",
+  "volatile_fields_removed": [
+    "_meta",
+    "alarm_ip_interface",
+    "alarm_time",
+    "case_id",
+    "chip",
+    "link_location",
+    "link_side_ip_interface_map",
+    "region",
+    "task_id",
+    "vendor",
+    "vendor_sn"
+  ],
+  "alarm_normalization": "remove leading 数通设备syslog告警:",
+  "added_count": 258,
+  "cases": [
+    {
+      "case_id": "case_000002",
+      "label": "L1",
+      "source_file": "case_000002.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000002.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "66f541ba09b93a9710a8473293a882ea4e7bbef18f9e699265e08d7efd11394f"
+    },
+    {
+      "case_id": "case_000003",
+      "label": "L2",
+      "source_file": "case_000003.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000003.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e74a5215f00bfbcb053694dd18df7b85ef4143da107600b800d273b68688a510"
+    },
+    {
+      "case_id": "case_000004",
+      "label": "L2",
+      "source_file": "case_000004.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000004.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "98d7b2d1cc4e20fc82311c4bc850db1513295b8d69f6cb86bb9a7c1b1b7ea80d"
+    },
+    {
+      "case_id": "case_000005",
+      "label": "L2",
+      "source_file": "case_000005.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000005.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "bd7a945017841cb0cfc3ae62377f386956e3bb5af106af380c22ce54f4a6a2cd"
+    },
+    {
+      "case_id": "case_000010",
+      "label": "L1",
+      "source_file": "case_000010.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000010.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "4a8e7dedcb76387cf7bb575662179761c739eea71524ecf0f95f2cae025c81cf"
+    },
+    {
+      "case_id": "case_000012",
+      "label": "L2",
+      "source_file": "case_000012.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000012.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "f7594c649f63df983f780db56405bb66c47c387c3ab40801ebe80b6d20aa8958"
+    },
+    {
+      "case_id": "case_000013",
+      "label": "L2",
+      "source_file": "case_000013.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000013.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "7e7bde6c6eb6785d168a87aa094b3d0abec41936932d78a5dc82b4a1c2027e1a"
+    },
+    {
+      "case_id": "case_000016",
+      "label": "L1",
+      "source_file": "case_000016.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000016.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e46b69b2d2b03f1e17ee18570386934e706ee4c5fdf3536d41f6870d933ddb00"
+    },
+    {
+      "case_id": "case_000017",
+      "label": "L2",
+      "source_file": "case_000017.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000017.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "81afaf2f5590e91db2afb59e5e4e4e32c79e226cd27bfb68167d60c7f427b1b8"
+    },
+    {
+      "case_id": "case_000018",
+      "label": "L1",
+      "source_file": "case_000018.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000018.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "243bbf927b43a0cfc9fa3dd12f9603397e45314bd8fbc575b91549e6d95d6522"
+    },
+    {
+      "case_id": "case_000019",
+      "label": "L1",
+      "source_file": "case_000019.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000019.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "35fcfa7eb027346165dcecfae2aea9c632fa6eafc384948313319ee972578293"
+    },
+    {
+      "case_id": "case_000020",
+      "label": "L2",
+      "source_file": "case_000020.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000020.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "58b91c81b05328c20bbbd2e7e9aa8e90e5b948d39fe6ceb8873d0d7b602406c0"
+    },
+    {
+      "case_id": "case_000021",
+      "label": "L2",
+      "source_file": "case_000021.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000021.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "651a0f64bd264e533813c6782161df7c1f6f81ba12af99199f0317c48a291dfb"
+    },
+    {
+      "case_id": "case_000022",
+      "label": "L1",
+      "source_file": "case_000022.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000022.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a46a6a35c922338f94458c01e27d5dd88b0aee233889851af59f5cfcbdad42b4"
+    },
+    {
+      "case_id": "case_000023",
+      "label": "L2",
+      "source_file": "case_000023.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000023.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "eded481377b0be3e762f2e0042009f4e80e34376d9727f43c5ebc763e12000e3"
+    },
+    {
+      "case_id": "case_000024",
+      "label": "L2",
+      "source_file": "case_000024.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000024.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "4b3552841838cc30d4fefec8bee0ff761a5883257cf86cef0f82f050e50c4c5e"
+    },
+    {
+      "case_id": "case_000028",
+      "label": "L2",
+      "source_file": "case_000028.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000028.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a09aa7e6d69e4e2b000a4b7f35b9ff42a8dbce77b2494635671a89dcc2e3a0fa"
+    },
+    {
+      "case_id": "case_000030",
+      "label": "L2",
+      "source_file": "case_000030.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000030.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "22a75f005842124b995dbce3a68bcc4b608bacfd670eb703ea3c87f4ad5765ba"
+    },
+    {
+      "case_id": "case_000032",
+      "label": "L1",
+      "source_file": "case_000032.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000032.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "4320339418774d104bf959eefb48dfa80d8ecc3f416019d464675e3f691f6213"
+    },
+    {
+      "case_id": "case_000033",
+      "label": "L1",
+      "source_file": "case_000033.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000033.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "4705c9adc73d08d7aefc834dbd41c9435ad8368dc20ee94b335bdfd4f6042016"
+    },
+    {
+      "case_id": "case_000035",
+      "label": "L2",
+      "source_file": "case_000035.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000035.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "82d0112692c46223436a4f1e5cf82e3c3b0629deb147b356aa5f5bb4a6aa89d8"
+    },
+    {
+      "case_id": "case_000036",
+      "label": "L1",
+      "source_file": "case_000036.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000036.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "e66d4450341c3c846349fdfe9c7bbdf23f092663d92422f3be1e3f0a0710c28e"
+    },
+    {
+      "case_id": "case_000039",
+      "label": "L1",
+      "source_file": "case_000039.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000039.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "bbf39c45d6af835df7af419fbd9949952c785d398f277b602915f39247260647"
+    },
+    {
+      "case_id": "case_000040",
+      "label": "L2",
+      "source_file": "case_000040.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000040.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "b7b16c0cf0b52b181bf0c48d6bbc0934e2c16d8f9f3afe3172e0c203b9ebde74"
+    },
+    {
+      "case_id": "case_000044",
+      "label": "L2",
+      "source_file": "case_000044.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000044.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c9b6ac813fa145f502199e9d453a7a1c2a504b54569396e4a4904bc302941514"
+    },
+    {
+      "case_id": "case_000045",
+      "label": "L1",
+      "source_file": "case_000045.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000045.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "97277a0f694b0ff5615880c6ae7d9bab44a26fed13aecb2665cb348b874197cb"
+    },
+    {
+      "case_id": "case_000047",
+      "label": "L2",
+      "source_file": "case_000047.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000047.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "0be50b91fef28522599fdbd7c143864fb5fd98377672087cad5a4ce25d545b28"
+    },
+    {
+      "case_id": "case_000048",
+      "label": "L2",
+      "source_file": "case_000048.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000048.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "edf0474d5c6d3d8189e5673b0e302cddd673edfeda97801839a4a68f993a88ce"
+    },
+    {
+      "case_id": "case_000049",
+      "label": "L2",
+      "source_file": "case_000049.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000049.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "8f6167358dfbe3e6bc5e091dbbf775b57f0c46fd057c1cf9244c3954760580f9"
+    },
+    {
+      "case_id": "case_000050",
+      "label": "L2",
+      "source_file": "case_000050.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000050.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "486ef4171ed9b5f5cc34ace7330e322a0d98f2ea42647eade51fbb2df651fe72"
+    },
+    {
+      "case_id": "case_000051",
+      "label": "L1",
+      "source_file": "case_000051.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000051.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "988e9578bb998301a4f217a1afaae2258ac6bdbc473b6ed52e38d055866338bf"
+    },
+    {
+      "case_id": "case_000052",
+      "label": "L2",
+      "source_file": "case_000052.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000052.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "fc2276dd8620f914aae1d32460fd77bbe173fbb53e4494d9471e1295d177487c"
+    },
+    {
+      "case_id": "case_000055",
+      "label": "L2",
+      "source_file": "case_000055.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000055.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "13d3793f7f14e75fe4d972c61c97cfa3d810919a696f04119993c461dbc580f0"
+    },
+    {
+      "case_id": "case_000056",
+      "label": "L1",
+      "source_file": "case_000056.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000056.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e194b33bbb5849bd1055e6a9be4831b60e9d68ffdf0f5c1331237a9f42180d26"
+    },
+    {
+      "case_id": "case_000057",
+      "label": "L1",
+      "source_file": "case_000057.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000057.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "b9410de06a115127144ed38e3a355541b0d8a58a1f4f10ac9a5e0f885b497278"
+    },
+    {
+      "case_id": "case_000062",
+      "label": "L1",
+      "source_file": "case_000062.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000062.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "33c036757e57083b7afe50c72489cc477d009c2be49114b519fde088e9fbcc96"
+    },
+    {
+      "case_id": "case_000064",
+      "label": "L1",
+      "source_file": "case_000064.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000064.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "5c7538e09de211a80d1f9ca6c0b6322bc56b2431d04ce8a97472ee7542d61c13"
+    },
+    {
+      "case_id": "case_000066",
+      "label": "L2",
+      "source_file": "case_000066.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000066.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "658344644c042f1cb633231bcdaef4c72de8969aa6986f15ab47613e56707182"
+    },
+    {
+      "case_id": "case_000071",
+      "label": "L1",
+      "source_file": "case_000071.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000071.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "52025dd3cc12dc183917948700478dbf562edcee201bef2335bfa27ccbbbcfa6"
+    },
+    {
+      "case_id": "case_000072",
+      "label": "L2",
+      "source_file": "case_000072.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000072.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "0846256bc2fd4c9d8d9c7318512f9ce409e79b5ce7aeabefe171f30e7d1cac58"
+    },
+    {
+      "case_id": "case_000073",
+      "label": "L2",
+      "source_file": "case_000073.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000073.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "62a48eaf9c5fa5d716c6617a14262205818086ec3868b691f49bb6f91c82b94e"
+    },
+    {
+      "case_id": "case_000074",
+      "label": "L1",
+      "source_file": "case_000074.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000074.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "a23f0553f49a828d358ea757a9f13fdfd614aa47e980f1a74f6c346b6abdcf7d"
+    },
+    {
+      "case_id": "case_000076",
+      "label": "L2",
+      "source_file": "case_000076.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000076.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "3174b427fe51655814bf1570d976e6689e1fccb777b1b6c6b4fc922110fc8c83"
+    },
+    {
+      "case_id": "case_000078",
+      "label": "L2",
+      "source_file": "case_000078.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000078.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "70f82aae4256f3f1342e4fd6d66b9c8431b41cf96749eaebf098935edb3e28a3"
+    },
+    {
+      "case_id": "case_000080",
+      "label": "L1",
+      "source_file": "case_000080.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000080.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "5abc9bdbd31384cef6018f4976f6fa5364752dc881b89acea98ec21e3a465453"
+    },
+    {
+      "case_id": "case_000081",
+      "label": "L1",
+      "source_file": "case_000081.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000081.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "210d2040495f74049743354cafd79fdbbdef275d5ee0ba4d13eb96377242963e"
+    },
+    {
+      "case_id": "case_000082",
+      "label": "L2",
+      "source_file": "case_000082.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000082.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "a057e17f77d43996d1940fa9b9a92bcd847251376f8854f73e999dd04f2cab4a"
+    },
+    {
+      "case_id": "case_000085",
+      "label": "L1",
+      "source_file": "case_000085.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000085.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "b0e5badcf18b251f08cfb496f70633f1fa8a4854418071ecb0489a3ad675fec9"
+    },
+    {
+      "case_id": "case_000086",
+      "label": "L2",
+      "source_file": "case_000086.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000086.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "64e0f722bece90bba6f1e459f375a1ae1c4584f4d6d916c52c90d0c6afacc2fe"
+    },
+    {
+      "case_id": "case_000087",
+      "label": "L2",
+      "source_file": "case_000087.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000087.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "6dee0d96b13fec220dfa4933a02caa1c0501424ba5ed1cf3b921dd6662d96487"
+    },
+    {
+      "case_id": "case_000088",
+      "label": "L2",
+      "source_file": "case_000088.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000088.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "d383c060532f98bf5e182a3a34ef62ed7f8361dcc2ad61f841c998d835a18e0b"
+    },
+    {
+      "case_id": "case_000090",
+      "label": "L1",
+      "source_file": "case_000090.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000090.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "b86842b93929f745e2f1015c856870891603adf5b0bdf81a06d3945a3e79f631"
+    },
+    {
+      "case_id": "case_000092",
+      "label": "L1",
+      "source_file": "case_000092.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000092.json",
+      "alarm_summary": "DCN linkflap告警",
+      "physical_fingerprint_sha256": "315031fe274e2e8fb853f3911d1d010b90cfd473763e36f4edd30dfee2bbffab"
+    },
+    {
+      "case_id": "case_000095",
+      "label": "L2",
+      "source_file": "case_000095.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000095.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e97fff42e23a8d8b6c248e7b78a71ddbad1a7223beed0673bd957a5d27fc65de"
+    },
+    {
+      "case_id": "case_000097",
+      "label": "L2",
+      "source_file": "case_000097.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000097.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "913c955b4d36ad1bffb747e10b6345104d130a4bafb7fdb7051b317433c4c7d8"
+    },
+    {
+      "case_id": "case_000099",
+      "label": "L1",
+      "source_file": "case_000099.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000099.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "96cc481cf7c62b51aa870f9078e25c3fbacca0dabfcefd07272002953dff66ba"
+    },
+    {
+      "case_id": "case_000100",
+      "label": "L2",
+      "source_file": "case_000100.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000100.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "8406f0d0a2b194af595421023cf96c451fc872115ebe26b8757a8bba52ea5f8c"
+    },
+    {
+      "case_id": "case_000101",
+      "label": "L1",
+      "source_file": "case_000101.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000101.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a98b2fada89de30b429952be2473ec58961ed61f5b049f972947a936858e16fa"
+    },
+    {
+      "case_id": "case_000102",
+      "label": "L1",
+      "source_file": "case_000102.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000102.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "1fd972c23032bd93fedf7606ae915cb8dff670184b5bcd90cdbd73b4b3026068"
+    },
+    {
+      "case_id": "case_000103",
+      "label": "L2",
+      "source_file": "case_000103.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000103.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4fadb75274d16b5bf9f54d5fcfac21e24cb0ebbf07162229705e9e109db253e8"
+    },
+    {
+      "case_id": "case_000105",
+      "label": "L2",
+      "source_file": "case_000105.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000105.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "9a4c4a5a5b9de4c06953b8a366190ac0d06f017a02c1cf2e02a26e608b8ebdb8"
+    },
+    {
+      "case_id": "case_000106",
+      "label": "fiber",
+      "source_file": "case_000106.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000106.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "377de2415853de6fa0c9a5b8072aedf8c915d7154db487b3050730ea311c92e2"
+    },
+    {
+      "case_id": "case_000107",
+      "label": "L1",
+      "source_file": "case_000107.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000107.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "6f0270e79669f3e43771439708e61d0b0e86ff2c2b88c28e5b9f804bfe108c2f"
+    },
+    {
+      "case_id": "case_000108",
+      "label": "L2",
+      "source_file": "case_000108.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000108.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "0a201b335075abda5122c7886fe79ce551ab0a3ef82c798fe933e662a24db0a4"
+    },
+    {
+      "case_id": "case_000109",
+      "label": "L2",
+      "source_file": "case_000109.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000109.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c30c08e223a8b98cb4feb4a591e6c0af170a45b7279724612cd326fff1859340"
+    },
+    {
+      "case_id": "case_000110",
+      "label": "L2",
+      "source_file": "case_000110.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000110.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4409658a15d1e88a60751f5308584c0fb81af6893c368d37fa66298217667cf9"
+    },
+    {
+      "case_id": "case_000112",
+      "label": "L1",
+      "source_file": "case_000112.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000112.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "82e0eb071ccaa56989da502af675be98578fc24bab79e2e0ec90ccf814bf1431"
+    },
+    {
+      "case_id": "case_000114",
+      "label": "L2",
+      "source_file": "case_000114.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000114.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "49308e8c379c8ebbc726bfd1607830fb59d408bdeb256a04a2b57b1815ce6fb7"
+    },
+    {
+      "case_id": "case_000116",
+      "label": "L2",
+      "source_file": "case_000116.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000116.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "90644b1306b5d81039afcad6901fb4b61999678a27cc05913026037f6e72c358"
+    },
+    {
+      "case_id": "case_000118",
+      "label": "L2",
+      "source_file": "case_000118.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000118.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "b7a2aa1f0dedd7de5d2b5f80b90c606edb263567ce998cfbc30a38f2fbfefcc3"
+    },
+    {
+      "case_id": "case_000119",
+      "label": "L2",
+      "source_file": "case_000119.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000119.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "86edf9cf0fecfd3f904c636d63daa61d92a1680c54a48c4795d4850dbb53b185"
+    },
+    {
+      "case_id": "case_000120",
+      "label": "L2",
+      "source_file": "case_000120.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000120.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "7a0adc29e0c5865845501c7f2ddaf9c82e33e01677594ddd5b003e4d35420582"
+    },
+    {
+      "case_id": "case_000121",
+      "label": "L2",
+      "source_file": "case_000121.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000121.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "f91466604620eecadb773898a7980fd462b5d764c987303167927f4e29c48798"
+    },
+    {
+      "case_id": "case_000122",
+      "label": "L1",
+      "source_file": "case_000122.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000122.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4ee093de3b36a55bf616c61c22a92d228f4656eb2fd88c6b1388fbea199f89ec"
+    },
+    {
+      "case_id": "case_000123",
+      "label": "L1",
+      "source_file": "case_000123.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000123.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "94828df9081cf8ccd933633bde7eb85b07ec4a6f343167016aaef90a721cdf1d"
+    },
+    {
+      "case_id": "case_000126",
+      "label": "L2",
+      "source_file": "case_000126.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000126.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "70abad3f7a75849c63c3e1cab13492aa997f25fdb54f3a1af665d5da7c8beb0d"
+    },
+    {
+      "case_id": "case_000127",
+      "label": "L1",
+      "source_file": "case_000127.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000127.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "1f1050676d883bc90ef3a8c7fb65e2f5fb276071bbd139fbf65205038664358c"
+    },
+    {
+      "case_id": "case_000130",
+      "label": "L2",
+      "source_file": "case_000130.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000130.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "293c3558a9b38318201cd3422ec57c8522484c336c6aeb6e7ffc4ad8d4fb9bed"
+    },
+    {
+      "case_id": "case_000134",
+      "label": "L2",
+      "source_file": "case_000134.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000134.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c06f07ba7fc188d391cf76e5f323e0f081281d3aac1dcb8ddf540123d9bfb8ad"
+    },
+    {
+      "case_id": "case_000135",
+      "label": "L1",
+      "source_file": "case_000135.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000135.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a38ff707c00edd04a98a9e3f10e118e5e0b274adc68521102133a7214ae1312b"
+    },
+    {
+      "case_id": "case_000136",
+      "label": "L2",
+      "source_file": "case_000136.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000136.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "ee624d3abf2e271ebeb04175d6363b11bdbb5cc920b4a659c61c83cc42e35719"
+    },
+    {
+      "case_id": "case_000138",
+      "label": "L1",
+      "source_file": "case_000138.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000138.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "28748168c90703c3c9e9163b1c45e682078e35ef71a2fd0da5ebe01671783fb8"
+    },
+    {
+      "case_id": "case_000140",
+      "label": "L2",
+      "source_file": "case_000140.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000140.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "a4b36d7f40558323acd34eb24fb4b97ef14ce47d7676b251e90bf65005849cfe"
+    },
+    {
+      "case_id": "case_000143",
+      "label": "L1",
+      "source_file": "case_000143.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000143.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "5449aaba5b099b74792888914aa5d7fc99ec14609d129060354751dfa56ac0d9"
+    },
+    {
+      "case_id": "case_000144",
+      "label": "L2",
+      "source_file": "case_000144.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000144.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "9dfb51083ec6b61b548cf8fd883316ef74649e3185bdab90269ae36abfe80888"
+    },
+    {
+      "case_id": "case_000146",
+      "label": "L1",
+      "source_file": "case_000146.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000146.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "2bad1ef263ede957f001010673a1c7b3d6e4e56904fa5f5c362b46fd83bee885"
+    },
+    {
+      "case_id": "case_000148",
+      "label": "L2",
+      "source_file": "case_000148.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000148.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e5b0d496203b11e6326bb4e6979e22bb3df7d46d9e809b795657194f896c1675"
+    },
+    {
+      "case_id": "case_000150",
+      "label": "L2",
+      "source_file": "case_000150.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000150.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "3925393e06c2895848b10c239c200f59dffe72d1e33227e1c9c41d8e7d8b4125"
+    },
+    {
+      "case_id": "case_000152",
+      "label": "L2",
+      "source_file": "case_000152.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000152.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "eada019f4dc12bcb996abd962b4c69c62a7ded129a123c3269f29352b458dc30"
+    },
+    {
+      "case_id": "case_000154",
+      "label": "L2",
+      "source_file": "case_000154.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000154.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "af264310f8b306682eb783a49790db0bb36cfa52f94b2122dcd39bce87ae6469"
+    },
+    {
+      "case_id": "case_000159",
+      "label": "L1",
+      "source_file": "case_000159.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000159.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "b376e857b2acce1b0b462c458c1a04b662a6dd10164aa6e5aac7861919ae8c45"
+    },
+    {
+      "case_id": "case_000161",
+      "label": "L1",
+      "source_file": "case_000161.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000161.json",
+      "alarm_summary": "DCN linkflap告警",
+      "physical_fingerprint_sha256": "1dd170e5fb3a000ee64293cdc8be4ec83a9493b34b15c9d818d36fd7f24efee9"
+    },
+    {
+      "case_id": "case_000164",
+      "label": "L1",
+      "source_file": "case_000164.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000164.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4988627381064cf5d80008d443ad27a4338a5a00597e04c3a684fa5b137d74ef"
+    },
+    {
+      "case_id": "case_000167",
+      "label": "L1",
+      "source_file": "case_000167.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000167.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "6e395a19de8dc376cb5e75fd0f76b1f874f30c52a8843ba79dae357be4611fc6"
+    },
+    {
+      "case_id": "case_000168",
+      "label": "L1",
+      "source_file": "case_000168.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000168.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "42982096d798d73cf6fc77a5616d56e60553da93058b6a3c2e6803dc572cb0b1"
+    },
+    {
+      "case_id": "case_000170",
+      "label": "L2",
+      "source_file": "case_000170.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000170.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a8e79a006dd39b839336b98824138f1febef3b808726d7a6b2c3ef79a3e1b11f"
+    },
+    {
+      "case_id": "case_000173",
+      "label": "L1",
+      "source_file": "case_000173.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000173.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4a61462e1855922a26de661d03a80debb2105b62644ac1bca36da1cf799b8cdb"
+    },
+    {
+      "case_id": "case_000176",
+      "label": "L1",
+      "source_file": "case_000176.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000176.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "1f5426a6560ef9747667810b279f44ffdfc7ad7ff53860a7329b59c961cad758"
+    },
+    {
+      "case_id": "case_000177",
+      "label": "L2",
+      "source_file": "case_000177.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000177.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "a1fc3a0c2da56a623a7d68ae5834aa4d15ede1e8889df1647ca162b1b912e932"
+    },
+    {
+      "case_id": "case_000181",
+      "label": "L2",
+      "source_file": "case_000181.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000181.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "17345e12758314efe2bea196528a0cb4003ae540d788c13c6aa53cbcaaa5f35c"
+    },
+    {
+      "case_id": "case_000183",
+      "label": "L2",
+      "source_file": "case_000183.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000183.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "0ec3c665e8687a2e05578cca185f7bdcef4fb3b9f4063bedc5ee40ab0b509db2"
+    },
+    {
+      "case_id": "case_000184",
+      "label": "L1",
+      "source_file": "case_000184.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000184.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "adbceacdae17213503a2c6a9b75d01941edadaec913d67f865b09d96ac2e281b"
+    },
+    {
+      "case_id": "case_000185",
+      "label": "L2",
+      "source_file": "case_000185.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000185.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "8c45b5379390fb81b56a3011896f4a6a35d5fd68f0830571c64b4be50bd46fb9"
+    },
+    {
+      "case_id": "case_000186",
+      "label": "L2",
+      "source_file": "case_000186.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000186.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "5d26b371b19dc7f7b99ef6ab2c1c4d5602e79635768b08461da7b27a9a2d5e08"
+    },
+    {
+      "case_id": "case_000189",
+      "label": "L1",
+      "source_file": "case_000189.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000189.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "380e39629a6fa0a007ea352a97d0a69d080275f4e345ad0c84e02d84ac0bfa66"
+    },
+    {
+      "case_id": "case_000190",
+      "label": "L1",
+      "source_file": "case_000190.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000190.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "ddaa39e7fb65df80a3765d8cb9ed03eef22556f36dc34d2d6882c5940bfbc6e0"
+    },
+    {
+      "case_id": "case_000191",
+      "label": "L2",
+      "source_file": "case_000191.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000191.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "9ccb5698942a05a67d58dad13621d33020bc67faa5cfa69c8447a06bbc02d2f5"
+    },
+    {
+      "case_id": "case_000192",
+      "label": "L2",
+      "source_file": "case_000192.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000192.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "929f3a267ad6a0e2cdf6454aef9b97277d1c239bf09c9967f4f07aa671c4d843"
+    },
+    {
+      "case_id": "case_000195",
+      "label": "L1",
+      "source_file": "case_000195.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000195.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4ecf08e767447b14ed52aed7c68f2560907e49478b0848aff7e629ab5bfb653b"
+    },
+    {
+      "case_id": "case_000199",
+      "label": "L2",
+      "source_file": "case_000199.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000199.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a96bf26613639090334f51f31acfc791140c4408997835b5ca02e9baff47e5ab"
+    },
+    {
+      "case_id": "case_000202",
+      "label": "L2",
+      "source_file": "case_000202.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000202.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "efabf2c4385df62f384295eaa6dc659bafa74acdbf26fffc403e398faf1df18b"
+    },
+    {
+      "case_id": "case_000204",
+      "label": "L1",
+      "source_file": "case_000204.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000204.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "aad61797be7e5489facbbac22544fa6c14751487eafaed0c2a0591777b91fd7d"
+    },
+    {
+      "case_id": "case_000205",
+      "label": "L1",
+      "source_file": "case_000205.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000205.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "33eed657c9ad9adb0598ed4d35b086056fcf17003e12c4109d1ed0443fdbe299"
+    },
+    {
+      "case_id": "case_000206",
+      "label": "L2",
+      "source_file": "case_000206.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000206.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "822aab61ab4e4f6205789f76f2b46fcf5b244b79c45c1160e84d01b275460c3e"
+    },
+    {
+      "case_id": "case_000207",
+      "label": "L1",
+      "source_file": "case_000207.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000207.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "709abf2c12d7cf8769e8a6c19aedc451c9048601a318560d07cc627cc67474d6"
+    },
+    {
+      "case_id": "case_000208",
+      "label": "L2",
+      "source_file": "case_000208.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000208.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "9f3384d11abd0626adfb1eb11c16d5634b0306c1693ce17c7582307a2d7c7482"
+    },
+    {
+      "case_id": "case_000209",
+      "label": "L2",
+      "source_file": "case_000209.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000209.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "ad94475e8d1400fed5cd4f50a30be37b1a89d628c4e2ae155f2b33764b978b32"
+    },
+    {
+      "case_id": "case_000210",
+      "label": "L1",
+      "source_file": "case_000210.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000210.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "e8a945cd5f595138f17f841360c6c2049d5c1652414715f69146229c6f307bf6"
+    },
+    {
+      "case_id": "case_000211",
+      "label": "L2",
+      "source_file": "case_000211.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000211.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "11efe0a449d4d0429096f69d3ca47f99f21830267ea24ef80eaa9c6985b5d247"
+    },
+    {
+      "case_id": "case_000213",
+      "label": "L1",
+      "source_file": "case_000213.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000213.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "76cd290965ab893f3291bc65d00e789a5f94510e27943e4993991e904b6cd598"
+    },
+    {
+      "case_id": "case_000214",
+      "label": "L2",
+      "source_file": "case_000214.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000214.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "bf2e43dad78921753eee0e9a9815a5cf5696852cbed8c3151f51c5d086d9e7ac"
+    },
+    {
+      "case_id": "case_000215",
+      "label": "L1",
+      "source_file": "case_000215.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000215.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e1ab4d92b4d38e1b8d2964b2e7c560952be16e16f983b849b147cb768f59cd39"
+    },
+    {
+      "case_id": "case_000216",
+      "label": "L2",
+      "source_file": "case_000216.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000216.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "55da1f17a0a8f4800aeec140c9d6e2bc3eaa049e52e5a6136a5f077891a67507"
+    },
+    {
+      "case_id": "case_000217",
+      "label": "L1",
+      "source_file": "case_000217.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000217.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "80042c5cc3ef137f7248cd63846410035b3679851f6ff132fb91a6c41fda926e"
+    },
+    {
+      "case_id": "case_000218",
+      "label": "L2",
+      "source_file": "case_000218.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000218.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "5e12abe2f2bb9909d4238b759d45ea5c6385b2219f21703c23d647a99cd606d4"
+    },
+    {
+      "case_id": "case_000219",
+      "label": "L2",
+      "source_file": "case_000219.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000219.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "9229a0874ef8d291cefc55042cc3d2419a58b4bde97efcb6a15bcee8c73c37da"
+    },
+    {
+      "case_id": "case_000220",
+      "label": "L2",
+      "source_file": "case_000220.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000220.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "e80efdef4f9daa9566b4551d1b35f12c2d346b165e362249813c63a679adf36c"
+    },
+    {
+      "case_id": "case_000223",
+      "label": "L1",
+      "source_file": "case_000223.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000223.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "01911c61d320e7dfa7d890e051d7b4b21a3e39439a0665f296939a6c740f8a36"
+    },
+    {
+      "case_id": "case_000225",
+      "label": "L1",
+      "source_file": "case_000225.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000225.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "4daa9f64fe3a34a2b3c55448a33a6a94820661a5ea2ad1d4ce2fe1dde93996ab"
+    },
+    {
+      "case_id": "case_000226",
+      "label": "L1",
+      "source_file": "case_000226.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000226.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "d214fa1cb0b9364af98e2075f1bab6ea18bb331160cd404985005a2ec136eee1"
+    },
+    {
+      "case_id": "case_000227",
+      "label": "L2",
+      "source_file": "case_000227.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000227.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "bc3ec6756160d5e778b0d90585b3a3852ef9aa18a8fd1e2331004805a220181e"
+    },
+    {
+      "case_id": "case_000228",
+      "label": "L2",
+      "source_file": "case_000228.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000228.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "a02df54de0fb307d91756f87fe7f6c6045159031eae936e518f3041555f677c3"
+    },
+    {
+      "case_id": "case_000230",
+      "label": "L2",
+      "source_file": "case_000230.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000230.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "b9494b91439a18f63df56ebc0e6ed78729399a37d264f4bfa9b1adbf1486131d"
+    },
+    {
+      "case_id": "case_000231",
+      "label": "L2",
+      "source_file": "case_000231.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000231.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "57fc4a3f66abfcdce7f3673ed45f0ad8147ac468ee70ab6528cc6ece40f24483"
+    },
+    {
+      "case_id": "case_000232",
+      "label": "L2",
+      "source_file": "case_000232.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000232.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "19c9019af37f84f8920f25e10aac08fcc32c0bd765d4ed69a9d3d130204f332e"
+    },
+    {
+      "case_id": "case_000233",
+      "label": "L2",
+      "source_file": "case_000233.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000233.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "30342b40746d983df476373764d746ecbc432946e7507427e8f00acba01f254a"
+    },
+    {
+      "case_id": "case_000234",
+      "label": "L2",
+      "source_file": "case_000234.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000234.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "20b989881d3aef8427a7f129850b8e3975f15b427d31946f4ea9679d5c5ff5dd"
+    },
+    {
+      "case_id": "case_000236",
+      "label": "L2",
+      "source_file": "case_000236.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000236.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "f365d48bf88b9dcc9e8cf668fdf86762bb9e97b2230296e3cd2b797f5c46c2f5"
+    },
+    {
+      "case_id": "case_000237",
+      "label": "L2",
+      "source_file": "case_000237.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000237.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "739e47bb34c53ab4cb3b57af41304344d8b7d6ee60428214691afc70df019d87"
+    },
+    {
+      "case_id": "case_000238",
+      "label": "L1",
+      "source_file": "case_000238.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000238.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "43f79035610f36244ef1ca59a2be01de45242e2333a65286d98313f540eb1d6e"
+    },
+    {
+      "case_id": "case_000241",
+      "label": "L2",
+      "source_file": "case_000241.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000241.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "df6d44fa0439298b3c58f4d263116eb6983100495ac956b1e79f316cf68cabf6"
+    },
+    {
+      "case_id": "case_000242",
+      "label": "L2",
+      "source_file": "case_000242.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000242.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "204018861ce2e397ebbf50875f8e7f8a3cf32f7f68eda8ee4bedd78afeaf132c"
+    },
+    {
+      "case_id": "case_000243",
+      "label": "L2",
+      "source_file": "case_000243.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000243.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "0e3a0da5fcc6289ea6add0243f06c3660a72c5dd1740d8ee0f4920f19d0a674e"
+    },
+    {
+      "case_id": "case_000244",
+      "label": "L1",
+      "source_file": "case_000244.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000244.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "8a61ff4b203a10e8f64a4d87a2c1e8556ca733cbc9561571286fa9466012aa5e"
+    },
+    {
+      "case_id": "case_000245",
+      "label": "L2",
+      "source_file": "case_000245.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000245.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "512831c0df9780927dc8b248e4edd514cddfe18f81c8a0f933b01c9a0622731d"
+    },
+    {
+      "case_id": "case_000248",
+      "label": "L1",
+      "source_file": "case_000248.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000248.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "5bfeda04ccb328a6ef96ad00202d2220366c9accf26ee8f9fdd318ffa5de168d"
+    },
+    {
+      "case_id": "case_000249",
+      "label": "L2",
+      "source_file": "case_000249.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000249.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "324d1b518ecb55368201e6fe95ad4295f82de4b6ae4a2f3d41303f3d4b8a9ed2"
+    },
+    {
+      "case_id": "case_000251",
+      "label": "L1",
+      "source_file": "case_000251.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000251.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "f5695fc02153b57648633e7421e95f9a73cffd5f19e162f5c2250ad26cba839e"
+    },
+    {
+      "case_id": "case_000252",
+      "label": "L2",
+      "source_file": "case_000252.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000252.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "b593fc94ed9f8a636f602a80249b9d8f90ad3d30f9ff387697ff13b35787e686"
+    },
+    {
+      "case_id": "case_000253",
+      "label": "L2",
+      "source_file": "case_000253.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000253.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "3c8245f5fa8d69da570a1cc5d2f14de85168d5a3a2b4c15f457172c5f7f824be"
+    },
+    {
+      "case_id": "case_000254",
+      "label": "L1",
+      "source_file": "case_000254.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000254.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "92f4a0469e4120d24c499707fad6cf4adee869cd932a638b9090cdf14d4265eb"
+    },
+    {
+      "case_id": "case_000257",
+      "label": "L1",
+      "source_file": "case_000257.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000257.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "f5aca44a203e3882872c41feac41dad534ddd7590d33b45df6aa8bce2ec06a9d"
+    },
+    {
+      "case_id": "case_000258",
+      "label": "L2",
+      "source_file": "case_000258.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000258.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "83f10f3eac63a0a94a2c51d9c69a03f26217816b561822ab674e05527f39c1ab"
+    },
+    {
+      "case_id": "case_000259",
+      "label": "L1",
+      "source_file": "case_000259.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000259.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "492b1d193c2034fe8fcf29e32efa43cc85e89b9b847fa2cd1c8fdadb4e81182a"
+    },
+    {
+      "case_id": "case_000262",
+      "label": "L2",
+      "source_file": "case_000262.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000262.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "d153783a360599c7166385a35d75dcaf6b4afeb330645f1f04bd757afacd976e"
+    },
+    {
+      "case_id": "case_000263",
+      "label": "L2",
+      "source_file": "case_000263.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000263.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "fa389ceddc24ea2f10a941ec740986c1a373b1cf91d74eda44be74fa9958b582"
+    },
+    {
+      "case_id": "case_000265",
+      "label": "L2",
+      "source_file": "case_000265.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000265.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "9c659c09fc6e6bff489b8961482c7fa42b8c39c346a326d7b8757cb4d11912fa"
+    },
+    {
+      "case_id": "case_000268",
+      "label": "L2",
+      "source_file": "case_000268.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000268.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "3be372652e4e11f0c2856887b66575e77e46d46f287808f591a3fb563fe0ce5c"
+    },
+    {
+      "case_id": "case_000270",
+      "label": "L2",
+      "source_file": "case_000270.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000270.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "1aabe6d54b6549f468abf5f27097caf45d6e5e5730f3c944106bb7b09dc72eed"
+    },
+    {
+      "case_id": "case_000271",
+      "label": "L1",
+      "source_file": "case_000271.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000271.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "80225cc0f32927224e4ea05c086b26d68fdacaae4d35b30b0f3c897a449fe333"
+    },
+    {
+      "case_id": "case_000272",
+      "label": "L2",
+      "source_file": "case_000272.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000272.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "c468d68ed3da4aa0c9987e1656a0b06ebac61cc37419c0170e18fbc59d6058d0"
+    },
+    {
+      "case_id": "case_000273",
+      "label": "L2",
+      "source_file": "case_000273.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000273.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "efc21944405daa9dfe53a4b79d667054608ebd1b9fc590dae51b6846856443df"
+    },
+    {
+      "case_id": "case_000275",
+      "label": "L2",
+      "source_file": "case_000275.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000275.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "9b2f5c37faf1c4a9d16054f47197e73567bbc904bc65a91ddee7c3c7a0b8f0cc"
+    },
+    {
+      "case_id": "case_000276",
+      "label": "L2",
+      "source_file": "case_000276.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000276.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c44847d9ff68e4e2c7cb5f7fd774aa36ca51bc473b58948a78d74044f0c42ad0"
+    },
+    {
+      "case_id": "case_000277",
+      "label": "L2",
+      "source_file": "case_000277.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000277.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "cc4deb4fc0010e0ad41839d1d0ffe0c8693f3ae3b049e7bdab1958ae7a760074"
+    },
+    {
+      "case_id": "case_000278",
+      "label": "L2",
+      "source_file": "case_000278.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000278.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "800aa74fc761a699ac8e16f55b1cbe290ca45a738d704586520ebe8788fa3e52"
+    },
+    {
+      "case_id": "case_000280",
+      "label": "L2",
+      "source_file": "case_000280.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000280.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "00c120813b900620a25ec2c28ba0b27f47b965cfa7626c894d547b5e634e8182"
+    },
+    {
+      "case_id": "case_000281",
+      "label": "L2",
+      "source_file": "case_000281.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000281.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "39638c7e1450e38a9a5d654cc48a24225d2ca17cb7810719bd6fab939e9103ce"
+    },
+    {
+      "case_id": "case_000282",
+      "label": "L1",
+      "source_file": "case_000282.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000282.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "75f81d23ec10324a3e2084b06e0470c7a065c550ca8ed0a7febd92f4d9c52e5d"
+    },
+    {
+      "case_id": "case_000283",
+      "label": "L2",
+      "source_file": "case_000283.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000283.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c9344634d4077b29761d3dae12c08047fd59fb363eab85a8331ecd20647404b1"
+    },
+    {
+      "case_id": "case_000285",
+      "label": "L2",
+      "source_file": "case_000285.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000285.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "67600aedb8118070ffd65791429456a871aa10b7dff0d66257f4c3ac057186f0"
+    },
+    {
+      "case_id": "case_000286",
+      "label": "L2",
+      "source_file": "case_000286.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000286.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "26b74025aaa8141a40c37008ba2d3c85c3d6a152b0c609430309a933836abea5"
+    },
+    {
+      "case_id": "case_000289",
+      "label": "L1",
+      "source_file": "case_000289.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000289.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "7231b08a8d581861d26df28e0fe058c48a16d99ccdb0f0d0c71a41ea1668e0ad"
+    },
+    {
+      "case_id": "case_000291",
+      "label": "L1",
+      "source_file": "case_000291.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000291.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "524139719783b5a781b9f4bcb70b891eef62f54e86ce9378a16de2f5fa36ecdc"
+    },
+    {
+      "case_id": "case_000292",
+      "label": "L1",
+      "source_file": "case_000292.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000292.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "c272a521767d57d409651482a687d1e168e01203e309b8ce32b847680f33e4c0"
+    },
+    {
+      "case_id": "case_000293",
+      "label": "L2",
+      "source_file": "case_000293.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000293.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "53c24412d9ddf9a728d1913876a799ae309e6048bc60cd99258aee38441318d1"
+    },
+    {
+      "case_id": "case_000294",
+      "label": "L1",
+      "source_file": "case_000294.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000294.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "2b3f1ea0a233edaf1409373e792db630d996cb39e2b3b6c3a0aa4c7240a3eadf"
+    },
+    {
+      "case_id": "case_000295",
+      "label": "L2",
+      "source_file": "case_000295.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000295.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "4ed954ac2ff2c8366436d7d519b6e57ea73a5e17c526881f0564edbb4d19c10c"
+    },
+    {
+      "case_id": "case_000296",
+      "label": "L2",
+      "source_file": "case_000296.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000296.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "7107909ee427bf90de5b09effda9225927dd1fc963cba8d9952956adb7025809"
+    },
+    {
+      "case_id": "case_000297",
+      "label": "L1",
+      "source_file": "case_000297.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000297.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "54bffc69b99372ad9af0196dc5b4b572c047d16ae355cc3335891914afae3666"
+    },
+    {
+      "case_id": "case_000300",
+      "label": "L2",
+      "source_file": "case_000300.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000300.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "6b1513321d75656f59e56f10a7f5db5e3cab578f6523b5b7120814a46b74fbe7"
+    },
+    {
+      "case_id": "case_000301",
+      "label": "L2",
+      "source_file": "case_000301.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000301.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "14a4a51c0e64968d3f55e03ca319ccb551ccc29a5ce9cdd034ea77196389da55"
+    },
+    {
+      "case_id": "case_000309",
+      "label": "L1",
+      "source_file": "case_000309.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000309.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "68fc1cf238de67b8f7e1889892810d82808c80c13f3e379c387de22515e16aaa"
+    },
+    {
+      "case_id": "case_000310",
+      "label": "L1",
+      "source_file": "case_000310.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000310.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "2b5bceac1d5ed5bbe96ef1e133a421c00426b28bdd54bf202fcf905fd643203d"
+    },
+    {
+      "case_id": "case_000313",
+      "label": "L2",
+      "source_file": "case_000313.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000313.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "7e2f0484bb3e70f740d23d37e97af8ad4662d6a51c67141c4fc8bfa3ee38080e"
+    },
+    {
+      "case_id": "case_000317",
+      "label": "L1",
+      "source_file": "case_000317.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000317.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "01b8ae5f76d32b752774fd509dbff92fa647fe0ab297b059ef98cf1e860fa572"
+    },
+    {
+      "case_id": "case_000318",
+      "label": "L2",
+      "source_file": "case_000318.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000318.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "7fa564fef7fa60c37e7d177543e06e60c8b683581cbd4294eedb0f4504ce9cd8"
+    },
+    {
+      "case_id": "case_000320",
+      "label": "L2",
+      "source_file": "case_000320.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000320.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "f30d93174a361176846e7f832ead31a6048d6a62000f6334db4b3d22b1e77d1d"
+    },
+    {
+      "case_id": "case_000321",
+      "label": "L1",
+      "source_file": "case_000321.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000321.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "2e81f9aa55fc5d74ba6ff59eccea53b2d0fd3c7fc137619500a0237f3a2a1433"
+    },
+    {
+      "case_id": "case_000322",
+      "label": "L2",
+      "source_file": "case_000322.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000322.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "99d29b3ebf28aebc67dc5e8ce5581beba8516f3e553d17709f05e40256e5c3c7"
+    },
+    {
+      "case_id": "case_000323",
+      "label": "L1",
+      "source_file": "case_000323.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000323.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "2e9197898c5bf9b9e90af70de5d459866eafa9bf2fb0201a47b5f823c7cb4398"
+    },
+    {
+      "case_id": "case_000327",
+      "label": "L2",
+      "source_file": "case_000327.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000327.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "54d3675dfbb3a99e6738e1247f55b007c9aac26d7efc92488d6398f98feb16e1"
+    },
+    {
+      "case_id": "case_000330",
+      "label": "L1",
+      "source_file": "case_000330.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000330.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "26ade235e6ec6b11e978c7a3c61fcc34f1b802ef22798e2d27eacb1d2d73a628"
+    },
+    {
+      "case_id": "case_000333",
+      "label": "L2",
+      "source_file": "case_000333.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000333.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "3ca497f28758291de1092c7a1b0f049eb5e5346cf1352ca273ecd04a994fa241"
+    },
+    {
+      "case_id": "case_000335",
+      "label": "L1",
+      "source_file": "case_000335.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000335.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "12bf5cdc68db9db3066841e0be3170689bc3cfa1693c038374600245b0150ba7"
+    },
+    {
+      "case_id": "case_000338",
+      "label": "L2",
+      "source_file": "case_000338.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000338.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "33835ce5af66a90de373cc6c7f03e6ec74ad470390299bfb5595ab42026fc135"
+    },
+    {
+      "case_id": "case_000339",
+      "label": "L2",
+      "source_file": "case_000339.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000339.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "02a385fe8b160b5626fe1f92a469b13437249b700a3cff6299c8f9f5914daaa0"
+    },
+    {
+      "case_id": "case_000340",
+      "label": "L2",
+      "source_file": "case_000340.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000340.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "4012eaee8093385298c77f32eb26a28a905dd42f48e6d1934deb2cee8a5e19d6"
+    },
+    {
+      "case_id": "case_000344",
+      "label": "L2",
+      "source_file": "case_000344.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000344.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "e859483d52305acc2d30b566e92f70030c6338416c91ba88413fab2134add27b"
+    },
+    {
+      "case_id": "case_000345",
+      "label": "L1",
+      "source_file": "case_000345.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000345.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "7097a46d7f4e81d956a37e55e7a00354af2235830764f10409e58a785fa5ae11"
+    },
+    {
+      "case_id": "case_000346",
+      "label": "L2",
+      "source_file": "case_000346.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000346.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "1a24b8cf833f6739a902776ffb98c4c33fea7145f06d767f7e6c7e246eb78152"
+    },
+    {
+      "case_id": "case_000347",
+      "label": "L1",
+      "source_file": "case_000347.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000347.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "f6d0dd2f3957ebb0118bb04102d0424045f208b5b21b9e2d049b5217065909fb"
+    },
+    {
+      "case_id": "case_000354",
+      "label": "L1",
+      "source_file": "case_000354.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000354.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "35cf5bbb8d811b57d663689402945115fc1136b21828563b1800c3c214d38983"
+    },
+    {
+      "case_id": "case_000355",
+      "label": "L1",
+      "source_file": "case_000355.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000355.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "98cad988265d17cca78fb05b62126c44cc4adf6942890b8c18483f84d9d22f2b"
+    },
+    {
+      "case_id": "case_000357",
+      "label": "L2",
+      "source_file": "case_000357.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000357.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "1301b211d5e38a1233a7e3559a062d07c9732a5cb24e15ef6e59b9b8d8713411"
+    },
+    {
+      "case_id": "case_000358",
+      "label": "L2",
+      "source_file": "case_000358.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000358.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "fb631cae231cf4fbf5c47f5c97f3ca37827d6b3e8cd5f6a95fb755a9e82ecf8e"
+    },
+    {
+      "case_id": "case_000359",
+      "label": "L1",
+      "source_file": "case_000359.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000359.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "c74019361870cdcbc69138e03e688bac21c1f2894ad00804b11f54cfec24122e"
+    },
+    {
+      "case_id": "case_000360",
+      "label": "L2",
+      "source_file": "case_000360.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000360.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "914bec7d79f74787eefde6afed74c9204488b1c138e44d2ab71ab5afa5c649cf"
+    },
+    {
+      "case_id": "case_000361",
+      "label": "L2",
+      "source_file": "case_000361.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000361.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "0a46da8ebe423cbd57e2667fca8f6d80b19fbd627c8fbf45ed1cf091bbf00758"
+    },
+    {
+      "case_id": "case_000363",
+      "label": "L1",
+      "source_file": "case_000363.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000363.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "1ac0f5dd03bcfae744fe7a0f3f82a17e6c0298d525e19e4fe6745074e9b20ae1"
+    },
+    {
+      "case_id": "case_000364",
+      "label": "L1",
+      "source_file": "case_000364.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000364.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "ac6818efcc45c1abf4a9967cf4376f44f417e0ece0f0258a03f12116dabbb318"
+    },
+    {
+      "case_id": "case_000365",
+      "label": "L1",
+      "source_file": "case_000365.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000365.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "f64b61b2ad7c6f0a26c7722f6d9dc06902643c748919491448166fdeaaeece0d"
+    },
+    {
+      "case_id": "case_000367",
+      "label": "L1",
+      "source_file": "case_000367.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000367.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e3b746c1d59c18cc61a4ac7f54b50d532f38c67ad5920c5fc66e0979b8dc352a"
+    },
+    {
+      "case_id": "case_000368",
+      "label": "L1",
+      "source_file": "case_000368.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000368.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "96d5bdce4b342fc9f30e59104b490964230724e7b8fce5f4871dd432c4c1dd59"
+    },
+    {
+      "case_id": "case_000369",
+      "label": "L2",
+      "source_file": "case_000369.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000369.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c3c4087a35cb9fa06e500297a8d5bb7765a518d494a682310add7f4532a9511d"
+    },
+    {
+      "case_id": "case_000373",
+      "label": "L2",
+      "source_file": "case_000373.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000373.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "18e5722d753acaf021456e7f84ec99e3059f38793555238d2049a9f44bfc48a1"
+    },
+    {
+      "case_id": "case_000375",
+      "label": "L2",
+      "source_file": "case_000375.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000375.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "757aaac388932780797381bbe8ba7bd31e809c1d3d98363e7ea187e3a6d15a5d"
+    },
+    {
+      "case_id": "case_000376",
+      "label": "L1",
+      "source_file": "case_000376.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000376.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "1564b614bf622e0e756256b3dbd9da8b86b561e6d234ecf2e420303eb63094e6"
+    },
+    {
+      "case_id": "case_000381",
+      "label": "L2",
+      "source_file": "case_000381.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000381.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "6f227d1a0c3bc42c97161e441848c5824bd38ef7442bfbc1ce35fa208f2bd76b"
+    },
+    {
+      "case_id": "case_000382",
+      "label": "L1",
+      "source_file": "case_000382.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000382.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "32e2a42657eed813ca4ddef642074b3e56d19e87d5e319010a82d7828b05e7a3"
+    },
+    {
+      "case_id": "case_000383",
+      "label": "L2",
+      "source_file": "case_000383.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000383.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "e9ed10b646779254b8d802e87df78a4da65e56cb63181963290d9871a632656f"
+    },
+    {
+      "case_id": "case_000384",
+      "label": "L2",
+      "source_file": "case_000384.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000384.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "ee81f728476a7082e1c9c9cbcaa04cfa6718ca33c2251520705c24525cd5982e"
+    },
+    {
+      "case_id": "case_000386",
+      "label": "L2",
+      "source_file": "case_000386.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000386.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "2e9c107985087683726d7a86f9980912c6520040fe4c038d7595da9edff72cab"
+    },
+    {
+      "case_id": "case_000387",
+      "label": "L1",
+      "source_file": "case_000387.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000387.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "538922c3fb539d0357a5eab54c4b554e31db58edba785b9bd82ca1d161e18ad6"
+    },
+    {
+      "case_id": "case_000389",
+      "label": "L1",
+      "source_file": "case_000389.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000389.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a6c0f974d24e2a70c5400a75d04dc47db2aa5a4dcfa84ca3352babfda067279e"
+    },
+    {
+      "case_id": "case_000396",
+      "label": "L2",
+      "source_file": "case_000396.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000396.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "62fad4ad91eae47e76ae0f35c5bd421108b7165854ac5241f2b503f723912f15"
+    },
+    {
+      "case_id": "case_000397",
+      "label": "L1",
+      "source_file": "case_000397.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000397.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "bc63204d04c8f3a094f2b7c0bd69678261e754ee435505261ff2a8a03c7e3c78"
+    },
+    {
+      "case_id": "case_000399",
+      "label": "L1",
+      "source_file": "case_000399.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000399.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "7792b0afe1958f73983c16a83842ff15ee09177ba92ec722ef953ccadec18f2f"
+    },
+    {
+      "case_id": "case_000401",
+      "label": "L2",
+      "source_file": "case_000401.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000401.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "7f487ced084fb5570d08aee3e098cb66198def7ee380ddf8d08c1855a9659e30"
+    },
+    {
+      "case_id": "case_000402",
+      "label": "L2",
+      "source_file": "case_000402.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000402.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "16c502bc9cf5a1dc4d1eb08d97df97bf840fca67f5d8c471b5be7a5f2a6eae1b"
+    },
+    {
+      "case_id": "case_000405",
+      "label": "L2",
+      "source_file": "case_000405.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000405.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "03b40d74107274ec2eff041292a42c7046909b506851325de42c166ad423bdba"
+    },
+    {
+      "case_id": "case_000407",
+      "label": "L2",
+      "source_file": "case_000407.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000407.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "f734468136bbfdd66ece7bd6d952b74a269cbe2504ee59e78e6a0599b70d6b8e"
+    },
+    {
+      "case_id": "case_000408",
+      "label": "L2",
+      "source_file": "case_000408.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000408.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "e2bd65d849d568a0769cc13cbb95f9c90b4e72328c2500e7324b495a0d5f084e"
+    },
+    {
+      "case_id": "case_000409",
+      "label": "L1",
+      "source_file": "case_000409.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000409.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "e356360bc6789ec27cc008d7c7dadca28ac1e49c43473fdfba11d89f8aef2944"
+    },
+    {
+      "case_id": "case_000412",
+      "label": "L2",
+      "source_file": "case_000412.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000412.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "a149f03759f4a53c8797bd2151539a952a9016860724ddd8caeadbf8fa7dc71d"
+    },
+    {
+      "case_id": "case_000413",
+      "label": "L2",
+      "source_file": "case_000413.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000413.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "fe8383ff91a5ae5acc80be01cef27a2c4101591eab6b5040021c74f2554efdec"
+    },
+    {
+      "case_id": "case_000418",
+      "label": "L2",
+      "source_file": "case_000418.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000418.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "216f870e574a89e3faa4a3366ab3cf33cd0eb7d0a744f9690580a1d3bb0f453e"
+    },
+    {
+      "case_id": "case_000421",
+      "label": "L1",
+      "source_file": "case_000421.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000421.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "756d1de1c5e41a30576ef480d00a64bd0806401b0c4b9a3b4f1965fabf2ea2b8"
+    },
+    {
+      "case_id": "case_000422",
+      "label": "L2",
+      "source_file": "case_000422.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000422.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "32ef175f4bf763147e9db89a1ec8b96bebca96c5bf2119575fa65e665ce92f5a"
+    },
+    {
+      "case_id": "case_000424",
+      "label": "L2",
+      "source_file": "case_000424.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000424.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "e5489d6f9f667c9834c79d1b289de88bcbeff98d5de02c1cc4354f8a2d2022dc"
+    },
+    {
+      "case_id": "case_000425",
+      "label": "L2",
+      "source_file": "case_000425.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000425.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "a45ad65119b3a35cd2defc6c3aa6293b3d4d0a6b066b4dda6e033c225ec51144"
+    },
+    {
+      "case_id": "case_000428",
+      "label": "L1",
+      "source_file": "case_000428.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000428.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "effa54c1a5e7e89cc0849906c17205b9a4ad197f9a7f41e894a63fa15bc54287"
+    },
+    {
+      "case_id": "case_000429",
+      "label": "L2",
+      "source_file": "case_000429.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000429.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "97660b6290476536fd6e8621b1f9c5999222558802bbb420d15302515dbc7f34"
+    },
+    {
+      "case_id": "case_000430",
+      "label": "L2",
+      "source_file": "case_000430.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000430.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "e4b73ab268e5c93f438d8f765e8ec2fdeae8989525844b818ad01b4ea72685ca"
+    },
+    {
+      "case_id": "case_000431",
+      "label": "L1",
+      "source_file": "case_000431.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000431.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "1e6bae4039aa4ea67764d203b3c0ef800ead08c393145f8fa0c1c00cfe0c2f48"
+    },
+    {
+      "case_id": "case_000438",
+      "label": "L1",
+      "source_file": "case_000438.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000438.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "63944b45fb4972431816f98d0ebef44cf2b5d83fb446c81e19af1f23775a3eaa"
+    },
+    {
+      "case_id": "case_000441",
+      "label": "L1",
+      "source_file": "case_000441.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000441.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "a2efa19516022cfc4476a435ad4eb6f4ccc01065054fbcafc9bdaca9abb40103"
+    },
+    {
+      "case_id": "case_000442",
+      "label": "L1",
+      "source_file": "case_000442.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000442.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧_DCNOM",
+      "physical_fingerprint_sha256": "bb9f6b94e5260fabd252c0cab068c6d7e08bacdfba5fed0a5e55d20b5a2da007"
+    },
+    {
+      "case_id": "case_000444",
+      "label": "L2",
+      "source_file": "case_000444.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000444.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "f551bc8a05f6a2f0da8afc8cdade63be83a1ad3190a5d91336d765e9868fd5eb"
+    },
+    {
+      "case_id": "case_000446",
+      "label": "L1",
+      "source_file": "case_000446.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000446.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误包数过高500K-网络侧",
+      "physical_fingerprint_sha256": "fef0552549ac3110f1375347453871c7f11cbdb5c41448d38d1b75ca869759a8"
+    },
+    {
+      "case_id": "case_000450",
+      "label": "L2",
+      "source_file": "case_000450.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000450.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "efa4b37e09f71b8e08ef23454809e8f648fbe521bf7b29b8b505f864ed493c39"
+    },
+    {
+      "case_id": "case_000452",
+      "label": "L2",
+      "source_file": "case_000452.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000452.json",
+      "alarm_summary": "DCN-AI超平面-频繁升降lane-网络侧",
+      "physical_fingerprint_sha256": "667bfe6fa12574b43cf3f70059217dd6c7135d44bb783c00b0e6218f164e618f"
+    },
+    {
+      "case_id": "case_000454",
+      "label": "L2",
+      "source_file": "case_000454.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000454.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "07a2b1026804e07c0331b38a08cdf758c4a3b90086d670c5475ca5476e532c43"
+    },
+    {
+      "case_id": "case_000455",
+      "label": "L1",
+      "source_file": "case_000455.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000455.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "3b5051adfd741efb945b403604feb1fc319414411d7f700fee63cde1023ea7a0"
+    },
+    {
+      "case_id": "case_000458",
+      "label": "L2",
+      "source_file": "case_000458.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000458.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "c0a63c67df6c4d6520c61a910781fe2bbc3708eed914a269220b1f8d5c6099a0"
+    },
+    {
+      "case_id": "case_000460",
+      "label": "L2",
+      "source_file": "case_000460.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000460.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "6b1aaa40f0be937ae2f621d40232839ab2077dc3f391418c5ccc9ab3b8d6a3d7"
+    },
+    {
+      "case_id": "case_000462",
+      "label": "L2",
+      "source_file": "case_000462.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000462.json",
+      "alarm_summary": "DCN-AI超平面-入方向错误报文速率过高-网络侧",
+      "physical_fingerprint_sha256": "20adc8252aa59b0a65c48e6eab3ac49012b343135cd298217dd627cfde02a51e"
+    },
+    {
+      "case_id": "case_000463",
+      "label": "L2",
+      "source_file": "case_000463.json",
+      "source_path": "datasets/all_data_rca_v2_stratified_60_40_seed42/case_000463.json",
+      "alarm_summary": "DCN-AI超平面-接口降lane-网络侧",
+      "physical_fingerprint_sha256": "98a2fe5bcedd1a8a4a2faafd73ff211fe7507d68e89df8375169c0fa82da2112"
+    }
+  ]
+}

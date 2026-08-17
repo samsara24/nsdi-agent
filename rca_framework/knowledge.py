@@ -18,6 +18,12 @@ from .anomaly import ThresholdModel, fit_thresholds
 from .branches import fit_calibration, handle_many
 from .branches.base import BranchCalibration
 from .constraints.library import CONSTRAINT_LIBRARY
+from .decision_tree import (
+    NumericDecisionTree,
+    fit_numeric_decision_tree,
+    numeric_features_from_pack,
+    numeric_features_from_packs,
+)
 from .decision import (
     DEFAULT_DECISION_POLICY,
     DecisionPolicy,
@@ -39,6 +45,13 @@ from .sop import LearnedSOP, learn_sop
 KNOWLEDGE_BUNDLE_SCHEMA = "offline-knowledge-bundle-v1"
 
 
+def _model_from_dict(value: Mapping[str, Any]) -> Any:
+    version = str(value.get("version", ""))
+    if version.startswith("numeric-decision-tree"):
+        return NumericDecisionTree.from_dict(value)
+    return LearnedSOP.from_dict(value)
+
+
 @dataclass(frozen=True)
 class TrainingKnowledgeArtifacts:
     """LLM-assisted train-only build logs; raw traces live outside the bundle."""
@@ -56,7 +69,7 @@ class OfflineKnowledgeBundle:
     thresholds: ThresholdModel
     feature_model: FeatureModel
     graph: EvidenceGraph
-    sop: LearnedSOP
+    sop: Any
     training_features: Tuple[CaseFeatures, ...]
     branch_calibrations: Mapping[str, BranchCalibration]
     llm_calibrations: Mapping[str, LLMCalibration] = field(default_factory=dict)
@@ -128,7 +141,7 @@ class OfflineKnowledgeBundle:
             thresholds=ThresholdModel.from_dict(dict(value["thresholds"])),
             feature_model=FeatureModel.from_dict(dict(value["feature_model"])),
             graph=EvidenceGraph.from_dict(value["graph"]),
-            sop=LearnedSOP.from_dict(value["sop"]),
+            sop=_model_from_dict(value["sop"]),
             training_features=tuple(
                 CaseFeatures.from_dict(dict(item))
                 for item in value.get("training_features", ())
@@ -183,7 +196,10 @@ class OfflineKnowledgeBundle:
             raise ValueError("knowledge bundle feature dictionary hash does not match current code")
         if self.feature_model.dictionary_hash != self.graph.dictionary_hash:
             raise ValueError("feature model and evidence graph dictionary hashes differ")
-        if self.sop.dictionary_hash != self.graph.dictionary_hash:
+        if (
+            not str(getattr(self.sop, "version", "")).startswith("numeric-decision-tree")
+            and self.sop.dictionary_hash != self.graph.dictionary_hash
+        ):
             raise ValueError("learned SOP and evidence graph dictionary hashes differ")
         feature_ids = self.train_case_ids
         graph_ids = tuple(item.case_id for item in self.graph.cases)
@@ -285,10 +301,10 @@ def out_of_fold_expert_predictions(
 
 
 def _loo_sop_predictions(
-    features: Sequence[CaseFeatures],
+    features: Sequence[Any],
     labels: Sequence[str],
     *,
-    sop: LearnedSOP,
+    sop: Any,
 ) -> Tuple[Optional[Dict[str, Any]], ...]:
     """对每条训练 case 用「去掉它自己」重拟合的 SOP 给出预测。
 
@@ -315,13 +331,22 @@ def _loo_sop_predictions(
         if not subset_features:
             out.append(None)
             continue
-        model = learn_sop(
-            subset_features,
-            subset_labels,
-            max_depth=sop.max_depth,
-            min_leaf_size=sop.min_leaf_size,
-            source=f"{sop.source}:loo",
-        )
+        if str(getattr(sop, "version", "")).startswith("numeric-decision-tree"):
+            model = fit_numeric_decision_tree(
+                subset_features,
+                subset_labels,
+                max_depth=sop.max_depth,
+                min_leaf_size=sop.min_leaf_size,
+                source=f"{sop.source}:loo",
+            )
+        else:
+            model = learn_sop(
+                subset_features,
+                subset_labels,
+                max_depth=sop.max_depth,
+                min_leaf_size=sop.min_leaf_size,
+                source=f"{sop.source}:loo",
+            )
         out.append(model.predict(kept_features[index]).to_dict())
     return tuple(out)
 
@@ -346,10 +371,10 @@ def stratified_folds(labels: Sequence[str], folds: int) -> Tuple[Tuple[int, ...]
 
 
 def _out_of_fold_sop_predictions(
-    features: Sequence[CaseFeatures],
+    features: Sequence[Any],
     labels: Sequence[str],
     *,
-    sop: LearnedSOP,
+    sop: Any,
     folds: int = 5,
 ) -> Tuple[Optional[Dict[str, Any]], ...]:
     """用分层 K 折的折外模型给每条训练 case 出预测，供门限反解使用。
@@ -370,13 +395,22 @@ def _out_of_fold_sop_predictions(
         keep = [index for index in range(len(features)) if index not in set(held_out)]
         if not keep:
             continue
-        model = learn_sop(
-            [features[index] for index in keep],
-            [labels[index] for index in keep],
-            max_depth=sop.max_depth,
-            min_leaf_size=sop.min_leaf_size,
-            source=f"{sop.source}:oof{folds}",
-        )
+        if str(getattr(sop, "version", "")).startswith("numeric-decision-tree"):
+            model = fit_numeric_decision_tree(
+                [features[index] for index in keep],
+                [labels[index] for index in keep],
+                max_depth=sop.max_depth,
+                min_leaf_size=sop.min_leaf_size,
+                source=f"{sop.source}:oof{folds}",
+            )
+        else:
+            model = learn_sop(
+                [features[index] for index in keep],
+                [labels[index] for index in keep],
+                max_depth=sop.max_depth,
+                min_leaf_size=sop.min_leaf_size,
+                source=f"{sop.source}:oof{folds}",
+            )
         for index in held_out:
             out[index] = model.predict(features[index]).to_dict()
     return tuple(out)
@@ -394,7 +428,7 @@ def fit_offline_knowledge(
     build_metadata: Optional[Mapping[str, Any]] = None,
     target_selective_risk: Optional[float] = None,
     decision_minimum_support: int = 10,
-    decision_candidate_order: Tuple[str, ...] = ("branch", "sop"),
+    decision_candidate_order: Tuple[str, ...] = ("branch",),
     decision_non_identifiable_labels: Tuple[str, ...] = (),
     decision_non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
     decision_class_conditional: bool = False,
@@ -409,13 +443,14 @@ def fit_offline_knowledge(
     dictionary = dictionary_for(feature_profile)
     thresholds = fit_thresholds(train_cases)
     packs = tuple(build_packs(train_cases, source_dataset=source_dataset))
+    numeric_rows = numeric_features_from_packs(packs)
     model = fit_feature_model(packs, dictionary=dictionary)
     features = tuple(
         extract_features(pack, thresholds, model, dictionary=dictionary)
         for pack in packs
     )
-    sop = learn_sop(
-        features,
+    sop = fit_numeric_decision_tree(
+        numeric_rows,
         labels,
         source=f"{Path(source_dataset).name}:manifest-train",
     )
@@ -476,10 +511,14 @@ def fit_offline_knowledge(
                 for outcome in outcomes
             ]
 
-        # SOP 候选必须用折外模型打分：用全量训练树会把 case 自己算进叶节点分布，
-        # 阈值偏乐观；而用留一法则会反向污染——叶内符合结论的 case 置信度必然更低
-        # （见 `_out_of_fold_sop_predictions`），反解出的门限专挑反例放行。
-        oof_sop = _out_of_fold_sop_predictions(features, labels, sop=sop)
+        # SOP / expert 预测仍然计算并写入报告字段，但正式默认 candidate_order 只有 branch。
+        # 只有显式消融把它们加入 candidate_order 时，下面的折外预测才会进入 M9 级联。
+        # 这样保留历史 i3-i5 对照价值，同时不让训练集统计先验或专家规则顶替证据图主干。
+        oof_sop = _out_of_fold_sop_predictions(
+            numeric_rows if str(getattr(sop, "version", "")).startswith("numeric-decision-tree") else features,
+            labels,
+            sop=sop,
+        )
         oof_expert = out_of_fold_expert_predictions(packs, labels)
         decision_policy = DEFAULT_DECISION_POLICY
         decision_fit: Optional[Dict[str, Any]] = None

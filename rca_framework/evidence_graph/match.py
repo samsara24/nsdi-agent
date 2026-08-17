@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Set, Tuple
 
 from ..features.extractor import MUTUALLY_EXCLUSIVE_PREFIXES, CaseFeatures
-from .store import EvidenceGraph, GraphCase
+from .store import CaseDiagnosis, EvidenceGraph, GraphCase
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,8 @@ class Candidate:
     missing_evidence: Tuple[str, ...]
     extra_evidence: Tuple[str, ...]
     conflicting_evidence: Tuple[Tuple[str, str], ...]
+    evidence_chain_summary: Tuple[str, ...] = ()
+    missing_chain_steps: Tuple[str, ...] = ()
     label: Optional[str] = None
 
     @property
@@ -48,6 +50,8 @@ class Candidate:
             "missing_evidence": list(self.missing_evidence),
             "extra_evidence": list(self.extra_evidence),
             "conflicting_evidence": [list(pair) for pair in self.conflicting_evidence],
+            "evidence_chain_summary": list(self.evidence_chain_summary),
+            "missing_chain_steps": list(self.missing_chain_steps),
         }
 
 
@@ -175,7 +179,15 @@ def match(
     for case in graph.cases:
         if case.case_id in excluded:
             continue
-        rows.append(_build_candidate(case, query, graph.idf, hide_labels=hide_labels))
+        rows.append(
+            _build_candidate(
+                case,
+                query,
+                graph.idf,
+                diagnosis=graph.diagnosis_for(case.case_id),
+                hide_labels=hide_labels,
+            )
+        )
 
     rows.sort(key=lambda item: (-item.similarity, item.case_id))
     return MatchResult(
@@ -214,9 +226,11 @@ def _build_candidate(
     query: Set[str],
     idf: Mapping[str, float],
     *,
+    diagnosis: Optional[CaseDiagnosis] = None,
     hide_labels: bool,
 ) -> Candidate:
     candidate_tokens = set(case.tokens)
+    chain_summary, missing_steps = _diagnosis_chain_summary(diagnosis, query)
     return Candidate(
         case_id=case.case_id,
         label=None if hide_labels else case.label,
@@ -225,4 +239,40 @@ def _build_candidate(
         missing_evidence=tuple(sorted(candidate_tokens - query)),
         extra_evidence=tuple(sorted(query - candidate_tokens)),
         conflicting_evidence=find_conflicts(query, candidate_tokens),
+        evidence_chain_summary=chain_summary,
+        missing_chain_steps=missing_steps,
     )
+
+
+def _diagnosis_chain_summary(
+    diagnosis: Optional[CaseDiagnosis],
+    query: Set[str],
+) -> Tuple[Tuple[str, ...], Tuple[str, ...]]:
+    if diagnosis is None:
+        return (), ()
+    token_nodes = {
+        node.node_id: str(node.attrs.get("token", ""))
+        for node in diagnosis.nodes
+        if node.node_type == "FeatureToken"
+    }
+    step_nodes = [
+        node for node in diagnosis.nodes
+        if node.node_type in {"SOPStep", "ConstraintCheck"}
+    ]
+    summary: List[str] = []
+    missing: List[str] = []
+    for node in sorted(step_nodes, key=lambda item: item.node_id):
+        attrs = node.attrs
+        title = str(attrs.get("statement") or attrs.get("title") or attrs.get("constraint_id") or node.node_id)
+        tokens = tuple(str(token) for token in attrs.get("tokens", ()) if token)
+        if not tokens:
+            linked_tokens = tuple(
+                token_nodes.get(edge.dst, "")
+                for edge in diagnosis.edges
+                if edge.src == node.node_id and edge.edge_type == "uses_token"
+            )
+            tokens = tuple(token for token in linked_tokens if token)
+        summary.append(title)
+        if tokens and not set(tokens).issubset(query):
+            missing.append(title)
+    return tuple(summary[:8]), tuple(missing[:8])

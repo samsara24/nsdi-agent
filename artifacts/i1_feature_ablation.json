@@ -1,0 +1,217 @@
+{
+  "schema_version": "feature-ablation-v1",
+  "data_dir": "datasets/rca_v2_l2fixed",
+  "feature_dictionary_version": "feature-dictionary-v2",
+  "train_size": 161,
+  "majority_baseline": 0.6211,
+  "sop": {
+    "max_depth": 3,
+    "min_leaf_size": 5
+  },
+  "lower_bound_gate": 0.5,
+  "protocol": "留一法：每条 case 都用其余 n-1 条重学 SOP 后预测，标签只来自 train split。",
+  "ablations": {
+    "full": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6335,
+      "loo_accuracy_wilson_lower_bound": 0.556806,
+      "selective_coverage": 0.7888,
+      "selective_precision": 0.6929,
+      "selective_precision_wilson_lower_bound": 0.608006,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.88,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": []
+    },
+    "no_tx_level": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6335,
+      "loo_accuracy_wilson_lower_bound": 0.556806,
+      "selective_coverage": 0.8075,
+      "selective_precision": 0.6769,
+      "selective_precision_wilson_lower_bound": 0.592454,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.88,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "level:L1:txpower_mean:",
+        "level:L2:txpower_mean:"
+      ]
+    },
+    "no_rx_level": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6584,
+      "loo_accuracy_wilson_lower_bound": 0.582201,
+      "selective_coverage": 0.7019,
+      "selective_precision": 0.6726,
+      "selective_precision_wilson_lower_bound": 0.581612,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.92,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "level:L1:rxpower_mean:",
+        "level:L2:rxpower_mean:"
+      ]
+    },
+    "no_snr_level": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6335,
+      "loo_accuracy_wilson_lower_bound": 0.556806,
+      "selective_coverage": 0.8012,
+      "selective_precision": 0.6822,
+      "selective_precision_wilson_lower_bound": 0.597544,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.88,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "level:L1:media_snr_min:",
+        "level:L2:media_snr_min:"
+      ]
+    },
+    "no_all_level": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6584,
+      "loo_accuracy_wilson_lower_bound": 0.582201,
+      "selective_coverage": 0.8012,
+      "selective_precision": 0.6744,
+      "selective_precision_wilson_lower_bound": 0.589529,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.92,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "level:"
+      ]
+    },
+    "no_drop": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6398,
+      "loo_accuracy_wilson_lower_bound": 0.563135,
+      "selective_coverage": 0.7826,
+      "selective_precision": 0.6984,
+      "selective_precision_wilson_lower_bound": 0.613382,
+      "per_label_recall": {
+        "L1": 0.3061,
+        "L2": 0.88,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "drop:"
+      ]
+    },
+    "no_status": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.646,
+      "loo_accuracy_wilson_lower_bound": 0.569477,
+      "selective_coverage": 0.8634,
+      "selective_precision": 0.6475,
+      "selective_precision_wilson_lower_bound": 0.565066,
+      "per_label_recall": {
+        "L1": 0.1224,
+        "L2": 0.98,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "status:"
+      ]
+    },
+    "no_lane": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6335,
+      "loo_accuracy_wilson_lower_bound": 0.556806,
+      "selective_coverage": 0.7888,
+      "selective_precision": 0.6929,
+      "selective_precision_wilson_lower_bound": 0.608006,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.88,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "lane:"
+      ]
+    },
+    "no_serdes_telemetry": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6335,
+      "loo_accuracy_wilson_lower_bound": 0.556806,
+      "selective_coverage": 0.7888,
+      "selective_precision": 0.6929,
+      "selective_precision_wilson_lower_bound": 0.608006,
+      "per_label_recall": {
+        "L1": 0.2857,
+        "L2": 0.88,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "imbalance:L2:rxpower": 161
+      },
+      "dropped_prefixes": [
+        "serdes:",
+        "telemetry:"
+      ]
+    },
+    "no_imbalance": {
+      "cases": 161,
+      "answered": 161,
+      "loo_accuracy": 0.6584,
+      "loo_accuracy_wilson_lower_bound": 0.582201,
+      "selective_coverage": 0.7888,
+      "selective_precision": 0.7087,
+      "selective_precision_wilson_lower_bound": 0.624437,
+      "per_label_recall": {
+        "L1": 0.3265,
+        "L2": 0.9,
+        "fiber": 0.0
+      },
+      "root_split_tokens": {
+        "lane:L1_to_L2:single_lane_outlier": 161
+      },
+      "dropped_prefixes": [
+        "imbalance:"
+      ]
+    }
+  }
+}

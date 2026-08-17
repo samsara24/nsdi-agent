@@ -53,7 +53,12 @@ from rca_framework.knowledge import (  # noqa: E402
     out_of_fold_expert_predictions,
 )
 from rca_framework.report import build_report  # noqa: E402
-from rca_framework.sop import LEARNED_SOP_VERSION, learn_sop  # noqa: E402
+from rca_framework.sop import (  # noqa: E402
+    EXPERT_SOP_VERSION,
+    expert_sop_hash,
+    LEARNED_SOP_VERSION,
+    learn_sop,
+)
 from rca_framework.features.dictionary import dictionary_for  # noqa: E402
 from rca_framework.features.extractor import extract_features, fit_feature_model  # noqa: E402
 from rca_framework.llm import (  # noqa: E402
@@ -126,6 +131,140 @@ def class_metrics(predictions: Sequence[Optional[str]], actual: Sequence[str]) -
             "f1": round(f1, 6),
         }
     return rows
+
+
+def _bucket(value: float, *, step: float = 0.1) -> str:
+    value = max(0.0, min(1.0, float(value)))
+    lower = int(value / step) * step
+    if value >= 1.0:
+        lower = 1.0 - step
+    upper = min(1.0, lower + step)
+    return f"[{lower:.1f},{upper:.1f}{']' if upper >= 1.0 else ')'}"
+
+
+def confidence_reliability(outcomes, actual: Sequence[str]) -> List[Dict[str, Any]]:
+    rows: Dict[str, Dict[str, Any]] = {}
+    for outcome, truth in zip(outcomes, actual):
+        bucket = _bucket(outcome.confidence)
+        row = rows.setdefault(bucket, {
+            "bucket": bucket,
+            "n": 0,
+            "correct": 0,
+            "mean_confidence": 0.0,
+            "truth_distribution": Counter(),
+            "prediction_distribution": Counter(),
+        })
+        row["n"] += 1
+        row["correct"] += int(outcome.verdict == truth)
+        row["mean_confidence"] += float(outcome.confidence)
+        row["truth_distribution"][truth] += 1
+        row["prediction_distribution"][outcome.verdict] += 1
+    result = []
+    for bucket in sorted(rows):
+        row = rows[bucket]
+        n = row["n"]
+        result.append({
+            "bucket": bucket,
+            "n": n,
+            "correct": row["correct"],
+            "accuracy": round(row["correct"] / n, 6) if n else None,
+            "mean_confidence": round(row["mean_confidence"] / n, 6) if n else 0.0,
+            "truth_distribution": dict(row["truth_distribution"]),
+            "prediction_distribution": {str(k): v for k, v in row["prediction_distribution"].items()},
+        })
+    return result
+
+
+def dimension_reliability(outcomes, actual: Sequence[str]) -> Dict[str, List[Dict[str, Any]]]:
+    dimensions = ("evidence_completeness", "physical_compliance", "reasoning_completeness", "history_similarity")
+    result: Dict[str, List[Dict[str, Any]]] = {}
+    for dimension in dimensions:
+        rows: Dict[str, Dict[str, Any]] = {}
+        for outcome, truth in zip(outcomes, actual):
+            value = float((outcome.confidence_breakdown or {}).get(dimension, 0.0))
+            bucket = _bucket(value)
+            row = rows.setdefault(bucket, {"bucket": bucket, "n": 0, "correct": 0, "mean_score": 0.0})
+            row["n"] += 1
+            row["correct"] += int(outcome.verdict == truth)
+            row["mean_score"] += value
+        result[dimension] = [
+            {
+                "bucket": bucket,
+                "n": row["n"],
+                "correct": row["correct"],
+                "accuracy": round(row["correct"] / row["n"], 6) if row["n"] else None,
+                "mean_score": round(row["mean_score"] / row["n"], 6) if row["n"] else 0.0,
+            }
+            for bucket, row in sorted(rows.items())
+        ]
+    return result
+
+
+def threshold_sweep(outcomes, actual: Sequence[str]) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
+    for index in range(21):
+        threshold = round(index * 0.05, 2)
+        selected = [
+            (outcome, truth)
+            for outcome, truth in zip(outcomes, actual)
+            if outcome.verdict is not None and outcome.confidence >= threshold
+        ]
+        correct = sum(outcome.verdict == truth for outcome, truth in selected)
+        predictions = [outcome.verdict if outcome.confidence >= threshold else None for outcome in outcomes]
+        rows.append({
+            "threshold": threshold,
+            "answered": len(selected),
+            "degraded": len(outcomes) - len(selected),
+            "coverage": round(len(selected) / len(outcomes), 6) if outcomes else 0.0,
+            "correct": correct,
+            "precision_when_answered": round(correct / len(selected), 6) if selected else None,
+            "class_metrics": class_metrics(predictions, actual),
+        })
+    return rows
+
+
+def branch_class_matrix(outcomes, decisions, actual: Sequence[str]) -> Dict[str, Dict[str, Any]]:
+    rows: Dict[str, Dict[str, Any]] = {}
+    for outcome, decision, truth in zip(outcomes, decisions, actual):
+        branch = decision.branch
+        label_rows = rows.setdefault(branch, {})
+        row = label_rows.setdefault(truth, {"n": 0, "answered": 0, "correct": 0})
+        row["n"] += 1
+        if outcome.verdict is not None:
+            row["answered"] += 1
+            row["correct"] += int(outcome.verdict == truth)
+    for label_rows in rows.values():
+        for row in label_rows.values():
+            row["precision_when_answered"] = (
+                round(row["correct"] / row["answered"], 6) if row["answered"] else None
+            )
+            row["full_recall"] = round(row["correct"] / row["n"], 6) if row["n"] else None
+    return rows
+
+
+def llm_vs_history(outcomes, actual: Sequence[str]) -> Dict[str, Any]:
+    rows = [
+        (outcome, truth)
+        for outcome, truth in zip(outcomes, actual)
+        if outcome.history_verdict is not None
+    ]
+    llm_correct = sum(outcome.verdict == truth for outcome, truth in rows)
+    history_correct = sum(outcome.history_verdict == truth for outcome, truth in rows)
+    llm_only = sum(outcome.verdict == truth and outcome.history_verdict != truth for outcome, truth in rows)
+    history_only = sum(outcome.verdict != truth and outcome.history_verdict == truth for outcome, truth in rows)
+    both = sum(outcome.verdict == truth and outcome.history_verdict == truth for outcome, truth in rows)
+    neither = sum(outcome.verdict != truth and outcome.history_verdict != truth for outcome, truth in rows)
+    return {
+        "n": len(rows),
+        "llm_correct": llm_correct,
+        "llm_accuracy": round(llm_correct / len(rows), 6) if rows else None,
+        "history_correct": history_correct,
+        "history_accuracy": round(history_correct / len(rows), 6) if rows else None,
+        "llm_only_correct": llm_only,
+        "history_only_correct": history_only,
+        "both_correct": both,
+        "neither_correct": neither,
+    }
 
 
 def n5a_report(results, decisions, actual: Sequence[str]) -> Dict[str, Any]:
@@ -213,6 +352,25 @@ def decision_report(
         "degeneracy_guard": degeneracy_guard(
             final_decisions, actual, classes, sop_predictions=sop_predictions
         ),
+    }
+
+
+def personal_alignment_gate(decision_policy: DecisionPolicy) -> Dict[str, Any]:
+    return {
+        "schema_version": "personal-rca-loop-gate-v1",
+        "authority": "docs/个人整体思路.md",
+        "main_path": (
+            "evidence graph match -> N5a historical chain reuse / "
+            "N5b physics key-evidence LLM arbitration / "
+            "N5c expert SOP constrained LLM -> M9 degradation"
+        ),
+        "candidate_order": list(decision_policy.candidate_order),
+        "candidate_order_ok": tuple(decision_policy.candidate_order) == ("branch",),
+        "expert_and_sop_are_advisory": tuple(decision_policy.candidate_order) == ("branch",),
+        "expert_sop_version": EXPERT_SOP_VERSION,
+        "expert_sop_hash": expert_sop_hash(),
+        "n8_feedback_update": False,
+        "forbidden_loop_target": "forced three-class accuracy or lift alone without confidence calibration",
     }
 
 
@@ -471,12 +629,19 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
         "n5a": n5a_report(test_results, decisions, test_labels),
         "branches": branch_report(outcomes, decisions, test_labels),
         "calibration_check": calibration_check(outcomes, test_labels),
+        "personal_alignment_gate": personal_alignment_gate(decision_policy),
         "answered": len(answered),
         "answer_rate": round(len(answered) / len(outcomes), 6) if outcomes else 0.0,
         "correct": correct,
         "precision_when_answered": round(correct / len(answered), 6) if answered else None,
         "coverage_accuracy": round(correct / len(outcomes), 6) if outcomes else 0.0,
         "raw_class_metrics": class_metrics([outcome.verdict for outcome in outcomes], test_labels),
+        "forced_class_metrics": class_metrics([outcome.verdict for outcome in outcomes], test_labels),
+        "confidence_reliability": confidence_reliability(outcomes, test_labels),
+        "dimension_reliability": dimension_reliability(outcomes, test_labels),
+        "threshold_sweep": threshold_sweep(outcomes, test_labels),
+        "branch_class_matrix": branch_class_matrix(outcomes, decisions, test_labels),
+        "llm_vs_history": llm_vs_history(outcomes, test_labels),
         "selective_risk_curve": selective_risk_curve(
             outcomes, test_labels, minimum_support=decision_policy.minimum_support
         ),
@@ -608,7 +773,10 @@ def main() -> None:
         nargs="+",
         default=("branch",),
         choices=CANDIDATE_SOURCES,
-        help="M9 候选级联顺序；加入 sop 表示分支不达标时允许退到 learned SOP 叶节点先验",
+        help=(
+            "M9 候选级联顺序。正式默认只接受 branch；加入 sop/expert 仅用于显式"
+            "消融或对照实验，不能替代证据图匹配主干"
+        ),
     )
     parser.add_argument(
         "--non-identifiable-labels",
@@ -767,6 +935,8 @@ def main() -> None:
             "constraint_library_hash": CONSTRAINT_LIBRARY.content_hash(),
             "sop": sop_model.version if sop_model is not None else SOP_VERSION,
             "sop_hash": sop_model.content_hash() if sop_model is not None else None,
+            "expert_sop": EXPERT_SOP_VERSION,
+            "expert_sop_hash": expert_sop_hash(),
             "prompt_template": PROMPT_TEMPLATE_VERSION,
             "prompt_template_hash": prompt_template_hash(),
             "decision_policy": decision_policy.version,
@@ -776,6 +946,15 @@ def main() -> None:
             "routing_policies": [policy_by_name[name].to_dict() for name in args.policies],
         },
         "decision": decision_policy.to_dict(),
+        "personal_alignment_gate": personal_alignment_gate(decision_policy),
+        "scope": {
+            "self_evolution": False,
+            "feedback_update": False,
+            "loop_target": (
+                "evidence-graph shape, evidence-chain/path matching, physics key-evidence "
+                "judgment, or expert-SOP-constrained LLM reasoning"
+            ),
+        },
         "llm": {
             "backend": args.llm_backend,
             "model_path": args.model_path,

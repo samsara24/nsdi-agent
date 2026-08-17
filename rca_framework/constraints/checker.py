@@ -28,10 +28,12 @@ from ..anomaly import DOWN_THRESHOLDS, lane_values
 from ..evidence_pack import EvidencePack
 from ..types import ROOT_CAUSES, SIDES
 from .library import CONSTRAINT_LIBRARY, ConstraintLibrary
+from .measurement import MEASUREMENT_CONTRACT_LIBRARY
+from .physics import PHYSICS_LIBRARY
 from .semantics import matches_scope
 
 
-SEVERITIES: Tuple[str, ...] = ("fatal", "warning")
+SEVERITIES: Tuple[str, ...] = ("fatal", "warning", "veto")
 
 VIOLATION_KINDS: Tuple[str, ...] = (
     "fabricated_evidence",
@@ -40,6 +42,7 @@ VIOLATION_KINDS: Tuple[str, ...] = (
     "forbidden_claim",
     "unsupported_step",
     "invalid_measurement",
+    "measurement_veto",
 )
 
 #: `caveat` 类约束里可以机械检测的禁止说法。
@@ -62,6 +65,13 @@ FORBIDDEN_CLAIM_PATTERNS: Dict[str, Tuple[str, str]] = {
         r"(未发光|没有发光|激光关断|laser\s*off|停止发光)",
         "在全链路遥测失效时断言某端未发光。此时哨兵表示读不到数，不是没有光。",
     ),
+}
+
+MEASUREMENT_VETO_PATTERNS: Dict[str, Tuple[str, str]] = {
+    "M1_no_absolute_link_loss": FORBIDDEN_CLAIM_PATTERNS["C12_no_absolute_link_loss"],
+    "M2_serdes_snr_unit_unknown": FORBIDDEN_CLAIM_PATTERNS["C13_serdes_snr_unit_unknown"],
+    "M3_missing_host_snr_is_unknown": FORBIDDEN_CLAIM_PATTERNS["C14_host_snr_mostly_missing"],
+    "M4_blackout_sentinel_is_no_reading": FORBIDDEN_CLAIM_PATTERNS["C15_blackout_sentinel_is_not_laser_off"],
 }
 
 #: `C19` 的结构化判据：这些词出现在一个 `effect == "support"` 的步骤里，
@@ -105,8 +115,30 @@ class CheckReport:
         return tuple(item for item in self.violations if item.severity == "fatal")
 
     @property
+    def veto(self) -> Tuple[Violation, ...]:
+        return tuple(item for item in self.violations if item.severity == "veto")
+
+    @property
     def ok(self) -> bool:
         return not self.fatal
+
+    @property
+    def compliance_penalties(self) -> Tuple[Dict[str, Any], ...]:
+        penalties: List[Dict[str, Any]] = []
+        for item in self.veto:
+            penalties.append({
+                "constraint_id": item.constraint_id,
+                "kind": item.kind,
+                "message": item.message,
+                "physical_compliance_cap": _physical_compliance_cap(item),
+                "step_index": item.step_index,
+            })
+        return tuple(penalties)
+
+    @property
+    def physical_compliance_cap(self) -> float:
+        caps = [item["physical_compliance_cap"] for item in self.compliance_penalties]
+        return min(caps) if caps else 1.0
 
     def feedback(self) -> str:
         """给模型的重写提示。只列 fatal，且必须说清楚哪一步错了、为什么错。"""
@@ -121,8 +153,36 @@ class CheckReport:
         return {
             "ok": self.ok,
             "fatal_count": len(self.fatal),
+            "veto_count": len(self.veto),
+            "physical_compliance_cap": self.physical_compliance_cap,
+            "compliance_penalties": list(self.compliance_penalties),
             "violations": [item.to_dict() for item in self.violations],
         }
+
+
+#: 只有同一 lane 双向同时异常才能把介质与端点区分开（P8）。单向的
+#: tx_ok_rx_down 同样可以由对端接收链路解释，不足以支撑 fiber 结论。
+BIDIRECTIONAL_EVIDENCE_TOKENS: Tuple[str, ...] = (
+    "lane:L1_to_L2:bidirectional_same_lane",
+    "lane:L2_to_L1:bidirectional_same_lane",
+)
+
+
+def has_bidirectional_path_evidence(available_evidence: Sequence[str]) -> bool:
+    """当前 case 是否具备可以把 fiber 与端点根因分开的双向证据。"""
+    return any(token in set(available_evidence) for token in BIDIRECTIONAL_EVIDENCE_TOKENS)
+
+
+def _physical_compliance_cap(item: Violation) -> float:
+    """把旧 veto 映射成物理合规性分数上限，而不是直接丢弃结论。"""
+    if item.constraint_id in {
+        "M4_blackout_sentinel_is_no_reading",
+        "M6_fiber_not_identifiable_without_field_evidence",
+    }:
+        return 0.3
+    if item.constraint_id == "M5_population_prior_is_not_case_evidence":
+        return 0.4
+    return 0.5
 
 
 # --- 证据包自校验 -----------------------------------------------------------
@@ -155,27 +215,6 @@ def check_evidence(
                 message=f"{side} 侧电压 {voltage:.3f} V 超出 3.3 V ±5% 范围",
             ))
 
-        for metric, bounds, constraint_id in (
-            ("txpower", (-1.8, 2.1), "C5_tx_power_range"),
-            ("rxpower", (-12.3, 3.0), "C7_rx_power_range"),
-        ):
-            sentinel = DOWN_THRESHOLDS[metric]
-            healthy = [
-                value for value in lane_values(pack.telemetry, metric, side).values()
-                if value is not None and value > sentinel
-            ]
-            outside = [value for value in healthy if not (bounds[0] <= value <= bounds[1])]
-            if outside:
-                violations.append(Violation(
-                    kind="invalid_measurement", severity="warning",
-                    constraint_id=constraint_id,
-                    message=(
-                        f"{side} 侧 {metric} 有 {len(outside)} 个非断光读数落在实测区间 "
-                        f"[{bounds[0]}, {bounds[1]}] 之外"
-                    ),
-                    detail=f"越界值={sorted(outside)}",
-                ))
-
     if pack.optical_blackout:
         violations.append(Violation(
             kind="invalid_measurement", severity="warning",
@@ -201,7 +240,9 @@ def check_response(
     """逐步校验 LLM 输出。`response` 是 `llm.protocol.DiagnosisResponse`。"""
     violations: List[Violation] = []
     evidence = set(available_evidence)
-    constraint_ids = set(library.ids())
+    physical_by_id = {item.constraint_id: item for item in PHYSICS_LIBRARY.constraints}
+    measurement_by_id = {item.contract_id: item for item in MEASUREMENT_CONTRACT_LIBRARY.contracts}
+    constraint_ids = set(library.ids()) | set(physical_by_id) | set(measurement_by_id)
     blackout = pack.optical_blackout
 
     for index, step in enumerate(response.steps):
@@ -224,7 +265,17 @@ def check_response(
         for constraint_id in step.cited_constraints:
             if constraint_id not in constraint_ids:
                 continue
-            constraint = library.get(constraint_id)
+            if constraint_id in measurement_by_id:
+                if getattr(step, "effect", "neutral") != "neutral" or getattr(step, "target", ""):
+                    violations.append(Violation(
+                        kind="measurement_veto",
+                        severity="warning",
+                        step_index=index,
+                        constraint_id=constraint_id,
+                        message="量测契约只能用于否决不可信推理，不能作为 support/exclude 证据",
+                    ))
+                continue
+            constraint = physical_by_id.get(constraint_id) or library.get(constraint_id)
             effect = getattr(step, "effect", "neutral")
             target = getattr(step, "target", None)
             # 「这条约束的前件在本 case 上不成立」是一个合法且有信息量的观察。
@@ -293,12 +344,13 @@ def check_response(
                 detail=step.claim,
             ))
         violations.extend(_forbidden_claims(step.claim, index, blackout))
+        violations.extend(_measurement_vetoes(step.claim, index, blackout))
         if getattr(step, "effect", "neutral") == "support" and re.search(
             PRIOR_AS_SUPPORT_PATTERN, step.claim
         ):
             violations.append(Violation(
-                kind="forbidden_claim", severity="fatal", step_index=index,
-                constraint_id="C19_population_prior_is_not_case_evidence",
+                kind="measurement_veto", severity="veto", step_index=index,
+                constraint_id="M5_population_prior_is_not_case_evidence",
                 message=(
                     "用群体统计（类别先验 / SOP 叶节点分布 / 历史标签投票）作为 support 步骤的依据。"
                     "群体统计只能决定默认动作，不能当作本 case 的物理证据"
@@ -319,10 +371,19 @@ def check_response(
             ))
         if blackout:
             violations.append(Violation(
-                kind="constraint_violation", severity="fatal",
-                constraint_id="C15_blackout_sentinel_is_not_laser_off",
+                kind="measurement_veto", severity="veto",
+                constraint_id="M4_blackout_sentinel_is_no_reading",
                 message=(
                     "本 case 全链路遥测失效，观测无法区分根因，不得给出结论，应当弃权并请求现场确认"
+                ),
+            ))
+        if verdict == "fiber" and not has_bidirectional_path_evidence(available_evidence):
+            violations.append(Violation(
+                kind="measurement_veto", severity="veto",
+                constraint_id="M6_fiber_not_identifiable_without_field_evidence",
+                message=(
+                    "当前遥测缺少同 lane 双向对称丢失证据，也没有 OTDR、端面镜检或双向功率标定，"
+                    "fiber 只能作为候选与补采请求，不得成为自动结论"
                 ),
             ))
         if not response.steps:
@@ -344,5 +405,22 @@ def _forbidden_claims(text: str, index: int, blackout: bool) -> List[Violation]:
             found.append(Violation(
                 kind="forbidden_claim", severity="fatal", step_index=index,
                 constraint_id=constraint_id, message=message, detail=text,
+            ))
+    return found
+
+
+def _measurement_vetoes(text: str, index: int, blackout: bool) -> List[Violation]:
+    found: List[Violation] = []
+    for contract_id, (pattern, message) in MEASUREMENT_VETO_PATTERNS.items():
+        if contract_id == "M4_blackout_sentinel_is_no_reading" and not blackout:
+            continue
+        if re.search(pattern, text, flags=re.IGNORECASE):
+            found.append(Violation(
+                kind="measurement_veto",
+                severity="veto",
+                step_index=index,
+                constraint_id=contract_id,
+                message=message,
+                detail=text,
             ))
     return found

@@ -1,0 +1,82 @@
+{
+  "schema_version": "rca-loop-irreducible-cases-v1",
+  "irreducible_cases": [
+    {
+      "case_id": "case_5d80fba2c22f",
+      "actual": "L1",
+      "reason": "Identical evidence signature with conflicting root cause",
+      "failed_step": "N5a_historical_reuse",
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4e466fb62ba8",
+      "actual": "L1",
+      "reason": "Identical evidence signature with conflicting root cause",
+      "failed_step": "N5a_historical_reuse",
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4541f9bbc853",
+      "actual": "L2",
+      "reason": "Identical evidence signature with conflicting root cause",
+      "failed_step": "N5a_historical_reuse",
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_f6ab3c98854d",
+      "actual": "fiber",
+      "reason": "C20 fiber not identifiable from current telemetry",
+      "failed_step": "N5b",
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_ac436bbbc898",
+      "actual": "fiber",
+      "reason": "C20 fiber not identifiable from current telemetry",
+      "failed_step": "N5b",
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_60e62d6d1052",
+      "actual": "fiber",
+      "reason": "Identical evidence signature with conflicting root cause",
+      "failed_step": "N5a_historical_reuse",
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4695d660361d",
+      "actual": "fiber",
+      "reason": "C20: fiber not identifiable from current two-end telemetry",
+      "failed_step": "N5b_critical_key_evidence",
+      "source_experiment": "current"
+    },
+    {
+      "case_id": "case_b2d2a66d4b1d",
+      "actual": "fiber",
+      "reason": "C20: fiber not identifiable from current two-end telemetry",
+      "failed_step": "N5c_expert_sop_llm",
+      "source_experiment": "current"
+    },
+    {
+      "case_id": "case_ec7c50c7fd54",
+      "actual": "L2",
+      "reason": "Identical train/test evidence signature with conflicting root cause",
+      "failed_step": "N5a_historical_reuse",
+      "source_experiment": "current"
+    },
+    {
+      "case_id": "case_22d4dde687ab",
+      "actual": "fiber",
+      "reason": "C20: fiber not identifiable from current two-end telemetry",
+      "failed_step": "N5a_historical_reuse",
+      "source_experiment": "current"
+    },
+    {
+      "case_id": "case_85ab9d3bd128",
+      "actual": "fiber",
+      "reason": "C20: fiber not identifiable from current two-end telemetry",
+      "failed_step": "N5c_expert_sop_llm",
+      "source_experiment": "current"
+    }
+  ]
+}

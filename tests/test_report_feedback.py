@@ -18,7 +18,10 @@ def _outcome() -> BranchOutcome:
         confidence_lower_bound=0.6,
         calibration_group="sop:leaf",
         calibration_support=12,
-        evidence_chain=(EvidenceLink(kind="learned_sop", statement="leaf predicts L2", tokens=("present:a",), source="learned-sop-v1"),),
+        evidence_chain=(
+            EvidenceLink(kind="learned_sop", statement="leaf predicts L2", tokens=("present:a",), source="learned-sop-v1"),
+            EvidenceLink(kind="constraint_exclusion", statement="fiber excluded", tokens=("present:a",), source="P5_tx_down_excludes_medium"),
+        ),
     )
 
 
@@ -66,6 +69,11 @@ def test_feedback_adds_case_diagnosis_graph():
         sop_version="learned-sop-v1",
         constraint_library_version="constraint-library-v5",
     )
+    node_types = {node.node_type for node in diagnosis.nodes}
+    edge_types = {edge.edge_type for edge in diagnosis.edges}
+    assert "ConstraintCheck" in node_types
+    assert "precedes" in edge_types
+    assert "checked_by" in edge_types
     graph = EvidenceGraph(cases=(GraphCase("case-x", "L2", features.tokens),), dictionary_hash="hash")
     updated = apply_confirmed_feedback(graph, [diagnosis], confirmed_by="operator-a")
     assert updated.schema_version == EVIDENCE_GRAPH_V2_SCHEMA

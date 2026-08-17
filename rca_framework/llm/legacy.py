@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import gc
 import json
 import re
 from typing import Any, Dict, Optional
@@ -216,3 +217,41 @@ class PathLLMReasoner:
                 outputs.append(self._tokenizer.decode(generated[0][inputs.input_ids.shape[1]:], skip_special_tokens=True))
             return outputs
         raise ValueError(f"unsupported LLM backend: {self.backend}")
+
+    def close(self) -> None:
+        """Best-effort teardown for the legacy in-process vLLM backend."""
+        model = self._model
+        self._model = None
+        self._tokenizer = None
+        if model is not None:
+            shutdown = getattr(model, "shutdown", None)
+            if callable(shutdown):
+                try:
+                    shutdown()
+                except Exception:
+                    pass
+            del model
+        if self.backend == "vllm":
+            try:
+                from vllm.distributed.parallel_state import (
+                    destroy_distributed_environment,
+                    destroy_model_parallel,
+                )
+
+                destroy_model_parallel()
+                destroy_distributed_environment()
+            except Exception:
+                pass
+        gc.collect()
+        if self.backend not in ("vllm", "transformers"):
+            return
+        try:
+            import torch
+
+            if torch.distributed.is_available() and torch.distributed.is_initialized():
+                torch.distributed.destroy_process_group()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+                torch.cuda.ipc_collect()
+        except Exception:
+            pass

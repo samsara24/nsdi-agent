@@ -1,0 +1,425 @@
+{
+  "schema_version": "nested-validation-v1",
+  "data_dir": "datasets/rca_v2_l2fixed",
+  "feature_dictionary_version": "feature-dictionary-v2",
+  "train_size": 161,
+  "majority_label": "L2",
+  "folds": 5,
+  "seed": 42,
+  "min_inner_coverage": 0.5,
+  "candidates": [
+    "majority",
+    "full/d2/leaf5/gate0.4",
+    "full/d3/leaf5/gate0.4",
+    "full/d4/leaf5/gate0.4",
+    "full/d3/leaf12/gate0.4",
+    "no_imbalance/d3/leaf5/gate0.4",
+    "no_imbalance/d4/leaf5/gate0.4",
+    "no_imbalance/d4/leaf5/gate0.5",
+    "no_imbalance_level/d3/leaf5/gate0.4"
+  ],
+  "protocol": "外层分层 K 折；内层只在训练部分做 LOO 选配置；held-out 不参与选择。汇总的 lift 已包含配置选择带来的偏差。",
+  "pooled_held_out": {
+    "cases": 161,
+    "coverage": 0.9627,
+    "manual_rate": 0.0373,
+    "accuracy_all": 0.5963,
+    "selective_precision": 0.6065,
+    "selective_precision_wilson_lower_bound": 0.527858,
+    "majority_on_kept": 0.6323,
+    "lift_over_majority_on_kept": -0.0258,
+    "kept": 155
+  },
+  "majority_reference": {
+    "cases": 161,
+    "coverage": 1.0,
+    "manual_rate": 0.0,
+    "accuracy_all": 0.6211,
+    "selective_precision": 0.6211,
+    "selective_precision_wilson_lower_bound": 0.544185,
+    "majority_on_kept": 0.6211,
+    "lift_over_majority_on_kept": 0.0,
+    "kept": 161
+  },
+  "chosen_configs": {
+    "majority": 4,
+    "full/d3/leaf12/gate0.4": 1
+  },
+  "folds_detail": [
+    {
+      "fold": 0,
+      "held_out_size": 33,
+      "chosen_config": "majority",
+      "inner_lift": 0.0,
+      "inner_selective_precision": 0.625,
+      "inner_coverage": 1.0,
+      "held_out": {
+        "cases": 33,
+        "coverage": 1.0,
+        "manual_rate": 0.0,
+        "accuracy_all": 0.6061,
+        "selective_precision": 0.6061,
+        "selective_precision_wilson_lower_bound": 0.436831,
+        "majority_on_kept": 0.6061,
+        "lift_over_majority_on_kept": 0.0,
+        "kept": 33
+      },
+      "inner_ranking": [
+        {
+          "config": "majority",
+          "lift": 0.0,
+          "coverage": 1.0,
+          "selective_precision": 0.625
+        },
+        {
+          "config": "full/d2/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 1.0,
+          "selective_precision": 0.625
+        },
+        {
+          "config": "full/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7734,
+          "selective_precision": 0.6364
+        },
+        {
+          "config": "full/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.6094,
+          "selective_precision": 0.641
+        },
+        {
+          "config": "no_imbalance/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7812,
+          "selective_precision": 0.63
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.5625,
+          "selective_precision": 0.6944
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.5",
+          "lift": 0.0,
+          "coverage": 0.5469,
+          "selective_precision": 0.7143
+        },
+        {
+          "config": "no_imbalance_level/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8359,
+          "selective_precision": 0.6542
+        },
+        {
+          "config": "full/d3/leaf12/gate0.4",
+          "lift": -0.087,
+          "coverage": 0.7188,
+          "selective_precision": 0.5326
+        }
+      ]
+    },
+    {
+      "fold": 1,
+      "held_out_size": 33,
+      "chosen_config": "majority",
+      "inner_lift": 0.0,
+      "inner_selective_precision": 0.625,
+      "inner_coverage": 1.0,
+      "held_out": {
+        "cases": 33,
+        "coverage": 1.0,
+        "manual_rate": 0.0,
+        "accuracy_all": 0.6061,
+        "selective_precision": 0.6061,
+        "selective_precision_wilson_lower_bound": 0.436831,
+        "majority_on_kept": 0.6061,
+        "lift_over_majority_on_kept": 0.0,
+        "kept": 33
+      },
+      "inner_ranking": [
+        {
+          "config": "majority",
+          "lift": 0.0,
+          "coverage": 1.0,
+          "selective_precision": 0.625
+        },
+        {
+          "config": "full/d2/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.9219,
+          "selective_precision": 0.6356
+        },
+        {
+          "config": "full/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8203,
+          "selective_precision": 0.6
+        },
+        {
+          "config": "full/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.5781,
+          "selective_precision": 0.6757
+        },
+        {
+          "config": "no_imbalance/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8203,
+          "selective_precision": 0.6
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.5781,
+          "selective_precision": 0.6757
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.5",
+          "lift": 0.0,
+          "coverage": 0.5078,
+          "selective_precision": 0.7692
+        },
+        {
+          "config": "no_imbalance_level/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.9062,
+          "selective_precision": 0.6466
+        },
+        {
+          "config": "full/d3/leaf12/gate0.4",
+          "lift": -0.0435,
+          "coverage": 0.7188,
+          "selective_precision": 0.6196
+        }
+      ]
+    },
+    {
+      "fold": 2,
+      "held_out_size": 32,
+      "chosen_config": "full/d3/leaf12/gate0.4",
+      "inner_lift": 0.1048,
+      "inner_selective_precision": 0.6857,
+      "inner_coverage": 0.814,
+      "held_out": {
+        "cases": 32,
+        "coverage": 0.8125,
+        "manual_rate": 0.1875,
+        "accuracy_all": 0.5,
+        "selective_precision": 0.5385,
+        "selective_precision_wilson_lower_bound": 0.354576,
+        "majority_on_kept": 0.6923,
+        "lift_over_majority_on_kept": -0.1538,
+        "kept": 26
+      },
+      "inner_ranking": [
+        {
+          "config": "full/d3/leaf12/gate0.4",
+          "lift": 0.1048,
+          "coverage": 0.814,
+          "selective_precision": 0.6857
+        },
+        {
+          "config": "full/d3/leaf5/gate0.4",
+          "lift": 0.0762,
+          "coverage": 0.814,
+          "selective_precision": 0.7333
+        },
+        {
+          "config": "no_imbalance/d3/leaf5/gate0.4",
+          "lift": 0.0762,
+          "coverage": 0.814,
+          "selective_precision": 0.7429
+        },
+        {
+          "config": "no_imbalance_level/d3/leaf5/gate0.4",
+          "lift": 0.0522,
+          "coverage": 0.8915,
+          "selective_precision": 0.713
+        },
+        {
+          "config": "full/d4/leaf5/gate0.4",
+          "lift": 0.0333,
+          "coverage": 0.6977,
+          "selective_precision": 0.7222
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.4",
+          "lift": 0.0333,
+          "coverage": 0.6977,
+          "selective_precision": 0.7333
+        },
+        {
+          "config": "full/d2/leaf5/gate0.4",
+          "lift": 0.01,
+          "coverage": 0.7752,
+          "selective_precision": 0.7
+        },
+        {
+          "config": "majority",
+          "lift": 0.0,
+          "coverage": 1.0,
+          "selective_precision": 0.6202
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.5",
+          "lift": -0.0238,
+          "coverage": 0.6512,
+          "selective_precision": 0.7262
+        }
+      ]
+    },
+    {
+      "fold": 3,
+      "held_out_size": 32,
+      "chosen_config": "majority",
+      "inner_lift": 0.0,
+      "inner_selective_precision": 0.6202,
+      "inner_coverage": 1.0,
+      "held_out": {
+        "cases": 32,
+        "coverage": 1.0,
+        "manual_rate": 0.0,
+        "accuracy_all": 0.625,
+        "selective_precision": 0.625,
+        "selective_precision_wilson_lower_bound": 0.452541,
+        "majority_on_kept": 0.625,
+        "lift_over_majority_on_kept": 0.0,
+        "kept": 32
+      },
+      "inner_ranking": [
+        {
+          "config": "majority",
+          "lift": 0.0,
+          "coverage": 1.0,
+          "selective_precision": 0.6202
+        },
+        {
+          "config": "full/d2/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.9845,
+          "selective_precision": 0.6299
+        },
+        {
+          "config": "full/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7752,
+          "selective_precision": 0.61
+        },
+        {
+          "config": "full/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7287,
+          "selective_precision": 0.6489
+        },
+        {
+          "config": "full/d3/leaf12/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7054,
+          "selective_precision": 0.5824
+        },
+        {
+          "config": "no_imbalance/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8295,
+          "selective_precision": 0.5888
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7364,
+          "selective_precision": 0.6632
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.5",
+          "lift": 0.0,
+          "coverage": 0.6512,
+          "selective_precision": 0.6667
+        },
+        {
+          "config": "no_imbalance_level/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8295,
+          "selective_precision": 0.6542
+        }
+      ]
+    },
+    {
+      "fold": 4,
+      "held_out_size": 31,
+      "chosen_config": "majority",
+      "inner_lift": 0.0,
+      "inner_selective_precision": 0.6154,
+      "inner_coverage": 1.0,
+      "held_out": {
+        "cases": 31,
+        "coverage": 1.0,
+        "manual_rate": 0.0,
+        "accuracy_all": 0.6452,
+        "selective_precision": 0.6452,
+        "selective_precision_wilson_lower_bound": 0.469476,
+        "majority_on_kept": 0.6452,
+        "lift_over_majority_on_kept": 0.0,
+        "kept": 31
+      },
+      "inner_ranking": [
+        {
+          "config": "majority",
+          "lift": 0.0,
+          "coverage": 1.0,
+          "selective_precision": 0.6154
+        },
+        {
+          "config": "full/d2/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.9462,
+          "selective_precision": 0.6504
+        },
+        {
+          "config": "full/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8231,
+          "selective_precision": 0.6542
+        },
+        {
+          "config": "full/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.6846,
+          "selective_precision": 0.6292
+        },
+        {
+          "config": "full/d3/leaf12/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7231,
+          "selective_precision": 0.6809
+        },
+        {
+          "config": "no_imbalance/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.8692,
+          "selective_precision": 0.6726
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.7231,
+          "selective_precision": 0.6489
+        },
+        {
+          "config": "no_imbalance/d4/leaf5/gate0.5",
+          "lift": 0.0,
+          "coverage": 0.1538,
+          "selective_precision": 0.7
+        },
+        {
+          "config": "no_imbalance_level/d3/leaf5/gate0.4",
+          "lift": 0.0,
+          "coverage": 0.9077,
+          "selective_precision": 0.6441
+        }
+      ]
+    }
+  ]
+}

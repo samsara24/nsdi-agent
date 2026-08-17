@@ -1,0 +1,446 @@
+{
+  "schema_version": "rca-loop-bad-cases-v1",
+  "bad_cases": [
+    {
+      "case_id": "case_5d80fba2c22f",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_48915d45d5ca",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志",
+        "LLM 结论尚无独立标定样本；模型自报置信度仅供记录，不能直接作为最终可靠性"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_f40d7dea10c4",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "具体的 lane 级别数据",
+        "双向一致性数据"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_195ad8049a88",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_88dce8a05674",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:media_snr_min:high_tail",
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:high_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4e466fb62ba8",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_b1dfb752200b",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_b244b38241f9",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_9cadaea07460",
+      "actual": "L2",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "L2.host_snr"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_e7756a64e30d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "cold_start_llm_or_gate_failed",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "证据包本身存在 1 条量测有效性告警，相关读数需谨慎采信"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4541f9bbc853",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "exact_match_same_evidence_different_label",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_2c9963b9a196",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_61d86d3a287d",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "noncritical_reuse_wrong_history",
+      "missing_evidence": [
+        "level:L1:txpower_mean:high_tail",
+        "level:L2:txpower_mean:high_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_4fff96563d56",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L2:rxpower_mean:high_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_f6ab3c98854d",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_minor_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_bce075edaf82",
+      "actual": "L2",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:high_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_f519245c7b0f",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "drop:L2:rxpower:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "L1.RxLOL",
+        "L1.RxLOS",
+        "L1.TxLOL",
+        "L1.TxLOS",
+        "L1.host_snr",
+        "L2.RxLOL",
+        "L2.RxLOS",
+        "L2.TxLOL",
+        "L2.TxLOS",
+        "L2.host_snr"
+      ],
+      "critical_missing": [
+        "drop:L2:rxpower:single_lane",
+        "level:L2:media_snr_min:low_tail",
+        "level:L2:rxpower_mean:low_tail",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "该结论经过 2 轮生成才通过物理约束校验，前几轮的违规记录见推理日志",
+        "LLM 结论尚无独立标定样本；模型自报置信度仅供记录，不能直接作为最终可靠性"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_7fa3fefa52e3",
+      "actual": "L1",
+      "branch_pred": "fiber",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5c",
+      "failed_step": "N5c_expert_sop_llm",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail",
+        "L1.RxLOL",
+        "L1.RxLOS",
+        "L1.TxLOL",
+        "L1.TxLOS",
+        "L2.RxLOL",
+        "L2.RxLOS",
+        "L2.TxLOL",
+        "L2.TxLOS"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:media_snr_min:low_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [
+        "证据包本身存在 1 条量测有效性告警，相关读数需谨慎采信"
+      ],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_ac436bbbc898",
+      "actual": "fiber",
+      "branch_pred": "L1",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [
+        "imbalance:L1:host_snr",
+        "level:L1:media_snr_min:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:media_snr_min:low_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_60e62d6d1052",
+      "actual": "fiber",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "human_review",
+      "branch": "N5a",
+      "failed_step": "N5a_historical_reuse",
+      "error_class": "fiber_not_identifiable_or_hallucinated",
+      "missing_evidence": [],
+      "critical_missing": [],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    },
+    {
+      "case_id": "case_e168b4979b39",
+      "actual": "L1",
+      "branch_pred": "L2",
+      "final_pred": null,
+      "final_action": "request_evidence",
+      "branch": "N5b",
+      "failed_step": "N5b_critical_key_evidence",
+      "error_class": "critical_missing_arbitration_failed",
+      "missing_evidence": [
+        "level:L1:rxpower_mean:low_tail",
+        "level:L2:txpower_mean:low_tail"
+      ],
+      "critical_missing": [
+        "level:L1:rxpower_mean:low_tail"
+      ],
+      "fixable": "unknown",
+      "next_action": "seed_for_loop1",
+      "notes": [],
+      "source_experiment": "offline_sop_llm_l2fixed_deepseek32b_seed42_promptv6"
+    }
+  ]
+}

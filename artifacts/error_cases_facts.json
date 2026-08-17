@@ -1,0 +1,5367 @@
+[
+ {
+  "case_id": "case_fcacbc45173f",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:single:rxpower",
+  "expert_verdict": "L2",
+  "reason": "L1 侧命中 single:rxpower（priority 52），指向 L2",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:rxpower",
+    "loc": "L2",
+    "prio": "52",
+    "anom": {
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     2.53,
+     2.46,
+     0.78,
+     2.41
+    ],
+    "L2": [
+     2.79,
+     2.56,
+     2.59,
+     2.62
+    ]
+   },
+   "txpower": {
+    "L1": [
+     1.4,
+     1.42,
+     1.45,
+     1.33
+    ],
+    "L2": [
+     0.89,
+     1,
+     1.14,
+     0.97
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.64,
+     25.34,
+     23.88,
+     25.34
+    ],
+    "L2": [
+     26.3,
+     25.96,
+     26.3,
+     26.3
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     717382,
+     716044,
+     640449,
+     738937
+    ],
+    "L2": [
+     731569,
+     729594,
+     676382,
+     713609
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.03,
+     7.03,
+     7.03,
+     7.03
+    ],
+    "L2": [
+     7.29,
+     7.29,
+     7.29,
+     7.29
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 46.97,
+   "L2": 47.77
+  },
+  "volt": {
+   "L1": 3.21,
+   "L2": 3.33
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 4
+  },
+  "alarm_if": true,
+  "tokens": [
+   "expert:L1:rxpower:lane_diff",
+   "expert:points_to:L1:L2",
+   "level:L1:media_snr_min:low_tail",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L1:txpower_mean:high_tail",
+   "level:L2:media_snr_min:high_tail",
+   "level:L2:rxpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.764,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.764
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": "L2",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1侧的接收光功率和介质侧信噪比异常，支持根因在L2",
+     "cited_evidence": [
+      "expert:L1:rxpower:lane_diff",
+      "level:L1:media_snr_min:low_tail",
+      "level:L1:rxpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1侧的发送光功率均值处于高尾，可能表明L1自身的发送链路异常",
+     "cited_evidence": [
+      "level:L1:txpower_mean:high_tail"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2侧的接收光功率和介质侧信噪比均处于高尾，表明L2侧接收正常",
+     "cited_evidence": [
+      "level:L2:media_snr_min:high_tail",
+      "level:L2:rxpower_mean:high_tail"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "SerDes信噪比在L1和L2侧均有效，排除SerDes异常",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，无法获取L1和L2的主机侧信噪比",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": true,
+  "source": null
+ },
+ {
+  "case_id": "case_5d80fba2c22f",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:single:host_snr",
+  "expert_verdict": "L1",
+  "reason": "L1 侧命中 single:host_snr（priority 21），指向 L1",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:host_snr",
+    "loc": "L1",
+    "prio": "21",
+    "anom": {
+     "host_snr": "low_value"
+    }
+   },
+   {
+    "side": "L2",
+    "rule": "single:serdes_snr",
+    "loc": "L2",
+    "prio": "31",
+    "anom": {
+     "media_snr": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.92,
+     1.08,
+     0.86,
+     0.92
+    ],
+    "L2": [
+     1.03,
+     1.34,
+     1.26,
+     1.07
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.77,
+     0.76,
+     0.75,
+     0.76
+    ],
+    "L2": [
+     0.85,
+     1.16,
+     0.31,
+     0.66
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     24.79,
+     24.65,
+     24.54,
+     24.77
+    ],
+    "L2": [
+     0,
+     24.79,
+     24.31,
+     24.79
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     22.5,
+     25.19,
+     25.07,
+     25.19
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     728583,
+     709735,
+     698257,
+     749126
+    ],
+    "L2": [
+     1,
+     730798,
+     676108,
+     696215
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.26,
+     7.27,
+     7.24,
+     7.24
+    ],
+    "L2": [
+     7.35,
+     7.35,
+     7.35,
+     7.35
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+   }
+  },
+  "temp": {
+   "L1": 47.66,
+   "L2": 51.26
+  },
+  "volt": {
+   "L1": 3.24,
+   "L2": 3.33
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 2,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "expert:L1:host_snr:low_value",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:points_to:L1:L1",
+   "expert:points_to:L2:L2",
+   "imbalance:L2:serdes_snr",
+   "level:L2:media_snr_min:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L2:RxLOL",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.733,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.733
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的 media_snr 异常支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:media_snr:single_lane",
+      "level:L2:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 侧的 host_snr 异常支持根因在 L1",
+     "cited_evidence": [
+      "expert:L1:host_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 serdes_snr 异常不能作为支持 L2 的证据",
+     "cited_evidence": [
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的 media_snr 异常和 L1 侧的 host_snr 异常同时存在，但无法明确区分根因",
+     "cited_evidence": [
+      "drop:L2:media_snr:single_lane",
+      "expert:L1:host_snr:low_value"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_b53c29f2ed30",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L1",
+  "reason": "L1 侧命中 single:serdes_snr（priority 30），指向 L1",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:serdes_snr",
+    "loc": "L1",
+    "prio": "30",
+    "anom": {
+     "serdes_snr": "lane_down"
+    }
+   },
+   {
+    "side": "L2",
+    "rule": "single:rxpower",
+    "loc": "L1",
+    "prio": "52",
+    "anom": {
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.44,
+     0.61,
+     0.91,
+     0.79
+    ],
+    "L2": [
+     1.84,
+     1.33,
+     1.31,
+     0.6
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.91,
+     1.04,
+     1.18,
+     1.41
+    ],
+    "L2": [
+     0.73,
+     0.72,
+     0.72,
+     0.73
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     23.88,
+     24.09,
+     24.31,
+     24.79
+    ],
+    "L2": [
+     25.94,
+     24.44,
+     25.16,
+     25.94
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "L2": [
+     26.68,
+     25.51,
+     25.3,
+     25.4
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     0,
+     609903,
+     642649,
+     646936
+    ],
+    "L2": [
+     773009,
+     766295,
+     743205,
+     700055
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.24,
+     7.24,
+     7.24,
+     7.24
+    ],
+    "L2": [
+     7.28,
+     7.27,
+     7.24,
+     7.28
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 40.48,
+   "L2": 49.26
+  },
+  "volt": {
+   "L1": 3.31,
+   "L2": 3.29
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 2,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L1:serdes_snr:single_lane",
+   "expert:L1:serdes_snr:lane_down",
+   "expert:L2:rxpower:lane_diff",
+   "expert:points_to:L1:L1",
+   "expert:points_to:L2:L1",
+   "level:L1:media_snr_min:low_tail",
+   "level:L2:media_snr_min:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.502,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.502
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": {
+   "verdict": "L1",
+   "confidence": 0.7,
+   "missing_information": [
+    "L1.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1 侧的 SerDes 信噪比异常指向 L1",
+     "cited_evidence": [
+      "drop:L1:serdes_snr:single_lane",
+      "expert:L1:serdes_snr:lane_down"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的接收光功率差异指向 L1",
+     "cited_evidence": [
+      "expert:L2:rxpower:lane_diff"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 和 L2 侧的介质信噪比低可能指向光纤",
+     "cited_evidence": [
+      "level:L1:media_snr_min:low_tail",
+      "level:L2:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "SerDes 有效，排除模块级问题",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，需补采 L1 的 host_snr",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": true,
+  "source": null
+ },
+ {
+  "case_id": "case_f40d7dea10c4",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:single:media_snr",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 single:media_snr（priority 41），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "single:media_snr",
+    "loc": "L1",
+    "prio": "41",
+    "anom": {
+     "media_snr": "low_value",
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     1.89,
+     1.9,
+     1.6,
+     1.57
+    ],
+    "L2": [
+     0.66,
+     2.01,
+     1.97,
+     1.85
+    ]
+   },
+   "txpower": {
+    "L1": [
+     1.28,
+     1.34,
+     1.36,
+     1.39
+    ],
+    "L2": [
+     1.36,
+     1.25,
+     1.23,
+     1.33
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.64,
+     25.34,
+     25.06,
+     25.34
+    ],
+    "L2": [
+     19.7,
+     25.96,
+     25.96,
+     26.3
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     639333,
+     734309,
+     667860,
+     707754
+    ],
+    "L2": [
+     743953,
+     753130,
+     704041,
+     730968
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.24,
+     7.24,
+     7.24,
+     6.98
+    ],
+    "L2": [
+     7.35,
+     7.08,
+     6.56,
+     7.35
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 44.66,
+   "L2": 52.88
+  },
+  "volt": {
+   "L1": 3.22,
+   "L2": 3.33
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 4
+  },
+  "alarm_if": true,
+  "tokens": [
+   "expert:L2:media_snr:low_value",
+   "expert:L2:rxpower:lane_diff",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:media_snr",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L1:txpower_mean:high_tail",
+   "level:L2:media_snr_min:low_tail",
+   "level:L2:rxpower_mean:high_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.924,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.924
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": {
+   "verdict": "L1",
+   "confidence": 0.7,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L2侧的介质侧信噪比异常，支持根因在L1",
+     "cited_evidence": [
+      "expert:L2:media_snr:low_value",
+      "level:L2:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2侧的接收光功率存在lane差异，支持根因在L1",
+     "cited_evidence": [
+      "expert:L2:rxpower:lane_diff",
+      "imbalance:L2:media_snr"
+     ],
+     "cited_constraints": [
+      "C22_receive_lane_imbalance_indicates_far_transmit_array"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1侧的接收和发送光功率均值偏高，可能指向L1自身问题",
+     "cited_evidence": [
+      "level:L1:rxpower_mean:high_tail",
+      "level:L1:txpower_mean:high_tail"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "SerDes信噪比正常，排除本端SerDes问题",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [
+      "C13_serdes_snr_unit_unknown"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "专家指出L2侧的问题指向L1",
+     "cited_evidence": [
+      "expert:points_to:L2:L1"
+     ],
+     "cited_constraints": [],
+     "effect": "support",
+     "target": "L1"
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_b244b38241f9",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:no_anomaly",
+  "expert_verdict": "L2",
+  "reason": "两端指标无明显异常，按专家规则兜底反馈本端",
+  "sides": [],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.56,
+     0.62,
+     0.35,
+     -0.1
+    ],
+    "L2": [
+     1.69,
+     1.31,
+     1.32,
+     1.33
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.89,
+     0.89,
+     0.87,
+     0.87
+    ],
+    "L2": [
+     0.85,
+     1.04,
+     1.19,
+     0.93
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.54,
+     24.84,
+     25.93,
+     26.4
+    ],
+    "L2": [
+     25.96,
+     25.64,
+     24.8,
+     25.64
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     25.07,
+     25.4,
+     25.4,
+     24.33
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     775479,
+     741939,
+     745081,
+     736703
+    ],
+    "L2": [
+     624678,
+     635952,
+     652792,
+     611189
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.16,
+     7.19,
+     7.16,
+     7.16
+    ],
+    "L2": [
+     7.78,
+     7.77,
+     7.78,
+     7.77
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 41.16,
+   "L2": 56.7
+  },
+  "volt": {
+   "L1": 3.23,
+   "L2": 3.33
+  },
+  "alarm": "DCN-AI超平面-频繁升降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 4
+  },
+  "alarm_if": true,
+  "tokens": [
+   "level:L1:rxpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.698,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.698
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": null,
+  "llm_accepted": null,
+  "source": null
+ },
+ {
+  "case_id": "case_86eee41de4c9",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.31,
+     0.59,
+     0.56,
+     0.61
+    ],
+    "L2": [
+     1.51,
+     1.44,
+     -40,
+     1.23
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.81,
+     0.81,
+     0.8,
+     0.82
+    ],
+    "L2": [
+     1.07,
+     1.22,
+     1.38,
+     1.57
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.46,
+     25.6,
+     26.93,
+     26.71
+    ],
+    "L2": [
+     25.06,
+     25.06,
+     0,
+     25.06
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     24.59,
+     24.96,
+     25.4,
+     24.33
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     749586,
+     724847,
+     709258,
+     761478
+    ],
+    "L2": [
+     777738,
+     766675,
+     116885,
+     772668
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.23,
+     7.26,
+     7.23,
+     7.26
+    ],
+    "L2": [
+     7.78,
+     7.77,
+     7.78,
+     7.77
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+   }
+  },
+  "temp": {
+   "L1": 45.51,
+   "L2": 55.65
+  },
+  "volt": {
+   "L1": 3.23,
+   "L2": 3.34
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "drop:L2:rxpower:single_lane",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:tx_ok_rx_down",
+   "level:L1:rxpower_mean:low_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L2:RxLOL",
+   "status:L2:RxLOS",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.803,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.803
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": {
+   "verdict": "L1",
+   "confidence": 0.6,
+   "missing_information": [
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的 media_snr 和 rxpower 异常支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:media_snr:single_lane",
+      "drop:L2:rxpower:single_lane"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 serdes_snr 异常指向本端",
+     "cited_evidence": [
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1 侧的 rxpower 异常支持根因在 L2",
+     "cited_evidence": [
+      "level:L1:rxpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C16_receive_symptom_constrains_far_transmit_chain"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1 到 L2 的 tx_ok_rx_down 指向光纤或 L2 接收",
+     "cited_evidence": [
+      "lane:L1_to_L2:tx_ok_rx_down"
+     ],
+     "cited_constraints": [
+      "C8_tx_ok_rx_down_indicates_medium"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L2 侧的多指标异常支持根因在 L1",
+     "cited_evidence": [
+      "expert:pattern:L2:multi_metric",
+      "expert:points_to:L2:L1"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 serdes_snr 不平衡指向 L1",
+     "cited_evidence": [
+      "imbalance:L2:serdes_snr"
+     ],
+     "cited_constraints": [
+      "C10_all_lanes_vs_single_lane"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_8448ab686d52",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L2",
+  "reason": "L1 侧命中 multi_metric（priority 1），指向 L2",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "multi_metric",
+    "loc": "L2",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     2.27,
+     2.15,
+     -40,
+     2.28
+    ],
+    "L2": [
+     2.53,
+     2.29,
+     2.13,
+     2.28
+    ]
+   },
+   "txpower": {
+    "L1": [
+     1.25,
+     1.05,
+     1.22,
+     1.37
+    ],
+    "L2": [
+     1.22,
+     1.05,
+     0.85,
+     1.43
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     26.3,
+     25.96,
+     0,
+     25.96
+    ],
+    "L2": [
+     25.96,
+     26.3,
+     25.96,
+     25.96
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     651119,
+     757428,
+     102824,
+     752401
+    ],
+    "L2": [
+     736645,
+     734656,
+     677193,
+     690734
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.35,
+     7.35,
+     7.08,
+     7.35
+    ],
+    "L2": [
+     7.24,
+     7.24,
+     7.24,
+     7.24
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 51.78,
+   "L2": 44.96
+  },
+  "volt": {
+   "L1": 3.22,
+   "L2": 3.1
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 2,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L1:media_snr:single_lane",
+   "drop:L1:rxpower:single_lane",
+   "expert:L1:media_snr:lane_down",
+   "expert:L1:rxpower:lane_down",
+   "expert:L1:serdes_snr:low_value",
+   "expert:pattern:L1:multi_metric",
+   "expert:points_to:L1:L2",
+   "lane:L2_to_L1:tx_ok_rx_down",
+   "level:L1:media_snr_min:high_tail",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L1:txpower_mean:high_tail",
+   "level:L2:media_snr_min:high_tail",
+   "level:L2:rxpower_mean:high_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L1:RxLOL",
+   "status:L1:RxLOS",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.893,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.893
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1侧的接收光功率和介质侧信噪比异常，支持根因在L2",
+     "cited_evidence": [
+      "drop:L1:rxpower:single_lane",
+      "drop:L1:media_snr:single_lane",
+      "expert:L1:rxpower:lane_down",
+      "expert:L1:media_snr:lane_down",
+      "expert:pattern:L1:multi_metric",
+      "expert:points_to:L1:L2"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1侧的SerDes信噪比异常，支持根因在L1",
+     "cited_evidence": [
+      "expert:L1:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2侧的发送光功率正常，排除L2发送问题",
+     "cited_evidence": [
+      "level:L2:txpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C5_tx_power_range"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1侧的发送光功率正常，排除L1发送问题",
+     "cited_evidence": [
+      "level:L1:txpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C5_tx_power_range"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2到L1的某个lane发送正常但接收异常，支持根因在光纤或L1接收",
+     "cited_evidence": [
+      "lane:L2_to_L1:tx_ok_rx_down"
+     ],
+     "cited_constraints": [
+      "C8_tx_ok_rx_down_indicates_medium"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L1侧的SerDes信噪比异常，但不足以单独支持L1",
+     "cited_evidence": [
+      "expert:L1:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C13_serdes_snr_unit_unknown"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1侧的接收异常和L2侧的发送正常，支持根因在L2",
+     "cited_evidence": [
+      "drop:L1:rxpower:single_lane",
+      "drop:L1:media_snr:single_lane",
+      "expert:L1:rxpower:lane_down",
+      "expert:L1:media_snr:lane_down",
+      "expert:pattern:L1:multi_metric",
+      "expert:points_to:L1:L2"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_3a9a11e3c449",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:single:rxpower",
+  "expert_verdict": "L2",
+  "reason": "L1 侧命中 single:rxpower（priority 52），指向 L2",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:rxpower",
+    "loc": "L2",
+    "prio": "52",
+    "anom": {
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     1.63,
+     3.06,
+     1.79,
+     2.01
+    ],
+    "L2": [
+     -0.51,
+     -0.43,
+     -0.4,
+     -0.25
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.01,
+     0.14,
+     -0.04,
+     -0.23
+    ],
+    "L2": [
+     0.35,
+     0.62,
+     0.57,
+     0.77
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.64,
+     25.34,
+     25.64,
+     25.96
+    ],
+    "L2": [
+     25.96,
+     26.68,
+     25.96,
+     25.64
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "L2": [
+     null,
+     null,
+     null,
+     null
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     723649,
+     670573,
+     717775,
+     696968
+    ],
+    "L2": [
+     764107,
+     710663,
+     739164,
+     725472
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.42,
+     7.42,
+     7.42,
+     7.42
+    ],
+    "L2": [
+     7.29,
+     7.29,
+     7.29,
+     7.29
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 45.88,
+   "L2": 47.89
+  },
+  "volt": {
+   "L1": 3.25,
+   "L2": 3.34
+  },
+  "alarm": "DCN-AI超平面-频繁升降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 4
+  },
+  "alarm_if": true,
+  "tokens": [
+   "expert:L1:rxpower:lane_diff",
+   "expert:points_to:L1:L2",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L1:txpower_mean:low_tail",
+   "level:L2:rxpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.697,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.697
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1侧接收光功率存在差异，支持根因在L2",
+     "cited_evidence": [
+      "expert:L1:rxpower:lane_diff"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1侧接收光功率偏高，支持根因在L2",
+     "cited_evidence": [
+      "level:L1:rxpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1侧发送光功率偏低，支持根因在L1",
+     "cited_evidence": [
+      "level:L1:txpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2侧接收光功率偏低，支持根因在L1",
+     "cited_evidence": [
+      "level:L2:rxpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "两端的SerDes信噪比正常，排除SerDes问题",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "部分遥测数据缺失，但不影响当前分析",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_0a23e38812e8",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L2",
+  "reason": "L2 侧命中 single:serdes_snr（priority 31），指向 L2",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "single:serdes_snr",
+    "loc": "L2",
+    "prio": "31",
+    "anom": {
+     "media_snr": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   },
+   {
+    "side": "L1",
+    "rule": "single:rxpower",
+    "loc": "L2",
+    "prio": "52",
+    "anom": {
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.34,
+     0.7,
+     0.37,
+     1.4
+    ],
+    "L2": [
+     0.6,
+     0.59,
+     0.55,
+     0.28
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.8,
+     0.81,
+     0.81,
+     0.81
+    ],
+    "L2": [
+     0.64,
+     0.63,
+     0.63,
+     0.63
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     24.01,
+     23.93,
+     23.86,
+     24.35
+    ],
+    "L2": [
+     0,
+     23.25,
+     24.19,
+     23.66
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     25.51,
+     24.84,
+     24.72,
+     23.75
+    ],
+    "L2": [
+     24.72,
+     25.07,
+     25.4,
+     23.75
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     738055,
+     740574,
+     684920,
+     730602
+    ],
+    "L2": [
+     93755,
+     755463,
+     810030,
+     794716
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.21,
+     7.21,
+     7.21,
+     7.23
+    ],
+    "L2": [
+     7.32,
+     7.34,
+     7.32,
+     7.32
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+   }
+  },
+  "temp": {
+   "L1": 45.01,
+   "L2": 53.74
+  },
+  "volt": {
+   "L1": 3.21,
+   "L2": 3.32
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 2,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "expert:L1:rxpower:lane_diff",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:points_to:L1:L2",
+   "expert:points_to:L2:L2",
+   "imbalance:L2:serdes_snr",
+   "level:L1:media_snr_min:low_tail",
+   "level:L2:media_snr_min:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L2:RxLOL",
+   "telemetry:full_telemetry"
+  ],
+  "match": {
+   "sim": 0.841,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.841
+    },
+    {
+     "l": "L1",
+     "s": 0.841
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "fiber_measurement"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的 media_snr 异常支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:media_snr:single_lane"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 侧的 rxpower 异常支持根因在 L2",
+     "cited_evidence": [
+      "expert:L1:rxpower:lane_diff"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L2 侧的 serdes_snr 异常支持根因在 L2",
+     "cited_evidence": [
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L2"
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_0c3939c5292e",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:single:rxpower",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 single:rxpower（priority 52），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "single:rxpower",
+    "loc": "L1",
+    "prio": "52",
+    "anom": {
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.37,
+     0.96,
+     0.34,
+     0.59
+    ],
+    "L2": [
+     1.28,
+     0.45,
+     0.27,
+     0.53
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.4,
+     -0.37,
+     -0.13,
+     0.37
+    ],
+    "L2": [
+     1.41,
+     0.92,
+     1.01,
+     0.88
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     26.68,
+     25.96,
+     25.96,
+     26.3
+    ],
+    "L2": [
+     25.34,
+     26.69,
+     25.64,
+     26.31
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     713950,
+     684969,
+     697989,
+     699239
+    ],
+    "L2": [
+     805740,
+     769571,
+     803424,
+     782388
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.48,
+     7.48,
+     7.48,
+     7.48
+    ],
+    "L2": [
+     7.78,
+     7.77,
+     7.78,
+     7.77
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 46.88,
+   "L2": 58.22
+  },
+  "volt": {
+   "L1": 3.28,
+   "L2": 3.35
+  },
+  "alarm": "DCN-AI超平面-频繁升降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 4
+  },
+  "alarm_if": true,
+  "tokens": [
+   "expert:L2:rxpower:lane_diff",
+   "expert:points_to:L2:L1",
+   "level:L1:media_snr_min:high_tail",
+   "level:L1:txpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.638,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.638
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": {
+   "verdict": "L1",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr",
+    "光纤端面镜检和双向功率标定"
+   ],
+   "steps": [
+    {
+     "claim": "L2侧的接收光功率存在通道差异，支持根因在L1",
+     "cited_evidence": [
+      "expert:L2:rxpower:lane_diff",
+      "expert:points_to:L2:L1"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1侧的介质信噪比处于高尾，可能支持光纤问题",
+     "cited_evidence": [
+      "level:L1:media_snr_min:high_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L1侧的发送光功率均值处于低尾，支持根因在L1",
+     "cited_evidence": [
+      "level:L1:txpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "SerDes信号正常，不影响判断",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，需补采",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_b2d2a66d4b1d",
+  "gold": "fiber",
+  "pred": "L2",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L2",
+  "reason": "L1 侧命中 multi_metric（priority 1），指向 L2",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "multi_metric",
+    "loc": "L2",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     2.62,
+     2.06,
+     -40,
+     1.46
+    ],
+    "L2": [
+     0.12,
+     0.55,
+     0.85,
+     1.06
+    ]
+   },
+   "txpower": {
+    "L1": [
+     -0.35,
+     -0.38,
+     0.39,
+     0.68
+    ],
+    "L2": [
+     0.63,
+     0.7,
+     0.25,
+     0.57
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.96,
+     25.96,
+     0,
+     26.31
+    ],
+    "L2": [
+     25.96,
+     25.64,
+     25.96,
+     25.96
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     690067,
+     721708,
+     1,
+     718610
+    ],
+    "L2": [
+     669904,
+     666664,
+     626216,
+     728227
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.62,
+     7.62,
+     7.62,
+     7.62
+    ],
+    "L2": [
+     6.82,
+     6.82,
+     6.82,
+     6.82
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 47.45,
+   "L2": 51.69
+  },
+  "volt": {
+   "L1": 3.28,
+   "L2": 3.34
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 2,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L1:media_snr:single_lane",
+   "drop:L1:rxpower:single_lane",
+   "expert:L1:media_snr:lane_down",
+   "expert:L1:rxpower:lane_down",
+   "expert:L1:serdes_snr:low_value",
+   "expert:pattern:L1:multi_metric",
+   "expert:points_to:L1:L2",
+   "lane:L2_to_L1:tx_ok_rx_down",
+   "level:L1:media_snr_min:high_tail",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L1:txpower_mean:low_tail",
+   "level:L2:txpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L1:RxLOL",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.865,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.865
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1 侧的 media_snr 和 rxpower 异常支持根因在 L2",
+     "cited_evidence": [
+      "drop:L1:media_snr:single_lane",
+      "drop:L1:rxpower:single_lane",
+      "expert:L1:media_snr:lane_down",
+      "expert:L1:rxpower:lane_down",
+      "expert:pattern:L1:multi_metric",
+      "expert:points_to:L1:L2"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1 侧的 serdes_snr 异常指向本端",
+     "cited_evidence": [
+      "expert:L1:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 txpower 异常指向本端",
+     "cited_evidence": [
+      "level:L2:txpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C21_healthy_band_tx_level_is_not_attribution_evidence"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的 tx_ok_rx_down 指向光纤",
+     "cited_evidence": [
+      "lane:L2_to_L1:tx_ok_rx_down"
+     ],
+     "cited_constraints": [
+      "C8_tx_ok_rx_down_indicates_medium"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    }
+   ]
+  },
+  "llm_accepted": true,
+  "source": null
+ },
+ {
+  "case_id": "case_f6ab3c98854d",
+  "gold": "fiber",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.47,
+     -0.19,
+     0.31,
+     0.31
+    ],
+    "L2": [
+     0.96,
+     0.69,
+     0.87,
+     -40
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.69,
+     0.69,
+     0.69,
+     0.69
+    ],
+    "L2": [
+     0.61,
+     0.5,
+     0.66,
+     0.69
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     26.54,
+     26.57,
+     26.06,
+     26.25
+    ],
+    "L2": [
+     25.06,
+     25.64,
+     24.8,
+     0
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     24.72,
+     25.07,
+     25.4,
+     24.19
+    ],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     705802,
+     704738,
+     681767,
+     729605
+    ],
+    "L2": [
+     700627,
+     754983,
+     675534,
+     1
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.24,
+     7.23,
+     7.23,
+     7.24
+    ],
+    "L2": [
+     7.78,
+     7.77,
+     7.77,
+     7.77
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+   }
+  },
+  "temp": {
+   "L1": 45.29,
+   "L2": 55.88
+  },
+  "volt": {
+   "L1": 3.23,
+   "L2": 3.31
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 2,
+   "L2": 2
+  },
+  "alarm_if": true,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "drop:L2:rxpower:single_lane",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:tx_ok_rx_down",
+   "level:L1:media_snr_min:high_tail",
+   "level:L1:rxpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L2:RxLOL",
+   "status:L2:RxLOS",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.849,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.849
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": null,
+  "llm_accepted": null,
+  "source": null
+ },
+ {
+  "case_id": "case_fa72aef06d4d",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L1",
+  "reason": "L1 侧命中 single:serdes_snr（priority 31），指向 L1",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:serdes_snr",
+    "loc": "L1",
+    "prio": "31",
+    "anom": {
+     "rxpower": "lane_diff",
+     "serdes_snr": "high_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     -0.18,
+     0.87,
+     1.12,
+     0.87
+    ],
+    "L2": [
+     -0.37,
+     -0.61,
+     -0.59,
+     -0.61
+    ]
+   },
+   "txpower": {
+    "L1": [
+     -1.44,
+     -1.05,
+     -1.19,
+     -1.06
+    ],
+    "L2": [
+     0.82,
+     0.57,
+     1.04,
+     1.04
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     23.48,
+     24.79,
+     25.96,
+     25.64
+    ],
+    "L2": [
+     25.96,
+     25.96,
+     26.31,
+     25.64
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     1533332,
+     734539,
+     700755,
+     735831
+    ],
+    "L2": [
+     646696,
+     681228,
+     669428,
+     644618
+    ]
+   },
+   "bias": {
+    "L1": [
+     7.53,
+     7.53,
+     7.53,
+     7.53
+    ],
+    "L2": [
+     7.72,
+     7.72,
+     7.72,
+     7.72
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": 50.16,
+   "L2": 52.14
+  },
+  "volt": {
+   "L1": 3.28,
+   "L2": 3.34
+  },
+  "alarm": "DCN-AI超平面-接口降lane-网络侧",
+  "lanes": {
+   "L1": 4,
+   "L2": 4
+  },
+  "alarm_if": true,
+  "tokens": [
+   "expert:L1:rxpower:lane_diff",
+   "expert:L1:serdes_snr:high_value",
+   "expert:points_to:L1:L1",
+   "level:L1:media_snr_min:low_tail",
+   "level:L1:txpower_mean:low_tail",
+   "level:L2:rxpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.366,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.366
+    },
+    {
+     "l": "L2",
+     "s": 0.366
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1 侧接收光功率异常，支持根因在 L2",
+     "cited_evidence": [
+      "expert:L1:rxpower:lane_diff"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1 侧介质侧信噪比异常，支持根因在 L2",
+     "cited_evidence": [
+      "level:L1:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1 侧发送光功率异常，支持根因在 L1",
+     "cited_evidence": [
+      "level:L1:txpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧接收光功率异常，支持根因在 L1",
+     "cited_evidence": [
+      "level:L2:rxpower_mean:low_tail"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_d338b3cb902c",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     2.43,
+     2.18,
+     2.03,
+     1.85
+    ],
+    "L2": [
+     1.25,
+     1.49,
+     1.27,
+     -40.0
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.95,
+     1.29,
+     1.19,
+     1.15
+    ],
+    "L2": [
+     1.16,
+     1.19,
+     1.08,
+     1.2
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.96,
+     25.96,
+     25.64,
+     26.31
+    ],
+    "L2": [
+     25.06,
+     26.3,
+     0.0,
+     25.34
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     660633,
+     662303,
+     575773,
+     656594
+    ],
+    "L2": [
+     714301,
+     750802,
+     138743,
+     799578
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "drop:L2:rxpower:single_lane",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:tx_ok_rx_down",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.874,
+   "cands": [
+    {
+     "l": "fiber",
+     "s": 0.874
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": "L1",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1.RxLOL",
+    "L1.RxLOS",
+    "L1.TxLOL",
+    "L1.TxLOS",
+    "L1.host_snr",
+    "L2.RxLOL",
+    "L2.RxLOS",
+    "L2.TxLOL",
+    "L2.TxLOS",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的接收光功率和介质侧信噪比异常，支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:rxpower:single_lane",
+      "drop:L2:media_snr:single_lane"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比异常，但不能支持 L2",
+     "cited_evidence": [
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的三项指标同时异常，支持根因在 L1",
+     "cited_evidence": [
+      "expert:pattern:L2:multi_metric"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的单 lane 异常，不能排除光纤",
+     "cited_evidence": [
+      "drop:L2:rxpower:single_lane",
+      "drop:L2:media_snr:single_lane"
+     ],
+     "cited_constraints": [
+      "C18_single_lane_scope_does_not_exclude_fiber"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1 侧的接收光功率偏高，但不能支持 L1",
+     "cited_evidence": [
+      "level:L1:rxpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C7_rx_power_range"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的发送光功率偏高，但不能支持 L2",
+     "cited_evidence": [
+      "level:L2:txpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C21_healthy_band_tx_level_is_not_attribution_evidence"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比不平衡，但不能支持 L1",
+     "cited_evidence": [
+      "imbalance:L2:serdes_snr"
+     ],
+     "cited_constraints": [
+      "C10_all_lanes_vs_single_lane"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1 侧的 SerDes 信噪比正常，不能支持 L1",
+     "cited_evidence": [
+      "serdes:L1:valid"
+     ],
+     "cited_constraints": [
+      "C13_serdes_snr_unit_unknown"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比正常，不能支持 L2",
+     "cited_evidence": [
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [
+      "C13_serdes_snr_unit_unknown"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，但不影响判断",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_d3cf78b26833",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L1",
+  "reason": "L1 侧命中 single:serdes_snr（priority 30），指向 L1",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:serdes_snr",
+    "loc": "L1",
+    "prio": "30",
+    "anom": {
+     "media_snr": "low_value",
+     "serdes_snr": "lane_down"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.94,
+     1.32,
+     1.35,
+     1.27
+    ],
+    "L2": [
+     1.34,
+     1.32,
+     1.26,
+     1.3
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.79,
+     0.78,
+     0.78,
+     0.78
+    ],
+    "L2": [
+     1.2,
+     1.17,
+     1.22,
+     1.29
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     24.1,
+     19.34,
+     24.87,
+     23.64
+    ],
+    "L2": [
+     24.09,
+     24.55,
+     24.31,
+     25.34
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     24.96,
+     25.51,
+     25.61,
+     24.72
+    ],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     740057,
+     0,
+     782599,
+     792715
+    ],
+    "L2": [
+     627276,
+     611331,
+     677160,
+     684434
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L1:serdes_snr:single_lane",
+   "expert:L1:media_snr:low_value",
+   "expert:L1:serdes_snr:lane_down",
+   "expert:points_to:L1:L1",
+   "imbalance:L1:media_snr",
+   "level:L1:media_snr_min:low_tail",
+   "level:L2:media_snr_min:low_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.462,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.462
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1.RxLOL",
+    "L1.RxLOS",
+    "L1.TxLOL",
+    "L1.TxLOS",
+    "L2.RxLOL",
+    "L2.RxLOS",
+    "L2.TxLOL",
+    "L2.TxLOS",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1侧的serdes_snr异常，支持L1作为根因。",
+     "cited_evidence": [
+      "drop:L1:serdes_snr:single_lane",
+      "expert:L1:serdes_snr:lane_down"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1和L2的media_snr都偏低，支持光纤问题。",
+     "cited_evidence": [
+      "level:L1:media_snr_min:low_tail",
+      "level:L2:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L2的txpower偏高，但根据C21，这不能作为故障证据。",
+     "cited_evidence": [
+      "level:L2:txpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C21_healthy_band_tx_level_is_not_attribution_evidence"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1的media_snr不均衡，可能指向对端L2的问题。",
+     "cited_evidence": [
+      "imbalance:L1:media_snr"
+     ],
+     "cited_constraints": [
+      "C22_receive_lane_imbalance_indicates_far_transmit_array"
+     ],
+     "effect": "support",
+     "target": "L2"
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_4695d660361d",
+  "gold": "fiber",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   },
+   {
+    "side": "L1",
+    "rule": "single:rxpower",
+    "loc": "L2",
+    "prio": "52",
+    "anom": {
+     "rxpower": "lane_diff"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.5,
+     1.26,
+     1.52,
+     1.46
+    ],
+    "L2": [
+     -0.61,
+     -0.83,
+     -1.18,
+     -40.0
+    ]
+   },
+   "txpower": {
+    "L1": [
+     -0.97,
+     -1.2,
+     -1.78,
+     -1.37
+    ],
+    "L2": [
+     0.28,
+     0.4,
+     0.83,
+     0.88
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     26.3,
+     25.64,
+     25.34,
+     25.64
+    ],
+    "L2": [
+     26.3,
+     26.3,
+     25.64,
+     0.0
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     702320,
+     634076,
+     625113,
+     728793
+    ],
+    "L2": [
+     614057,
+     685623,
+     639852,
+     103874
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "drop:L2:rxpower:single_lane",
+   "expert:L1:rxpower:lane_diff",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L1:L2",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:tx_ok_rx_down",
+   "level:L1:txpower_mean:low_tail",
+   "level:L2:rxpower_mean:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.761,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.761
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1 侧的电口读数",
+    "L1 侧的发送功率历史"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的接收光功率和介质侧信噪比异常支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:media_snr:single_lane",
+      "drop:L2:rxpower:single_lane"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比异常指向本端",
+     "cited_evidence": [
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比不平衡指向本端",
+     "cited_evidence": [
+      "imbalance:L2:serdes_snr"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1 侧的接收光功率异常支持根因在 L2",
+     "cited_evidence": [
+      "expert:L1:rxpower:lane_diff"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_7fa3fefa52e3",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L2",
+  "reason": "L1 侧命中 multi_metric（priority 1），指向 L2",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "multi_metric",
+    "loc": "L2",
+    "prio": "1",
+    "anom": {
+     "media_snr": "low_value",
+     "rxpower": "lane_diff",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     2.17,
+     2.62,
+     3.3,
+     1.97
+    ],
+    "L2": [
+     1.26,
+     1.4,
+     1.4,
+     1.18
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.63,
+     0.39,
+     1.02,
+     0.72
+    ],
+    "L2": [
+     1.02,
+     0.75,
+     0.73,
+     0.91
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.34,
+     23.3,
+     22.05,
+     25.96
+    ],
+    "L2": [
+     26.3,
+     25.96,
+     26.68,
+     25.64
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     411786,
+     763819,
+     584662,
+     727318
+    ],
+    "L2": [
+     651072,
+     682500,
+     635513,
+     721412
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "expert:L1:media_snr:low_value",
+   "expert:L1:rxpower:lane_diff",
+   "expert:L1:serdes_snr:low_value",
+   "expert:pattern:L1:multi_metric",
+   "expert:points_to:L1:L2",
+   "imbalance:L1:media_snr",
+   "level:L1:media_snr_min:low_tail",
+   "level:L1:rxpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.639,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.639
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": "L2",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1.RxLOL",
+    "L1.RxLOS",
+    "L1.TxLOL",
+    "L1.TxLOS",
+    "L1.host_snr",
+    "L2.RxLOL",
+    "L2.RxLOS",
+    "L2.TxLOL",
+    "L2.TxLOS",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1 侧的接收光功率、介质侧信噪比和 SerDes 信噪比同时异常，支持根因在 L2",
+     "cited_evidence": [
+      "expert:L1:media_snr:low_value",
+      "expert:L1:rxpower:lane_diff",
+      "expert:L1:serdes_snr:low_value",
+      "expert:pattern:L1:multi_metric",
+      "expert:points_to:L1:L2"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L1 侧的介质侧信噪比存在不平衡，支持根因在 L2",
+     "cited_evidence": [
+      "imbalance:L1:media_snr"
+     ],
+     "cited_constraints": [
+      "C22_receive_lane_imbalance_indicates_far_transmit_array"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 侧的介质侧信噪比低于正常范围，支持根因在光纤",
+     "cited_evidence": [
+      "level:L1:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L1 侧的接收光功率均值偏高，可能表明本端接收链路异常",
+     "cited_evidence": [
+      "level:L1:rxpower_mean:high_tail"
+     ],
+     "cited_constraints": [
+      "C7_rx_power_range"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "SerDes 信噪比在 L1 和 L2 侧均有效，表明本端和对端的电口信号质量正常",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [
+      "C13_serdes_snr_unit_unknown"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，无法排除其他可能性",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_22d4dde687ab",
+  "gold": "fiber",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     1.01,
+     1.05,
+     1.29,
+     0.74
+    ],
+    "L2": [
+     -40.0,
+     1.36,
+     1.08,
+     1.3
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.75,
+     0.76,
+     0.75,
+     0.74
+    ],
+    "L2": [
+     0.94,
+     1.48,
+     1.23,
+     1.34
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.05,
+     25.29,
+     25.94,
+     24.85
+    ],
+    "L2": [
+     0.0,
+     23.48,
+     23.88,
+     23.88
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     24.46,
+     24.84,
+     25.07,
+     24.05
+    ],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     742604,
+     740395,
+     711612,
+     712046
+    ],
+    "L2": [
+     262584,
+     751429,
+     738743,
+     733151
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "drop:L2:rxpower:single_lane",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:tx_ok_rx_down",
+   "level:L2:media_snr_min:low_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 1.0,
+   "cands": [
+    {
+     "l": "fiber",
+     "s": 1.0
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": null,
+  "llm_accepted": null,
+  "source": null
+ },
+ {
+  "case_id": "case_ac436bbbc898",
+  "gold": "fiber",
+  "pred": "L1",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L1",
+  "reason": "L1 侧命中 single:serdes_snr（priority 31），指向 L1",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:serdes_snr",
+    "loc": "L1",
+    "prio": "31",
+    "anom": {
+     "serdes_snr": "low_value"
+    }
+   },
+   {
+    "side": "L2",
+    "rule": "single:media_snr",
+    "loc": "L1",
+    "prio": "40",
+    "anom": {
+     "media_snr": "lane_down"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.185757,
+     0.62582,
+     0.719556,
+     0.833951,
+     0.742677,
+     0.765676,
+     0.727277,
+     0.727277
+    ],
+    "L2": [
+     1.209028,
+     1.424208,
+     0.948902,
+     1.617273
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.595634,
+     1.145776,
+     0.915614,
+     0.85576,
+     0.775859,
+     1.035643,
+     0.865734,
+     0.875685
+    ],
+    "L2": [
+     0.697051,
+     0.669964,
+     0.682972,
+     0.682972
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.48,
+     26.11,
+     25.91,
+     25.68,
+     25.42,
+     25.54,
+     25.05,
+     26.38
+    ],
+    "L2": [
+     0,
+     0,
+     25.71,
+     24.84
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": [
+     26.09,
+     24.72,
+     25.71,
+     24.96
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     665173,
+     181262,
+     621702,
+     622925
+    ],
+    "L2": [
+     628709,
+     756071,
+     693861,
+     760515
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "频繁升降lane",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:media_snr:partial_lanes",
+   "expert:L1:serdes_snr:low_value",
+   "expert:L2:media_snr:lane_down",
+   "expert:points_to:L1:L1",
+   "expert:points_to:L2:L1",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.459,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.459
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": {
+   "verdict": "L1",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1.host_snr",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的介质信噪比异常指向对端 L1",
+     "cited_evidence": [
+      "drop:L2:media_snr:partial_lanes",
+      "expert:L2:media_snr:lane_down"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 侧的 SerDes 信噪比异常指向本端 L1",
+     "cited_evidence": [
+      "expert:L1:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C25_expert_local_chain_anomaly_on_l1_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "专家结论指向 L1",
+     "cited_evidence": [
+      "expert:points_to:L1:L1",
+      "expert:points_to:L2:L1"
+     ],
+     "cited_constraints": [],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "SerDes 信噪比在 L1 和 L2 侧均有效，不支持光纤问题",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，无法进一步区分",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": true,
+  "source": null
+ },
+ {
+  "case_id": "case_85ab9d3bd128",
+  "gold": "fiber",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     1.4,
+     1.3,
+     1.33,
+     1.36
+    ],
+    "L2": [
+     -40.0,
+     1.14,
+     1.44,
+     1.08
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.83,
+     1.17,
+     1.17,
+     1.0
+    ],
+    "L2": [
+     0.74,
+     0.76,
+     0.74,
+     0.74
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     23.48,
+     23.3,
+     23.12,
+     23.48
+    ],
+    "L2": [
+     0,
+     25.33,
+     25.66,
+     24.75
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     632897,
+     691264,
+     644939,
+     674634
+    ],
+    "L2": [
+     1,
+     804643,
+     740745,
+     866691
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:media_snr:single_lane",
+   "drop:L2:rxpower:single_lane",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:lane_down",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:tx_ok_rx_down",
+   "level:L1:media_snr_min:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.81,
+   "cands": [
+    {
+     "l": "fiber",
+     "s": 0.81
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1 的电口读数",
+    "L1 的发送功率历史",
+    "光纤的介质侧测量"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的接收光功率和介质侧信噪比异常，支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:rxpower:single_lane",
+      "drop:L2:media_snr:single_lane",
+      "expert:L2:rxpower:lane_down",
+      "expert:L2:media_snr:lane_down"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比异常，但不能作为支持 L2 的证据",
+     "cited_evidence": [
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的多指标异常模式，支持根因在 L1",
+     "cited_evidence": [
+      "expert:pattern:L2:multi_metric",
+      "expert:points_to:L2:L1"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的 SerDes 信噪比不平衡，但不能作为支持 L1 的证据",
+     "cited_evidence": [
+      "imbalance:L2:serdes_snr"
+     ],
+     "cited_constraints": [
+      "C10_all_lanes_vs_single_lane"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1 到 L2 的发送正常但接收异常，支持光纤问题",
+     "cited_evidence": [
+      "lane:L1_to_L2:tx_ok_rx_down"
+     ],
+     "cited_constraints": [
+      "C8_tx_ok_rx_down_indicates_medium"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L1 侧的介质侧信噪比偏低，支持根因在 L1",
+     "cited_evidence": [
+      "level:L1:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 和 L2 的 SerDes 信噪比有效，不支持任何一方",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [
+      "C13_serdes_snr_unit_unknown"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，无法排除光纤问题",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_788f63a0a0fc",
+  "gold": "L2",
+  "pred": "L1",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L1",
+  "reason": "L2 侧命中 multi_metric（priority 1），指向 L1",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "multi_metric",
+    "loc": "L1",
+    "prio": "1",
+    "anom": {
+     "host_snr": "lane_down",
+     "media_snr": "lane_down",
+     "rxpower": "low_value",
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     2.48,
+     2.25,
+     2.33,
+     1.99
+    ],
+    "L2": [
+     0.711821,
+     0.711821,
+     0.711821,
+     -11.09579
+    ]
+   },
+   "txpower": {
+    "L1": [
+     1.13,
+     0.96,
+     0.82,
+     1.0
+    ],
+    "L2": [
+     1.356096,
+     1.305911,
+     1.196188,
+     1.316187
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     26.69,
+     25.96,
+     26.31,
+     26.31
+    ],
+    "L2": [
+     25.34,
+     24.55,
+     25.64,
+     0.0
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": [
+     25.34,
+     24.55,
+     25.64,
+     0.0
+    ]
+   },
+   "serdes_snr": {
+    "L1": [
+     693067,
+     750627,
+     660359,
+     781158
+    ],
+    "L2": [
+     579085,
+     588238,
+     578417,
+     1
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Abnormal"
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:host_snr:single_lane",
+   "drop:L2:media_snr:single_lane",
+   "expert:L2:host_snr:lane_down",
+   "expert:L2:media_snr:lane_down",
+   "expert:L2:rxpower:low_value",
+   "expert:L2:serdes_snr:low_value",
+   "expert:pattern:L2:multi_metric",
+   "expert:points_to:L2:L1",
+   "imbalance:L2:rxpower",
+   "imbalance:L2:serdes_snr",
+   "lane:L1_to_L2:single_lane_outlier",
+   "level:L1:media_snr_min:high_tail",
+   "level:L1:rxpower_mean:high_tail",
+   "level:L2:media_snr_min:low_tail",
+   "level:L2:rxpower_mean:low_tail",
+   "level:L2:txpower_mean:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "status:L1:RxLOL",
+   "status:L2:RxLOL",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.427,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.427
+    }
+   ]
+  },
+  "sop": "L1",
+  "llm": {
+   "verdict": "L2",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1 侧的电口读数",
+    "L1 侧的发送功率历史"
+   ],
+   "steps": [
+    {
+     "claim": "L2 侧的接收光功率和介质侧信噪比异常，支持根因在 L1",
+     "cited_evidence": [
+      "drop:L2:rxpower:single_lane",
+      "drop:L2:media_snr:single_lane",
+      "expert:L2:rxpower:low_value",
+      "expert:L2:media_snr:low_value",
+      "expert:pattern:L2:multi_metric",
+      "expert:points_to:L2:L1"
+     ],
+     "cited_constraints": [
+      "C24_expert_receive_anomaly_on_l2_supports_l1"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L2 侧的主机侧信噪比和 SerDes 信噪比异常，但不能作为支持 L2 的证据",
+     "cited_evidence": [
+      "drop:L2:host_snr:single_lane",
+      "drop:L2:serdes_snr:single_lane",
+      "expert:L2:host_snr:lane_down",
+      "expert:L2:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L2 侧的接收功率不平衡，支持根因在 L1",
+     "cited_evidence": [
+      "imbalance:L2:rxpower"
+     ],
+     "cited_constraints": [
+      "C22_receive_lane_imbalance_indicates_far_transmit_array"
+     ],
+     "effect": "support",
+     "target": "L1"
+    },
+    {
+     "claim": "L1 侧的接收光功率和介质侧信噪比正常，排除 L1 侧的接收问题",
+     "cited_evidence": [
+      "level:L1:rxpower_mean:high_tail",
+      "level:L1:media_snr_min:high_tail"
+     ],
+     "cited_constraints": [
+      "C7_rx_power_range"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_60e62d6d1052",
+  "gold": "fiber",
+  "pred": "L1",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L1",
+  "reason": "L1 侧命中 single:serdes_snr（priority 31），指向 L1",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "single:serdes_snr",
+    "loc": "L1",
+    "prio": "31",
+    "anom": {
+     "serdes_snr": "low_value"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.185757,
+     0.62582,
+     0.719556,
+     0.833951,
+     0.742677,
+     0.765676,
+     0.727277,
+     0.727277
+    ],
+    "L2": [
+     1.179669,
+     1.407279,
+     0.907869,
+     1.615477
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.595634,
+     1.145776,
+     0.915614,
+     0.85576,
+     0.775859,
+     1.035643,
+     0.865734,
+     0.875685
+    ],
+    "L2": [
+     0.690017,
+     0.675916,
+     0.675916,
+     0.682972
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.34,
+     24.09,
+     24.79,
+     23.48,
+     25.34,
+     24.31,
+     24.79,
+     25.06
+    ],
+    "L2": [
+     25.48,
+     26.11,
+     25.91,
+     25.68
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     665173,
+     181262,
+     621702,
+     622925
+    ],
+    "L2": [
+     628709,
+     756071,
+     693861,
+     760515
+    ]
+   },
+   "bias": {
+    "L1": [
+     "{",
+     "'",
+     "0",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "1",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "2",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "3",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "4",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "5",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "6",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     ",",
+     " ",
+     "'",
+     "7",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     "}"
+    ],
+    "L2": [
+     "{",
+     "'",
+     "0",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "9",
+     ",",
+     " ",
+     "'",
+     "1",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "6",
+     "6",
+     ",",
+     " ",
+     "'",
+     "2",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "6",
+     "6",
+     ",",
+     " ",
+     "'",
+     "3",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "7",
+     "8",
+     ",",
+     " ",
+     "'",
+     "4",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "3",
+     "0",
+     "2",
+     ",",
+     " ",
+     "'",
+     "5",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "6",
+     "6",
+     ",",
+     " ",
+     "'",
+     "6",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "2",
+     "4",
+     "4",
+     ",",
+     " ",
+     "'",
+     "7",
+     "'",
+     ":",
+     " ",
+     "7",
+     ".",
+     "3",
+     "1",
+     "2",
+     "}"
+    ]
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "频繁升降lane",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "expert:L1:serdes_snr:low_value",
+   "expert:points_to:L1:L1",
+   "level:L1:media_snr_min:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.54,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.54
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": null,
+   "confidence": 0.0,
+   "missing_information": [
+    "L1.RxLOS",
+    "L1.host_snr",
+    "L2.RxLOS",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1 侧的 SerDes 信噪比异常，但根据 C26，这不能作为支持 L2 的证据，只能作为中性观察。",
+     "cited_evidence": [
+      "expert:L1:serdes_snr:low_value"
+     ],
+     "cited_constraints": [
+      "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "L1 侧的介质侧信噪比处于低尾，根据 C11，这可能指向光纤问题。",
+     "cited_evidence": [
+      "level:L1:media_snr_min:low_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L1 侧的 SerDes 信噪比有效，L2 侧的 SerDes 信噪比也有效，这表明两端的 SerDes 都在正常工作。",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，无法获取 L1 和 L2 的主机侧信噪比。",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_9e14bb67adf3",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:multi_metric",
+  "expert_verdict": "L2",
+  "reason": "L1 侧命中 multi_metric（priority 1），指向 L2",
+  "sides": [
+   {
+    "side": "L1",
+    "rule": "multi_metric",
+    "loc": "L2",
+    "prio": "1",
+    "anom": {
+     "media_snr": "lane_down",
+     "rxpower": "lane_down",
+     "serdes_snr": "lane_down"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     1.17,
+     -40.0,
+     1.15,
+     -40.0
+    ],
+    "L2": [
+     0.27,
+     0.6,
+     0.54,
+     0.2
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.85,
+     0.96,
+     0.85,
+     0.72
+    ],
+    "L2": [
+     0.89,
+     0.93,
+     0.49,
+     0.85
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     25.64,
+     0.0,
+     24.55,
+     0.0
+    ],
+    "L2": [
+     25.96,
+     26.68,
+     26.3,
+     26.3
+    ]
+   },
+   "host_snr": {
+    "L1": [],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     705684,
+     0,
+     637654,
+     0
+    ],
+    "L2": [
+     743699,
+     768582,
+     735616,
+     773972
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOS": {
+    "L1": null,
+    "L2": null
+   },
+   "TxLOL": {
+    "L1": null,
+    "L2": null
+   },
+   "RxLOL": {
+    "L1": null,
+    "L2": null
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "降lane未恢复",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L1:media_snr:partial_lanes",
+   "drop:L1:rxpower:partial_lanes",
+   "drop:L1:serdes_snr:partial_lanes",
+   "expert:L1:media_snr:lane_down",
+   "expert:L1:rxpower:lane_down",
+   "expert:L1:serdes_snr:lane_down",
+   "expert:pattern:L1:multi_metric",
+   "expert:points_to:L1:L2",
+   "lane:L2_to_L1:tx_ok_rx_down",
+   "level:L2:media_snr_min:high_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.52,
+   "cands": [
+    {
+     "l": "L1",
+     "s": 0.52
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": {
+   "verdict": "L2",
+   "confidence": 0.6,
+   "missing_information": [
+    "L1.RxLOL",
+    "L1.RxLOS",
+    "L1.TxLOL",
+    "L1.TxLOS",
+    "L1.host_snr",
+    "L2.RxLOL",
+    "L2.RxLOS",
+    "L2.TxLOL",
+    "L2.TxLOS",
+    "L2.host_snr"
+   ],
+   "steps": [
+    {
+     "claim": "L1 侧的接收光功率、介质侧信噪比和 SerDes 信噪比同时异常，支持根因在 L2",
+     "cited_evidence": [
+      "drop:L1:media_snr:partial_lanes",
+      "drop:L1:rxpower:partial_lanes",
+      "drop:L1:serdes_snr:partial_lanes",
+      "expert:L1:media_snr:lane_down",
+      "expert:L1:rxpower:lane_down",
+      "expert:L1:serdes_snr:lane_down",
+      "expert:pattern:L1:multi_metric",
+      "expert:points_to:L1:L2"
+     ],
+     "cited_constraints": [
+      "C23_expert_receive_anomaly_on_l1_supports_l2"
+     ],
+     "effect": "support",
+     "target": "L2"
+    },
+    {
+     "claim": "L2 侧到 L1 的某个 lane 出现 tx_ok_rx_down，支持根因在光纤",
+     "cited_evidence": [
+      "lane:L2_to_L1:tx_ok_rx_down"
+     ],
+     "cited_constraints": [
+      "C8_tx_ok_rx_down_indicates_medium"
+     ],
+     "effect": "support",
+     "target": "fiber"
+    },
+    {
+     "claim": "L2 侧的介质侧信噪比处于高尾，但不足以支持 L1",
+     "cited_evidence": [
+      "level:L2:media_snr_min:high_tail"
+     ],
+     "cited_constraints": [
+      "C11_media_snr_floor"
+     ],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "SerDes 信噪比在 L1 和 L2 侧均有效，排除 SerDes 本身问题",
+     "cited_evidence": [
+      "serdes:L1:valid",
+      "serdes:L2:valid"
+     ],
+     "cited_constraints": [],
+     "effect": "neutral",
+     "target": ""
+    },
+    {
+     "claim": "遥测数据不完整，需补采 L1 侧的电口读数和发送功率历史",
+     "cited_evidence": [
+      "telemetry:partial_telemetry"
+     ],
+     "cited_constraints": [
+      "C14_host_snr_mostly_missing"
+     ],
+     "effect": "neutral",
+     "target": ""
+    }
+   ]
+  },
+  "llm_accepted": false,
+  "source": null
+ },
+ {
+  "case_id": "case_e168b4979b39",
+  "gold": "L1",
+  "pred": "L2",
+  "group": "expert:single:serdes_snr",
+  "expert_verdict": "L2",
+  "reason": "L2 侧命中 single:serdes_snr（priority 30），指向 L2",
+  "sides": [
+   {
+    "side": "L2",
+    "rule": "single:serdes_snr",
+    "loc": "L2",
+    "prio": "30",
+    "anom": {
+     "serdes_snr": "lane_down"
+    }
+   }
+  ],
+  "raw": {
+   "rxpower": {
+    "L1": [
+     0.880652,
+     1.055442,
+     0.880652,
+     0.95274,
+     0.879942,
+     1.123033,
+     0.695941,
+     0.821029
+    ],
+    "L2": [
+     1.075491,
+     1.34464,
+     1.277202,
+     1.096798
+    ]
+   },
+   "txpower": {
+    "L1": [
+     0.76786,
+     0.773679,
+     0.75401,
+     0.76786,
+     0.780579,
+     0.76786,
+     0.76094,
+     0.773679
+    ],
+    "L2": [
+     0.852906,
+     1.163088,
+     0.312872,
+     0.662886
+    ]
+   },
+   "media_snr": {
+    "L1": [
+     24.69,
+     24.59,
+     24.96,
+     24.62,
+     24.82,
+     25.5,
+     25.01,
+     24.48
+    ],
+    "L2": [
+     24.55,
+     24.55,
+     24.31,
+     24.79
+    ]
+   },
+   "host_snr": {
+    "L1": [
+     24.84,
+     25.07,
+     25.07,
+     25.19,
+     24.72,
+     25.61,
+     24.96,
+     25.4
+    ],
+    "L2": []
+   },
+   "serdes_snr": {
+    "L1": [
+     736325,
+     745691,
+     706554,
+     740753
+    ],
+    "L2": [
+     0,
+     725558,
+     674794,
+     689610
+    ]
+   },
+   "bias": {
+    "L1": [],
+    "L2": []
+   }
+  },
+  "status": {
+   "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   },
+   "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+   }
+  },
+  "temp": {
+   "L1": null,
+   "L2": null
+  },
+  "volt": {
+   "L1": null,
+   "L2": null
+  },
+  "alarm": "频繁升降lane",
+  "lanes": null,
+  "alarm_if": false,
+  "tokens": [
+   "drop:L2:serdes_snr:single_lane",
+   "expert:L2:serdes_snr:lane_down",
+   "expert:points_to:L2:L2",
+   "level:L2:media_snr_min:low_tail",
+   "serdes:L1:valid",
+   "serdes:L2:valid",
+   "telemetry:partial_telemetry"
+  ],
+  "match": {
+   "sim": 0.757,
+   "cands": [
+    {
+     "l": "L2",
+     "s": 0.757
+    }
+   ]
+  },
+  "sop": "L2",
+  "llm": null,
+  "llm_accepted": null,
+  "source": null
+ }
+]

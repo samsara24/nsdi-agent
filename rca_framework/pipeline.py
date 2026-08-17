@@ -232,6 +232,15 @@ class RCAPipeline:
             "predictions": rows,
         }
 
+    def close(self) -> None:
+        """Release cached LLM reasoners and their GPU resources."""
+        reasoners = list(self._reasoners.values())
+        self._reasoners.clear()
+        for reasoner in reasoners:
+            close = getattr(reasoner, "close", None)
+            if callable(close):
+                close()
+
     def observation_summary(self, contexts: Sequence[CaseContext]) -> Dict[str, Any]:
         """把逐 case 观测量汇总成可直接引用的统计口径。"""
         coverage_states: Counter[str] = Counter()

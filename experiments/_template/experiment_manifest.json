@@ -1,0 +1,36 @@
+{
+  "schema_version": "rca-loop-experiment-manifest-v1",
+  "experiment_id": "YYYYMMDD_short-name",
+  "authority": "docs/个人整体思路.md",
+  "change_categories": [
+    "evidence_graph | threshold_or_routing | llm_prompt | bug_fix"
+  ],
+  "main_flow_change_summary": "",
+  "n8_feedback_update": false,
+  "candidate_order": [
+    "branch"
+  ],
+  "versions": {
+    "evidence_graph": "",
+    "feature_dictionary": "",
+    "physical_constraints": "",
+    "measurement_contracts": "",
+    "constraint_library": "",
+    "expert_sop": "",
+    "learned_sop": "",
+    "prompt_template": "",
+    "decision_policy": ""
+  },
+  "test_bad_case_focus": {
+    "total_bad_cases": 0,
+    "fixable_bad_cases": [],
+    "label_suspects_file": "label_suspects.json",
+    "irreducible_cases_file": "irreducible_cases.json"
+  },
+  "required_outputs": {
+    "html_report": "report.html",
+    "summary": "summary.json",
+    "case_analysis": "case_analysis.json",
+    "bad_cases": "bad_cases.json"
+  }
+}

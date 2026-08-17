@@ -1,0 +1,2003 @@
+{
+  "schema_version": "expanded-expert-adjudication-v1",
+  "source_schema_version": "rca-expert-label-review-v1",
+  "source_path": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+  "exported_at": "2026-08-17T06:04:28.589Z",
+  "pair_count": 44,
+  "case_count": 66,
+  "changed_count": 35,
+  "secondary_physics_review_pair_count": 6,
+  "cases": {
+    "case_94ddf3d3ffba": {
+      "case_id": "case_94ddf3d3ffba",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid",
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧发送光功率过低",
+        "一个case的四条lane的TX都低，为L1故障。而另一个case，单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+        "单lane L2侧media snr和serdes snr低，RX power为-40，但是一个case L1侧TX power正常，另一个case的TX 四条lane都低"
+      ],
+      "reviewed_at": "2026-08-17T05:42:11.224Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-007",
+        "PAT-011",
+        "PAT-036"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_e6c83f5f9344": {
+      "case_id": "case_e6c83f5f9344",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧发送光功率过低"
+      ],
+      "reviewed_at": "2026-08-17T02:12:10.363Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-007"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_1fc24b82a165": {
+      "case_id": "case_1fc24b82a165",
+      "original_label": "fiber",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常",
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧RX一个lane -40，L2侧RX四条lane都偏低"
+      ],
+      "reviewed_at": "2026-08-17T05:03:43.744Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-001",
+        "PAT-013",
+        "PAT-015",
+        "PAT-020"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_da829dd0f857": {
+      "case_id": "case_da829dd0f857",
+      "original_label": "L2",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常"
+      ],
+      "reviewed_at": "2026-08-17T02:26:33.191Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-015"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_2364d18e502f": {
+      "case_id": "case_2364d18e502f",
+      "original_label": "L2",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）某些lane均异常"
+      ],
+      "reviewed_at": "2026-08-17T02:35:44.602Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-019"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_0e12ed53d250": {
+      "case_id": "case_0e12ed53d250",
+      "original_label": "fiber",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）某些lane均异常"
+      ],
+      "reviewed_at": "2026-08-17T02:35:44.602Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-019"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_c3d4f347b125": {
+      "case_id": "case_c3d4f347b125",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:20:32.237Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-010",
+        "PAT-032"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000254": {
+      "case_id": "case_000254",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T02:54:34.862Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-032"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_5af065c8baca": {
+      "case_id": "case_5af065c8baca",
+      "original_label": "L2",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大"
+      ],
+      "reviewed_at": "2026-08-17T03:01:49.359Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-013"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_6f8b6f6a4b28": {
+      "case_id": "case_6f8b6f6a4b28",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:05:45.293Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-002"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_d95088322c05": {
+      "case_id": "case_d95088322c05",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:05:45.293Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-002"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_9fe5cd420468": {
+      "case_id": "case_9fe5cd420468",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:36:00.929Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-014",
+        "PAT-044"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_bf363c1887d9": {
+      "case_id": "case_bf363c1887d9",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:08:29.198Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-014"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_3fcb5c9e2b00": {
+      "case_id": "case_3fcb5c9e2b00",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:25:10.694Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-008"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_0e9829a2061b": {
+      "case_id": "case_0e9829a2061b",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:25:10.694Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-008"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_f9e287d18750": {
+      "case_id": "case_f9e287d18750",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        ""
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:26:36.595Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-025"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000099": {
+      "case_id": "case_000099",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        ""
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:26:36.595Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-025"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_e7f2b980e7b8": {
+      "case_id": "case_e7f2b980e7b8",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:25:10.387Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-031",
+        "PAT-042"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000382": {
+      "case_id": "case_000382",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:28:39.946Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-042"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_43bd5d7a12d0": {
+      "case_id": "case_43bd5d7a12d0",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:31:00.466Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-003"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_aef76fdb4997": {
+      "case_id": "case_aef76fdb4997",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T03:31:00.466Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-003"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_c99aaca7f8ab": {
+      "case_id": "case_c99aaca7f8ab",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_suspect",
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:36:38.088Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-018",
+        "PAT-026",
+        "PAT-037"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_91bc67dc9c03": {
+      "case_id": "case_91bc67dc9c03",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:20:40.930Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-018"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_41a9ba77d097": {
+      "case_id": "case_41a9ba77d097",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:20:32.237Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-010"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_aa307cc7c7db": {
+      "case_id": "case_aa307cc7c7db",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:37:33.520Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-017",
+        "PAT-024",
+        "PAT-027",
+        "PAT-034",
+        "PAT-043"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000152": {
+      "case_id": "case_000152",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:21:14.319Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-027"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000086": {
+      "case_id": "case_000086",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:21:57.596Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-024"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000275": {
+      "case_id": "case_000275",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:22:39.596Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-034"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000238": {
+      "case_id": "case_000238",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:25:10.387Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-031"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000106": {
+      "case_id": "case_000106",
+      "original_label": "fiber",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:28:11.494Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-026"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_451529828130": {
+      "case_id": "case_451529828130",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:33:50.593Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-022",
+        "PAT-040",
+        "PAT-041"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000045": {
+      "case_id": "case_000045",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:32:36.004Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-022"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000354": {
+      "case_id": "case_000354",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:33:08.927Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-040"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000355": {
+      "case_id": "case_000355",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:33:50.593Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-041"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_302d8bb1d8ff": {
+      "case_id": "case_302d8bb1d8ff",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid"
+      ],
+      "evidence_statuses": [
+        "missing_critical"
+      ],
+      "notes": [
+        "所有指标处于正常范围，无法判断。只能遵循哪端值更低，更认为是哪端根因了。重点看media snr的不同lane差距"
+      ],
+      "reviewed_at": "2026-08-17T04:55:40.695Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-009",
+        "PAT-038"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_f92c3782baa7": {
+      "case_id": "case_f92c3782baa7",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid"
+      ],
+      "evidence_statuses": [
+        "missing_critical"
+      ],
+      "notes": [
+        "所有指标处于正常范围，无法判断。只能遵循哪端值更低，更认为是哪端根因了。重点看media snr的不同lane差距"
+      ],
+      "reviewed_at": "2026-08-17T04:55:26.934Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-009"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_0d380a152700": {
+      "case_id": "case_0d380a152700",
+      "original_label": "L2",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大"
+      ],
+      "reviewed_at": "2026-08-17T04:39:35.151Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-020"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_ad8b5bbb7438": {
+      "case_id": "case_ad8b5bbb7438",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:45:26.822Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-021",
+        "PAT-028"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000022": {
+      "case_id": "case_000022",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:45:26.822Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-021"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000164": {
+      "case_id": "case_000164",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:45:18.208Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-028"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_5739c9defc70": {
+      "case_id": "case_5739c9defc70",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:06:46.533Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-023",
+        "PAT-030",
+        "PAT-033",
+        "PAT-039"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000195": {
+      "case_id": "case_000195",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:46:05.289Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-030"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000257": {
+      "case_id": "case_000257",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:46:52.778Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-033"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000347": {
+      "case_id": "case_000347",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T04:47:58.508Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-039"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000320": {
+      "case_id": "case_000320",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid"
+      ],
+      "evidence_statuses": [
+        "missing_critical"
+      ],
+      "notes": [
+        "所有指标处于正常范围，无法判断。只能遵循哪端值更低，更认为是哪端根因了。重点看media snr的不同lane差距"
+      ],
+      "reviewed_at": "2026-08-17T04:55:40.695Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-038"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_0c88c31e492a": {
+      "case_id": "case_0c88c31e492a",
+      "original_label": "fiber",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "一个case的四条lane的TX都低，为L1故障。而另一个case，单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:06:00.720Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-011"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_af0a23d25838": {
+      "case_id": "case_af0a23d25838",
+      "original_label": "L2",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧RX一个lane -40，L2侧RX四条lane都偏低"
+      ],
+      "reviewed_at": "2026-08-17T05:03:43.744Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-001"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_000080": {
+      "case_id": "case_000080",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:06:46.533Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-023"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_29654329b886": {
+      "case_id": "case_29654329b886",
+      "original_label": "L1",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:34:16.595Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-012"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_650ef8f60c89": {
+      "case_id": "case_650ef8f60c89",
+      "original_label": "fiber",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:34:16.595Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-012"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000429": {
+      "case_id": "case_000429",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:35:15.664Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-043"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000441": {
+      "case_id": "case_000441",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:36:00.929Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-044"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000285": {
+      "case_id": "case_000285",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:36:38.088Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-037"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_ab166db804f1": {
+      "case_id": "case_ab166db804f1",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常"
+      ],
+      "reviewed_at": "2026-08-17T05:37:33.520Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-017"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_e3e756de7831": {
+      "case_id": "case_e3e756de7831",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，但是一个case L1侧TX power正常，另一个case的TX 四条lane都低"
+      ],
+      "reviewed_at": "2026-08-17T05:39:45.201Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-006"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_dfdc19c27794": {
+      "case_id": "case_dfdc19c27794",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，但是一个case L1侧TX power正常，另一个case的TX 四条lane都低"
+      ],
+      "reviewed_at": "2026-08-17T05:39:45.201Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-006"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000283": {
+      "case_id": "case_000283",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "both_valid"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "单lane L2侧media snr和serdes snr低，RX power为-40，但是一个case L1侧TX power正常，另一个case的TX 四条lane都低"
+      ],
+      "reviewed_at": "2026-08-17T05:42:11.224Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-036"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_6fd458311d2d": {
+      "case_id": "case_6fd458311d2d",
+      "original_label": "fiber",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        ""
+      ],
+      "notes": [
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧一条lane的RX -40，L2侧四条lane的RX均低"
+      ],
+      "reviewed_at": "2026-08-17T05:44:23.158Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-005"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_99dd8a24f695": {
+      "case_id": "case_99dd8a24f695",
+      "original_label": "L2",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        ""
+      ],
+      "notes": [
+        "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧一条lane的RX -40，L2侧四条lane的RX均低"
+      ],
+      "reviewed_at": "2026-08-17T05:44:23.158Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-005"
+      ],
+      "requires_secondary_physics_review": true
+    },
+    "case_1dda3cf529f2": {
+      "case_id": "case_1dda3cf529f2",
+      "original_label": "fiber",
+      "adjudicated_label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "insufficient_evidence"
+      ],
+      "evidence_statuses": [
+        "missing_critical"
+      ],
+      "notes": [
+        "基本无有效信息，lane number 为0，只能保留哪端告警，根因为哪端的方式。",
+        "基本无有效信息，保留哪端告警，根因为哪端的方式。但也可解释，由于L2部分lane无效，导致L1无SNR"
+      ],
+      "reviewed_at": "2026-08-17T06:04:09.639Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-004",
+        "PAT-016"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_0e0ee81d3c6d": {
+      "case_id": "case_0e0ee81d3c6d",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "insufficient_evidence"
+      ],
+      "evidence_statuses": [
+        "missing_critical"
+      ],
+      "notes": [
+        "基本无有效信息，保留哪端告警，根因为哪端的方式。但也可解释，由于L2部分lane无效，导致L1无SNR"
+      ],
+      "reviewed_at": "2026-08-17T05:47:07.661Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-004"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_007b3e28a693": {
+      "case_id": "case_007b3e28a693",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "missing_noncritical"
+      ],
+      "notes": [
+        "L1侧TX-40"
+      ],
+      "reviewed_at": "2026-08-17T05:49:05.927Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-035"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000277": {
+      "case_id": "case_000277",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "test_label_suspect"
+      ],
+      "evidence_statuses": [
+        "missing_noncritical"
+      ],
+      "notes": [
+        "L1侧TX-40"
+      ],
+      "reviewed_at": "2026-08-17T05:49:05.927Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-035"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_8a3a61b7b587": {
+      "case_id": "case_8a3a61b7b587",
+      "original_label": "L2",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧TX-40"
+      ],
+      "reviewed_at": "2026-08-17T06:03:58.208Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-029"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_000173": {
+      "case_id": "case_000173",
+      "original_label": "L1",
+      "adjudicated_label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "train_label_suspect"
+      ],
+      "evidence_statuses": [
+        "sufficient"
+      ],
+      "notes": [
+        "L1侧TX-40"
+      ],
+      "reviewed_at": "2026-08-17T06:03:58.208Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-029"
+      ],
+      "requires_secondary_physics_review": false
+    },
+    "case_5bd987fbfe68": {
+      "case_id": "case_5bd987fbfe68",
+      "original_label": "L2",
+      "adjudicated_label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_decisions": [
+        "insufficient_evidence"
+      ],
+      "evidence_statuses": [
+        "missing_critical"
+      ],
+      "notes": [
+        "基本无有效信息，lane number 为0，只能保留哪端告警，根因为哪端的方式。"
+      ],
+      "reviewed_at": "2026-08-17T06:04:09.639Z",
+      "review_source": "/Users/ziangchen/Downloads/expert_label_annotations.json",
+      "pattern_ids": [
+        "PAT-016"
+      ],
+      "requires_secondary_physics_review": false
+    }
+  },
+  "pairs": [
+    {
+      "pattern_id": "PAT-007",
+      "left_case_id": "case_94ddf3d3ffba",
+      "right_case_id": "case_e6c83f5f9344",
+      "updated_at": "2026-08-17T02:12:10.363Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "L1侧发送光功率过低",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-015",
+      "left_case_id": "case_1fc24b82a165",
+      "right_case_id": "case_da829dd0f857",
+      "updated_at": "2026-08-17T02:26:33.191Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "fiber",
+      "evidence_status": "sufficient",
+      "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常",
+      "completed": true,
+      "requires_secondary_physics_review": true
+    },
+    {
+      "pattern_id": "PAT-019",
+      "left_case_id": "case_2364d18e502f",
+      "right_case_id": "case_0e12ed53d250",
+      "updated_at": "2026-08-17T02:35:44.602Z",
+      "decision": "train_label_suspect",
+      "left_label": "fiber",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）某些lane均异常",
+      "completed": true,
+      "requires_secondary_physics_review": true
+    },
+    {
+      "pattern_id": "PAT-032",
+      "left_case_id": "case_c3d4f347b125",
+      "right_case_id": "case_000254",
+      "updated_at": "2026-08-17T02:54:34.862Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-013",
+      "left_case_id": "case_1fc24b82a165",
+      "right_case_id": "case_5af065c8baca",
+      "updated_at": "2026-08-17T03:01:49.359Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "fiber",
+      "evidence_status": "sufficient",
+      "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+      "completed": true,
+      "requires_secondary_physics_review": true
+    },
+    {
+      "pattern_id": "PAT-002",
+      "left_case_id": "case_6f8b6f6a4b28",
+      "right_case_id": "case_d95088322c05",
+      "updated_at": "2026-08-17T03:05:45.293Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-014",
+      "left_case_id": "case_9fe5cd420468",
+      "right_case_id": "case_bf363c1887d9",
+      "updated_at": "2026-08-17T03:08:29.198Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-008",
+      "left_case_id": "case_3fcb5c9e2b00",
+      "right_case_id": "case_0e9829a2061b",
+      "updated_at": "2026-08-17T03:25:10.694Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-025",
+      "left_case_id": "case_f9e287d18750",
+      "right_case_id": "case_000099",
+      "updated_at": "2026-08-17T03:26:36.595Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-042",
+      "left_case_id": "case_e7f2b980e7b8",
+      "right_case_id": "case_000382",
+      "updated_at": "2026-08-17T03:28:39.946Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-003",
+      "left_case_id": "case_43bd5d7a12d0",
+      "right_case_id": "case_aef76fdb4997",
+      "updated_at": "2026-08-17T03:31:00.466Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-018",
+      "left_case_id": "case_c99aaca7f8ab",
+      "right_case_id": "case_91bc67dc9c03",
+      "updated_at": "2026-08-17T04:20:40.930Z",
+      "decision": "train_label_suspect",
+      "left_label": "L2",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-010",
+      "left_case_id": "case_c3d4f347b125",
+      "right_case_id": "case_41a9ba77d097",
+      "updated_at": "2026-08-17T04:20:32.237Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-027",
+      "left_case_id": "case_aa307cc7c7db",
+      "right_case_id": "case_000152",
+      "updated_at": "2026-08-17T04:21:14.319Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-024",
+      "left_case_id": "case_aa307cc7c7db",
+      "right_case_id": "case_000086",
+      "updated_at": "2026-08-17T04:21:57.596Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-034",
+      "left_case_id": "case_aa307cc7c7db",
+      "right_case_id": "case_000275",
+      "updated_at": "2026-08-17T04:22:39.596Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-031",
+      "left_case_id": "case_e7f2b980e7b8",
+      "right_case_id": "case_000238",
+      "updated_at": "2026-08-17T04:25:10.387Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-026",
+      "left_case_id": "case_c99aaca7f8ab",
+      "right_case_id": "case_000106",
+      "updated_at": "2026-08-17T04:28:11.494Z",
+      "decision": "both_suspect",
+      "left_label": "L2",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-022",
+      "left_case_id": "case_451529828130",
+      "right_case_id": "case_000045",
+      "updated_at": "2026-08-17T04:32:36.004Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-040",
+      "left_case_id": "case_451529828130",
+      "right_case_id": "case_000354",
+      "updated_at": "2026-08-17T04:33:08.927Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-041",
+      "left_case_id": "case_451529828130",
+      "right_case_id": "case_000355",
+      "updated_at": "2026-08-17T04:33:50.593Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-009",
+      "left_case_id": "case_302d8bb1d8ff",
+      "right_case_id": "case_f92c3782baa7",
+      "updated_at": "2026-08-17T04:55:26.934Z",
+      "decision": "both_valid",
+      "left_label": "keep",
+      "right_label": "keep",
+      "evidence_status": "missing_critical",
+      "notes": "所有指标处于正常范围，无法判断。只能遵循哪端值更低，更认为是哪端根因了。重点看media snr的不同lane差距",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-020",
+      "left_case_id": "case_1fc24b82a165",
+      "right_case_id": "case_0d380a152700",
+      "updated_at": "2026-08-17T04:39:35.151Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "fiber",
+      "evidence_status": "sufficient",
+      "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+      "completed": true,
+      "requires_secondary_physics_review": true
+    },
+    {
+      "pattern_id": "PAT-021",
+      "left_case_id": "case_ad8b5bbb7438",
+      "right_case_id": "case_000022",
+      "updated_at": "2026-08-17T04:45:26.822Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-028",
+      "left_case_id": "case_ad8b5bbb7438",
+      "right_case_id": "case_000164",
+      "updated_at": "2026-08-17T04:45:18.208Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-030",
+      "left_case_id": "case_5739c9defc70",
+      "right_case_id": "case_000195",
+      "updated_at": "2026-08-17T04:46:05.289Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-033",
+      "left_case_id": "case_5739c9defc70",
+      "right_case_id": "case_000257",
+      "updated_at": "2026-08-17T04:46:52.778Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-039",
+      "left_case_id": "case_5739c9defc70",
+      "right_case_id": "case_000347",
+      "updated_at": "2026-08-17T04:47:58.508Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-038",
+      "left_case_id": "case_302d8bb1d8ff",
+      "right_case_id": "case_000320",
+      "updated_at": "2026-08-17T04:55:40.695Z",
+      "decision": "both_valid",
+      "left_label": "keep",
+      "right_label": "keep",
+      "evidence_status": "missing_critical",
+      "notes": "所有指标处于正常范围，无法判断。只能遵循哪端值更低，更认为是哪端根因了。重点看media snr的不同lane差距",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-011",
+      "left_case_id": "case_94ddf3d3ffba",
+      "right_case_id": "case_0c88c31e492a",
+      "updated_at": "2026-08-17T05:06:00.720Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "一个case的四条lane的TX都低，为L1故障。而另一个case，单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-001",
+      "left_case_id": "case_1fc24b82a165",
+      "right_case_id": "case_af0a23d25838",
+      "updated_at": "2026-08-17T05:03:43.744Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "fiber",
+      "evidence_status": "sufficient",
+      "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧RX一个lane -40，L2侧RX四条lane都偏低",
+      "completed": true,
+      "requires_secondary_physics_review": true
+    },
+    {
+      "pattern_id": "PAT-023",
+      "left_case_id": "case_5739c9defc70",
+      "right_case_id": "case_000080",
+      "updated_at": "2026-08-17T05:06:46.533Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-012",
+      "left_case_id": "case_29654329b886",
+      "right_case_id": "case_650ef8f60c89",
+      "updated_at": "2026-08-17T05:34:16.595Z",
+      "decision": "both_suspect",
+      "left_label": "L2",
+      "right_label": "L2",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-043",
+      "left_case_id": "case_aa307cc7c7db",
+      "right_case_id": "case_000429",
+      "updated_at": "2026-08-17T05:35:15.664Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-044",
+      "left_case_id": "case_9fe5cd420468",
+      "right_case_id": "case_000441",
+      "updated_at": "2026-08-17T05:36:00.929Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-037",
+      "left_case_id": "case_c99aaca7f8ab",
+      "right_case_id": "case_000285",
+      "updated_at": "2026-08-17T05:36:38.088Z",
+      "decision": "train_label_suspect",
+      "left_label": "L2",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-017",
+      "left_case_id": "case_aa307cc7c7db",
+      "right_case_id": "case_ab166db804f1",
+      "updated_at": "2026-08-17T05:37:33.520Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "sufficient",
+      "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-006",
+      "left_case_id": "case_e3e756de7831",
+      "right_case_id": "case_dfdc19c27794",
+      "updated_at": "2026-08-17T05:39:45.201Z",
+      "decision": "both_valid",
+      "left_label": "keep",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，但是一个case L1侧TX power正常，另一个case的TX 四条lane都低",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-036",
+      "left_case_id": "case_94ddf3d3ffba",
+      "right_case_id": "case_000283",
+      "updated_at": "2026-08-17T05:42:11.224Z",
+      "decision": "both_valid",
+      "left_label": "keep",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，但是一个case L1侧TX power正常，另一个case的TX 四条lane都低",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-005",
+      "left_case_id": "case_6fd458311d2d",
+      "right_case_id": "case_99dd8a24f695",
+      "updated_at": "2026-08-17T05:44:23.158Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "fiber",
+      "evidence_status": "",
+      "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧一条lane的RX -40，L2侧四条lane的RX均低",
+      "completed": true,
+      "requires_secondary_physics_review": true
+    },
+    {
+      "pattern_id": "PAT-004",
+      "left_case_id": "case_1dda3cf529f2",
+      "right_case_id": "case_0e0ee81d3c6d",
+      "updated_at": "2026-08-17T05:47:07.661Z",
+      "decision": "insufficient_evidence",
+      "left_label": "keep",
+      "right_label": "keep",
+      "evidence_status": "missing_critical",
+      "notes": "基本无有效信息，保留哪端告警，根因为哪端的方式。但也可解释，由于L2部分lane无效，导致L1无SNR",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-035",
+      "left_case_id": "case_007b3e28a693",
+      "right_case_id": "case_000277",
+      "updated_at": "2026-08-17T05:49:05.927Z",
+      "decision": "test_label_suspect",
+      "left_label": "keep",
+      "right_label": "L1",
+      "evidence_status": "missing_noncritical",
+      "notes": "L1侧TX-40",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-029",
+      "left_case_id": "case_8a3a61b7b587",
+      "right_case_id": "case_000173",
+      "updated_at": "2026-08-17T06:03:58.208Z",
+      "decision": "train_label_suspect",
+      "left_label": "L1",
+      "right_label": "keep",
+      "evidence_status": "sufficient",
+      "notes": "L1侧TX-40",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    },
+    {
+      "pattern_id": "PAT-016",
+      "left_case_id": "case_1dda3cf529f2",
+      "right_case_id": "case_5bd987fbfe68",
+      "updated_at": "2026-08-17T06:04:09.639Z",
+      "decision": "insufficient_evidence",
+      "left_label": "keep",
+      "right_label": "keep",
+      "evidence_status": "missing_critical",
+      "notes": "基本无有效信息，lane number 为0，只能保留哪端告警，根因为哪端的方式。",
+      "completed": true,
+      "requires_secondary_physics_review": false
+    }
+  ]
+}

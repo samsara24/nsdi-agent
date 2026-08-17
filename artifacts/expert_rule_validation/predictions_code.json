@@ -1,0 +1,1619 @@
+[
+  {
+    "file": "fiber_26/1019.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "fiber_26/1339.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "fiber_26/1807.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "fiber_26/1965.json",
+    "label": "fiber",
+    "prediction": "remote",
+    "priority": "51",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "fiber_26/2038.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "fiber_26/2333.json",
+    "label": "fiber",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "fiber_26/2746.json",
+    "label": "fiber",
+    "prediction": "remote",
+    "priority": "0",
+    "source": "remote:txpower_lane_down"
+  },
+  {
+    "file": "fiber_26/2758.json",
+    "label": "fiber",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "fiber_26/2822.json",
+    "label": "fiber",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "fiber_26/2894.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "fiber_26/297.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "fiber_26/2980.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "fiber_26/2981.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "fiber_26/3409.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "fiber_26/3438.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "fiber_26/3547.json",
+    "label": "fiber",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "fiber_26/522.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "fiber_26/866.json",
+    "label": "fiber",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/1009.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/101.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1030.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1056.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/108.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1109.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1140.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1175.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/1177.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1193.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/123.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/128.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/1320.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/1324.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/138.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "30",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/141.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/145.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/147.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/1554.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/1555.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1572.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/1594.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1653.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1664.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "20",
+    "source": "local:single:host_snr"
+  },
+  {
+    "file": "local_208/1674.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1782.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/1811.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/1823.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/1841.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "local_208/1852.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/1889.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/1909.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "40",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "local_208/1956.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/1973.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2053.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2085.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2086.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2125.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2128.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2179.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2263.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/229.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2317.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2349.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2355.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2357.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/2360.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2408.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "51",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2415.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/242.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2426.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2558.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2577.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2594.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2607.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2615.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/263.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2638.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/2640.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2646.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2676.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/2701.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/2713.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2722.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "32",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/273.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2749.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2764.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "0",
+    "source": "local:txpower_lane_down"
+  },
+  {
+    "file": "local_208/2810.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2821.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2825.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2841.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2867.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2882.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/2890.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2892.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2893.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "local_208/2901.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2909.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2912.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2914.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "local_208/2915.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2932.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2953.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2960.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "41",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "local_208/2962.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2964.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/2975.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/2978.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/2989.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/2992.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/3033.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/305.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3061.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "0",
+    "source": "local:txpower_lane_down"
+  },
+  {
+    "file": "local_208/3078.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/3081.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "local_208/3082.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3090.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3106.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/328.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/332.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3368.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/3373.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/3375.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/3377.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/3389.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/3410.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3412.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3423.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/3427.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/3437.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3494.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3502.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3530.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "local_208/3535.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/3588.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/3595.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/3611.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/3630.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/3676.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/3677.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "local_208/3698.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/3706.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3709.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/3724.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/373.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/3755.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "local_208/3828.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "local_208/439.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/466.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "41",
+    "source": "remote:single:media_snr"
+  },
+  {
+    "file": "local_208/473.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "local_208/504.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "41",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "local_208/555.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/556.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "0",
+    "source": "local:txpower_lane_down"
+  },
+  {
+    "file": "local_208/686.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "local_208/690.json",
+    "label": "local",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "local_208/746.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/747.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/805.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/809.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/856.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/874.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "32",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/88.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/91.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "local_208/940.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/972.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "local_208/99.json",
+    "label": "local",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "remote_131/1040.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/1058.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/116.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/120.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "21",
+    "source": "remote:single:host_snr"
+  },
+  {
+    "file": "remote_131/1252.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/127.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "41",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "remote_131/142.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/156.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/1605.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/1788.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/1796.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/1798.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/1839.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2068.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "remote_131/2172.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/2195.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "remote_131/2295.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2322.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2338.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "0",
+    "source": "remote:txpower_lane_down"
+  },
+  {
+    "file": "remote_131/2404.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/2453.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2479.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/2522.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/2648.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2666.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2704.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "gate",
+    "source": "port_status_gate"
+  },
+  {
+    "file": "remote_131/2718.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/2739.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2753.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2759.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/2869.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/2875.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/2944.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/2986.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/2993.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "41",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "remote_131/3003.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "51",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "remote_131/302.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "remote_131/306.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "remote_131/3067.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/3091.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/3103.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "31",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/3108.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "remote_131/3371.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/338.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/3457.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "1",
+    "source": "remote:multi_metric"
+  },
+  {
+    "file": "remote_131/3491.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/3527.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/358.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/3597.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/3607.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/370.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "41",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "remote_131/3713.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/3824.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/432.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "41",
+    "source": "local:single:media_snr"
+  },
+  {
+    "file": "remote_131/438.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "52",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/562.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "51",
+    "source": "local:single:rxpower"
+  },
+  {
+    "file": "remote_131/715.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/793.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/824.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "0",
+    "source": "remote:txpower_lane_down"
+  },
+  {
+    "file": "remote_131/849.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "1",
+    "source": "local:multi_metric"
+  },
+  {
+    "file": "remote_131/850.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/87.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "52",
+    "source": "remote:single:rxpower"
+  },
+  {
+    "file": "remote_131/937.json",
+    "label": "remote",
+    "prediction": "remote",
+    "priority": "31",
+    "source": "remote:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/96.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/970.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "30",
+    "source": "local:single:serdes_snr"
+  },
+  {
+    "file": "remote_131/989.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  },
+  {
+    "file": "remote_131/996.json",
+    "label": "remote",
+    "prediction": "local",
+    "priority": "8",
+    "source": "no_anomaly_fallback"
+  }
+]

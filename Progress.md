@@ -4,6 +4,20 @@
 
 三份文档的分工：`AGENTS.md` 写约束，本文写已完成的事和已测出的数字，`Validation.md` 写还需要人拍板、需要外部输入或需要新数据才能验证的事。遇到「这个数该定多少」「这个字段什么意思」这类问题，先查 `Validation.md`，那里每条都写了未确认前的默认取值。
 
+## 0.5 2026-08-12 个人整体思路对齐门禁
+
+本节记录一次主链路纠偏：后续 Loop 实验必须以 `docs/个人整体思路.md` 为主约束，优化对象限定为证据图形态、证据链路 / 归因路径匹配、物理约束下的关键证据判定，以及专家 SOP 约束下的 LLM 推理校验。不得为了提高强制三分类 accuracy 或 lift 而把专家规则、learned SOP、数值树或多数类先验改造成主判决器。
+
+- **Loop 规则已固化：** `.cursor/rules/nsdi-personal-loop.mdc` 为 alwaysApply，要求每轮 Loop 先重读个人整体思路，并说明本轮优化靶心。
+- **正式主链路口径：** 证据图历史匹配 → N5a 完全匹配复用历史证据链 → N5b 物理约束判关键证据并由 LLM 仲裁 → N5c 专家 SOP 约束 LLM 冷启动推理 → M9 低置信度降级。
+- **历史 i3-i5 结论降级为对照：** expert 方向表带来的 76% 左右工作点证明“归因方向知识”有价值，但它不再定义正式方法；`expert.py` 只作为物理语义、解释约束或基线脚本来源，不能默认进入 M9 自动终裁级联。
+- **learned SOP / 数值树定位：** 只作为训练集统计先验和报告字段，不能冒充专家 SOP，也不能默认替代 N5c 的专家 SOP + LLM 推理。
+- **N8 冻结：** 本阶段不执行自动回灌或自迭代。测试 badcase 不能反向修改知识包、SOP、约束、阈值、向量或证据图。
+- **Loop 实验报告门禁已补强：** 后续实验必须围绕测试 bad case，允许的核心调整限定为证据图约束 / schema、阈值或路由、大模型 prompt、代码 bug fix。每次实验必须绘制主流程图并标注本轮调整点。
+- **实验归档模板已建立：** `experiments/README.md` 和 `experiments/_template/` 固定要求每轮实验产出 `report.html`、`experiment_manifest.json`、`summary.json`、`case_analysis.json`、`bad_cases.json`、`label_suspects.json` 和 `irreducible_cases.json`。疑似 label 问题与当前不可安全提升的 irreducible case 必须跨实验保留。
+- **Loop2 口径变更（2026-08-13）：** 全覆盖三分类不再作为单独刷 accuracy 目标，而是作为 N6 置信度阈值标定的观测口径。每个 case 都要求 LLM 给出 L1/L2/fiber 候选与四维置信度；低置信、证据不足或物理 veto 通过阈值降级处理，具体默认值登记在 `Validation.md` V0。
+- **Loop2 全量结果（2026-08-13）：** `artifacts/loop2_forced_multidim_v11_20260813_c/` 已用 DeepSeek-R1-Distill-Qwen-32B 跑完 `rca_v2_l2fixed` 107 条 test case，全覆盖三分类 107/107、判对 57、accuracy 53.27%。默认阈值 0.50 下 M9 自动结案 76 条、答对 39、自动结案准确率 51.32%，其余 22 条补证据、9 条人工复核。阈值扫描显示 0.60 时自动结案 51 条、准确率 56.86%，0.70 时自动结案 15 条、准确率 73.33%。归档在 `experiments/20260813_forced-multidim-confidence/`。
+
 ## 0. 2026-08-09 进度审计摘要
 
 本节按当前工作树、测试、脚本和 `artifacts/` 重新核对，不沿用已经过时的任务描述。
@@ -417,6 +431,11 @@ T1 已对这批代码给出结论（2026-08-07）：
 | 2026-08-09 | AI | 进度审计 | `Progress.md`、`Validation.md`、架构审计 Canvas | 对齐当前代码/产物，修正 T6 真机状态、模块表、实验缺口和门禁记录 | 全量 162 passed；Canvas TypeScript 无错误 |
 | 2026-08-10 | AI | T7 | `decision.py`、`branches/`、`llm/prompts.py`、`evaluate_routing.py`、测试与正式产物 | 接通三分支 LLM 仲裁；新增 LLM 独立标定、Wilson 统一出口、branch-aware prompt v3、manifest/outcome/trace/分层指标/选择性风险曲线 | 169 passed；无模型最终出口 35/85、28 对、precision 80.00%；legacy 58/85 不变 |
 | 2026-08-12 | AI | 专家规则校验 | `docs/EXPERT_EXPERIENCE.md`、`scripts/validate_expert_rules.py`、`scripts/analyze_expert_rule_defects.py`、`artifacts/expert_rule_validation/` | 整合 EXPERT_EXPERIENCE 的三块重复内容；按文档实现华为专家决策树（此前仓库无实现），在 `organized_data` 231 例全量标签上验证两套故障方向口径 | 代码口径 163/231=70.56%，AI 口径 125/231=54.11%，多数类 63.20%；7 条规则方向全部不劣于反向；fiber 分支 0 次触发、recall 0；无异常兜底 48 例 |
+| 2026-08-16 | AI | 扩充数据 / N3 模式冲突审计 | `scripts/analyze_expanded_rca_patterns.py`、`scripts/materialize_expanded_legacy_dataset.py`、`experiments/20260816_expanded-pattern-conflict/` | 冻结旧 126 train；以物理内容指纹核对新旧数据，追加 258 条新增 case 到旧 85 test；生成远端 vLLM 复现脚本和独立 HTML；HTML 解释无需 LLM 的确定性边界、逐模式 IDF-Jaccard 算式、物理逻辑链和可点击原始 JSON 差异 | 新集 463 条中确认保留旧 case 205 条、缺失旧 case 6 条；expanded test 343；相似度 >=0.70 的异标签冲突 test 89 条，其中与异标签训练 case 精确匹配 25 条；本地 backend=none 208/343、label_leakage=false、rule_overlap=0；HTML 89 个逻辑图、186 个 case 链接，脚本静态执行通过 |
+| 2026-08-16 | AI | 扩充数据 / N3 二维匹配口径修正 | `scripts/analyze_expanded_rca_patterns.py`、`experiments/20260816_expanded-pattern-conflict/` | 把旧报告中混合的 token 相似度拆成 `S_feature`（完整 v1 token 的 IDF-Jaccard）和 `S_graph`（可观测 side→symptom→physical-layer 子图的节点/类型边 Jaccard）；无人工确认边时显式标记归因/SOP 路径不可评估；保留 step-by-step 与可点击原始 case 对比 | expanded test 343；特征 Top-1 历史标签一致率 65.89%，可观测子图 Top-1 56.85%，平均特征入图率 56.97%；修正 imbalance 图语义后异标签二维分区 both-high 59 / feature-only 26 / graph-only 160；`case_524e0cb0700d ↔ case_000458` 为 `S_feature=1.0` / `S_graph=0.0`；确认路径 0/126；HTML JS 静态执行通过 |
+| 2026-08-16 | AI | 扩充数据 / HTML 双高筛选与图语义澄清 | `scripts/analyze_expanded_rca_patterns.py`、`tests/test_expanded_pattern_report.py`、`experiments/20260816_expanded-pattern-conflict/` | 逐条展开从“任一维高”245 组收敛为 `S_feature` 与 `S_graph` 均高的 59 组；其余 186 组只保留聚合计数；每组内部也只列双高历史 case；为每条共享关系展示来源 token、训练拟合阈值/范围与 lane 数要求；明确当前对象是可观测类型关系图而非决策树 | 59 组逐条页保留 step-by-step 与原始 JSON 对比；drop 使用 `<= -39 dBm` / `<= 0` 及 lane 范围，level/imbalance 展示实际 Q25 / 3×IQR 上界，status 展示归一化取值集合；修正 imbalance 节点不再误标为 status assertion |
+| 2026-08-16 | AI | 扩充数据 / 五层可观测证据图 v2 | `scripts/analyze_expanded_rca_patterns.py`、`tests/test_expanded_pattern_report.py`、`experiments/20260816_expanded-pattern-conflict/` | 把 N3 离线审计图升级为“端口侧→测量指标→条件谓词→症状→物理层”；measurement 保留指标身份，predicate 保留训练阈值与 lane 量词；HTML 直接画共享五层路径并列出改造计划 | expanded test 343；图 Top-1 标签一致率 59.18%，图高匹配 197；异标签代表分区 both-high 65 / feature-only 20 / graph-only 85；任一维高 170，只展开双高 65；`rxpower<=-39` 与 `media_snr<=0` 不再共享完整谓词路径；N4 未改、N8 冻结 |
+| 2026-08-16 | AI | 扩充数据 / 五层证据图 v3 学习范围 | `scripts/analyze_expanded_rca_patterns.py`、`tests/test_expanded_pattern_report.py`、`experiments/20260816_expanded-pattern-conflict/` | 连续谓词不再使用 Q25/Q75 或 3×IQR；改为旧 126 train 标签监督的一维切分，并按最小支持、Gini gain、5-fold 阈值稳定性和相邻多数标签差异做门禁；图仍止于物理层，不增加候选根因 | 16 个候选只接受 `L2.media_snr_min<=23.805` 与 `L2.rxpower spread>2.165`，且只把分布偏移更大的特殊分支入图；expanded test 图 Top-1 58.02%，图高匹配 143；异标签代表分区 both-high 44 / feature-only 44 / graph-only 72；只展开双高 44；完整模型写入 `learned_predicate_model.json`；N4 未改、N8 冻结 |
 
 ## 9. 分步产物与原始数据汇总
 
@@ -2103,3 +2122,64 @@ prompt 明确声明模型**没有改判的资格**，它只负责讲清楚。
 对论文而言这是一个比「我们用 LLM 做 RCA 提升了 X%」更有价值的结论：
 **在这个任务上，可推广的知识来自领域专家的方向表，
 LLM 的位置是把知识翻译成人话，不是产生知识或判断知识。**
+
+### 9.36 Expanded pattern HTML 改为专家标签审核工作台（2026-08-16）
+
+`experiments/20260816_expanded-pattern-conflict/expanded_rca_pattern_analysis.html` 的首要目标已从
+“展示相似度分析”改为“让专家裁决高相似异标签 case”。报告只平铺两个维度都达到 0.70 的
+44 个异标签 pair，方法、数据契约和阈值审计折叠到页面末尾。
+
+- 每个 pair 增加标签裁决、左右建议标签、证据充分性、备注和完成状态；浏览器本地保存失败时
+  明确提示导出，标注可导出为 `rca-expert-label-review-v1` JSON。
+- 测量差异按旧 126 train 的 IQR 归一化并降序展示：大差异 `>=2.0 IQR`、中差异
+  `>=0.75 IQR`，细微差异默认折叠；原始 JSON 对比默认也隐藏细微、元数据和相同字段。
+- 当前审核优先级为最高优先 3、高优先 1、常规复核 40；优先级仅用于人工审核排序，
+  不修改 N4，也不触发 N8 回灌。
+- 新增 `expert_annotation_template.json`（44 行空标注模板）和 2 个定向报告测试；当前 9 个
+  定向测试、生成器语法检查、产物一致性检查和 HTML JavaScript 最小 DOM 执行均通过。
+  当前 Python 环境未安装 pytest，因此未执行完整 pytest runner。
+
+### 9.37 Expanded 343-case DeepSeek-Qwen-32B 远端一键实验（2026-08-17）
+
+`experiments/20260816_expanded-pattern-conflict/run_expanded_remote_experiment.sh` 已改为
+DeepSeek-R1-Distill-Qwen-32B 远端一键入口：固定使用用户确认且历史实验已验证的 checkpoint，
+默认按 BF16 TP=2 选择空闲 GPU，并在空闲卡不足时轮询等待。空闲门槛默认为每卡
+free>=44000 MiB、used<=2048 MiB、utilization<=10%，所有参数均可由环境变量覆盖。
+
+脚本包含离线模型配置 preflight、dry-run、343 条 expanded test 全量执行、实际命令与 git revision、
+GPU 选择前/模型启动前/进程退出后快照、SIGINT/SIGTERM 子进程清理和必要产物完整性门禁。
+历史 PCIe 服务器默认保留 `NCCL_P2P_DISABLE=1`、`NCCL_IB_DISABLE=1`。legacy pipeline 新增
+`close()`，CLI 的 train/evaluate 与 infer 均在 `finally` 中显式释放 vLLM、分布式进程组和 CUDA
+cache；进程退出后脚本再从外部记录显存。
+
+用户已确认 checkpoint 为
+`/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B`，V25 已关闭。当前已通过
+shell 语法和 Python 编译检查；当前 GPU 是否空闲仍由远端 dry-run 动态确认。
+
+### 9.38 Expanded expert-clean v1 与四层证据状态重构（2026-08-17）
+
+用户确认剔除新数据中缺失的全部 6 条旧 blackout case，并把已完成的 44 个专家 pair 标注
+作为版本化人工裁决输入。本轮只修改 N3 离线审计的证据图 schema、数据质量门禁和报告，
+不修改正式 N4/N5 路由，N8 继续冻结。
+
+- 新数据契约 `expanded-expert-clean-v1`：train 122（L1 39 / L2 76 / fiber 7），test 341
+  （L1 124 / L2 208 / fiber 9）。删除 4 条旧 train 与 2 条旧 test blackout；66 个唯一 case
+  有专家审核记录，35 个标签调整，清洗后 test 中 42 条已审核、299 条仍标为 `unreviewed`。
+- 新增 expanded 专用 Q0/P/R/L 证据状态：精确 `-40.0` 与工程 drop `<=-39` 分开，
+  media/host `<=0`，SerDes 失效修正为 `<=1`；双端全 -40 且 media SNR 触底时先进入
+  Q0 blackout，不再解释为激光关断。
+- 跨端关系只建 side-level `peer TX -> local RX` 与 `RX -> decode`，继续禁止逐 lane 配对和
+  绝对 `TX-RX loss`。专家备注中 6 个依赖该逻辑的 pair 输出到
+  `secondary_physics_review_pairs.json`，未写入约束库。
+- `S_feature` 改为 v1 token 加 Q0/P/R 可解释 token 的 IDF-Jaccard；`S_graph` 改为仅对
+  五层 typed edge 做 IDF-Jaccard，节点只用于解释。严格完全匹配还要求两个分数均为 1、
+  质量状态兼容且无关键缺失冲突。0.70 只用于 HTML 审核，不接 N4。
+- 最终 343-case DeepSeek-32B 历史结果仍为 209/343=60.93%，低于 L2 多数类 61.22%；
+  清洗并按专家标签重算旧预测为 206/341=60.41%。用清洗后的 122 train 重新构建无 LLM
+  legacy 基线为 207/341=60.70%，仍低于 L2 多数类 208/341=61.00%，fiber 0/9。
+  这说明清洗与标签修订没有单独解决分类问题，不能宣称方法提升。
+- HTML 已按“实验效果→数据质量→专家标签影响→双高异标签候选”重排，保留 step-by-step、
+  最大/中等差异、细微差异折叠、原始 JSON 对比和专家标注导出；远端脚本默认切换为
+  clean train 122 / test 341，模型与 BF16 TP=2 配置不变。
+- 门禁：Python 编译、shell 语法、HTML JavaScript 最小执行、15 个 expanded 定向测试函数
+  全部通过；本机 Python 未安装 pytest，因此未运行完整 `python -m pytest -q`。

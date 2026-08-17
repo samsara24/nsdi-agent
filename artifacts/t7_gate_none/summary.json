@@ -1,0 +1,340 @@
+{
+  "graph_version": "evidence-graph-v1:126:5e10b5b25d559777",
+  "policies": {
+    "coverage-v2": {
+      "policy": {
+        "name": "coverage-v2",
+        "description": "T4 标定规则：sim=1.0 进 N5a；证据全覆盖（历史见过我的全部证据）进 N5b；零证据与全链路遥测失效直接进 N6；其余进 N5c。不使用 0.7 这条无数据支持的线。",
+        "exact_similarity": 1.0,
+        "partial_similarity": null,
+        "partial_requires_full_coverage": true,
+        "abstain_on_empty_evidence": true,
+        "abstain_on_optical_blackout": true
+      },
+      "calibration": {
+        "source": "train-loo:coverage-v2",
+        "groups": {
+          "N5a_mixed": {
+            "correct": 4,
+            "total": 6,
+            "accuracy": 0.666667,
+            "wilson_lower_bound": 0.299988
+          },
+          "N5a_pure": {
+            "correct": 10,
+            "total": 12,
+            "accuracy": 0.833333,
+            "wilson_lower_bound": 0.551964
+          },
+          "N5b_critical_gap": {
+            "correct": 3,
+            "total": 4,
+            "accuracy": 0.75,
+            "wilson_lower_bound": 0.300636
+          },
+          "N5b_minor_gap": {
+            "correct": 26,
+            "total": 37,
+            "accuracy": 0.702703,
+            "wilson_lower_bound": 0.542166
+          },
+          "N5c_no_exclusion": {
+            "correct": 0,
+            "total": 58,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "correct": 0,
+            "total": 3,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          },
+          "N6_abstain": {
+            "correct": 0,
+            "total": 6,
+            "accuracy": 0.0,
+            "wilson_lower_bound": 0.0
+          }
+        }
+      },
+      "llm_calibration": null,
+      "decision_policy": {
+        "version": "decision-policy-v1",
+        "final_lower_bound": 0.5,
+        "minimum_support": 10
+      },
+      "routing": {
+        "policy": "coverage-v2",
+        "case_count": 85,
+        "counts": {
+          "N5a": 20,
+          "N5b": 17,
+          "N5c": 46,
+          "N6": 2
+        },
+        "ratios": {
+          "N5a": 0.235294,
+          "N5b": 0.2,
+          "N5c": 0.541176,
+          "N6": 0.023529
+        },
+        "cases_with_missing_evidence": 34
+      },
+      "n5a": {
+        "case_count": 20,
+        "pure_signature_cases": 19,
+        "mixed_signature_cases": 1,
+        "mixed_signature_ratio": 0.05,
+        "bucket_majority_correct": 15,
+        "bucket_majority_accuracy": 0.75
+      },
+      "branches": {
+        "N5a": {
+          "n": 20,
+          "answered": 20,
+          "correct": 15,
+          "abstained": 0,
+          "needs_llm": 1,
+          "needs_human": 0,
+          "precision_when_answered": 0.75
+        },
+        "N5b": {
+          "n": 17,
+          "answered": 17,
+          "correct": 14,
+          "abstained": 0,
+          "needs_llm": 3,
+          "needs_human": 0,
+          "precision_when_answered": 0.823529
+        },
+        "N5c": {
+          "n": 46,
+          "answered": 0,
+          "correct": 0,
+          "abstained": 46,
+          "needs_llm": 46,
+          "needs_human": 0,
+          "precision_when_answered": null
+        },
+        "N6": {
+          "n": 2,
+          "answered": 0,
+          "correct": 0,
+          "abstained": 2,
+          "needs_llm": 0,
+          "needs_human": 2,
+          "precision_when_answered": null
+        }
+      },
+      "calibration_check": {
+        "N5a_mixed": {
+          "claimed_confidence": 0.666667,
+          "claimed_lower_bound": 0.299988,
+          "answered": 1,
+          "correct": 1,
+          "observed_accuracy": 1.0,
+          "gap": 0.333333
+        },
+        "N5a_pure": {
+          "claimed_confidence": 0.833333,
+          "claimed_lower_bound": 0.551964,
+          "answered": 19,
+          "correct": 14,
+          "observed_accuracy": 0.736842,
+          "gap": -0.096491
+        },
+        "N5b_critical_gap": {
+          "claimed_confidence": 0.75,
+          "claimed_lower_bound": 0.300636,
+          "answered": 1,
+          "correct": 0,
+          "observed_accuracy": 0.0,
+          "gap": -0.75
+        },
+        "N5b_minor_gap": {
+          "claimed_confidence": 0.702703,
+          "claimed_lower_bound": 0.542166,
+          "answered": 16,
+          "correct": 14,
+          "observed_accuracy": 0.875,
+          "gap": 0.172297
+        },
+        "N5c_no_exclusion": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N5c_with_exclusion": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        },
+        "N6_abstain": {
+          "claimed_confidence": 0.0,
+          "claimed_lower_bound": 0.0,
+          "answered": 0,
+          "correct": 0,
+          "observed_accuracy": null
+        }
+      },
+      "answered": 37,
+      "answer_rate": 0.435294,
+      "correct": 29,
+      "precision_when_answered": 0.783784,
+      "coverage_accuracy": 0.341176,
+      "raw_class_metrics": {
+        "L1": {
+          "support": 24,
+          "predicted": 11,
+          "true_positive": 6,
+          "precision": 0.545455,
+          "recall": 0.25,
+          "f1": 0.342857
+        },
+        "L2": {
+          "support": 55,
+          "predicted": 25,
+          "true_positive": 23,
+          "precision": 0.92,
+          "recall": 0.418182,
+          "f1": 0.575
+        },
+        "fiber": {
+          "support": 6,
+          "predicted": 1,
+          "true_positive": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "selective_risk_curve": [
+        {
+          "minimum_lower_bound": 0.0,
+          "answered": 35,
+          "coverage": 0.411765,
+          "correct": 28,
+          "precision_at_coverage": 0.8,
+          "selective_risk": 0.2
+        },
+        {
+          "minimum_lower_bound": 0.1,
+          "answered": 35,
+          "coverage": 0.411765,
+          "correct": 28,
+          "precision_at_coverage": 0.8,
+          "selective_risk": 0.2
+        },
+        {
+          "minimum_lower_bound": 0.2,
+          "answered": 35,
+          "coverage": 0.411765,
+          "correct": 28,
+          "precision_at_coverage": 0.8,
+          "selective_risk": 0.2
+        },
+        {
+          "minimum_lower_bound": 0.3,
+          "answered": 35,
+          "coverage": 0.411765,
+          "correct": 28,
+          "precision_at_coverage": 0.8,
+          "selective_risk": 0.2
+        },
+        {
+          "minimum_lower_bound": 0.4,
+          "answered": 35,
+          "coverage": 0.411765,
+          "correct": 28,
+          "precision_at_coverage": 0.8,
+          "selective_risk": 0.2
+        },
+        {
+          "minimum_lower_bound": 0.5,
+          "answered": 35,
+          "coverage": 0.411765,
+          "correct": 28,
+          "precision_at_coverage": 0.8,
+          "selective_risk": 0.2
+        },
+        {
+          "minimum_lower_bound": 0.6,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.7,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.8,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        },
+        {
+          "minimum_lower_bound": 0.9,
+          "answered": 0,
+          "coverage": 0.0,
+          "correct": 0,
+          "precision_at_coverage": null,
+          "selective_risk": null
+        }
+      ],
+      "final_decisions": {
+        "actions": {
+          "final": 35,
+          "request_evidence": 17,
+          "human_review": 33
+        },
+        "answered": 35,
+        "coverage": 0.411765,
+        "correct": 28,
+        "precision_when_answered": 0.8,
+        "coverage_accuracy": 0.329412,
+        "low_confidence_degradation_rate": 0.588235,
+        "human_intervention_rate": 0.388235,
+        "class_metrics": {
+          "L1": {
+            "support": 24,
+            "predicted": 10,
+            "true_positive": 6,
+            "precision": 0.6,
+            "recall": 0.25,
+            "f1": 0.352941
+          },
+          "L2": {
+            "support": 55,
+            "predicted": 24,
+            "true_positive": 22,
+            "precision": 0.916667,
+            "recall": 0.4,
+            "f1": 0.556962
+          },
+          "fiber": {
+            "support": 6,
+            "predicted": 1,
+            "true_positive": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      }
+    }
+  }
+}

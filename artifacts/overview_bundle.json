@@ -1,0 +1,1462 @@
+{
+ "dataset": {
+  "name": "rca_v2_l2fixed",
+  "train": 161,
+  "test": 107,
+  "train_dist": {
+   "L2": 100,
+   "L1": 49,
+   "fiber": 12
+  },
+  "test_dist": {
+   "L1": 32,
+   "L2": 67,
+   "fiber": 8
+  }
+ },
+ "constraints": [
+  {
+   "id": "C1_bias_zero_means_laser_off",
+   "category": "bias_current",
+   "kind": "invariant",
+   "title": "偏置电流为零等价于该 lane 未发光",
+   "statement": "激光器的光输出由偏置电流驱动。偏置电流为 0 mA 时器件根本没有被点亮，该 lane 必然没有光输出，这与光纤链路的状态无关。",
+   "formal": "bias[side][lane] == 0  <=>  txpower[side][lane] <= -39 dBm",
+   "params": [
+    [
+     "断光哨兵",
+     "-39 dBm"
+    ],
+    [
+     "零电流判定",
+     "bias == 0 mA"
+    ]
+   ],
+   "provenance": "device_spec",
+   "evidence": "训练集 1008 个 lane 读数中有 45 个 bias == 0，涉及 8 条 case；这 45 个 lane 的 txpower 全部同时处于断光哨兵，无一例外，反向也成立：没有出现 tx 断光而 bias 非零的 lane。",
+   "use": "先用它把「没发出光」与「光发出后丢失」分开。前者的根因在发送端设备，后者才可能是介质。这一步必须在任何功率比较之前做。",
+   "prefixes": [
+    "drop:L1:bias:",
+    "drop:L2:bias:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C2_bias_healthy_band",
+   "category": "bias_current",
+   "kind": "indicator",
+   "title": "健康 lane 的偏置电流落在窄带内",
+   "statement": "同型号模块在正常工作点上的偏置电流分布很窄。电流显著抬高通常意味着激光器老化后需要更大驱动才能维持同样光功率，是器件劣化的早期信号。",
+   "formal": "7.2 mA <= bias[side][lane] <= 7.8 mA  (healthy lane)",
+   "params": [
+    [
+     "下界",
+     "7.2 mA"
+    ],
+    [
+     "上界",
+     "7.8 mA"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "训练集非零偏置电流的 p25 = 7.22 mA（L1）/ 7.29 mA（L2），p99 = 7.72 mA（L1）/ 7.78 mA（L2），全部落在 7.2-7.8 mA。",
+   "use": "本数据集内没有观察到落在该带之外的非零电流，因此它当前只能作为「电流正常」的排除依据，不能作为老化判据。合并数据集后重新标定。",
+   "prefixes": [
+    "drop:L1:bias:",
+    "drop:L2:bias:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C3_temperature_operating_range",
+   "category": "temperature",
+   "kind": "exclusion",
+   "title": "模块温度在工作范围内则排除热致故障",
+   "statement": "商用光模块的工作温度范围是 0-70 °C。温度在范围内时，温漂不足以导致链路中断或降 lane。",
+   "formal": "0 degC <= Temperature[side] <= 70 degC",
+   "params": [
+    [
+     "下界",
+     "0 degC"
+    ],
+    [
+     "上界",
+     "70 degC"
+    ]
+   ],
+   "provenance": "device_spec",
+   "evidence": "训练集 252 个温度读数全部落在 39.35-60.13 °C，无一超出 70 °C。L2 侧系统性高于 L1 侧约 3.5 °C（中位数 50.30 vs 46.72），这是 200G 与 400G 端口的形态差异，不是故障。",
+   "use": "在本数据集上温度恒为排除条件：不允许把根因写成过温。L1 / L2 之间的固定温差也不能当作两侧差异证据。",
+   "prefixes": [],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C4_voltage_nominal_band",
+   "category": "voltage",
+   "kind": "exclusion",
+   "title": "供电电压在 3.3 V ±5% 内则排除供电异常",
+   "statement": "光模块标称供电 3.3 V，允许偏差 ±5%，即 3.135-3.465 V。超出下界时激光器驱动与 DSP 都可能不稳定。",
+   "formal": "3.135 V <= Voltage[side] <= 3.465 V",
+   "params": [
+    [
+     "标称",
+     "3.3 V"
+    ],
+    [
+     "允许偏差",
+     "±5%"
+    ]
+   ],
+   "provenance": "device_spec",
+   "evidence": "训练集 252 个电压读数中只有 1 个低于下界（case_aa307cc7c7db 的 L2 侧 3.10 V），其余全部落在 3.14-3.42 V。",
+   "use": "命中越界时把该侧设备列为候选并要求人工确认；由于全训练集只有 1 例，不允许据此建立统计规则。",
+   "prefixes": [],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C5_tx_power_range",
+   "category": "tx_power",
+   "kind": "invariant",
+   "title": "发送光功率的量程与断光哨兵",
+   "statement": "单 lane 发送光功率由激光器输出决定，正常工作点集中在 0 dBm 附近的窄带；读数掉到 -39 dBm 及以下是「无光」的哨兵值，不是一个真实的功率测量。",
+   "formal": "txpower[side][lane] > -39 dBm  =>  -1.8 dBm <= txpower <= 2.1 dBm",
+   "params": [
+    [
+     "断光哨兵",
+     "-39 dBm"
+    ],
+    [
+     "健康下界",
+     "-1.8 dBm"
+    ],
+    [
+     "健康上界",
+     "2.1 dBm"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "训练集健康 txpower 共 963 个读数，L1 侧 -1.70~1.91 dBm，L2 侧 -1.73~2.08 dBm；没有介于 -39 dBm 与 -1.8 dBm 之间的中间值，说明发送功率是「要么正常要么无光」。",
+   "use": "发送功率不存在渐变劣化区间，因此 tx 侧只需判断有光 / 无光，不要对 tx 做「偏低多少 dB」的推断。",
+   "prefixes": [
+    "drop:L1:txpower:",
+    "drop:L2:txpower:",
+    "level:L1:txpower_mean:",
+    "level:L2:txpower_mean:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C6_tx_down_excludes_medium",
+   "category": "tx_power",
+   "kind": "exclusion",
+   "title": "本端未发光时排除介质根因",
+   "statement": "光纤只能衰减已经进入它的光，不能解释一束从未被发出的光。本端某 lane 没有光输出时，该方向的问题必然在发送端。",
+   "formal": "txpower[near][lane] <= -39 dBm  =>  root_cause != fiber (for that direction)",
+   "params": [
+    [
+     "断光哨兵",
+     "-39 dBm"
+    ]
+   ],
+   "provenance": "derived",
+   "evidence": "由 C1 与 C5 推出，不引入新参数。训练集中 tx 断光的 lane 与 bias == 0 完全重合。",
+   "use": "这是排除 fiber 的最强单条依据，应在 N5c 推理的第一步执行。",
+   "prefixes": [
+    "drop:L1:txpower:",
+    "drop:L2:txpower:",
+    "lane:L1_to_L2:tx_down",
+    "lane:L2_to_L1:tx_down"
+   ],
+   "effects": [
+    "exclude"
+   ],
+   "targets": [
+    "fiber"
+   ]
+  },
+  {
+   "id": "C7_rx_power_range",
+   "category": "rx_power",
+   "kind": "invariant",
+   "title": "接收光功率的量程与断光哨兵",
+   "statement": "接收功率等于对端发送功率减去链路衰减，因此它有真实的连续劣化区间；读数掉到 -39 dBm 及以下同样是「无光」哨兵。",
+   "formal": "rxpower[side][lane] > -39 dBm  =>  -12.3 dBm <= rxpower <= 3.0 dBm",
+   "params": [
+    [
+     "断光哨兵",
+     "-39 dBm"
+    ],
+    [
+     "实测下界",
+     "-12.3 dBm"
+    ],
+    [
+     "实测上界",
+     "3.0 dBm"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "训练集健康 rxpower 共 929 个读数，L1 侧 -12.15~2.95 dBm，L2 侧 -12.25~2.83 dBm；与 tx 不同，rx 存在连续的低功率区间（p1 为 -8.45 / -4.68 dBm）。",
+   "use": "接收侧允许讨论「偏低多少」，这是与发送侧的关键区别，也是 `level_tail` 特征家族只在接收侧有判别力的物理原因。",
+   "prefixes": [
+    "drop:L1:rxpower:",
+    "drop:L2:rxpower:",
+    "imbalance:L1:rxpower",
+    "imbalance:L2:rxpower",
+    "level:L1:rxpower_mean:",
+    "level:L2:rxpower_mean:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C8_tx_ok_rx_down_indicates_medium",
+   "category": "lane_directional_consistency",
+   "kind": "indicator",
+   "title": "本端发光正常而对端同 lane 无光指向介质或对端接收",
+   "statement": "光已经被发出却没有到达对端，说明它在传输路径上丢失。路径包含光纤、连接器、以及对端的接收器件。",
+   "formal": "txpower[near][lane] > -39 dBm AND rxpower[far][lane] <= -39 dBm  =>  root_cause in {fiber, far_end_device}",
+   "params": [
+    [
+     "断光哨兵",
+     "-39 dBm"
+    ]
+   ],
+   "provenance": "derived",
+   "evidence": "全量 211 条 case 中有 61 条命中该模式，标签分布 L2 40 / L1 13 / fiber 8。fiber 在命中组中的占比 13.1%，高于全局占比 6.6%，约 2 倍富集；但它同时命中 53 条非 fiber case，因此只能作为 indicator 而不是判据。",
+   "use": "命中后必须继续区分「介质」与「对端接收器件」，单靠这一条不能判 fiber。区分手段见 C9。",
+   "prefixes": [
+    "lane:L1_to_L2:tx_ok_rx_down",
+    "lane:L2_to_L1:tx_ok_rx_down"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "fiber"
+   ]
+  },
+  {
+   "id": "C9_bidirectional_symmetry",
+   "category": "lane_directional_consistency",
+   "kind": "indicator",
+   "title": "双向对称异常指向介质，单向异常指向该方向的端点",
+   "statement": "一对光纤中的两根分别承载两个方向。同一 lane 双向同时异常说明整条 lane 或其光纤对被共同影响（例如同一根尾纤被拔出、同一个连接器脏污）；只有单向异常说明问题落在该方向的发送端或接收端，而不是共享的介质。",
+   "formal": "abnormal(L1->L2, lane) AND abnormal(L2->L1, lane)  =>  shared cause (fiber pair / connector); XOR  =>  endpoint of that direction",
+   "params": [],
+   "provenance": "device_spec",
+   "evidence": "全量 211 条中同 lane 双向异常的有 9 条（标签 L2 6 / fiber 2 / L1 1），样本量太小，不足以支撑统计结论；这条约束的依据是物理拓扑而非数据。",
+   "use": "与 C8 串联使用：C8 判断光是否在路径中丢失，C9 判断丢失是否双向对称。双向对称才把 fiber 提到首位。",
+   "prefixes": [
+    "lane:L1_to_L2:bidirectional_same_lane",
+    "lane:L2_to_L1:bidirectional_same_lane"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "fiber"
+   ]
+  },
+  {
+   "id": "C10_all_lanes_vs_single_lane",
+   "category": "lane_directional_consistency",
+   "kind": "indicator",
+   "title": "全 lane 同时异常与单 lane 异常指向不同层级",
+   "statement": "一个端口的所有 lane 共享供电、时钟、模块壳体和同一束光纤；单条 lane 则有独立的激光器、探测器和纤芯。所有 lane 同时异常指向共享层，单 lane 异常指向该通道的独立器件。",
+   "formal": "down_lane_count == lane_count  =>  port-level; down_lane_count == 1  =>  channel-level",
+   "params": [],
+   "provenance": "device_spec",
+   "evidence": "这正是特征家族 `signal_drop` 把断 lane 数分成 single_lane / partial_lanes / all_lanes 三档的物理依据；T1 家族消融显示该分档是 v1 中不可替代的一项。",
+   "use": "决定排障动作的粒度：整端口换模块 / 换整束纤，还是单通道定位。",
+   "prefixes": [
+    "drop:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C11_media_snr_floor",
+   "category": "signal_quality",
+   "kind": "indicator",
+   "title": "介质侧信噪比显著低于正常带且收光正常时指向链路质量",
+   "statement": "介质侧 SNR 反映解调后的信号质量。收光功率正常而 SNR 偏低，说明损伤不是功率衰减，而是色散、反射、串扰这类不改变总功率的链路质量问题。",
+   "formal": "rxpower normal AND media_snr < 22.5 dB  =>  link quality degradation",
+   "params": [
+    [
+     "正常带下界",
+     "22.5 dB"
+    ],
+    [
+     "正常带中位数",
+     "25.6 dB (L1) / 26.0 dB (L2)"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "训练集健康 media_snr 的 p1 为 22.47 dB（L1）/ 22.95 dB（L2），低于 20 dB 的读数只有 4 个（16.71 / 17.51 / 17.51 / 17.70）。",
+   "use": "触发极少，当前只能作为个别 case 的补充线索；不要把它写进任何需要统计支撑的规则。",
+   "prefixes": [
+    "level:L1:media_snr_min:low_tail",
+    "level:L2:media_snr_min:low_tail"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "fiber"
+   ]
+  },
+  {
+   "id": "C12_no_absolute_link_loss",
+   "category": "measurement_validity",
+   "kind": "caveat",
+   "title": "本数据集不能用两端功率相减计算链路损耗",
+   "statement": "无源链路的损耗必然非负，即对端收到的功率不可能高于本端发出的功率。本数据集违反这一点，说明两端 lane 编号不对应，或收发功率的标定口径不同。",
+   "formal": "mean(txpower[near]) - mean(rxpower[far]) >= 0   # 本数据集不成立",
+   "params": [],
+   "provenance": "measured",
+   "evidence": "按 lane 号配对后，L1->L2 方向的均值损耗中位数为 -0.285 dB，L2->L1 为 -0.227 dB，两个方向的中位数都是负值，物理上不可能。legacy `directional_loss` 学到的上界（3.11 / 3.42 dB）因此也不可信。第二个更直观的证据（迭代 1 补测）：只看序不看数值，统计两端**最差 lane 的编号**是否相同。若两端编号真的对应，故障 case 里这个比例应明显高于随机；实测 rxpower 为 37/155 = 23.9%、media_snr 为 46/161 = 28.6%，而 4 lane 下随机一致的概率就是 25%，两者都与随机无法区分。这个检验只需要遥测本身，可以直接用来判断一份数据的两端 lane 是否对齐。",
+   "use": "禁止在约束、规则或 prompt 中写绝对损耗门限。只允许使用同侧内部的相对量（lane 间极差）与训练集分位分档。",
+   "prefixes": [
+    "lane:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C13_serdes_snr_unit_unknown",
+   "category": "measurement_validity",
+   "kind": "caveat",
+   "title": "serdes_snr 不是 dB 量纲，不得按信噪比解释",
+   "statement": "`serdes_snr` 字段的健康取值在 6.6e5-8.3e5 量级，断链时为 1。这不是任何 dB 口径的信噪比，更接近某种原始计数或定点数。",
+   "formal": "serdes_snr 量纲未知；仅可用作有效 / 无效的二值判断",
+   "params": [
+    [
+     "健康区间",
+     "约 6.6e5 - 8.3e5（量纲未知）"
+    ],
+    [
+     "失效哨兵",
+     "1"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "训练集 972 个 serdes_snr 读数中，健康值 p25-p99 为 6.6e5-8.2e5，最小值为 1。legacy 规则里出现频率很高的 `low_outlier:*:serdes_snr` 就建立在这个量纲未知的字段上。",
+   "use": "在向厂商确认量纲之前，只允许用它区分「有效」与「失效」，不允许出现「serdes SNR 低了 x dB」这类表述。",
+   "prefixes": [
+    "serdes:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C14_host_snr_mostly_missing",
+   "category": "measurement_validity",
+   "kind": "caveat",
+   "title": "host_snr 在多数 case 上缺失，缺失不等于正常",
+   "statement": "主机侧信噪比反映模块与交换芯片之间的电口质量，与光链路无关。该字段在本数据集大面积缺失。",
+   "formal": "host_snr 存在率 = 52/161 训练 case",
+   "params": [
+    [
+     "训练集存在率",
+     "52/161（32.3%）"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split 的 161 条 case 中，只有 52 条任一侧有非空 host_snr 读数，109 条两侧均无有效读数（存在率 32.3%）。",
+   "use": "缺失必须被显式表述为「未采集」，不能当作「正常」。N6 在判断证据充分性时要把它算作缺失证据而不是通过项。",
+   "prefixes": [
+    "telemetry:partial_telemetry",
+    "telemetry:no_telemetry"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C15_blackout_sentinel_is_not_laser_off",
+   "category": "measurement_validity",
+   "kind": "caveat",
+   "title": "全链路读数同时触底时，哨兵表示「未读到数」而不是「无光」",
+   "statement": "两端的发送、接收、介质侧信噪比同时全部处于断光哨兵，同时 TxLOS 却报 Normal，这两件事互相矛盾：模块若真的没有发光，TxLOS 应当告警。更合理的解释是链路整体中断后遥测通道本身失效，所有光学读数回落到哨兵默认值。此时哨兵是「读不到」而不是「没有光」。",
+   "formal": "ALL(txpower, rxpower over both sides) <= -39 dBm AND TxLOS == Normal  =>  哨兵含义为 no_reading，不得据此推断激光关断",
+   "params": [
+    [
+     "断光哨兵",
+     "-39 dBm"
+    ],
+    [
+     "训练集命中",
+     "4/161"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split 的 161 条中有 4 条命中：两侧 4 个 lane 的 txpower / rxpower 全为 -40.0 dBm，状态位一律 TxLOS=Normal、TxLOL=Normal、RxLOS=Abnormal、RxLOL=Abnormal。4 条的标签为 L2 3 条、fiber 1 条：物理观测完全一致而根因不同，说明该状态下的遥测不足以区分根因。",
+   "use": "这是 C6 的前置条件：只有在遥测确实有效（存在任一非哨兵读数）时，才允许用「本端未发光」去排除介质根因。命中本约束的 case 应直接转人工，不论它产出了多少个特征 token——token 多不等于证据强。",
+   "prefixes": [
+    "drop:L1:txpower:all_lanes",
+    "drop:L2:txpower:all_lanes",
+    "drop:L1:rxpower:all_lanes",
+    "drop:L2:rxpower:all_lanes"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C16_receive_symptom_constrains_far_transmit_chain",
+   "category": "attribution_direction",
+   "kind": "indicator",
+   "title": "接收侧症状把故障约束在对端发送链路、介质与本端接收链路三者之内",
+   "statement": "一侧的接收类读数（rxpower、media_snr、RxLOS / RxLOL）度量的是**对端发出、穿过介质之后到达本端**的光。因此接收侧出现症状时，候选根因只能落在「对端发送链路」「介质」「本端接收链路」这三段里，在物理上不可能是本端自己的发送链路——本端发出的光根本不经过本端的接收器。这条方向性是光链路 RCA 里最基本的归因约束：报症状的一端通常不是肇事的一端。",
+   "formal": "receive_symptom(X)  =>  root_cause_chain in {tx_chain(Y), medium, rx_chain(X)}  AND  root_cause_chain != tx_chain(X)",
+   "params": [
+    [
+     "接收侧症状定义",
+     "RxLOS / RxLOL 告警，或 rxpower / media_snr 存在断 lane"
+    ]
+   ],
+   "provenance": "derived",
+   "evidence": "rca_v2_l2fixed manifest train split（161 条）按「只有哪一侧出现接收侧症状」分组：只有 L1 侧 63 条，其中根因为对端 L2 的 43 条 = 68.3%（Wilson 下界 56.0%，L2 先验 62.1%）；只有 L2 侧 25 条，其中根因为对端 L1 的 12 条 = 48.0%（Wilson 下界 30.0%，L1 先验 30.4%）。**两个方向不对称：只有 L1 受害方向的下界超过其预测类别的先验。**更细的口径同样如此：L1 侧 rx 只有单 lane 断（其余 lane 健康）37 条，根因 L2 30 条 = 81.1%（下界 65.8%）；镜像条件 L2 侧 rx 单 lane 断只有 13 条，根因 L1 仅 4 条 = 30.8%，与 L1 先验无法区分。",
+   "use": "只允许在 L1 侧为接收受害方时用它支持 L2；L2 侧为受害方时按 C17 处理，不得镜像套用。这条不对称本身是实测结果，不要为了对称性把它写成双向规则。",
+   "prefixes": [
+    "drop:L1:rxpower:",
+    "drop:L1:media_snr:",
+    "status:L1:RxLOS",
+    "status:L1:RxLOL",
+    "level:L1:rxpower_mean:low_tail",
+    "level:L1:media_snr_min:low_tail",
+    "lane:L2_to_L1:tx_ok_rx_down"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "L2"
+   ]
+  },
+  {
+   "id": "C17_l2_side_receive_symptom_is_not_discriminative",
+   "category": "attribution_direction",
+   "kind": "caveat",
+   "title": "L2 侧接收症状不足以支持 L1 根因",
+   "statement": "C16 的方向性在物理上是对称的，但在本数据集上只有一个方向具备统计判别力。L2（200G）侧作为接收受害方时，对端归因的实测正确率与 L1 的类别先验没有区别，说明现有遥测无法把「L1 发送链路劣化」与「L2 自身接收链路劣化」分开——两者在 L2 侧看到的现象一样。",
+   "formal": "receive_symptom(L2) AND NOT receive_symptom(L1)  =>  P(L1) 与先验不可区分；不得据此断言 L1",
+   "params": [
+    [
+     "训练集触发",
+     "25/161"
+    ],
+    [
+     "对端归因正确率",
+     "12/25 = 48.0%"
+    ],
+    [
+     "Wilson 95% 下界",
+     "30.0%"
+    ],
+    [
+     "L1 类别先验",
+     "30.4%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split：只有 L2 侧出现接收症状的 25 条中，标签为 L1 的 12 条、L2 的 10 条、fiber 的 3 条。预测 L1 的 Wilson 下界 30.0% 恰好落在 L1 先验 30.4% 上，没有增益。单 lane 口径更差：L2 侧 rx 单 lane 断 13 条中 L1 仅 4 条（30.8%）。",
+   "use": "命中本约束的 case 应输出「候选 L1，但当前证据不足以定论」并给出补采项（L1 侧 host_snr / serdes 读数、L1 侧同 lane 的发送功率历史），而不是给出 L1 结论。这是把一个实测负结果变成明确的补采动作。唯一的例外是 C22：L2 侧各 lane 之间接收不齐（而不是整体偏低）仍可作为 L1 的弱支持，两者的适用 token 不重叠。",
+   "prefixes": [
+    "drop:L2:rxpower:",
+    "drop:L2:media_snr:",
+    "status:L2:RxLOS",
+    "status:L2:RxLOL",
+    "level:L2:rxpower_mean:low_tail",
+    "level:L2:media_snr_min:low_tail",
+    "lane:L1_to_L2:tx_ok_rx_down"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C18_single_lane_scope_does_not_exclude_fiber",
+   "category": "lane_directional_consistency",
+   "kind": "caveat",
+   "title": "单 lane 异常缩小的是共享层，不是介质本身",
+   "statement": "单条 lane 异常而同端口其余 lane 健康，可以排除所有 lane 共享的部分：模块供电、壳体温度、整束光纤被拔出、整个连接器脱落。但**不能排除介质**：并行光模块的每条 lane 走独立纤芯，单根纤芯断裂或单个 MPO 芯位脏污同样只影响一条 lane。把「单 lane」直接推成「不是光纤」是一个很自然但错误的推理。",
+   "formal": "down_lane_count == 1  =>  排除 port 级共享原因；不得推出 root_cause != fiber",
+   "params": [
+    [
+     "训练集单 lane 断 case 数",
+     "50（L1 侧 37 + L2 侧 13）"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split 中 rx 恰好一条 lane 断的 case 共 50 条，其中 fiber 标签 6 条 = 12.0%，**高于** fiber 全局先验 7.45%。如果单 lane 能排除介质，这个比例应当低于先验。",
+   "use": "单 lane 结论只能写成「排除端口级共享原因」，后续仍要在「对端该通道的激光器」「该 lane 的纤芯 / 芯位」「本端该通道的探测器」之间区分。",
+   "prefixes": [
+    "drop:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C19_population_prior_is_not_case_evidence",
+   "category": "measurement_validity",
+   "kind": "caveat",
+   "title": "类别先验与 SOP 叶节点分布不是本 case 的物理证据",
+   "statement": "learned SOP 的叶节点标签分布、历史候选的标签投票和类别先验都是**群体统计**。它们可以决定在没有判别证据时的默认动作，但它们不描述当前这条链路发生了什么。把它们当成证据会产生一种特别难发现的错误：结论看起来有依据，实际上整条推理链没有引用任何一个当前 case 的观测。",
+   "formal": "SOP_leaf_distribution, class_prior, history_label_vote  NOT IN cited_evidence  AND  effect != support",
+   "params": [
+    [
+     "训练集 L2 先验",
+     "100/161 = 62.1%"
+    ]
+   ],
+   "provenance": "derived",
+   "evidence": "MVP 正式实验中 M9 前的 44 个候选有 23 个正确（52.3%），而单纯预测多数类 L2 在同一测试集上是 62.6%。也就是说，一条大量引用群体先验的推理链的表现低于直接报多数类，它增加的只是解释的外观。",
+   "use": "M7 应拒绝把 SOP 路径、叶节点分布或历史标签投票写进 `cited_evidence` 的回答；允许在自然语言里提到它是默认动作的来源，但不允许作为 support 步骤。",
+   "prefixes": [],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C20_fiber_not_identifiable_from_current_telemetry",
+   "category": "identifiability",
+   "kind": "caveat",
+   "title": "现有遥测无法识别 fiber 根因",
+   "statement": "介质根因需要的证据是链路损耗、反射事件位置、端面污染或弯曲损耗，这些都要靠 OTDR、端面镜检或双向功率标定获得。本数据集的遥测只有两端模块的自报读数，且按 C12 连绝对损耗都算不出来。因此 fiber 在信息层面就不可识别，这不是模型能力问题。",
+   "formal": "max over observable conditions of P(fiber | condition) 的 Wilson 95% 下界 <= 0.082  =>  不得断言 fiber",
+   "params": [
+    [
+     "fiber 全局先验",
+     "12/161 = 7.45%"
+    ],
+    [
+     "最强富集条件",
+     "L2 侧 rx 单 lane 断：3/13 = 23.1%，Wilson 下界 8.2%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "在 rca_v2_l2fixed manifest train split 上穷举了断 lane 波及范围、双向同 lane 断、两侧 media_snr 同时偏低、两侧收光同时偏弱等条件，支持数 >= 6 的条件里 fiber 占比最高为 23.1%（n=13），Wilson 95% 下界 8.2%，与 7.45% 的先验无法区分。MVP 正式实验的测试侧也一致：系统预测 fiber 10 次只对 1 次。",
+   "use": "禁止输出 fiber 结论。命中疑似介质模式时输出「候选 fiber，需现场确认」并请求 OTDR 曲线、端面镜检或双向功率标定，让 fiber 成为一个明确的补采分支而不是一个低精度的猜测。",
+   "prefixes": [],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C21_healthy_band_tx_level_is_not_attribution_evidence",
+   "category": "tx_power",
+   "kind": "caveat",
+   "title": "正常带内的发送功率高低不是归因证据，两端相减更不是",
+   "statement": "按 C5，发送功率只有「正常」与「无光」两态，正常带内的高低由激光器个体差异、出厂标定和端口形态决定，不由链路故障决定。在这样一个与根因几乎无关的连续量上取分布尾部，仍然会得到看起来偏斜的标签分布，因为尾部样本少。这类关联是抽样波动，不是物理关系。把两端的发送功率相减会同时踩上 C12 的坑：两端标定口径本来就不可比。",
+   "formal": "txpower[side] > -39 dBm  =>  txpower 的具体数值不得进入 support 步骤；禁止使用 mean(txpower[L1]) - mean(txpower[L2])",
+   "params": [
+    [
+     "标签 L1 的 case",
+     "L1 侧 tx 中位 +0.860 dBm / L2 侧 +0.863 dBm"
+    ],
+    [
+     "标签 L2 的 case",
+     "L1 侧 tx 中位 +0.835 dBm / L2 侧 +0.855 dBm"
+    ],
+    [
+     "两端相减探针与 tx 低尾 token 的 Jaccard",
+     "0.65"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split（161 条）三项实测：（1）按标签分层的健康 tx 均值中位数几乎相同（见 parameters），即发送电平与根因基本无关；（2）`level:L1:txpower_mean:low_tail` 命中 39 条且**无一条含断光哨兵**，标签 L2 29 / L1 6 / fiber 4，precision 74.4% 但 Wilson 下界 58.9%，低于 L2 先验 62.1%，因此没有增益；（3）两端相减的探针 `probe:txpower_side_gap:L1_worse` 是唯一下界（65.8%）超过 L2 先验的 tx 类信号，但它与上面那个低尾 token 的 Jaccard 达 0.65，控制该 token 后剩余支持只有 7 条，增益消失。",
+   "use": "发送侧一律只做有光 / 无光判断（C5、C6）。不允许出现「L1 侧发送功率偏低所以……」这类步骤，也不允许两端功率相减。这条约束的作用是拦掉一条统计上很诱人、物理上站不住的捷径。",
+   "prefixes": [
+    "level:L1:txpower_mean:",
+    "level:L2:txpower_mean:"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  },
+  {
+   "id": "C22_receive_lane_imbalance_indicates_far_transmit_array",
+   "category": "lane_directional_consistency",
+   "kind": "indicator",
+   "title": "同侧接收 lane 间不均衡指向对端发送阵列的通道差异",
+   "statement": "并行光模块的每条 lane 有独立的激光器与探测器，但同一端口内所有 lane 共享标定口径、整束光纤的共模损耗和接收侧的 AGC 配置。因此同侧各 lane 接收功率之间的**极差**天然消掉了这些共模项，剩下的差异只能来自对端各发送通道之间的不一致，即对端发送阵列的通道级劣化。这使它比两端绝对电平相减可靠得多——后者按 C12 在本数据集上根本不成立。「用同侧相对量做跨端归因」是这份数据里唯一站得住的跨端推理方式。",
+   "formal": "spread(rxpower[X]) 显著大于同侧正常波动  =>  support tx_array(Y)，Y 为对端",
+   "params": [
+    [
+     "L2 侧接收不均衡命中",
+     "7/161"
+    ],
+    [
+     "其中根因为对端 L1",
+     "6/7 = 85.7%"
+    ],
+    [
+     "Wilson 95% 下界",
+     "48.7%"
+    ],
+    [
+     "L1 类别先验",
+     "30.4%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split：`imbalance:L2:rxpower` 命中 7 条，标签为 L1 的 6 条、fiber 1 条，无一条含断光哨兵（即不均衡不是断 lane 造成的）。Wilson 下界 48.7% 超过 L1 先验 30.4%，这是全训练集上**唯一**一个下界超过 L1 先验的观测条件。镜像方向 `imbalance:L1:rxpower` 命中 10 条、8 条为 L2（80.0%，下界 49.0%），但 L2 先验是 62.1%，所以镜像方向不成立。这个不对称主要来自两类先验相差一倍（30.4% vs 62.1%）——支持少数类需要的证据强度本来就更低，不要读成物理上的不对称。",
+   "use": "只允许用它支持 L1，且必须标注为弱证据：支持数只有 7 条，下界 48.7% 意味着「比先验强，但远达不到可以定论」。命中后应输出 L1 候选并请人工确认，同时建议补采 L1 侧各发送通道的功率与偏置电流历史，用来确认是哪一路通道。本条是 C17 的细化，不是推翻：C17 否掉的是「L2 侧整体收光低或告警」，本条针对的是「L2 侧各 lane 之间不齐」，两者不可混用。",
+   "prefixes": [
+    "imbalance:L2:rxpower"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "L1"
+   ]
+  },
+  {
+   "id": "C23_expert_receive_anomaly_on_l1_supports_l2",
+   "category": "attribution_direction",
+   "kind": "indicator",
+   "title": "L1 侧接收类读数越出工程阈值时，故障指向对端 L2 的发送链路",
+   "statement": "接收侧读数度量的是**对端发出、穿过介质之后**到达本端的光，因此接收类指标（rxpower、media_snr）越出工程阈值时，故障不可能出在本端自己的发送器上。现网专家规则据此把「rxpower 异常」「media_snr 异常」以及三项组合异常（serdes_snr + media_snr + rxpower 同侧同时异常）统一定界到**异常所在端的对端**。组合异常的物理含义更强：光口、介质侧信噪比与电口三级同时劣化，说明整条接收通道拿到的信号本身就是坏的，而不是本端某一级的问题。",
+   "formal": "expert_receive_anomaly(L1)  =>  support L2  其中 expert_receive_anomaly 按 EXPERT_EXPERIENCE.md §3.3 的固定阈值判定",
+   "params": [
+    [
+     "rxpower 判异阈值",
+     "断光 -40 dBm / 低值 < -2.5 dBm / 高值 > 4.6 dBm / lane 极差 > 1 dB"
+    ],
+    [
+     "media_snr 判异阈值",
+     "断光 0 / 低值 < 22.4 / 高值 > 28.7 / lane 极差 > 3"
+    ],
+    [
+     "训练集触发",
+     "58/161"
+    ],
+    [
+     "对端归因正确率",
+     "46/58 = 79.3%"
+    ],
+    [
+     "Wilson 95% 下界",
+     "67.2%"
+    ],
+    [
+     "L2 类别先验",
+     "62.1%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split：按专家阈值判定后由 L1 侧接收类异常（含三项组合异常）胜出仲裁的 58 条中，根因确为对端 L2 的 46 条 = 79.3%，Wilson 下界 67.2% 超过 L2 先验 62.1%。留出集同向：34 条中 28 条 = 82.4%（下界 66.5%，先验 62.6%）。两个切分的下界都超过先验，且规则不含任何在本数据集上拟合的参数。",
+   "use": "命中即可支持 L2。它与 C16 说的是同一段物理关系，但证据口径不同：C16 用的是分位数 token（`drop:L1:rxpower:` 等），本条用的是工程阈值 token（`expert:L1:...`）。同一条 case 可能只命中其中一种，两者可以互相印证，但不得把它们当成两条独立证据——它们读的是同一批原始读数。",
+   "prefixes": [
+    "expert:L1:rxpower:",
+    "expert:L1:media_snr:",
+    "expert:pattern:L1:multi_metric",
+    "expert:points_to:L1:L2"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "L2"
+   ]
+  },
+  {
+   "id": "C24_expert_receive_anomaly_on_l2_supports_l1",
+   "category": "attribution_direction",
+   "kind": "indicator",
+   "title": "L2 侧接收类读数越出工程阈值时，故障指向对端 L1 的发送链路",
+   "statement": "C23 的镜像方向。物理上这条关系本来就是对称的——接收侧看到的永远是对端发出的光——此前之所以只承认 L1 受害方向（C16 / C17），是因为在分位数口径下 L2 方向测不出增益。",
+   "formal": "expert_receive_anomaly(L2)  =>  support L1",
+   "params": [
+    [
+     "训练集触发",
+     "22/161"
+    ],
+    [
+     "对端归因正确率",
+     "13/22 = 59.1%"
+    ],
+    [
+     "Wilson 95% 下界",
+     "38.7%"
+    ],
+    [
+     "L1 类别先验",
+     "30.4%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split：由 L2 侧接收类专家异常胜出仲裁的 22 条中，根因确为对端 L1 的 13 条 = 59.1%，Wilson 下界 38.7% 超过 L1 先验 30.4%。留出集 27 条中 17 条 = 63.0%（下界 44.2%）。**与 C17 的关系必须写清楚**：C17 在分位数口径（`drop:L2:rxpower:` 等）下测到下界 30.0%、与先验 30.4% 无法区分，因此判定该方向不可用。换成工程阈值口径后同一段物理关系变得可用，说明 C17 否掉的是那一种证据定义，不是这段物理关系。这也是迭代 3 最重要的方法论结论：**「现有遥测无法判别 X」这类负结论必须连同异常定义一起陈述，否则会被过度推广。**",
+   "use": "命中即可支持 L1，但强度弱于 C23（下界 38.7% vs 67.2%）：支持少数类需要的证据强度本来就低，不要把两者的下界直接比大小。命中时应同时给出补采建议（L1 侧各发送通道的功率与偏置电流历史）。不得与 C17 同时引用：两者读的是同一批原始读数的不同判定口径。",
+   "prefixes": [
+    "expert:L2:rxpower:",
+    "expert:L2:media_snr:",
+    "expert:pattern:L2:multi_metric",
+    "expert:points_to:L2:L1"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "L1"
+   ]
+  },
+  {
+   "id": "C25_expert_local_chain_anomaly_on_l1_supports_l1",
+   "category": "attribution_direction",
+   "kind": "indicator",
+   "title": "L1 侧发送与电口读数越出工程阈值时，故障指向 L1 自身",
+   "statement": "与接收类相反，发送光功率（txpower）、主机侧信噪比（host_snr）与 SerDes 信噪比（serdes_snr）度量的都是**本端自己产生的信号**，光没有出过本端的模块，因此它们越阈时指向本端。这正是专家方向表分成两类的物理依据：看到的是别人发来的光就归对端，看到的是自己发出的信号就归自己。发送侧断光（txpower lane_down）是全表最高优先级——它是一个确定性事实，不需要与其它证据比较强弱。",
+   "formal": "expert_local_chain_anomaly(L1)  =>  support L1",
+   "params": [
+    [
+     "训练集触发",
+     "18/161"
+    ],
+    [
+     "本端归因正确率",
+     "11/18 = 61.1%"
+    ],
+    [
+     "Wilson 95% 下界",
+     "38.6%"
+    ],
+    [
+     "L1 类别先验",
+     "30.4%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split：由 L1 侧发送 / 电口类专家异常胜出仲裁的 18 条中，根因确为 L1 的 11 条 = 61.1%，Wilson 下界 38.6% 超过 L1 先验 30.4%。留出集 11 条中 6 条 = 54.5%（下界 28.0%），略低于先验，样本量也小；因此本条只能作为弱支持，不能单独定论。",
+   "use": "命中可支持 L1，但必须标注为弱证据并建议人工确认。唯一的例外是 `expert:L1:txpower:lane_down`：本端发送断光是确定性事实，按 C6 还可同时排除 fiber。",
+   "prefixes": [
+    "expert:L1:txpower:",
+    "expert:L1:host_snr:",
+    "expert:L1:serdes_snr:",
+    "expert:pattern:L1:port_down",
+    "expert:points_to:L1:L1"
+   ],
+   "effects": [
+    "support"
+   ],
+   "targets": [
+    "L1"
+   ]
+  },
+  {
+   "id": "C26_expert_local_chain_anomaly_on_l2_is_not_discriminative",
+   "category": "attribution_direction",
+   "kind": "caveat",
+   "title": "L2 侧发送与电口读数越阈不足以支持 L2",
+   "statement": "C25 的镜像方向在物理上同样成立，但在本数据集上不具备判别力——不是因为物理不对，而是因为 L2 的类别先验已经有 62.1%，一条把 63.3% 的 case 判对的规则并没有比「什么都不看直接报 L2」更好。这是所有面向多数类的证据都要过的一关：**支持多数类需要的下界远高于支持少数类**。",
+   "formal": "expert_local_chain_anomaly(L2)  =>  P(L2) 与先验不可区分；不得据此断言 L2",
+   "params": [
+    [
+     "训练集触发",
+     "30/161"
+    ],
+    [
+     "本端归因正确率",
+     "19/30 = 63.3%"
+    ],
+    [
+     "Wilson 95% 下界",
+     "45.5%"
+    ],
+    [
+     "L2 类别先验",
+     "62.1%"
+    ]
+   ],
+   "provenance": "measured",
+   "evidence": "rca_v2_l2fixed manifest train split：由 L2 侧发送 / 电口类专家异常胜出仲裁的 30 条中，根因为 L2 的 19 条 = 63.3%，Wilson 下界 45.5% **低于** L2 先验 62.1%。留出集上这一组反而很准（22 条中 20 条 = 90.9%，下界 72.2%），但两个切分差 27 个百分点、训练集下界不达标，按本仓库既定口径不足以升级为 support。记录这个分歧本身有价值：它说明该规则组的可靠性不稳定，需要更多数据才能定论。",
+   "use": "命中时只能作为中性观察写进推理链，不得作为 support。若同一条 case 上没有任何其它方向证据，应输出「候选 L2，证据不足以定论」并请求补采 L2 侧发送通道的历史读数。",
+   "prefixes": [
+    "expert:L2:txpower:",
+    "expert:L2:host_snr:",
+    "expert:L2:serdes_snr:",
+    "expert:pattern:L2:port_down",
+    "expert:points_to:L2:L2"
+   ],
+   "effects": [
+    "neutral"
+   ],
+   "targets": [
+    ""
+   ]
+  }
+ ],
+ "constraint_version": "constraint-library-v6",
+ "constraint_measured_on": "rca_v2_l2fixed manifest train split（seed=42，train_ratio=0.6）",
+ "expert_rules": {
+  "metrics": [
+   "rxpower",
+   "txpower",
+   "host_snr",
+   "media_snr",
+   "serdes_snr"
+  ],
+  "thresholds": {
+   "rxpower": {
+    "down": -40.0,
+    "low": -2.5,
+    "high": 4.6,
+    "diff": 1.0
+   },
+   "txpower": {
+    "down": -40.0,
+    "low": -2.5,
+    "high": 2.5,
+    "diff": 1.3
+   },
+   "host_snr": {
+    "down": 0.0,
+    "low": 22.8,
+    "high": 27.5,
+    "diff": 2.5
+   },
+   "media_snr": {
+    "down": 0.0,
+    "low": 22.4,
+    "high": 28.7,
+    "diff": 3.0
+   },
+   "serdes_snr": {
+    "down": 0.0,
+    "low": 458750.0,
+    "high": 947750.0,
+    "diff": 230000.0
+   }
+  },
+  "single_base": {
+   "host_snr": 2,
+   "serdes_snr": 3,
+   "media_snr": 4,
+   "rxpower": 5,
+   "txpower": 6
+  },
+  "single_direction": {
+   "host_snr": "same",
+   "serdes_snr": "same",
+   "media_snr": "opposite",
+   "rxpower": "opposite",
+   "txpower": "same"
+  },
+  "anomaly_level": {
+   "lane_down": 0,
+   "low_value": 1,
+   "high_value": 1,
+   "lane_diff": 2
+  },
+  "anomaly_order": [
+   "lane_down",
+   "low_value",
+   "high_value",
+   "lane_diff"
+  ],
+  "multi_metric_priority": "1",
+  "multi_metric_requires": [
+   "serdes_snr",
+   "media_snr",
+   "rxpower"
+  ]
+ },
+ "sop": {
+  "version": "learned-sop-v1",
+  "max_depth": 3,
+  "min_leaf_size": 5,
+  "hash": "97cfd7addfb9fab4",
+  "root": {
+   "node_id": "root",
+   "samples": 161,
+   "label_counts": {
+    "L1": 49,
+    "L2": 100,
+    "fiber": 12
+   },
+   "prediction": "L2",
+   "token": "expert:points_to:L2:L1",
+   "present": {
+    "node_id": "root.present",
+    "samples": 27,
+    "label_counts": {
+     "L1": 15,
+     "L2": 7,
+     "fiber": 5
+    },
+    "prediction": "L1",
+    "token": "level:L1:rxpower_mean:low_tail",
+    "present": {
+     "node_id": "root.present.present",
+     "samples": 6,
+     "label_counts": {
+      "L1": 6,
+      "L2": 0,
+      "fiber": 0
+     },
+     "prediction": "L1"
+    },
+    "absent": {
+     "node_id": "root.present.absent",
+     "samples": 21,
+     "label_counts": {
+      "L1": 9,
+      "L2": 7,
+      "fiber": 5
+     },
+     "prediction": "L1",
+     "token": "drop:L2:rxpower:single_lane",
+     "present": {
+      "node_id": "root.present.absent.present",
+      "samples": 10,
+      "label_counts": {
+       "L1": 1,
+       "L2": 6,
+       "fiber": 3
+      },
+      "prediction": "L2"
+     },
+     "absent": {
+      "node_id": "root.present.absent.absent",
+      "samples": 11,
+      "label_counts": {
+       "L1": 8,
+       "L2": 1,
+       "fiber": 2
+      },
+      "prediction": "L1"
+     }
+    }
+   },
+   "absent": {
+    "node_id": "root.absent",
+    "samples": 134,
+    "label_counts": {
+     "L1": 34,
+     "L2": 93,
+     "fiber": 7
+    },
+    "prediction": "L2",
+    "token": "expert:points_to:L1:L2",
+    "present": {
+     "node_id": "root.absent.present",
+     "samples": 61,
+     "label_counts": {
+      "L1": 8,
+      "L2": 47,
+      "fiber": 6
+     },
+     "prediction": "L2",
+     "token": "level:L1:txpower_mean:low_tail",
+     "present": {
+      "node_id": "root.absent.present.present",
+      "samples": 20,
+      "label_counts": {
+       "L1": 0,
+       "L2": 18,
+       "fiber": 2
+      },
+      "prediction": "L2"
+     },
+     "absent": {
+      "node_id": "root.absent.present.absent",
+      "samples": 41,
+      "label_counts": {
+       "L1": 8,
+       "L2": 29,
+       "fiber": 4
+      },
+      "prediction": "L2"
+     }
+    },
+    "absent": {
+     "node_id": "root.absent.absent",
+     "samples": 73,
+     "label_counts": {
+      "L1": 26,
+      "L2": 46,
+      "fiber": 1
+     },
+     "prediction": "L2",
+     "token": "status:L2:RxLOS",
+     "present": {
+      "node_id": "root.absent.absent.present",
+      "samples": 5,
+      "label_counts": {
+       "L1": 0,
+       "L2": 4,
+       "fiber": 1
+      },
+      "prediction": "L2"
+     },
+     "absent": {
+      "node_id": "root.absent.absent.absent",
+      "samples": 68,
+      "label_counts": {
+       "L1": 26,
+       "L2": 42,
+       "fiber": 0
+      },
+      "prediction": "L2"
+     }
+    }
+   }
+  }
+ },
+ "graph": {
+  "version": "evidence-graph-v1:161:05c678031ebf4877",
+  "nodes": 161,
+  "dictionary": "feature-dictionary-v3",
+  "dictionary_hash": "6838b8e1de5dd1a2",
+  "label_dist": {
+   "L2": 100,
+   "L1": 49,
+   "fiber": 12
+  },
+  "test_sim_hist": {
+   "0.3": 1,
+   "0.4": 8,
+   "0.5": 9,
+   "0.6": 22,
+   "0.7": 22,
+   "0.8": 27,
+   "0.9": 10,
+   "1.0": 8
+  }
+ },
+ "token_families": {
+  "expert": 570,
+  "imbalance": 47,
+  "lane": 90,
+  "level": 443,
+  "serdes": 322,
+  "telemetry": 161,
+  "drop": 203,
+  "status": 156
+ },
+ "token_vocab": 97,
+ "baselines": {
+  "majority": {
+   "acc": 0.6261682242990654,
+   "answered": 107,
+   "per_class": {
+    "L1": {
+     "support": 32,
+     "hit": 0,
+     "pred_n": 0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "row": {
+      "L2": 32
+     }
+    },
+    "L2": {
+     "support": 67,
+     "hit": 67,
+     "pred_n": 107,
+     "recall": 1.0,
+     "precision": 0.6261682242990654,
+     "row": {
+      "L2": 67
+     }
+    },
+    "fiber": {
+     "support": 8,
+     "hit": 0,
+     "pred_n": 0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "row": {
+      "L2": 8
+     }
+    }
+   }
+  },
+  "graph_top1": {
+   "acc": 0.6074766355140186,
+   "answered": 107,
+   "per_class": {
+    "L1": {
+     "support": 32,
+     "hit": 14,
+     "pred_n": 33,
+     "recall": 0.4375,
+     "precision": 0.42424242424242425,
+     "row": {
+      "L2": 17,
+      "L1": 14,
+      "fiber": 1
+     }
+    },
+    "L2": {
+     "support": 67,
+     "hit": 48,
+     "pred_n": 68,
+     "recall": 0.7164179104477612,
+     "precision": 0.7058823529411765,
+     "row": {
+      "L2": 48,
+      "L1": 17,
+      "fiber": 2
+     }
+    },
+    "fiber": {
+     "support": 8,
+     "hit": 3,
+     "pred_n": 6,
+     "recall": 0.375,
+     "precision": 0.5,
+     "row": {
+      "fiber": 3,
+      "L2": 3,
+      "L1": 2
+     }
+    }
+   }
+  },
+  "sop": {
+   "acc": 0.6728971962616822,
+   "answered": 107,
+   "per_class": {
+    "L1": {
+     "support": 32,
+     "hit": 12,
+     "pred_n": 21,
+     "recall": 0.375,
+     "precision": 0.5714285714285714,
+     "row": {
+      "L2": 20,
+      "L1": 12
+     }
+    },
+    "L2": {
+     "support": 67,
+     "hit": 60,
+     "pred_n": 86,
+     "recall": 0.8955223880597015,
+     "precision": 0.6976744186046512,
+     "row": {
+      "L2": 60,
+      "L1": 7
+     }
+    },
+    "fiber": {
+     "support": 8,
+     "hit": 0,
+     "pred_n": 0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "row": {
+      "L2": 6,
+      "L1": 2
+     }
+    }
+   }
+  },
+  "expert": {
+   "acc": 0.7663551401869159,
+   "answered": 107,
+   "per_class": {
+    "L1": {
+     "support": 32,
+     "hit": 24,
+     "pred_n": 39,
+     "recall": 0.75,
+     "precision": 0.6153846153846154,
+     "row": {
+      "L2": 8,
+      "L1": 24
+     }
+    },
+    "L2": {
+     "support": 67,
+     "hit": 58,
+     "pred_n": 68,
+     "recall": 0.8656716417910447,
+     "precision": 0.8529411764705882,
+     "row": {
+      "L2": 58,
+      "L1": 9
+     }
+    },
+    "fiber": {
+     "support": 8,
+     "hit": 0,
+     "pred_n": 0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "row": {
+      "L2": 2,
+      "L1": 6
+     }
+    }
+   }
+  }
+ },
+ "reliability": {
+  "single:rxpower|L1->L2": {
+   "n": 18,
+   "ok": 14,
+   "acc": 0.7777777777777778,
+   "wilson_lb": 0.54785,
+   "verdict_prior": 0.6231,
+   "beats_prior": false,
+   "dist": {
+    "L2": 14,
+    "fiber": 1,
+    "L1": 3
+   },
+   "fiber_rate": 0.05555555555555555
+  },
+  "multi_metric|L1->L2": {
+   "n": 66,
+   "ok": 52,
+   "acc": 0.7878787878787878,
+   "wilson_lb": 0.674867,
+   "verdict_prior": 0.6231,
+   "beats_prior": true,
+   "dist": {
+    "L2": 52,
+    "L1": 9,
+    "fiber": 5
+   },
+   "fiber_rate": 0.07575757575757576
+  },
+  "single:serdes_snr|L2->L2": {
+   "n": 43,
+   "ok": 32,
+   "acc": 0.7441860465116279,
+   "wilson_lb": 0.597613,
+   "verdict_prior": 0.6231,
+   "beats_prior": false,
+   "dist": {
+    "L1": 10,
+    "L2": 32,
+    "fiber": 1
+   },
+   "fiber_rate": 0.023255813953488372
+  },
+  "expert:no_anomaly|-": {
+   "n": 37,
+   "ok": 28,
+   "acc": 0.7567567567567568,
+   "wilson_lb": 0.598824,
+   "verdict_prior": 0.0,
+   "beats_prior": false,
+   "dist": {
+    "L1": 9,
+    "L2": 28
+   },
+   "fiber_rate": 0.0
+  },
+  "single:media_snr|L1->L2": {
+   "n": 8,
+   "ok": 8,
+   "acc": 1.0,
+   "wilson_lb": 0.675584,
+   "verdict_prior": 0.6231,
+   "beats_prior": true,
+   "dist": {
+    "L2": 8
+   },
+   "fiber_rate": 0.0
+  },
+  "expert:port_status_gate|-": {
+   "n": 9,
+   "ok": 5,
+   "acc": 0.5555555555555556,
+   "wilson_lb": 0.266647,
+   "verdict_prior": 0.0,
+   "beats_prior": false,
+   "dist": {
+    "L2": 6,
+    "fiber": 2,
+    "L1": 1
+   },
+   "fiber_rate": 0.2222222222222222
+  },
+  "multi_metric|L2->L1": {
+   "n": 29,
+   "ok": 15,
+   "acc": 0.5172413793103449,
+   "wilson_lb": 0.344307,
+   "verdict_prior": 0.3022,
+   "beats_prior": true,
+   "dist": {
+    "L1": 15,
+    "L2": 7,
+    "fiber": 7
+   },
+   "fiber_rate": 0.2413793103448276
+  },
+  "single:rxpower|L2->L1": {
+   "n": 12,
+   "ok": 9,
+   "acc": 0.75,
+   "wilson_lb": 0.46769,
+   "verdict_prior": 0.3022,
+   "beats_prior": true,
+   "dist": {
+    "L1": 9,
+    "fiber": 2,
+    "L2": 1
+   },
+   "fiber_rate": 0.16666666666666666
+  },
+  "single:serdes_snr|L1->L1": {
+   "n": 24,
+   "ok": 12,
+   "acc": 0.5,
+   "wilson_lb": 0.314271,
+   "verdict_prior": 0.3022,
+   "beats_prior": true,
+   "dist": {
+    "L2": 10,
+    "L1": 12,
+    "fiber": 2
+   },
+   "fiber_rate": 0.08333333333333333
+  },
+  "single:media_snr|L2->L1": {
+   "n": 8,
+   "ok": 6,
+   "acc": 0.75,
+   "wilson_lb": 0.40927,
+   "verdict_prior": 0.3022,
+   "beats_prior": true,
+   "dist": {
+    "L1": 6,
+    "L2": 2
+   },
+   "fiber_rate": 0.0
+  },
+  "txpower_lane_down|L2->L2": {
+   "n": 4,
+   "ok": 3,
+   "acc": 0.75,
+   "wilson_lb": 0.300636,
+   "verdict_prior": 0.6231,
+   "beats_prior": false,
+   "dist": {
+    "L2": 3,
+    "L1": 1
+   },
+   "fiber_rate": 0.0
+  },
+  "single:host_snr|L2->L2": {
+   "n": 5,
+   "ok": 4,
+   "acc": 0.8,
+   "wilson_lb": 0.375528,
+   "verdict_prior": 0.6231,
+   "beats_prior": false,
+   "dist": {
+    "L2": 4,
+    "L1": 1
+   },
+   "fiber_rate": 0.0
+  },
+  "txpower_lane_down|L1->L1": {
+   "n": 2,
+   "ok": 2,
+   "acc": 1.0,
+   "wilson_lb": 0.342372,
+   "verdict_prior": 0.3022,
+   "beats_prior": true,
+   "dist": {
+    "L1": 2
+   },
+   "fiber_rate": 0.0
+  },
+  "single:host_snr|L1->L1": {
+   "n": 2,
+   "ok": 2,
+   "acc": 1.0,
+   "wilson_lb": 0.342372,
+   "verdict_prior": 0.3022,
+   "beats_prior": true,
+   "dist": {
+    "L1": 2
+   },
+   "fiber_rate": 0.0
+  },
+  "single:txpower|L1->L1": {
+   "n": 1,
+   "ok": 1,
+   "acc": 1.0,
+   "wilson_lb": 0.206543,
+   "verdict_prior": 0.3022,
+   "beats_prior": false,
+   "dist": {
+    "L1": 1
+   },
+   "fiber_rate": 0.0
+  }
+ }
+}

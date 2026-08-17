@@ -35,6 +35,21 @@ def test_target_label_cannot_change_inference() -> None:
     assert first["KG_RCA"]["scores"] == second["KG_RCA"]["scores"]
 
 
+def test_pipeline_close_releases_and_forgets_cached_reasoners() -> None:
+    class DummyReasoner:
+        closed = False
+
+        def close(self) -> None:
+            self.closed = True
+
+    pipeline = RCAPipeline()
+    reasoner = DummyReasoner()
+    pipeline._reasoners[object()] = reasoner
+    pipeline.close()
+    assert reasoner.closed is True
+    assert pipeline._reasoners == {}
+
+
 def test_fusion_marks_close_conflict_for_review() -> None:
     case = CaseEvidence("new", "", [], 5, 10)
     first = {"prediction": "L1", "confidence": 0.4, "scores": {"L1": 0.45, "L2": 0.4, "fiber": 0.15}}

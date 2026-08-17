@@ -1,0 +1,136 @@
+{
+  "alarm_ip_interface": "L2_ENDPOINT--200G_PORT",
+  "alarm_time": "2024-03-21 22:02:50",
+  "region": "region_d6b5f7f7e266",
+  "alarm_name": "DCN-AI超平面-接口降lane-网络侧",
+  "label": "L2",
+  "bias": {
+    "L1": {
+      "0": 7.42,
+      "1": 7.42,
+      "2": 7.42,
+      "3": 7.42
+    },
+    "L2": {
+      "0": 7.73,
+      "1": 7.72,
+      "2": 7.73,
+      "3": 7.72
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": -40,
+      "1": 1.25,
+      "2": 1.68,
+      "3": 1.46
+    },
+    "L2": {
+      "0": 0.46,
+      "1": 0.49,
+      "2": 0.05,
+      "3": 0.26
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": -0.01,
+      "1": 0.31,
+      "2": -0.13,
+      "3": 0.07
+    },
+    "L2": {
+      "0": 1.05,
+      "1": 0.86,
+      "2": 0.82,
+      "3": 1.21
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 0,
+      "1": 25.06,
+      "2": 25.06,
+      "3": 25.64
+    },
+    "L2": {
+      "0": 26.31,
+      "1": 26.31,
+      "2": 25.96,
+      "3": 26.31
+    }
+  },
+  "host_snr": {
+    "L1": null,
+    "L2": null
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 0,
+      "1": 684199,
+      "2": 752657,
+      "3": 704884
+    },
+    "L2": {
+      "0": 748032,
+      "1": 799638,
+      "2": 710436,
+      "3": 785017
+    }
+  },
+  "link_location": "location_9939c7fc2bc4",
+  "link_side_ip_interface_map": {
+    "L1": "L1_ENDPOINT--400G_PORT",
+    "L2": "L2_ENDPOINT--200G_PORT"
+  },
+  "vendor": {
+    "L1": "vendor_cdb6ae252fcb",
+    "L2": "vendor_a80157e28228"
+  },
+  "vendor_sn": {
+    "L1": "serial_9fcc98a8228a",
+    "L2": "serial_7c5c4e6a7cc9"
+  },
+  "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 44.58,
+    "L2": 54.61
+  },
+  "Voltage": {
+    "L1": 3.29,
+    "L2": 3.28
+  },
+  "Lane number": {
+    "L1": 2,
+    "L2": 2
+  },
+  "port_status": {
+    "L1": 1,
+    "L2": 1
+  },
+  "task_id": "task_8c6fc9fe79f1",
+  "case_id": "case_000151",
+  "_meta": {
+    "schema_version": "2.0",
+    "side_definition": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "endpoint_values_swapped": true
+  }
+}

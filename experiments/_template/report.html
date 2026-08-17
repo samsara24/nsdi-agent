@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>RCA Loop Experiment Report</title>
+</head>
+<body>
+  <h1>RCA Loop Experiment Report</h1>
+
+  <section id="flow">
+    <h2>主流程图与本轮调整</h2>
+    <pre class="mermaid">
+flowchart TB
+  n1[N1 EvidencePack] --> n2[N2 Features]
+  n2 --> n3[N3 EvidenceGraph Match]
+  n3 --> n4{N4 Route}
+  n4 -->|exact| n5a[N5a Reuse history chain]
+  n4 -->|partial| n5b[N5b Physics key-evidence + LLM]
+  n4 -->|cold| n5c[N5c Expert SOP constrains LLM]
+  n5a --> n6[N6 Confidence gate]
+  n5b --> n6
+  n5c --> n6
+  n6 -->|ok| n7[N7 Report]
+  n6 -->|low| human[Human review]
+  n8skip[N8 Feedback deferred]
+    </pre>
+    <p>本轮调整点：填写 evidence_graph / threshold_or_routing / llm_prompt / bug_fix 之一，并说明为什么来自 bad case 分析。</p>
+  </section>
+
+  <section id="knowledge">
+    <h2>当前知识状态</h2>
+    <ul>
+      <li>证据图：节点、边、匹配方式、历史链路摘要。</li>
+      <li>物理约束：纯物理约束、量测契约、统计先验分层。</li>
+      <li>SOP：专家 SOP 是否变化；learned SOP / 数值树是否仅作 advisory。</li>
+      <li>Prompt：版本、hash、本轮是否变更。</li>
+      <li>N8：必须记录 feedback_update=false。</li>
+    </ul>
+  </section>
+
+  <section id="correct">
+    <h2>正确 Case 归纳</h2>
+    <p>按 N5a / N5b / N5c / N6 分支统计，说明哪个步骤做得好，例如历史链路相近、关键证据判断正确、SOP 步骤有效。</p>
+  </section>
+
+  <section id="bad-cases">
+    <h2>Bad Case 逐条分析</h2>
+    <p>每条 bad case 必须记录：失败步骤、错因类别、是否可修、下一步动作、是否疑似 label 问题、是否 irreducible。</p>
+  </section>
+
+  <section id="next">
+    <h2>下一轮关注范围</h2>
+    <p>只列可修复 bad case 和对应改动类别；irreducible case 保留但不再作为优化目标。</p>
+  </section>
+</body>
+</html>

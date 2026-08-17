@@ -1,0 +1,91 @@
+\section{Design}\label{sec:design}
+
+
+% \subsection{Evidence Graph Construction}
+
+% \noindent \textbf{Raw Telemetry Canonicalization}
+% Raw telemetry is not reasoning-ready: the quantity most diagnostic of where a fault sits is unreported, and production data is routinely incomplete or corrupt. This stage constructs the former and rules on the latter before any anomaly is judged.
+
+% Directional-loss metric with a propagation constraint. Pairing a link’s two endpoints via the interface map, OptSage derives per lane the transmit-minus-receive power difference. This carries a physical constraint by construction: a defect on the channel, such as the fiber or a connector, inflates it, whereas an endpoint-local defect does not, so the direction of propagation becomes an observable and every inference over it is direction-aware. It is formed per lane and per direction.
+
+% Elimination of wholly-missing and out-of-range records. OptSage discards, never imputes, two invalid classes. A record whose entire field group is absent carries no signal, and an imputed value would fabricate evidence that reasoning might later act on. A record physically out of range—a power beyond the rated envelope, a timestamp outside the window—would inject a spurious anomaly. Under a diagnostic objective, discarding is safe: a fabricated reading can cause a false localization and a needless replacement, whereas a dropped one only lowers coverage.
+
+% Confidence rebalancing under partial field loss. When only some fields are missing, OptSage keeps the record but, per root cause, records the coverage of the fields its discrimination needs and attenuates that cause’s assignable confidence in proportion to what is missing, so a verdict from fully observed evidence outranks an equally apparent one drawn from partial evidence.
+
+% This stage outputs the cleaned per-lane metrics, including the directional loss, and the per-root-cause coverage record that later drives active probing.
+
+% \noindent \textbf{Anomaly Signal Extraction}
+% Not all telemetry needs anomaly judgment, and what does splits into two kinds—continuous transceiver metrics and discrete port logs—each needing its own extractor. This stage draws that boundary and emits one uniform result: observations.
+
+% Directly admitted fields. Transceiver hardware attributes such as model, wavelength, and rated power are static context, and port state variables such as TxLOS, RxLOS, TxLOL, and RxLOL are anomalies by definition; both are admitted as observations without extraction. Extraction is reserved for signals whose anomaly status is not self-evident.
+
+% Anomaly extraction over performance and directional metrics. The transceiver performance metrics and the derived directional loss are judged uniformly under two criteria. Marked degradation flags a value that reaches an absolute physical limit or drifts from its own label-free temporal baseline. Inter-channel divergence flags a lane that departs from its structurally identical siblings while still within limits; this is why normalization keeps each lane separate rather than collapsing a module’s lanes into an aggregate. Each resulting observation retains its magnitude, direction, and firing criterion, since the two criteria carry different evidential force.
+
+% Feature extraction over port syslog. The pre-alarm syslog is unstructured text whose signal is temporal, not lexical, so OptSage extracts three features as observations over the six-hour window with both endpoints on a common time axis: the flap count, separating an intermittent fault from a persistent one; the endpoint symmetry, where synchronized bidirectional flaps implicate the shared fiber and one-sided flaps implicate that endpoint; and the terminal state, separating a hard failure from a marginal one.
+
+% This stage outputs a set of observations—metric anomalies, admitted state variables, and syslog features—each carrying its provenance and, where applicable, its direction and the segment it is attributable to.
+
+% \noindent \textbf{Evidence Graph Assembly}
+% The observations are heterogeneous in origin and must become one structure over which reasoning operates without privileging the statistical or the physical view. OptSage binds them into a directional graph whose types come from link physics.
+
+% Entity types. Root-cause entities are the localization targets—the transmit module, the fiber, and the receive module—plus a non-optical entity for the case where all optical evidence is normal yet a symptom persists. Case entities identify an incident and persist as memory. Signal-observation entities are the extracted observations, each carrying its magnitude, direction, and firing criterion. Pattern entities hold the recurring root-cause-conditioned sub-graphs that consolidation produces and that symbolic mining consumes. Normal observations are retained as negative evidence, since a normal transmit power excludes the transmitter and uniformly normal optics signals the non-optical cause.
+
+% Relation types. The attributable-to relation links each observation to the segment it could physically originate from—directional loss to the fiber, low transmit power with divergent bias to the transmit module, a signal-quality collapse under intact power to the receive module, a synchronized flap to the shared fiber—turning localization into a graph traversal. The belongs-to relation binds observations to their case, forming the sub-graph that pattern mining operates on. The precedes relation orders the two endpoints’ syslog observations in time, separating a root-cause event from its downstream consequences.
+
+% The module outputs the assembled evidence graph—observations attributed to segments, ordered in time, and annotated with the coverage record—which is the only interface exposed to reasoning; once a case is resolved, the same graph is written back as a new case and pattern.
+
+% \subsection{Multi-Agent Neuro-Symbolic Reasoning}
+
+% Given the evidence graph, this module localizes the fault to one of the link’s three segments—the near endpoint, the far endpoint, or the fiber. A neural layer and a symbolic layer independently propose candidates over the same graph, and a coordination agent reduces their two candidate sets to one verdict. The three exchange a common currency: a candidate, defined as a segment paired with the evidence chain supporting it. The symbolic layer emits candidates it can match against mined rules and abstains otherwise; the neural layer emits candidates for the rule-free cases; the coordination agent consumes both sets and either corroborates a concurrence or arbitrates a conflict, outputting the single verdict.
+
+% \noindent \textbf{Neural-Layer Reasoning}
+% The neural layer localizes faults that match no mined rule, where only an LLM’s physical priors apply. Its risk is that a fluent LLM, lacking ground truth under label scarcity, states an impossible cause as confidently as a valid one; we contain this by splitting generation from verification across two agents whose exchange produces the layer’s output—a set of physically admissible candidates.
+
+% Hypothesis-and-causal-chain agent. Its input is the graph’s observations, each stamped with magnitude, direction, firing criterion, and its attributable segment. Confining the LLM to these graph primitives, rather than free text, is what lets it reach unseen faults without inventing entities. For each candidate segment it produces an explicit causal chain to every observation that segment must explain, for instance from a degrading transmitter through elevated bias and depressed transmit power to reduced downstream receive power. Its deliverable is a chain, not a label, because only the intermediate steps are checkable.
+
+% Real-time verification agent. It exists separately because a generator cannot adversarially check its own output, and isolating it localizes explainability, since every rejection names the constraint it violated. It tests each chain against two constraints: directional admissibility, requiring every cause-to-symptom step to follow a real directed channel so that a receive-side cause cannot explain a transmit-side symptom; and representational fidelity, requiring the chain to predict exactly the observations present and none absent. Its output is not a pass or fail but the specific offending step.
+
+% Closed-loop refinement. The offending step drives the generator to repair or drop the candidate, iterating until every survivor is admissible; this recovers candidates that a one-shot filter would discard for a single bad step. The layer outputs a set of admissible candidates, each with a verified causal chain.
+
+% \noindent \textbf{Symbolic-Layer Reasoning}
+% The symbolic layer recognizes familiar faults by their recurring signatures, cast as per-root-cause frequent-itemset mining over resolved cases in memory. One procedure is insufficient, because a single cause presents several non-overlapping signatures and its evidence spans incommensurable views—magnitudes, cross-lane divergence, temporal shapes—that no single miner treats without flattening them. The layer therefore distributes mining across perspective agents and consolidates with an aggregator.
+
+% Perspective-specialized rule-extraction agents. One miner per view preserves that view’s structure and makes the layer extensible by addition rather than rewrite. Treating a case’s observations as an itemset, each mines the combinations that co-occur with a cause above a support threshold: one over magnitude-threshold items, one over inter-channel divergence items, one over temporal-event items from the syslog features, and one over cross-perspective co-occurrence, the last being the only miner that captures a signature spanning views. They run in parallel, each over its own view.
+
+% Per-root-cause rule-aggregation agent. The miners are myopic and cannot see mutual redundancy, so a global-view agent consolidates their output per cause into a minimal cover of mutually non-overlapping rules, merging duplicates and dropping subsumed combinations, so a cause’s several rules capture genuinely distinct manifestations. Combinations that miners report in conflict for one cause are not resolved here but handed to coordination.
+
+% The layer outputs, at inference, a candidate for every cause whose one matched rule fires, scored by that rule’s historical frequency and its coverage of present observations; if nothing matches, the layer abstains and the case rests on the neural candidates alone.
+
+% \noindent \textbf{Coordinated Conflict Arbitration}
+% The coordination agent consumes the neural and symbolic candidate sets and outputs OptSage’s single verdict. It is independent because a layer that both proposes and ratifies has no check, and it branches on whether the two sets concur, since concurrence and conflict need opposite handling.
+
+% Evidence completion under concurrence. When both layers name the same segment, agreement is corroborated, not accepted, since both may lean on the same missing evidence. The agent overlays the matched rule onto the verified chain—each rule observation must sit at an admissible chain position, and each chain step must be rule-consistent—then, consulting the coverage record, checks whether any observation the segment predicts is missing and, if so, issues a targeted probe such as a longer-horizon signal history, an on-demand loopback or bit-error test, or the peer endpoint’s reading, and confirms it corroborates the cause. The output is a fully evidenced verdict with raised confidence.
+
+% Constraint-based arbitration under conflict. When the layers name different segments, or one commits while the other abstains, the agent arbitrates by physics, not confidence, so no fluent hypothesis can outrank a grounded rule-match or the reverse. It re-tests every candidate against the admissibility constraints and discards violators outright. If one admissible candidate remains, it is the verdict; if several remain, typically fiber attenuation versus a receive-side optical-path defect, it issues the single most discriminating probe, injects the result, and re-invokes both layers until one segment is confirmed or no discriminating probe remains. The output is the single admissible, most evidence-complete segment, with its consolidated evidence chain and coverage-adjusted confidence.
+
+
+% \subsection{Explainable Attribution and Knowledge Evolution}
+% This module receives the verdict—a segment, its consolidated evidence chain, and a coverage-adjusted confidence—and makes it actionable and self-improving: it renders the verdict as an auditable report, and folds the confirmed outcome back into memory as patterns and counter-examples that the two reasoning layers reuse, closing OptSage’s outer loop.
+
+% \noindent\textbf{Traceable Evidence Chain}
+% A bare verdict cannot justify dispatching a technician or authorizing a hardware replacement; an operator must see, and be able to check, what substantiates it. The constrained LLM agent addresses this, and it is deliberately confined to an organizing role.
+
+% Non-revising organization of the verdict. The agent does not re-decide the root cause; it consumes the arbitrated verdict and its surviving causal chain from §5 and assembles them into a fixed-schema evidence chain. This confinement is a safeguard: the physically constrained reasoners decide, and the LLM only renders, so the explanation cannot drift from the verdict it explains.
+
+% Composition of the evidence chain. The chain states the concluded component, the directional causal path from that component to each observed symptom, the supporting observations with their firing criteria, an explicit account of any counter-evidence and any expected-but-missing evidence carried from §4.1, and the coverage-adjusted confidence. Every claim in the chain is thus traceable to a specific observation, a directed channel, or a coverage gap, and none is asserted without a referent.
+
+% Template matching and case retrieval. The agent matches the chain to an expert diagnostic template for the concluded fault mode and retrieves similar historical cases from memory, attaching the remediation that resolved them. The emitted report therefore places the current verdict in the context of prior, confirmed experience, which is what lets an operator both trust the diagnosis and act on it directly.
+
+% \noindent\textbf{Expert Knowledge Consolidation}
+% If every incident were solved from scratch, the neural reasoner would repeatedly re-derive the same novel faults and the symbolic reasoner’s reliable coverage would never grow. OptSage closes this gap by consolidating each confirmed case into reusable memory.
+
+% Consolidation upon confirmation. After a fault is handled and its cause confirmed by the work order and the post-repair feedback, OptSage extracts the attributed sub-graph that supported the verdict and, upon expert review, admits it as a new pattern entity in the shared memory available to all tier agents.
+
+% Migration from neural to symbolic reasoning. Consequently a mode first localized by neural reasoning becomes, once confirmed, a consolidated pattern that the symbolic reasoner matches directly on its next occurrence—faster, more reliably, and without invoking the LLM. Over time the burden shifts from generalization to recognition, so the fleet’s reliable, low-cost coverage expands with every incident resolved anywhere in the fabric, and the same fault is never expensively re-derived twice.
+
+% \noindent\textbf{Counter-Example Assimilation}
+% An open, evolving fabric will produce mistaken verdicts, and an agent that cannot learn from a mistake will repeat it. OptSage therefore treats a refuted verdict as first-class knowledge rather than discarding it.
+
+% Evidence chian refuted associations. When a verdict is later found incorrect—by a repair that does not clear the fault, or by a subsequently identified true cause—OptSage records the refuted observation-to-cause association, together with the constraint or context under which it failed, as a counter-example in memory.
+
+% Injecting counter-examples as negative constraints. The counter-example is added as a negative constraint to the self-verification, so an LLM chain reproducing the refuted association is rejected before it can become a verdict, and as an exclusion in the pattern memory and expert templates, so the discredited pattern is no longer matched. The same faulty inference thus cannot recur, and localization accuracy improves monotonically as accumulated experience prunes the reasoners’ admissible hypothesis space.

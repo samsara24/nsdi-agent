@@ -1,0 +1,922 @@
+{
+  "study_question": "在相同证据、模型和解码参数下，当前物理规则是否提高大模型 RCA 判断质量？",
+  "arms": {
+    "evidence_only": {
+      "overall": {
+        "case_count": 85,
+        "parsed": 85,
+        "schema_valid_rate": 1.0,
+        "answered": 19,
+        "answer_rate": 0.223529,
+        "abstained_or_invalid": 66,
+        "correct": 7,
+        "accuracy_all_cases": 0.082353,
+        "precision_when_answered": 0.368421,
+        "precision_wilson_95": [
+          0.191493,
+          0.589608
+        ],
+        "rule_compliant": 77,
+        "rule_compliance_rate": 0.905882,
+        "violation_counts": {
+          "unsupported_step": 9
+        },
+        "class_metrics": {
+          "L1": {
+            "support": 24,
+            "predicted": 9,
+            "correct": 2,
+            "precision": 0.222222,
+            "recall": 0.083333,
+            "f1": 0.121212,
+            "recall_wilson_95": [
+              0.023158,
+              0.258492
+            ]
+          },
+          "L2": {
+            "support": 55,
+            "predicted": 10,
+            "correct": 5,
+            "precision": 0.5,
+            "recall": 0.090909,
+            "f1": 0.153846,
+            "recall_wilson_95": [
+              0.039458,
+              0.195777
+            ]
+          },
+          "fiber": {
+            "support": 6,
+            "predicted": 0,
+            "correct": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "recall_wilson_95": [
+              0.0,
+              0.390343
+            ]
+          }
+        }
+      },
+      "by_route": {
+        "N5a": {
+          "case_count": 20,
+          "parsed": 20,
+          "schema_valid_rate": 1.0,
+          "answered": 4,
+          "answer_rate": 0.2,
+          "abstained_or_invalid": 16,
+          "correct": 2,
+          "accuracy_all_cases": 0.1,
+          "precision_when_answered": 0.5,
+          "precision_wilson_95": [
+            0.150036,
+            0.849964
+          ],
+          "rule_compliant": 19,
+          "rule_compliance_rate": 0.95,
+          "violation_counts": {
+            "unsupported_step": 1
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 5,
+              "predicted": 1,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.434491
+              ]
+            },
+            "L2": {
+              "support": 14,
+              "predicted": 3,
+              "correct": 2,
+              "precision": 0.666667,
+              "recall": 0.142857,
+              "f1": 0.235294,
+              "recall_wilson_95": [
+                0.040093,
+                0.399419
+              ]
+            },
+            "fiber": {
+              "support": 1,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.793457
+              ]
+            }
+          }
+        },
+        "N5b": {
+          "case_count": 17,
+          "parsed": 17,
+          "schema_valid_rate": 1.0,
+          "answered": 6,
+          "answer_rate": 0.352941,
+          "abstained_or_invalid": 11,
+          "correct": 1,
+          "accuracy_all_cases": 0.058824,
+          "precision_when_answered": 0.166667,
+          "precision_wilson_95": [
+            0.030053,
+            0.563509
+          ],
+          "rule_compliant": 15,
+          "rule_compliance_rate": 0.882353,
+          "violation_counts": {
+            "unsupported_step": 3
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 3,
+              "predicted": 5,
+              "correct": 1,
+              "precision": 0.2,
+              "recall": 0.333333,
+              "f1": 0.25,
+              "recall_wilson_95": [
+                0.06149,
+                0.792345
+              ]
+            },
+            "L2": {
+              "support": 13,
+              "predicted": 1,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.228102
+              ]
+            },
+            "fiber": {
+              "support": 1,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.793457
+              ]
+            }
+          }
+        },
+        "N5c": {
+          "case_count": 46,
+          "parsed": 46,
+          "schema_valid_rate": 1.0,
+          "answered": 9,
+          "answer_rate": 0.195652,
+          "abstained_or_invalid": 37,
+          "correct": 4,
+          "accuracy_all_cases": 0.086957,
+          "precision_when_answered": 0.444444,
+          "precision_wilson_95": [
+            0.188775,
+            0.733353
+          ],
+          "rule_compliant": 41,
+          "rule_compliance_rate": 0.891304,
+          "violation_counts": {
+            "unsupported_step": 5
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 16,
+              "predicted": 3,
+              "correct": 1,
+              "precision": 0.333333,
+              "recall": 0.0625,
+              "f1": 0.105263,
+              "recall_wilson_95": [
+                0.011119,
+                0.283293
+              ]
+            },
+            "L2": {
+              "support": 26,
+              "predicted": 6,
+              "correct": 3,
+              "precision": 0.5,
+              "recall": 0.115385,
+              "f1": 0.1875,
+              "recall_wilson_95": [
+                0.040032,
+                0.289763
+              ]
+            },
+            "fiber": {
+              "support": 4,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.4899
+              ]
+            }
+          }
+        },
+        "N6": {
+          "case_count": 2,
+          "parsed": 2,
+          "schema_valid_rate": 1.0,
+          "answered": 0,
+          "answer_rate": 0.0,
+          "abstained_or_invalid": 2,
+          "correct": 0,
+          "accuracy_all_cases": 0.0,
+          "precision_when_answered": null,
+          "precision_wilson_95": [
+            0.0,
+            0.0
+          ],
+          "rule_compliant": 2,
+          "rule_compliance_rate": 1.0,
+          "violation_counts": {},
+          "class_metrics": {
+            "L1": {
+              "support": 0,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.0
+              ]
+            },
+            "L2": {
+              "support": 2,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.657628
+              ]
+            },
+            "fiber": {
+              "support": 0,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "rules_prompt": {
+      "overall": {
+        "case_count": 85,
+        "parsed": 85,
+        "schema_valid_rate": 1.0,
+        "answered": 15,
+        "answer_rate": 0.176471,
+        "abstained_or_invalid": 70,
+        "correct": 8,
+        "accuracy_all_cases": 0.094118,
+        "precision_when_answered": 0.533333,
+        "precision_wilson_95": [
+          0.301166,
+          0.751908
+        ],
+        "rule_compliant": 70,
+        "rule_compliance_rate": 0.823529,
+        "violation_counts": {
+          "fabricated_constraint": 4,
+          "fabricated_evidence": 5,
+          "unsupported_step": 11
+        },
+        "class_metrics": {
+          "L1": {
+            "support": 24,
+            "predicted": 3,
+            "correct": 1,
+            "precision": 0.333333,
+            "recall": 0.041667,
+            "f1": 0.074074,
+            "recall_wilson_95": [
+              0.007393,
+              0.202422
+            ]
+          },
+          "L2": {
+            "support": 55,
+            "predicted": 11,
+            "correct": 7,
+            "precision": 0.636364,
+            "recall": 0.127273,
+            "f1": 0.212121,
+            "recall_wilson_95": [
+              0.063041,
+              0.240173
+            ]
+          },
+          "fiber": {
+            "support": 6,
+            "predicted": 1,
+            "correct": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "recall_wilson_95": [
+              0.0,
+              0.390343
+            ]
+          }
+        }
+      },
+      "by_route": {
+        "N5a": {
+          "case_count": 20,
+          "parsed": 20,
+          "schema_valid_rate": 1.0,
+          "answered": 3,
+          "answer_rate": 0.15,
+          "abstained_or_invalid": 17,
+          "correct": 2,
+          "accuracy_all_cases": 0.1,
+          "precision_when_answered": 0.666667,
+          "precision_wilson_95": [
+            0.207655,
+            0.93851
+          ],
+          "rule_compliant": 17,
+          "rule_compliance_rate": 0.85,
+          "violation_counts": {
+            "fabricated_evidence": 4,
+            "unsupported_step": 1
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 5,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.434491
+              ]
+            },
+            "L2": {
+              "support": 14,
+              "predicted": 2,
+              "correct": 2,
+              "precision": 1.0,
+              "recall": 0.142857,
+              "f1": 0.25,
+              "recall_wilson_95": [
+                0.040093,
+                0.399419
+              ]
+            },
+            "fiber": {
+              "support": 1,
+              "predicted": 1,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.793457
+              ]
+            }
+          }
+        },
+        "N5b": {
+          "case_count": 17,
+          "parsed": 17,
+          "schema_valid_rate": 1.0,
+          "answered": 2,
+          "answer_rate": 0.117647,
+          "abstained_or_invalid": 15,
+          "correct": 1,
+          "accuracy_all_cases": 0.058824,
+          "precision_when_answered": 0.5,
+          "precision_wilson_95": [
+            0.094529,
+            0.905471
+          ],
+          "rule_compliant": 16,
+          "rule_compliance_rate": 0.941176,
+          "violation_counts": {
+            "fabricated_constraint": 3
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 3,
+              "predicted": 1,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.561506
+              ]
+            },
+            "L2": {
+              "support": 13,
+              "predicted": 1,
+              "correct": 1,
+              "precision": 1.0,
+              "recall": 0.076923,
+              "f1": 0.142857,
+              "recall_wilson_95": [
+                0.01371,
+                0.333145
+              ]
+            },
+            "fiber": {
+              "support": 1,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.793457
+              ]
+            }
+          }
+        },
+        "N5c": {
+          "case_count": 46,
+          "parsed": 46,
+          "schema_valid_rate": 1.0,
+          "answered": 10,
+          "answer_rate": 0.217391,
+          "abstained_or_invalid": 36,
+          "correct": 5,
+          "accuracy_all_cases": 0.108696,
+          "precision_when_answered": 0.5,
+          "precision_wilson_95": [
+            0.23659,
+            0.76341
+          ],
+          "rule_compliant": 35,
+          "rule_compliance_rate": 0.76087,
+          "violation_counts": {
+            "fabricated_constraint": 1,
+            "fabricated_evidence": 1,
+            "unsupported_step": 10
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 16,
+              "predicted": 2,
+              "correct": 1,
+              "precision": 0.5,
+              "recall": 0.0625,
+              "f1": 0.111111,
+              "recall_wilson_95": [
+                0.011119,
+                0.283293
+              ]
+            },
+            "L2": {
+              "support": 26,
+              "predicted": 8,
+              "correct": 4,
+              "precision": 0.5,
+              "recall": 0.153846,
+              "f1": 0.235294,
+              "recall_wilson_95": [
+                0.061499,
+                0.335316
+              ]
+            },
+            "fiber": {
+              "support": 4,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.4899
+              ]
+            }
+          }
+        },
+        "N6": {
+          "case_count": 2,
+          "parsed": 2,
+          "schema_valid_rate": 1.0,
+          "answered": 0,
+          "answer_rate": 0.0,
+          "abstained_or_invalid": 2,
+          "correct": 0,
+          "accuracy_all_cases": 0.0,
+          "precision_when_answered": null,
+          "precision_wilson_95": [
+            0.0,
+            0.0
+          ],
+          "rule_compliant": 2,
+          "rule_compliance_rate": 1.0,
+          "violation_counts": {},
+          "class_metrics": {
+            "L1": {
+              "support": 0,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.0
+              ]
+            },
+            "L2": {
+              "support": 2,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.657628
+              ]
+            },
+            "fiber": {
+              "support": 0,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "rules_prompt_checker": {
+      "overall": {
+        "case_count": 85,
+        "parsed": 77,
+        "schema_valid_rate": 0.905882,
+        "answered": 14,
+        "answer_rate": 0.164706,
+        "abstained_or_invalid": 71,
+        "correct": 7,
+        "accuracy_all_cases": 0.082353,
+        "precision_when_answered": 0.5,
+        "precision_wilson_95": [
+          0.267989,
+          0.732011
+        ],
+        "rule_compliant": 77,
+        "rule_compliance_rate": 0.905882,
+        "violation_counts": {
+          "fabricated_constraint": 4,
+          "fabricated_evidence": 2,
+          "unsupported_step": 4
+        },
+        "class_metrics": {
+          "L1": {
+            "support": 24,
+            "predicted": 3,
+            "correct": 1,
+            "precision": 0.333333,
+            "recall": 0.041667,
+            "f1": 0.074074,
+            "recall_wilson_95": [
+              0.007393,
+              0.202422
+            ]
+          },
+          "L2": {
+            "support": 55,
+            "predicted": 10,
+            "correct": 6,
+            "precision": 0.6,
+            "recall": 0.109091,
+            "f1": 0.184615,
+            "recall_wilson_95": [
+              0.050967,
+              0.218258
+            ]
+          },
+          "fiber": {
+            "support": 6,
+            "predicted": 1,
+            "correct": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "recall_wilson_95": [
+              0.0,
+              0.390343
+            ]
+          }
+        }
+      },
+      "by_route": {
+        "N5a": {
+          "case_count": 20,
+          "parsed": 19,
+          "schema_valid_rate": 0.95,
+          "answered": 2,
+          "answer_rate": 0.1,
+          "abstained_or_invalid": 18,
+          "correct": 2,
+          "accuracy_all_cases": 0.1,
+          "precision_when_answered": 1.0,
+          "precision_wilson_95": [
+            0.342372,
+            1.0
+          ],
+          "rule_compliant": 19,
+          "rule_compliance_rate": 0.95,
+          "violation_counts": {
+            "fabricated_evidence": 1
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 5,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.434491
+              ]
+            },
+            "L2": {
+              "support": 14,
+              "predicted": 2,
+              "correct": 2,
+              "precision": 1.0,
+              "recall": 0.142857,
+              "f1": 0.25,
+              "recall_wilson_95": [
+                0.040093,
+                0.399419
+              ]
+            },
+            "fiber": {
+              "support": 1,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.793457
+              ]
+            }
+          }
+        },
+        "N5b": {
+          "case_count": 17,
+          "parsed": 16,
+          "schema_valid_rate": 0.941176,
+          "answered": 1,
+          "answer_rate": 0.058824,
+          "abstained_or_invalid": 16,
+          "correct": 0,
+          "accuracy_all_cases": 0.0,
+          "precision_when_answered": 0.0,
+          "precision_wilson_95": [
+            0.0,
+            0.793457
+          ],
+          "rule_compliant": 16,
+          "rule_compliance_rate": 0.941176,
+          "violation_counts": {
+            "fabricated_constraint": 3
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 3,
+              "predicted": 1,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.561506
+              ]
+            },
+            "L2": {
+              "support": 13,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.228102
+              ]
+            },
+            "fiber": {
+              "support": 1,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.793457
+              ]
+            }
+          }
+        },
+        "N5c": {
+          "case_count": 46,
+          "parsed": 40,
+          "schema_valid_rate": 0.869565,
+          "answered": 11,
+          "answer_rate": 0.23913,
+          "abstained_or_invalid": 35,
+          "correct": 5,
+          "accuracy_all_cases": 0.108696,
+          "precision_when_answered": 0.454545,
+          "precision_wilson_95": [
+            0.21271,
+            0.719912
+          ],
+          "rule_compliant": 40,
+          "rule_compliance_rate": 0.869565,
+          "violation_counts": {
+            "fabricated_constraint": 1,
+            "fabricated_evidence": 1,
+            "unsupported_step": 4
+          },
+          "class_metrics": {
+            "L1": {
+              "support": 16,
+              "predicted": 2,
+              "correct": 1,
+              "precision": 0.5,
+              "recall": 0.0625,
+              "f1": 0.111111,
+              "recall_wilson_95": [
+                0.011119,
+                0.283293
+              ]
+            },
+            "L2": {
+              "support": 26,
+              "predicted": 8,
+              "correct": 4,
+              "precision": 0.5,
+              "recall": 0.153846,
+              "f1": 0.235294,
+              "recall_wilson_95": [
+                0.061499,
+                0.335316
+              ]
+            },
+            "fiber": {
+              "support": 4,
+              "predicted": 1,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.4899
+              ]
+            }
+          }
+        },
+        "N6": {
+          "case_count": 2,
+          "parsed": 2,
+          "schema_valid_rate": 1.0,
+          "answered": 0,
+          "answer_rate": 0.0,
+          "abstained_or_invalid": 2,
+          "correct": 0,
+          "accuracy_all_cases": 0.0,
+          "precision_when_answered": null,
+          "precision_wilson_95": [
+            0.0,
+            0.0
+          ],
+          "rule_compliant": 2,
+          "rule_compliance_rate": 1.0,
+          "violation_counts": {},
+          "class_metrics": {
+            "L1": {
+              "support": 0,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.0
+              ]
+            },
+            "L2": {
+              "support": 2,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.657628
+              ]
+            },
+            "fiber": {
+              "support": 0,
+              "predicted": 0,
+              "correct": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "recall_wilson_95": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "paired_comparisons": {
+    "evidence_only_to_rules_prompt": {
+      "improved_cases": 6,
+      "worsened_cases": 5,
+      "net_correct_change": 1,
+      "both_correct": 2,
+      "both_not_correct": 72,
+      "mcnemar_exact_p": 1.0
+    },
+    "rules_prompt_to_checker": {
+      "improved_cases": 0,
+      "worsened_cases": 1,
+      "net_correct_change": -1,
+      "both_correct": 7,
+      "both_not_correct": 77,
+      "mcnemar_exact_p": 1.0
+    },
+    "evidence_only_to_full_rules": {
+      "improved_cases": 5,
+      "worsened_cases": 5,
+      "net_correct_change": 0,
+      "both_correct": 2,
+      "both_not_correct": 73,
+      "mcnemar_exact_p": 1.0
+    }
+  },
+  "interpretation_guardrails": [
+    "规则库当前仍为 pending_expert_review；本实验评估经验效果，不证明规则物理上已获专家确认。",
+    "fiber 测试样本只有 6 条，必须同时报告绝对数量和 Wilson 区间。",
+    "temperature=0 的单次确定性运行用于配对比较，不代表跨模型或跨数据集泛化。",
+    "历史 case、历史标签和 M9 最终门禁未进入 prompt。"
+  ]
+}

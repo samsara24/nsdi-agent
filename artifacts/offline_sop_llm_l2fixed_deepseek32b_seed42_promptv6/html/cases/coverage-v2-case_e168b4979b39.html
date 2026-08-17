@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>coverage-v2 / case_e168b4979b39</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#18212b;--muted:#66717e;--line:#dce2e8;
+--blue:#2458a6;--green:#147d55;--red:#b42318;--amber:#a15c00;--purple:#6b47a8}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.55 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1440px;margin:auto;padding:24px} h1{font-size:26px;margin:0 0 6px}
+h2{font-size:19px;margin:26px 0 10px} h3{font-size:16px;margin:18px 0 8px}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+.subtitle,.muted,.empty{color:var(--muted)} .empty{font-style:italic}
+.toolbar{display:flex;gap:12px;align-items:center;margin:18px 0}
+input[type=search]{width:min(480px,100%);padding:10px 12px;border:1px solid var(--line);
+border-radius:7px;background:white}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin:12px 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:13px}
+.card .value{font-size:22px;font-weight:700;margin-top:3px} .card .label{color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:9px;margin:10px 0;overflow:hidden}
+.panel>summary{cursor:pointer;font-size:16px;font-weight:650;padding:12px 15px;background:#fafbfc}
+.panel-body{padding:14px 15px;border-top:1px solid var(--line)}
+.table-wrap{overflow:auto} table{border-collapse:collapse;width:100%;background:white}
+th,td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}
+thead th,.kv th{background:#f5f7f9;font-weight:650} .kv th{width:220px}
+pre{margin:8px 0;padding:12px;max-height:520px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+background:#111827;color:#e5edf6;border-radius:7px;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+code,.token{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:650;white-space:nowrap}
+.correct{color:var(--green);background:#e8f5ef} .wrong{color:var(--red);background:#fdecea}
+.degraded_correct{color:#176b47;background:#edf8f2} .degraded_wrong{color:#9b2c20;background:#fff1ef}
+.abstain{color:var(--amber);background:#fff4df} .telemetry{color:var(--purple);background:#f1ebfb}
+.tokens{display:flex;flex-wrap:wrap;gap:6px} .token{padding:3px 7px;border:1px solid var(--line);border-radius:5px;background:#f7f9fb}
+.attempt{border-left:4px solid var(--blue);padding-left:12px;margin:18px 0}
+.violation{border-left:4px solid var(--red);padding:7px 10px;background:#fff6f5;margin:6px 0}
+.ok{color:var(--green);font-weight:650} .warn{color:var(--amber);font-weight:650}
+.crumb{margin-bottom:14px} .group{margin:18px 0 28px} [hidden]{display:none!important}
+@media print{body{background:white} main{max-width:none;padding:0} .toolbar{display:none}
+.panel{break-inside:avoid} details.panel:not([open])>.panel-body{display:block}}
+</style>
+</head>
+<body><main><nav class="crumb"><a href="../index.html">← 返回实验索引</a></nav><h1>coverage-v2 / case_e168b4979b39</h1><p><span class="badge degraded_wrong">候选错误且被 M9 降级</span></p><details class="panel" open><summary>结论、真值与路由</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>Policy</th><td>coverage-v2</td></tr><tr><th>Case ID</th><td>case_e168b4979b39</td></tr><tr><th>真值</th><td>L1</td></tr><tr><th>最终预测</th><td>—</td></tr><tr><th>候选预测</th><td>L2</td></tr><tr><th>最终是否正确</th><td>未给最终结论</td></tr><tr><th>候选是否正确</th><td>否</td></tr><tr><th>M9 动作</th><td>request_evidence</td></tr><tr><th>路由分支</th><td>N5b</td></tr><tr><th>路由原因</th><td>历史上存在包含本 case 全部证据的 case（相似度 0.65，证据覆盖率 100%），差异在于历史 case 还有 2 条本 case 未观测到的证据</td></tr><tr><th>相似度 / 覆盖率</th><td>0.65397735 / 1.0</td></tr><tr><th>置信度</th><td>55.17%</td></tr><tr><th>Wilson 下界 / 支持数</th><td>37.55% / 29</td></tr></tbody></table></div></div></details><details class="panel" open><summary>特征 Token</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>遥测状态</th><td>partial_telemetry</td></tr><tr><th>Token 数</th><td>5</td></tr></tbody></table></div><div class="tokens"><span class="token">drop:L2:serdes_snr:single_lane</span><span class="token">level:L2:media_snr_min:low_tail</span><span class="token">serdes:L1:valid</span><span class="token">serdes:L2:valid</span><span class="token">telemetry:partial_telemetry</span></div><h3>按特征族</h3><pre>{
+  &quot;level_tail&quot;: [
+    &quot;level:L2:media_snr_min:low_tail&quot;
+  ],
+  &quot;serdes_state&quot;: [
+    &quot;serdes:L1:valid&quot;,
+    &quot;serdes:L2:valid&quot;
+  ],
+  &quot;signal_drop&quot;: [
+    &quot;drop:L2:serdes_snr:single_lane&quot;
+  ],
+  &quot;telemetry_gap&quot;: [
+    &quot;telemetry:partial_telemetry&quot;
+  ]
+}</pre></div></details><details class="panel" open><summary>历史候选</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>最高相似度</th><td>0.65397735</td></tr><tr><th>证据覆盖率</th><td>1.0</td></tr><tr><th>候选总数</th><td>161</td></tr><tr><th>标签纯净</th><td>—</td></tr></tbody></table></div><div class="table-wrap"><table><thead><tr><th>历史 case</th><th>标签</th><th>相似度</th><th>覆盖率</th><th>重叠证据</th><th>缺失证据</th><th>冲突证据</th></tr></thead><tbody><tr><td>case_f4fb4cf8c21f</td><td>L2</td><td>0.6540</td><td>—</td><td>drop:L2:serdes_snr:single_lane, level:L2:media_snr_min:low_tail, serdes:L1:valid, serdes:L2:valid, telemetry:partial_telemetry</td><td>level:L1:rxpower_mean:low_tail, level:L2:txpower_mean:low_tail</td><td>—</td></tr></tbody></table></div></div></details><details class="panel" open><summary>SOP 预测</summary><div class="panel-body"><pre>{
+  &quot;confidence&quot;: 0.659341,
+  &quot;confidence_lower_bound&quot;: 0.557285,
+  &quot;label_distribution&quot;: {
+    &quot;L1&quot;: 29,
+    &quot;L2&quot;: 60,
+    &quot;fiber&quot;: 2
+  },
+  &quot;leaf_id&quot;: &quot;root.absent.absent.absent&quot;,
+  &quot;path&quot;: [
+    &quot;absent:imbalance:L2:rxpower&quot;,
+    &quot;absent:status:L1:RxLOS&quot;,
+    &quot;absent:imbalance:L2:serdes_snr&quot;
+  ],
+  &quot;reason&quot;: &quot;learned SOP leaf predicts L2 from train distribution {&#x27;L1&#x27;: 29, &#x27;L2&#x27;: 60, &#x27;fiber&#x27;: 2}&quot;,
+  &quot;support&quot;: 91,
+  &quot;verdict&quot;: &quot;L2&quot;
+}</pre></div></details><details class="panel" open><summary>物理约束与证据链</summary><div class="panel-body"><h3>物理约束与证据链</h3><div class="table-wrap"><table><thead><tr><th>类型</th><th>陈述</th><th>证据 token</th><th>来源</th></tr></thead><tbody><tr><td>partial_match</td><td>与 1 条历史 case 部分匹配（相似度 0.65，证据覆盖率 100%）</td><td>drop:L2:serdes_snr:single_lane, level:L2:media_snr_min:low_tail, serdes:L1:valid, serdes:L2:valid, telemetry:partial_telemetry</td><td>evidence_graph</td></tr><tr><td>missing_evidence</td><td>历史 case 具备但本 case 未观测到的证据共 2 条，建议补采</td><td>level:L1:rxpower_mean:low_tail, level:L2:txpower_mean:low_tail</td><td>evidence_graph.missing</td></tr></tbody></table></div><h3>Evidence Pack</h3><pre>{
+  &quot;case_id&quot;: &quot;case_e168b4979b39&quot;,
+  &quot;context&quot;: {
+    &quot;alarm_name&quot;: &quot;频繁升降lane&quot;,
+    &quot;alarm_time&quot;: &quot;2024-03-11 10:42:21&quot;,
+    &quot;chip&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;crc_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fec_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;link_location&quot;: &quot;location_c662e3ed6f20&quot;,
+    &quot;link_side_ip_interface_map&quot;: {
+      &quot;L1&quot;: &quot;L1_ENDPOINT--400G_PORT&quot;,
+      &quot;L2&quot;: &quot;L2_ENDPOINT--200G_PORT&quot;
+    },
+    &quot;port&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;port_down_dt&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    }
+  },
+  &quot;coverage&quot;: 0.94444444,
+  &quot;field_states&quot;: {
+    &quot;L1.RxLOL&quot;: &quot;observed&quot;,
+    &quot;L1.RxLOS&quot;: &quot;observed&quot;,
+    &quot;L1.TxLOL&quot;: &quot;observed&quot;,
+    &quot;L1.TxLOS&quot;: &quot;observed&quot;,
+    &quot;L1.host_snr&quot;: &quot;observed&quot;,
+    &quot;L1.media_snr&quot;: &quot;observed&quot;,
+    &quot;L1.rxpower&quot;: &quot;observed&quot;,
+    &quot;L1.serdes_snr&quot;: &quot;observed&quot;,
+    &quot;L1.txpower&quot;: &quot;observed&quot;,
+    &quot;L2.RxLOL&quot;: &quot;observed&quot;,
+    &quot;L2.RxLOS&quot;: &quot;observed&quot;,
+    &quot;L2.TxLOL&quot;: &quot;observed&quot;,
+    &quot;L2.TxLOS&quot;: &quot;observed&quot;,
+    &quot;L2.host_snr&quot;: &quot;missing&quot;,
+    &quot;L2.media_snr&quot;: &quot;observed&quot;,
+    &quot;L2.rxpower&quot;: &quot;observed&quot;,
+    &quot;L2.serdes_snr&quot;: &quot;observed&quot;,
+    &quot;L2.txpower&quot;: &quot;observed&quot;
+  },
+  &quot;missing_fields&quot;: [
+    &quot;L2.host_snr&quot;
+  ],
+  &quot;observed_fields&quot;: [
+    &quot;L1.RxLOL&quot;,
+    &quot;L1.RxLOS&quot;,
+    &quot;L1.TxLOL&quot;,
+    &quot;L1.TxLOS&quot;,
+    &quot;L1.host_snr&quot;,
+    &quot;L1.media_snr&quot;,
+    &quot;L1.rxpower&quot;,
+    &quot;L1.serdes_snr&quot;,
+    &quot;L1.txpower&quot;,
+    &quot;L2.RxLOL&quot;,
+    &quot;L2.RxLOS&quot;,
+    &quot;L2.TxLOL&quot;,
+    &quot;L2.TxLOS&quot;,
+    &quot;L2.media_snr&quot;,
+    &quot;L2.rxpower&quot;,
+    &quot;L2.serdes_snr&quot;,
+    &quot;L2.txpower&quot;
+  ],
+  &quot;optical_blackout&quot;: false,
+  &quot;readings&quot;: [
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 24.84,
+        &quot;1&quot;: 25.07,
+        &quot;2&quot;: 25.07,
+        &quot;3&quot;: 25.19,
+        &quot;4&quot;: 24.72,
+        &quot;5&quot;: 25.61,
+        &quot;6&quot;: 24.96,
+        &quot;7&quot;: 25.4
+      },
+      &quot;metric&quot;: &quot;host_snr&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 24.69,
+        &quot;1&quot;: 24.59,
+        &quot;2&quot;: 24.96,
+        &quot;3&quot;: 24.62,
+        &quot;4&quot;: 24.82,
+        &quot;5&quot;: 25.5,
+        &quot;6&quot;: 25.01,
+        &quot;7&quot;: 24.48
+      },
+      &quot;metric&quot;: &quot;media_snr&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 0.880652,
+        &quot;1&quot;: 1.055442,
+        &quot;2&quot;: 0.880652,
+        &quot;3&quot;: 0.95274,
+        &quot;4&quot;: 0.879942,
+        &quot;5&quot;: 1.123033,
+        &quot;6&quot;: 0.695941,
+        &quot;7&quot;: 0.821029
+      },
+      &quot;metric&quot;: &quot;rxpower&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 736325.0,
+        &quot;1&quot;: 745691.0,
+        &quot;2&quot;: 706554.0,
+        &quot;3&quot;: 740753.0
+      },
+      &quot;metric&quot;: &quot;serdes_snr&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 0.76786,
+        &quot;1&quot;: 0.773679,
+        &quot;2&quot;: 0.75401,
+        &quot;3&quot;: 0.76786,
+        &quot;4&quot;: 0.780579,
+        &quot;5&quot;: 0.76786,
+        &quot;6&quot;: 0.76094,
+        &quot;7&quot;: 0.773679
+      },
+      &quot;metric&quot;: &quot;txpower&quot;,
+      &quot;side&quot;: &quot;L1&quot;
+    },
+    {
+      &quot;lanes&quot;: {},
+      &quot;metric&quot;: &quot;host_snr&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 24.55,
+        &quot;1&quot;: 24.55,
+        &quot;2&quot;: 24.31,
+        &quot;3&quot;: 24.79
+      },
+      &quot;metric&quot;: &quot;media_snr&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 1.075491,
+        &quot;1&quot;: 1.34464,
+        &quot;2&quot;: 1.277202,
+        &quot;3&quot;: 1.096798
+      },
+      &quot;metric&quot;: &quot;rxpower&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 0.0,
+        &quot;1&quot;: 725558.0,
+        &quot;2&quot;: 674794.0,
+        &quot;3&quot;: 689610.0
+      },
+      &quot;metric&quot;: &quot;serdes_snr&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    },
+    {
+      &quot;lanes&quot;: {
+        &quot;0&quot;: 0.852906,
+        &quot;1&quot;: 1.163088,
+        &quot;2&quot;: 0.312872,
+        &quot;3&quot;: 0.662886
+      },
+      &quot;metric&quot;: &quot;txpower&quot;,
+      &quot;side&quot;: &quot;L2&quot;
+    }
+  ],
+  &quot;scalars&quot;: {
+    &quot;L1.Temperature&quot;: null,
+    &quot;L1.Voltage&quot;: null,
+    &quot;L2.Temperature&quot;: null,
+    &quot;L2.Voltage&quot;: null
+  },
+  &quot;schema_version&quot;: &quot;evidence-pack-v1&quot;,
+  &quot;source_dataset&quot;: &quot;/home/chenziang/nsdi-agent/datasets/rca_v2_l2fixed&quot;,
+  &quot;statuses&quot;: {
+    &quot;L1.RxLOL&quot;: &quot;Normal&quot;,
+    &quot;L1.RxLOS&quot;: &quot;Normal&quot;,
+    &quot;L1.TxLOL&quot;: &quot;Normal&quot;,
+    &quot;L1.TxLOS&quot;: &quot;Normal&quot;,
+    &quot;L2.RxLOL&quot;: &quot;Normal&quot;,
+    &quot;L2.RxLOS&quot;: &quot;Normal&quot;,
+    &quot;L2.TxLOL&quot;: &quot;Normal&quot;,
+    &quot;L2.TxLOS&quot;: &quot;Normal&quot;
+  },
+  &quot;telemetry&quot;: {
+    &quot;L1_fault&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;L2_fault&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;Lpmode state&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;Rx Disable Status&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;RxLOL&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;RxLOS&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;Tx Disable Status&quot;: {
+      &quot;L1&quot;: &quot;0x0&quot;,
+      &quot;L2&quot;: &quot;0x0&quot;
+    },
+    &quot;Tx Status&quot;: {
+      &quot;L1&quot;: &quot;0x0&quot;,
+      &quot;L2&quot;: &quot;0x0&quot;
+    },
+    &quot;TxLOL&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;TxLOS&quot;: {
+      &quot;L1&quot;: &quot;Normal&quot;,
+      &quot;L2&quot;: &quot;Normal&quot;
+    },
+    &quot;_meta&quot;: {
+      &quot;endpoint_values_swapped&quot;: false,
+      &quot;l2_lane_repair&quot;: {
+        &quot;changed_fields&quot;: [
+          {
+            &quot;after&quot;: 4,
+            &quot;before&quot;: 8,
+            &quot;field&quot;: &quot;rxpower&quot;
+          },
+          {
+            &quot;after&quot;: 4,
+            &quot;before&quot;: 8,
+            &quot;field&quot;: &quot;txpower&quot;
+          },
+          {
+            &quot;after&quot;: 4,
+            &quot;before&quot;: 8,
+            &quot;field&quot;: &quot;media_snr&quot;
+          }
+        ],
+        &quot;rule&quot;: &quot;retain L2 lane keys 0-3; remove excess keys&quot;
+      },
+      &quot;schema_version&quot;: &quot;2.0&quot;,
+      &quot;side_definition&quot;: {
+        &quot;L1&quot;: &quot;400G&quot;,
+        &quot;L2&quot;: &quot;200G&quot;
+      }
+    },
+    &quot;alarm_name&quot;: &quot;频繁升降lane&quot;,
+    &quot;alarm_time&quot;: &quot;2024-03-11 10:42:21&quot;,
+    &quot;bias&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;case_id&quot;: &quot;case_e168b4979b39&quot;,
+    &quot;chip&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;crc_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;devm_picm_dt&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fec_error&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fsm0&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;fsm1&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;host_snr&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 24.84,
+        &quot;1&quot;: 25.07,
+        &quot;2&quot;: 25.07,
+        &quot;3&quot;: 25.19,
+        &quot;4&quot;: 24.72,
+        &quot;5&quot;: 25.61,
+        &quot;6&quot;: 24.96,
+        &quot;7&quot;: 25.4
+      },
+      &quot;L2&quot;: null
+    },
+    &quot;link_location&quot;: &quot;location_c662e3ed6f20&quot;,
+    &quot;link_side_ip_interface_map&quot;: {
+      &quot;L1&quot;: &quot;L1_ENDPOINT--400G_PORT&quot;,
+      &quot;L2&quot;: &quot;L2_ENDPOINT--200G_PORT&quot;
+    },
+    &quot;lsm_cfg&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;media_snr&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 24.69,
+        &quot;1&quot;: 24.59,
+        &quot;2&quot;: 24.96,
+        &quot;3&quot;: 24.62,
+        &quot;4&quot;: 24.82,
+        &quot;5&quot;: 25.5,
+        &quot;6&quot;: 25.01,
+        &quot;7&quot;: 24.48
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 24.55,
+        &quot;1&quot;: 24.55,
+        &quot;2&quot;: 24.31,
+        &quot;3&quot;: 24.79
+      }
+    },
+    &quot;non_null_count&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;phy_en&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;phy_fsm&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;phy_lock&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;port&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;port_down_dt&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;region&quot;: &quot;region_9af70e948c6d&quot;,
+    &quot;rxpower&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 0.880652,
+        &quot;1&quot;: 1.055442,
+        &quot;2&quot;: 0.880652,
+        &quot;3&quot;: 0.95274,
+        &quot;4&quot;: 0.879942,
+        &quot;5&quot;: 1.123033,
+        &quot;6&quot;: 0.695941,
+        &quot;7&quot;: 0.821029
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 1.075491,
+        &quot;1&quot;: 1.34464,
+        &quot;2&quot;: 1.277202,
+        &quot;3&quot;: 1.096798
+      }
+    },
+    &quot;serdes_snr&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 736325,
+        &quot;1&quot;: 745691,
+        &quot;2&quot;: 706554,
+        &quot;3&quot;: 740753
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 0,
+        &quot;1&quot;: 725558,
+        &quot;2&quot;: 674794,
+        &quot;3&quot;: 689610
+      }
+    },
+    &quot;temperature&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    },
+    &quot;timestamp&quot;: {
+      &quot;L1&quot;: &quot;2024-03-11 10:42:21&quot;,
+      &quot;L2&quot;: &quot;2024-03-11 10:42:21&quot;
+    },
+    &quot;txpower&quot;: {
+      &quot;L1&quot;: {
+        &quot;0&quot;: 0.76786,
+        &quot;1&quot;: 0.773679,
+        &quot;2&quot;: 0.75401,
+        &quot;3&quot;: 0.76786,
+        &quot;4&quot;: 0.780579,
+        &quot;5&quot;: 0.76786,
+        &quot;6&quot;: 0.76094,
+        &quot;7&quot;: 0.773679
+      },
+      &quot;L2&quot;: {
+        &quot;0&quot;: 0.852906,
+        &quot;1&quot;: 1.163088,
+        &quot;2&quot;: 0.312872,
+        &quot;3&quot;: 0.662886
+      }
+    },
+    &quot;voltage&quot;: {
+      &quot;L1&quot;: null,
+      &quot;L2&quot;: null
+    }
+  },
+  &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;
+}</pre></div></details><details class="panel" open><summary>M9 决策原因</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>动作</th><td>request_evidence</td></tr><tr><th>原因</th><td>当前结论未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断</td></tr><tr><th>标定分组</th><td>N5b_minor_gap</td></tr><tr><th>支持数</th><td>29</td></tr><tr><th>最终结论</th><td>—</td></tr><tr><th>降级前候选</th><td>L2</td></tr></tbody></table></div></div></details><details class="panel" open><summary>缺失证据</summary><div class="panel-body"><ul><li><code>level:L1:rxpower_mean:low_tail</code></li><li><code>level:L2:txpower_mean:low_tail</code></li></ul></div></details><details class="panel" open><summary>LLM 逐轮推理</summary><div class="panel-body"><p class="empty">无 trace：该 case 未调用 LLM，或旧实验产物未保存逐轮推理记录。</p></div></details><details class="panel" open><summary>诊断图</summary><div class="panel-body"><div class="table-wrap"><table class="kv"><tbody><tr><th>Case</th><td>case_e168b4979b39</td></tr><tr><th>SOP 版本</th><td>learned-sop-v1</td></tr><tr><th>约束库版本</th><td>constraint-library-v3</td></tr><tr><th>确认人</th><td>—</td></tr><tr><th>内容指纹</th><td>00906ea7c704e95f</td></tr></tbody></table></div><h3>节点</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>类型</th><th>属性</th></tr></thead><tbody><tr><td>case</td><td>Case</td><td>{&quot;case_id&quot;: &quot;case_e168b4979b39&quot;, &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;}</td></tr><tr><td>outcome</td><td>Outcome</td><td>{&quot;action&quot;: &quot;request_evidence&quot;, &quot;branch&quot;: &quot;N5b&quot;, &quot;calibration_group&quot;: &quot;N5b_minor_gap&quot;, &quot;calibration_support&quot;: 29, &quot;case_id&quot;: &quot;case_e168b4979b39&quot;, &quot;confidence&quot;: 0.551724, &quot;confidence_lower_bound&quot;: 0.375477, &quot;proposed_verdict&quot;: &quot;L2&quot;, &quot;reason&quot;: &quot;当前结论未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断&quot;, &quot;requested_evidence&quot;: [&quot;level:L1:rxpower_mean:low_tail&quot;, &quot;level:L2:txpower_mean:low_tail&quot;], &quot;verdict&quot;: null}</td></tr><tr><td>feature:0</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;drop:L2:serdes_snr:single_lane&quot;}</td></tr><tr><td>feature:1</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;level:L2:media_snr_min:low_tail&quot;}</td></tr><tr><td>feature:2</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;serdes:L1:valid&quot;}</td></tr><tr><td>feature:3</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;serdes:L2:valid&quot;}</td></tr><tr><td>feature:4</td><td>FeatureToken</td><td>{&quot;token&quot;: &quot;telemetry:partial_telemetry&quot;}</td></tr><tr><td>step:0</td><td>SOPStep</td><td>{&quot;kind&quot;: &quot;partial_match&quot;, &quot;source&quot;: &quot;evidence_graph&quot;, &quot;statement&quot;: &quot;与 1 条历史 case 部分匹配（相似度 0.65，证据覆盖率 100%）&quot;, &quot;tokens&quot;: [&quot;drop:L2:serdes_snr:single_lane&quot;, &quot;level:L2:media_snr_min:low_tail&quot;, &quot;serdes:L1:valid&quot;, &quot;serdes:L2:valid&quot;, &quot;telemetry:partial_telemetry&quot;]}</td></tr><tr><td>step:1</td><td>SOPStep</td><td>{&quot;kind&quot;: &quot;missing_evidence&quot;, &quot;source&quot;: &quot;evidence_graph.missing&quot;, &quot;statement&quot;: &quot;历史 case 具备但本 case 未观测到的证据共 2 条，建议补采&quot;, &quot;tokens&quot;: [&quot;level:L1:rxpower_mean:low_tail&quot;, &quot;level:L2:txpower_mean:low_tail&quot;]}</td></tr></tbody></table></div><h3>边</h3><div class="table-wrap"><table><thead><tr><th>源</th><th>关系</th><th>目标</th><th>属性</th></tr></thead><tbody><tr><td>case</td><td>concludes</td><td>outcome</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:0</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:1</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:2</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:3</td><td>{}</td></tr><tr><td>case</td><td>has_token</td><td>feature:4</td><td>{}</td></tr><tr><td>case</td><td>has_step</td><td>step:0</td><td>{}</td></tr><tr><td>step:0</td><td>supports_decision</td><td>outcome</td><td>{}</td></tr><tr><td>case</td><td>has_step</td><td>step:1</td><td>{}</td></tr><tr><td>step:1</td><td>supports_decision</td><td>outcome</td><td>{}</td></tr></tbody></table></div></div></details><details class="panel"><summary>结构化 RCA 报告</summary><div class="panel-body"><pre>{
+  &quot;action&quot;: &quot;request_evidence&quot;,
+  &quot;branch&quot;: &quot;N5b&quot;,
+  &quot;case_id&quot;: &quot;case_e168b4979b39&quot;,
+  &quot;caveats&quot;: [],
+  &quot;confidence&quot;: 0.551724,
+  &quot;confidence_lower_bound&quot;: 0.375477,
+  &quot;diagnosis_graph&quot;: {
+    &quot;case_id&quot;: &quot;case_e168b4979b39&quot;,
+    &quot;confirmed_by&quot;: &quot;&quot;,
+    &quot;constraint_library_version&quot;: &quot;constraint-library-v3&quot;,
+    &quot;content_hash&quot;: &quot;00906ea7c704e95f&quot;,
+    &quot;edges&quot;: [
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;concludes&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:0&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:1&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:2&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:3&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;feature:4&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_token&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;step:0&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_step&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;step:0&quot;,
+        &quot;type&quot;: &quot;supports_decision&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;step:1&quot;,
+        &quot;src&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;has_step&quot;
+      },
+      {
+        &quot;attrs&quot;: {},
+        &quot;dst&quot;: &quot;outcome&quot;,
+        &quot;src&quot;: &quot;step:1&quot;,
+        &quot;type&quot;: &quot;supports_decision&quot;
+      }
+    ],
+    &quot;nodes&quot;: [
+      {
+        &quot;attrs&quot;: {
+          &quot;case_id&quot;: &quot;case_e168b4979b39&quot;,
+          &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;
+        },
+        &quot;id&quot;: &quot;case&quot;,
+        &quot;type&quot;: &quot;Case&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;action&quot;: &quot;request_evidence&quot;,
+          &quot;branch&quot;: &quot;N5b&quot;,
+          &quot;calibration_group&quot;: &quot;N5b_minor_gap&quot;,
+          &quot;calibration_support&quot;: 29,
+          &quot;case_id&quot;: &quot;case_e168b4979b39&quot;,
+          &quot;confidence&quot;: 0.551724,
+          &quot;confidence_lower_bound&quot;: 0.375477,
+          &quot;proposed_verdict&quot;: &quot;L2&quot;,
+          &quot;reason&quot;: &quot;当前结论未通过可靠性门槛；先补齐分支列出的缺失证据再重新诊断&quot;,
+          &quot;requested_evidence&quot;: [
+            &quot;level:L1:rxpower_mean:low_tail&quot;,
+            &quot;level:L2:txpower_mean:low_tail&quot;
+          ],
+          &quot;verdict&quot;: null
+        },
+        &quot;id&quot;: &quot;outcome&quot;,
+        &quot;type&quot;: &quot;Outcome&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;drop:L2:serdes_snr:single_lane&quot;
+        },
+        &quot;id&quot;: &quot;feature:0&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;level:L2:media_snr_min:low_tail&quot;
+        },
+        &quot;id&quot;: &quot;feature:1&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;serdes:L1:valid&quot;
+        },
+        &quot;id&quot;: &quot;feature:2&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;serdes:L2:valid&quot;
+        },
+        &quot;id&quot;: &quot;feature:3&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;token&quot;: &quot;telemetry:partial_telemetry&quot;
+        },
+        &quot;id&quot;: &quot;feature:4&quot;,
+        &quot;type&quot;: &quot;FeatureToken&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;kind&quot;: &quot;partial_match&quot;,
+          &quot;source&quot;: &quot;evidence_graph&quot;,
+          &quot;statement&quot;: &quot;与 1 条历史 case 部分匹配（相似度 0.65，证据覆盖率 100%）&quot;,
+          &quot;tokens&quot;: [
+            &quot;drop:L2:serdes_snr:single_lane&quot;,
+            &quot;level:L2:media_snr_min:low_tail&quot;,
+            &quot;serdes:L1:valid&quot;,
+            &quot;serdes:L2:valid&quot;,
+            &quot;telemetry:partial_telemetry&quot;
+          ]
+        },
+        &quot;id&quot;: &quot;step:0&quot;,
+        &quot;type&quot;: &quot;SOPStep&quot;
+      },
+      {
+        &quot;attrs&quot;: {
+          &quot;kind&quot;: &quot;missing_evidence&quot;,
+          &quot;source&quot;: &quot;evidence_graph.missing&quot;,
+          &quot;statement&quot;: &quot;历史 case 具备但本 case 未观测到的证据共 2 条，建议补采&quot;,
+          &quot;tokens&quot;: [
+            &quot;level:L1:rxpower_mean:low_tail&quot;,
+            &quot;level:L2:txpower_mean:low_tail&quot;
+          ]
+        },
+        &quot;id&quot;: &quot;step:1&quot;,
+        &quot;type&quot;: &quot;SOPStep&quot;
+      }
+    ],
+    &quot;sop_version&quot;: &quot;learned-sop-v1&quot;
+  },
+  &quot;evidence_chain&quot;: [
+    {
+      &quot;kind&quot;: &quot;partial_match&quot;,
+      &quot;source&quot;: &quot;evidence_graph&quot;,
+      &quot;statement&quot;: &quot;与 1 条历史 case 部分匹配（相似度 0.65，证据覆盖率 100%）&quot;,
+      &quot;tokens&quot;: [
+        &quot;drop:L2:serdes_snr:single_lane&quot;,
+        &quot;level:L2:media_snr_min:low_tail&quot;,
+        &quot;serdes:L1:valid&quot;,
+        &quot;serdes:L2:valid&quot;,
+        &quot;telemetry:partial_telemetry&quot;
+      ]
+    },
+    {
+      &quot;kind&quot;: &quot;missing_evidence&quot;,
+      &quot;source&quot;: &quot;evidence_graph.missing&quot;,
+      &quot;statement&quot;: &quot;历史 case 具备但本 case 未观测到的证据共 2 条，建议补采&quot;,
+      &quot;tokens&quot;: [
+        &quot;level:L1:rxpower_mean:low_tail&quot;,
+        &quot;level:L2:txpower_mean:low_tail&quot;
+      ]
+    }
+  ],
+  &quot;proposed_verdict&quot;: &quot;L2&quot;,
+  &quot;requested_evidence&quot;: [
+    &quot;level:L1:rxpower_mean:low_tail&quot;,
+    &quot;level:L2:txpower_mean:low_tail&quot;
+  ],
+  &quot;schema_version&quot;: &quot;rca-report-v1&quot;,
+  &quot;verdict&quot;: null
+}</pre></div></details></main></body>
+</html>

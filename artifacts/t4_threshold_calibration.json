@@ -1,0 +1,373 @@
+{
+  "feature_set": "v1",
+  "data_dir": "datasets/organized_rca_v2_stratified_60_40_seed42",
+  "graph_version": "evidence-graph-v1:126:5e10b5b25d559777",
+  "dictionary_version": "feature-dictionary-v1",
+  "dictionary_hash": "1b2e66ed650ce60e",
+  "purity": {
+    "case_count": 126,
+    "signature_group_count": 113,
+    "mixed_label_group_count": 3,
+    "mixed_label_case_count": 10,
+    "mixed_label_case_ratio": 0.079365,
+    "singleton_group_count": 104,
+    "empty_signature_case_count": 2
+  },
+  "train_loo_curve": [
+    {
+      "threshold": 1.0,
+      "covered": 20,
+      "coverage": 0.15873,
+      "correct": 16,
+      "precision_at_coverage": 0.8,
+      "pure_tie_ratio": 0.7,
+      "conflicted_cases": 0,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.999,
+      "covered": 20,
+      "coverage": 0.15873,
+      "correct": 16,
+      "precision_at_coverage": 0.8,
+      "pure_tie_ratio": 0.7,
+      "conflicted_cases": 0,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.95,
+      "covered": 20,
+      "coverage": 0.15873,
+      "correct": 16,
+      "precision_at_coverage": 0.8,
+      "pure_tie_ratio": 0.7,
+      "conflicted_cases": 0,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.9,
+      "covered": 22,
+      "coverage": 0.174603,
+      "correct": 18,
+      "precision_at_coverage": 0.818182,
+      "pure_tie_ratio": 0.727273,
+      "conflicted_cases": 0,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.85,
+      "covered": 35,
+      "coverage": 0.277778,
+      "correct": 25,
+      "precision_at_coverage": 0.714286,
+      "pure_tie_ratio": 0.771429,
+      "conflicted_cases": 0,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.8,
+      "covered": 50,
+      "coverage": 0.396825,
+      "correct": 36,
+      "precision_at_coverage": 0.72,
+      "pure_tie_ratio": 0.84,
+      "conflicted_cases": 1,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.75,
+      "covered": 57,
+      "coverage": 0.452381,
+      "correct": 40,
+      "precision_at_coverage": 0.701754,
+      "pure_tie_ratio": 0.859649,
+      "conflicted_cases": 1,
+      "fiber_covered": 3,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.7,
+      "covered": 67,
+      "coverage": 0.531746,
+      "correct": 48,
+      "precision_at_coverage": 0.716418,
+      "pure_tie_ratio": 0.880597,
+      "conflicted_cases": 2,
+      "fiber_covered": 4,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.65,
+      "covered": 90,
+      "coverage": 0.714286,
+      "correct": 65,
+      "precision_at_coverage": 0.722222,
+      "pure_tie_ratio": 0.888889,
+      "conflicted_cases": 4,
+      "fiber_covered": 6,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.6,
+      "covered": 98,
+      "coverage": 0.777778,
+      "correct": 71,
+      "precision_at_coverage": 0.72449,
+      "pure_tie_ratio": 0.897959,
+      "conflicted_cases": 4,
+      "fiber_covered": 7,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.55,
+      "covered": 101,
+      "coverage": 0.801587,
+      "correct": 73,
+      "precision_at_coverage": 0.722772,
+      "pure_tie_ratio": 0.90099,
+      "conflicted_cases": 5,
+      "fiber_covered": 7,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.5,
+      "covered": 115,
+      "coverage": 0.912698,
+      "correct": 79,
+      "precision_at_coverage": 0.686957,
+      "pure_tie_ratio": 0.913043,
+      "conflicted_cases": 5,
+      "fiber_covered": 8,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.4,
+      "covered": 124,
+      "coverage": 0.984127,
+      "correct": 84,
+      "precision_at_coverage": 0.677419,
+      "pure_tie_ratio": 0.91129,
+      "conflicted_cases": 7,
+      "fiber_covered": 8,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.3,
+      "covered": 124,
+      "coverage": 0.984127,
+      "correct": 84,
+      "precision_at_coverage": 0.677419,
+      "pure_tie_ratio": 0.91129,
+      "conflicted_cases": 7,
+      "fiber_covered": 8,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.2,
+      "covered": 124,
+      "coverage": 0.984127,
+      "correct": 84,
+      "precision_at_coverage": 0.677419,
+      "pure_tie_ratio": 0.91129,
+      "conflicted_cases": 7,
+      "fiber_covered": 8,
+      "fiber_correct": 2
+    },
+    {
+      "threshold": 0.0,
+      "covered": 126,
+      "coverage": 1.0,
+      "correct": 84,
+      "precision_at_coverage": 0.666667,
+      "pure_tie_ratio": 0.896825,
+      "conflicted_cases": 7,
+      "fiber_covered": 8,
+      "fiber_correct": 2
+    }
+  ],
+  "held_out_curve": [
+    {
+      "threshold": 1.0,
+      "covered": 21,
+      "coverage": 0.247059,
+      "correct": 16,
+      "precision_at_coverage": 0.761905,
+      "pure_tie_ratio": 0.952381,
+      "conflicted_cases": 0,
+      "fiber_covered": 1,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.999,
+      "covered": 21,
+      "coverage": 0.247059,
+      "correct": 16,
+      "precision_at_coverage": 0.761905,
+      "pure_tie_ratio": 0.952381,
+      "conflicted_cases": 0,
+      "fiber_covered": 1,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.95,
+      "covered": 21,
+      "coverage": 0.247059,
+      "correct": 16,
+      "precision_at_coverage": 0.761905,
+      "pure_tie_ratio": 0.952381,
+      "conflicted_cases": 0,
+      "fiber_covered": 1,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.9,
+      "covered": 21,
+      "coverage": 0.247059,
+      "correct": 16,
+      "precision_at_coverage": 0.761905,
+      "pure_tie_ratio": 0.952381,
+      "conflicted_cases": 0,
+      "fiber_covered": 1,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.85,
+      "covered": 27,
+      "coverage": 0.317647,
+      "correct": 20,
+      "precision_at_coverage": 0.740741,
+      "pure_tie_ratio": 0.962963,
+      "conflicted_cases": 0,
+      "fiber_covered": 2,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.8,
+      "covered": 37,
+      "coverage": 0.435294,
+      "correct": 26,
+      "precision_at_coverage": 0.702703,
+      "pure_tie_ratio": 0.945946,
+      "conflicted_cases": 0,
+      "fiber_covered": 3,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.75,
+      "covered": 40,
+      "coverage": 0.470588,
+      "correct": 26,
+      "precision_at_coverage": 0.65,
+      "pure_tie_ratio": 0.95,
+      "conflicted_cases": 0,
+      "fiber_covered": 4,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.7,
+      "covered": 47,
+      "coverage": 0.552941,
+      "correct": 32,
+      "precision_at_coverage": 0.680851,
+      "pure_tie_ratio": 0.957447,
+      "conflicted_cases": 0,
+      "fiber_covered": 4,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.65,
+      "covered": 61,
+      "coverage": 0.717647,
+      "correct": 41,
+      "precision_at_coverage": 0.672131,
+      "pure_tie_ratio": 0.934426,
+      "conflicted_cases": 3,
+      "fiber_covered": 5,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.6,
+      "covered": 66,
+      "coverage": 0.776471,
+      "correct": 43,
+      "precision_at_coverage": 0.651515,
+      "pure_tie_ratio": 0.939394,
+      "conflicted_cases": 4,
+      "fiber_covered": 5,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.55,
+      "covered": 71,
+      "coverage": 0.835294,
+      "correct": 48,
+      "precision_at_coverage": 0.676056,
+      "pure_tie_ratio": 0.943662,
+      "conflicted_cases": 6,
+      "fiber_covered": 5,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.5,
+      "covered": 76,
+      "coverage": 0.894118,
+      "correct": 52,
+      "precision_at_coverage": 0.684211,
+      "pure_tie_ratio": 0.947368,
+      "conflicted_cases": 6,
+      "fiber_covered": 5,
+      "fiber_correct": 0
+    },
+    {
+      "threshold": 0.4,
+      "covered": 83,
+      "coverage": 0.976471,
+      "correct": 58,
+      "precision_at_coverage": 0.698795,
+      "pure_tie_ratio": 0.951807,
+      "conflicted_cases": 7,
+      "fiber_covered": 6,
+      "fiber_correct": 1
+    },
+    {
+      "threshold": 0.3,
+      "covered": 85,
+      "coverage": 1.0,
+      "correct": 58,
+      "precision_at_coverage": 0.682353,
+      "pure_tie_ratio": 0.952941,
+      "conflicted_cases": 7,
+      "fiber_covered": 6,
+      "fiber_correct": 1
+    },
+    {
+      "threshold": 0.2,
+      "covered": 85,
+      "coverage": 1.0,
+      "correct": 58,
+      "precision_at_coverage": 0.682353,
+      "pure_tie_ratio": 0.952941,
+      "conflicted_cases": 7,
+      "fiber_covered": 6,
+      "fiber_correct": 1
+    },
+    {
+      "threshold": 0.0,
+      "covered": 85,
+      "coverage": 1.0,
+      "correct": 58,
+      "precision_at_coverage": 0.682353,
+      "pure_tie_ratio": 0.952941,
+      "conflicted_cases": 7,
+      "fiber_covered": 6,
+      "fiber_correct": 1
+    }
+  ],
+  "train_prior": 0.65873
+}

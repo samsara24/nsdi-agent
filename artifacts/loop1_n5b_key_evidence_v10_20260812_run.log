@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/chenziang/nsdi-agent/scripts/run_offline_sop_llm_experiment.py", line 542, in <module>
+    main()
+  File "/home/chenziang/nsdi-agent/scripts/run_offline_sop_llm_experiment.py", line 342, in main
+    bundle, training_artifacts = fit_offline_knowledge(
+                                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/nsdi-agent/rca_framework/knowledge.py", line 490, in fit_offline_knowledge
+    paired = handle_many(
+             ^^^^^^^^^^^^
+  File "/home/chenziang/nsdi-agent/rca_framework/branches/dispatch.py", line 185, in handle_many
+    for trace in reasoner.reason_many(requests, [pack for _, _, pack, _ in targets]):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/nsdi-agent/rca_framework/llm/reason.py", line 116, in reason_many
+    outputs = self.backend.generate(prompts)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chenziang/nsdi-agent/rca_framework/llm/backend.py", line 134, in generate
+    from vllm import LLM
+ModuleNotFoundError: No module named 'vllm'

@@ -1,0 +1,235 @@
+{
+  "dictionary_hash": "6838b8e1de5dd1a2",
+  "dictionary_version": "feature-dictionary-v3",
+  "feature_profile": "v3",
+  "neighbourhood_consistency": [
+    {
+      "cases_with_at_least_one_neighbour": 156,
+      "chance_rate": 0.483971,
+      "lift_over_chance": 0.099234,
+      "min_similarity": 0.5,
+      "pairs": 1298,
+      "same_root_cause_rate": 0.583205
+    },
+    {
+      "cases_with_at_least_one_neighbour": 147,
+      "chance_rate": 0.483971,
+      "lift_over_chance": 0.132382,
+      "min_similarity": 0.6,
+      "pairs": 795,
+      "same_root_cause_rate": 0.616352
+    },
+    {
+      "cases_with_at_least_one_neighbour": 119,
+      "chance_rate": 0.483971,
+      "lift_over_chance": 0.151791,
+      "min_similarity": 0.7,
+      "pairs": 453,
+      "same_root_cause_rate": 0.635762
+    },
+    {
+      "cases_with_at_least_one_neighbour": 88,
+      "chance_rate": 0.483971,
+      "lift_over_chance": 0.207519,
+      "min_similarity": 0.8,
+      "pairs": 188,
+      "same_root_cause_rate": 0.691489
+    },
+    {
+      "cases_with_at_least_one_neighbour": 39,
+      "chance_rate": 0.483971,
+      "lift_over_chance": 0.213704,
+      "min_similarity": 0.9,
+      "pairs": 43,
+      "same_root_cause_rate": 0.697674
+    },
+    {
+      "cases_with_at_least_one_neighbour": 21,
+      "chance_rate": 0.483971,
+      "lift_over_chance": 0.141029,
+      "min_similarity": 1.0,
+      "pairs": 16,
+      "same_root_cause_rate": 0.625
+    }
+  ],
+  "similarity_vote_loo": [
+    {
+      "answered": 159,
+      "balanced_recall_on_kept": 0.385532,
+      "coverage": 0.987578,
+      "lift_over_majority_on_kept": 0.006289,
+      "majority_on_kept": 0.628931,
+      "min_similarity": 0.4,
+      "precision_when_answered": 0.63522
+    },
+    {
+      "answered": 156,
+      "balanced_recall_on_kept": 0.401347,
+      "coverage": 0.968944,
+      "lift_over_majority_on_kept": 0.00641,
+      "majority_on_kept": 0.634615,
+      "min_similarity": 0.5,
+      "precision_when_answered": 0.641026
+    },
+    {
+      "answered": 147,
+      "balanced_recall_on_kept": 0.380702,
+      "coverage": 0.913043,
+      "lift_over_majority_on_kept": -0.020408,
+      "majority_on_kept": 0.646259,
+      "min_similarity": 0.6,
+      "precision_when_answered": 0.62585
+    },
+    {
+      "answered": 119,
+      "balanced_recall_on_kept": 0.368175,
+      "coverage": 0.73913,
+      "lift_over_majority_on_kept": -0.058824,
+      "majority_on_kept": 0.714286,
+      "min_similarity": 0.7,
+      "precision_when_answered": 0.655462
+    },
+    {
+      "answered": 88,
+      "balanced_recall_on_kept": 0.390347,
+      "coverage": 0.546584,
+      "lift_over_majority_on_kept": -0.034091,
+      "majority_on_kept": 0.738636,
+      "min_similarity": 0.8,
+      "precision_when_answered": 0.704545
+    },
+    {
+      "answered": 39,
+      "balanced_recall_on_kept": 0.388889,
+      "coverage": 0.242236,
+      "lift_over_majority_on_kept": -0.076923,
+      "majority_on_kept": 0.769231,
+      "min_similarity": 0.9,
+      "precision_when_answered": 0.692308
+    }
+  ],
+  "test_signature_placement": {
+    "cases": 107,
+    "landing_on_ambiguous_train_signature": 0,
+    "share_ambiguous": 0.0,
+    "share_seen": 0.074766,
+    "signature_seen_in_train": 8
+  },
+  "train": {
+    "ambiguous_signatures": 4,
+    "cases": 161,
+    "cases_in_ambiguous_signatures": 10,
+    "ceiling_accuracy": 0.975155,
+    "conflicting_pairs": 6,
+    "distinct_signatures": 149,
+    "headroom_over_majority": 0.354037,
+    "largest_ambiguous": [
+      {
+        "labels": {
+          "L2": 3,
+          "fiber": 1
+        },
+        "size": 4,
+        "tokens": [
+          "drop:L1:media_snr:single_lane",
+          "drop:L1:rxpower:single_lane",
+          "expert:L1:media_snr:lane_down",
+          "expert:L1:rxpower:lane_down",
+          "expert:L1:serdes_snr:low_value",
+          "expert:pattern:L1:multi_metric",
+          "expert:points_to:L1:L2",
+          "lane:L2_to_L1:tx_ok_rx_down",
+          "level:L1:rxpower_mean:high_tail",
+          "level:L1:txpower_mean:low_tail",
+          "level:L2:media_snr_min:high_tail",
+          "level:L2:rxpower_mean:low_tail",
+          "serdes:L1:valid",
+          "serdes:L2:valid",
+          "status:L1:RxLOL",
+          "status:L1:RxLOS",
+          "telemetry:partial_telemetry"
+        ]
+      },
+      {
+        "labels": {
+          "L1": 1,
+          "L2": 1
+        },
+        "size": 2,
+        "tokens": [
+          "level:L1:media_snr_min:low_tail",
+          "level:L2:media_snr_min:low_tail",
+          "serdes:L1:valid",
+          "serdes:L2:valid",
+          "telemetry:partial_telemetry"
+        ]
+      },
+      {
+        "labels": {
+          "L1": 1,
+          "L2": 1
+        },
+        "size": 2,
+        "tokens": [
+          "drop:L2:media_snr:single_lane",
+          "expert:L2:media_snr:lane_down",
+          "expert:L2:serdes_snr:low_value",
+          "expert:points_to:L2:L2",
+          "imbalance:L2:serdes_snr",
+          "level:L1:media_snr_min:low_tail",
+          "level:L2:media_snr_min:low_tail",
+          "serdes:L1:valid",
+          "serdes:L2:valid",
+          "status:L2:RxLOL",
+          "telemetry:full_telemetry"
+        ]
+      },
+      {
+        "labels": {
+          "L2": 1,
+          "fiber": 1
+        },
+        "size": 2,
+        "tokens": [
+          "drop:L1:media_snr:single_lane",
+          "drop:L1:rxpower:single_lane",
+          "expert:L1:media_snr:lane_down",
+          "expert:L1:rxpower:lane_down",
+          "expert:L1:serdes_snr:low_value",
+          "expert:pattern:L1:multi_metric",
+          "expert:points_to:L1:L2",
+          "lane:L2_to_L1:tx_ok_rx_down",
+          "level:L1:txpower_mean:low_tail",
+          "level:L2:rxpower_mean:low_tail",
+          "level:L2:txpower_mean:low_tail",
+          "serdes:L1:valid",
+          "serdes:L2:valid",
+          "status:L1:RxLOL",
+          "status:L1:RxLOS",
+          "telemetry:partial_telemetry"
+        ]
+      }
+    ],
+    "majority_accuracy": 0.621118,
+    "majority_label": "L2",
+    "share_in_ambiguous_signatures": 0.062112,
+    "singleton_signatures": 140
+  },
+  "train_per_label": {
+    "L1": {
+      "cases": 49,
+      "recall_ceiling": 0.959184,
+      "signatures_won": 46
+    },
+    "L2": {
+      "cases": 100,
+      "recall_ceiling": 0.99,
+      "signatures_won": 92
+    },
+    "fiber": {
+      "cases": 12,
+      "recall_ceiling": 0.916667,
+      "signatures_won": 11
+    }
+  }
+}

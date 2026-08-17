@@ -1,0 +1,41 @@
+{
+  "version": "feature-model-v1",
+  "dictionary_version": "feature-dictionary-v1",
+  "dictionary_hash": "1b2e66ed650ce60e",
+  "fitted_case_count": 126,
+  "tail_quantiles": [
+    0.25,
+    0.75
+  ],
+  "level_edges": {
+    "L1:media_snr_min": [
+      24.715,
+      25.64
+    ],
+    "L1:rxpower_mean": [
+      0.2625,
+      1.78
+    ],
+    "L1:txpower_mean": [
+      0.3725,
+      1.07875
+    ],
+    "L2:media_snr_min": [
+      25.06,
+      25.96
+    ],
+    "L2:rxpower_mean": [
+      0.228125,
+      1.57875
+    ],
+    "L2:txpower_mean": [
+      0.456875,
+      1.0725
+    ]
+  },
+  "asymmetry_edges": {
+    "media_snr_min": 0.88,
+    "rxpower_mean": 1.4575,
+    "txpower_mean": 0.86625
+  }
+}

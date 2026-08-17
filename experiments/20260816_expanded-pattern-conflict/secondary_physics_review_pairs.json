@@ -1,0 +1,80 @@
+[
+  {
+    "pattern_id": "PAT-015",
+    "left_case_id": "case_1fc24b82a165",
+    "right_case_id": "case_da829dd0f857",
+    "updated_at": "2026-08-17T02:26:33.191Z",
+    "decision": "test_label_suspect",
+    "left_label": "keep",
+    "right_label": "fiber",
+    "evidence_status": "sufficient",
+    "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常",
+    "completed": true,
+    "requires_secondary_physics_review": true
+  },
+  {
+    "pattern_id": "PAT-019",
+    "left_case_id": "case_2364d18e502f",
+    "right_case_id": "case_0e12ed53d250",
+    "updated_at": "2026-08-17T02:35:44.602Z",
+    "decision": "train_label_suspect",
+    "left_label": "fiber",
+    "right_label": "keep",
+    "evidence_status": "sufficient",
+    "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）某些lane均异常",
+    "completed": true,
+    "requires_secondary_physics_review": true
+  },
+  {
+    "pattern_id": "PAT-013",
+    "left_case_id": "case_1fc24b82a165",
+    "right_case_id": "case_5af065c8baca",
+    "updated_at": "2026-08-17T03:01:49.359Z",
+    "decision": "test_label_suspect",
+    "left_label": "keep",
+    "right_label": "fiber",
+    "evidence_status": "sufficient",
+    "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+    "completed": true,
+    "requires_secondary_physics_review": true
+  },
+  {
+    "pattern_id": "PAT-020",
+    "left_case_id": "case_1fc24b82a165",
+    "right_case_id": "case_0d380a152700",
+    "updated_at": "2026-08-17T04:39:35.151Z",
+    "decision": "test_label_suspect",
+    "left_label": "keep",
+    "right_label": "fiber",
+    "evidence_status": "sufficient",
+    "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+    "completed": true,
+    "requires_secondary_physics_review": true
+  },
+  {
+    "pattern_id": "PAT-001",
+    "left_case_id": "case_1fc24b82a165",
+    "right_case_id": "case_af0a23d25838",
+    "updated_at": "2026-08-17T05:03:43.744Z",
+    "decision": "test_label_suspect",
+    "left_label": "keep",
+    "right_label": "fiber",
+    "evidence_status": "sufficient",
+    "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧RX一个lane -40，L2侧RX四条lane都偏低",
+    "completed": true,
+    "requires_secondary_physics_review": true
+  },
+  {
+    "pattern_id": "PAT-005",
+    "left_case_id": "case_6fd458311d2d",
+    "right_case_id": "case_99dd8a24f695",
+    "updated_at": "2026-08-17T05:44:23.158Z",
+    "decision": "test_label_suspect",
+    "left_label": "keep",
+    "right_label": "fiber",
+    "evidence_status": "",
+    "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧一条lane的RX -40，L2侧四条lane的RX均低",
+    "completed": true,
+    "requires_secondary_physics_review": true
+  }
+]
