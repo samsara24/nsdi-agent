@@ -2193,3 +2193,24 @@ shell 语法和 Python 编译检查；当前 GPU 是否空闲仍由远端 dry-ru
 
 原 `run_expanded_remote_experiment.sh` 保留为不操作 Git 的底层调试入口。同步入口支持覆盖 remote、
 branch 和自动提交作者；默认仍使用 DeepSeek-32B、BF16、TP=2 及 122/341 expert-clean 契约。
+
+### 9.40 双相似度路由与受约束 SOP 正式入口（2026-08-18）
+
+新增 `rca_framework/expanded_dual.py` 与 `scripts/run_expanded_dual_experiment.py`，正式 expanded
+实验不再调用 legacy KG/符号融合。新链路分别保存 `S_feature` 与 `S_graph`，训练集留一法联合搜索
+双阈值，要求选择性风险不超过 15%、校准支持至少 20、Top-5 联合候选至少 3、标签纯净、质量兼容
+且无关键证据冲突。没有组合通过时按约定退回双维均为 1.0 的严格门禁，不产生混合总分。
+
+SOP 固定执行 Q0 数据质量、P 物理边界、R 方向关系、L 两条稳定学习谓词、D 候选/补采五步。
+LLM 请求新增原始数值、单位、lane 数、双相似度、五层路径、对立历史 case、最大归一化差异、关键
+缺失与已声明谓词；每个 LLM step 必须引用 SOP step ID。未声明阈值、逆序、非法候选和缺现场证据
+的 fiber 自动结论均被拒绝。生产 `decision_action` 与观察用 `forced_prediction` 分开，N8 继续冻结。
+
+本地无 LLM 确定性运行实测：122 train 的双阈值校准没有组合达到风险/支持门禁，回退
+`S_feature=S_graph=1.0`；341 test 路由为 N5a 1、N5b 263、N5c 77。SOP 在 train 上产生 42 个
+唯一端点结论，但只有 22 个正确（52.38%），未达到 85% 选择性精度，因此自动终裁被关闭，
+只保留候选、补采和 forced 观察输出。这一结果阻止了把表面确定的 SOP 规则直接投入生产。
+legacy 手工回归仍为 58/85=68.24%，85 条 case 的 case ID、预测和标签逐条匹配历史 artifact。
+
+验证状态：新模块编译、remote shell 语法、`git diff --check` 和 7 个新增定向测试函数通过；本机
+缺少 pytest 包，未执行完整 pytest runner。正式 DeepSeek-32B 四组消融等待远端同步脚本运行。

@@ -2,18 +2,17 @@
 set -euo pipefail
 
 # One-command remote runner for the cleaned/adjudicated expanded 341-case test set. vLLM is
-# embedded by rca_framework.cli, so DeepSeek-R1-Distill-Qwen-32B is loaded locally
+# embedded by the dual-similarity experiment runner, so DeepSeek-R1-Distill-Qwen-32B is loaded locally
 # process; no API server, API key, or Internet connection is required.
 
 ROOT="${NSDI_RCA_ROOT:-/home/chenziang/nsdi-agent}"
 BASE_PYTHON="${NSDI_RCA_PYTHON:-/home/chenziang/miniconda3/bin/python3}"
 VLLM_PYTHON="${NSDI_RCA_VLLM_PYTHON:-/home/chenziang/miniconda3/envs/logsy/bin/python}"
 MODEL_PATH="${NSDI_RCA_MODEL_PATH:-/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B}"
-OLD_DATASET_DIR="${NSDI_RCA_OLD_DATASET_DIR:-$ROOT/datasets/organized_rca_v2_stratified_60_40_seed42}"
 TRAIN_JSONL="${NSDI_RCA_TRAIN_JSONL:-$ROOT/experiments/20260816_expanded-pattern-conflict/clean_train.jsonl}"
 EXPANDED_TEST_JSONL="${NSDI_RCA_EXPANDED_TEST_JSONL:-$ROOT/experiments/20260816_expanded-pattern-conflict/clean_expanded_test.jsonl}"
+DATA_CONTRACT="${NSDI_RCA_DATA_CONTRACT:-$ROOT/experiments/20260816_expanded-pattern-conflict/data_contract.json}"
 OUTPUT_DIR="${NSDI_RCA_OUTPUT_DIR:-$ROOT/artifacts/expanded_deepseek32b_$(date +%Y%m%d_%H%M%S)}"
-STAGING_DATASET_DIR="${NSDI_RCA_STAGING_DATASET_DIR:-$OUTPUT_DIR/staging_dataset}"
 TRAIN_SIZE="${NSDI_RCA_TRAIN_SIZE:-122}"
 EXPECTED_TEST_SIZE="${NSDI_RCA_EXPECTED_TEST_SIZE:-341}"
 
@@ -37,10 +36,10 @@ done
 (( TENSOR_PARALLEL_SIZE > 0 )) || { echo "tensor parallel size must be positive" >&2; exit 2; }
 (( GPU_POLL_SECONDS > 0 )) || { echo "GPU poll interval must be positive" >&2; exit 2; }
 
-for path in "$ROOT" "$OLD_DATASET_DIR"; do
+for path in "$ROOT"; do
   [[ -d "$path" ]] || { echo "missing directory: $path" >&2; exit 2; }
 done
-for path in "$TRAIN_JSONL" "$EXPANDED_TEST_JSONL" "$ROOT/scripts/materialize_expanded_legacy_dataset.py"; do
+for path in "$TRAIN_JSONL" "$EXPANDED_TEST_JSONL" "$DATA_CONTRACT" "$ROOT/scripts/run_expanded_dual_experiment.py"; do
   [[ -f "$path" ]] || { echo "missing file: $path" >&2; exit 2; }
 done
 [[ -x "$BASE_PYTHON" ]] || { echo "base python is not executable: $BASE_PYTHON" >&2; exit 2; }
@@ -163,17 +162,11 @@ if [[ "$DRY_RUN" == "1" ]]; then
   exit 0
 fi
 
-"$BASE_PYTHON" scripts/materialize_expanded_legacy_dataset.py \
-  --old-data-dir "$OLD_DATASET_DIR" \
-  --train-size "$TRAIN_SIZE" \
-  --train-jsonl "$TRAIN_JSONL" \
-  --expanded-test "$EXPANDED_TEST_JSONL" \
-  --output-dir "$STAGING_DATASET_DIR"
-
 RUN_OUTPUT="$OUTPUT_DIR/deepseek32b_vllm"
-COMMAND=("$VLLM_PYTHON" -m rca_framework.cli train-evaluate
-  --data-dir "$STAGING_DATASET_DIR"
-  --train-size "$TRAIN_SIZE"
+COMMAND=("$VLLM_PYTHON" scripts/run_expanded_dual_experiment.py
+  --train-jsonl "$TRAIN_JSONL"
+  --test-jsonl "$EXPANDED_TEST_JSONL"
+  --data-contract "$DATA_CONTRACT"
   --output-dir "$RUN_OUTPUT"
   --backend vllm
   --model-path "$MODEL_PATH"
@@ -215,7 +208,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-echo "[expanded-rca] loading DeepSeek-R1-Distill-Qwen-32B with vLLM and evaluating all expanded test cases"
+echo "[expanded-rca] loading DeepSeek-R1-Distill-Qwen-32B with vLLM for dual-similarity + executable SOP evaluation"
 env CUDA_VISIBLE_DEVICES="$CUDA_VISIBLE_DEVICES" PYTHONPATH="$ROOT" \
   NCCL_P2P_DISABLE="$NCCL_P2P_DISABLE" NCCL_IB_DISABLE="$NCCL_IB_DISABLE" \
   VLLM_USE_V1="$VLLM_USE_V1" VLLM_ENABLE_V1_MULTIPROCESSING="$VLLM_ENABLE_V1_MULTIPROCESSING" \
@@ -228,23 +221,24 @@ EXPERIMENT_PID=""
 nvidia-smi > "$OUTPUT_DIR/nvidia_smi_after.txt"
 AFTER_SNAPSHOT_WRITTEN=1
 
-for file in predictions.json evaluation_summary.json run_manifest.json; do
+for file in predictions.json summary.json run_manifest.json report.html; do
   [[ -s "$RUN_OUTPUT/$file" ]] || { echo "missing experiment output: $RUN_OUTPUT/$file" >&2; exit 4; }
 done
-NSDI_EVAL_SUMMARY="$RUN_OUTPUT/evaluation_summary.json" NSDI_EXPECTED_TEST_SIZE="$EXPECTED_TEST_SIZE" \
-"$BASE_PYTHON" -c 'import json,os,pathlib; value=json.loads(pathlib.Path(os.environ["NSDI_EVAL_SUMMARY"]).read_text()); actual=int(value.get("case_count",-1)); expected=int(os.environ["NSDI_EXPECTED_TEST_SIZE"]); assert actual==expected, f"evaluation case_count mismatch: expected {expected}, got {actual}"'
+NSDI_EVAL_SUMMARY="$RUN_OUTPUT/summary.json" NSDI_EXPECTED_TEST_SIZE="$EXPECTED_TEST_SIZE" \
+"$BASE_PYTHON" -c 'import json,os,pathlib; value=json.loads(pathlib.Path(os.environ["NSDI_EVAL_SUMMARY"]).read_text()); actual=int(value.get("test_size",-1)); expected=int(os.environ["NSDI_EXPECTED_TEST_SIZE"]); assert actual==expected, f"evaluation test_size mismatch: expected {expected}, got {actual}"'
 cp "$RUN_OUTPUT/predictions.json" "$OUTPUT_DIR/predictions_expanded.json"
-cp "$RUN_OUTPUT/evaluation_summary.json" "$OUTPUT_DIR/evaluation_expanded.json"
+cp "$RUN_OUTPUT/summary.json" "$OUTPUT_DIR/evaluation_expanded.json"
 cp "$RUN_OUTPUT/run_manifest.json" "$OUTPUT_DIR/run_manifest.json"
+cp "$RUN_OUTPUT/report.html" "$OUTPUT_DIR/report.html"
 
 NSDI_MATCH_INPUT="$RUN_OUTPUT/predictions.json" NSDI_MATCH_OUTPUT="$OUTPUT_DIR/matched_train_cases.jsonl" \
-"$BASE_PYTHON" -c 'import json,os,pathlib; rows=json.loads(pathlib.Path(os.environ["NSDI_MATCH_INPUT"]).read_text()); out=pathlib.Path(os.environ["NSDI_MATCH_OUTPUT"]); out.write_text("".join(json.dumps({"case_id":r.get("case_id"),"actual_label":r.get("actual_label"),"prediction":r.get("prediction"),"retrieved_cases":r.get("KG_RAG_LLM",{}).get("retrieved_cases",[])},ensure_ascii=False)+"\n" for r in rows),encoding="utf-8")'
+"$BASE_PYTHON" -c 'import json,os,pathlib; rows=json.loads(pathlib.Path(os.environ["NSDI_MATCH_INPUT"]).read_text()); out=pathlib.Path(os.environ["NSDI_MATCH_OUTPUT"]); out.write_text("".join(json.dumps({"case_id":r.get("case_id"),"actual_label":r.get("actual_label"),"branch":r.get("branch"),"S_feature":r.get("dual_match",{}).get("feature_similarity"),"S_graph":r.get("dual_match",{}).get("graph_similarity"),"joint_candidates":r.get("dual_match",{}).get("joint_candidates",[])},ensure_ascii=False)+"\n" for r in rows),encoding="utf-8")'
 
-NSDI_META_OUTPUT="$OUTPUT_DIR/metadata.json" NSDI_META_ROOT="$ROOT" NSDI_META_OLD="$OLD_DATASET_DIR" \
+NSDI_META_OUTPUT="$OUTPUT_DIR/metadata.json" NSDI_META_ROOT="$ROOT" NSDI_META_CONTRACT="$DATA_CONTRACT" \
 NSDI_META_TRAIN_JSONL="$TRAIN_JSONL" NSDI_META_TEST="$EXPANDED_TEST_JSONL" NSDI_META_MODEL="$MODEL_PATH" NSDI_META_CUDA="$CUDA_VISIBLE_DEVICES" \
 NSDI_META_TP="$TENSOR_PARALLEL_SIZE" NSDI_META_FREE="$GPU_MIN_FREE_MB" \
 NSDI_META_TRAIN="$TRAIN_SIZE" NSDI_META_TEST_SIZE="$EXPECTED_TEST_SIZE" \
-"$BASE_PYTHON" -c 'import json,os,platform,datetime,pathlib; p=pathlib.Path(os.environ["NSDI_META_OUTPUT"]); p.write_text(json.dumps({"schema_version":"expanded-remote-run-metadata-v3-expert-clean","data_contract_version":"expanded-expert-clean-v1","finished_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),"python":platform.python_version(),"root":os.environ["NSDI_META_ROOT"],"old_dataset":os.environ["NSDI_META_OLD"],"train_jsonl":os.environ["NSDI_META_TRAIN_JSONL"],"expanded_test":os.environ["NSDI_META_TEST"],"model_path":os.environ["NSDI_META_MODEL"],"cuda_visible_devices":os.environ["NSDI_META_CUDA"],"tensor_parallel_size":int(os.environ["NSDI_META_TP"]),"gpu_min_free_mb":int(os.environ["NSDI_META_FREE"]),"train_size":int(os.environ["NSDI_META_TRAIN"]),"test_size":int(os.environ["NSDI_META_TEST_SIZE"]),"prompt_and_evaluation":"unchanged legacy rca_framework.cli train-evaluate","n8_feedback_update":False},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")'
+"$BASE_PYTHON" -c 'import json,os,platform,datetime,pathlib; p=pathlib.Path(os.environ["NSDI_META_OUTPUT"]); p.write_text(json.dumps({"schema_version":"expanded-remote-run-metadata-v4-dual-sop","data_contract_version":"expanded-expert-clean-v1","finished_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),"python":platform.python_version(),"root":os.environ["NSDI_META_ROOT"],"data_contract":os.environ["NSDI_META_CONTRACT"],"train_jsonl":os.environ["NSDI_META_TRAIN_JSONL"],"expanded_test":os.environ["NSDI_META_TEST"],"model_path":os.environ["NSDI_META_MODEL"],"cuda_visible_devices":os.environ["NSDI_META_CUDA"],"tensor_parallel_size":int(os.environ["NSDI_META_TP"]),"gpu_min_free_mb":int(os.environ["NSDI_META_FREE"]),"train_size":int(os.environ["NSDI_META_TRAIN"]),"test_size":int(os.environ["NSDI_META_TEST_SIZE"]),"prompt_and_evaluation":"dual similarity + calibrated pure history + executable SOP + constrained LLM","production_output":"selective","forced_prediction":"observational_only","n8_feedback_update":False},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")'
 
 echo "[expanded-rca] finished: $(timestamp)"
 echo "[expanded-rca] result: $OUTPUT_DIR/evaluation_expanded.json"

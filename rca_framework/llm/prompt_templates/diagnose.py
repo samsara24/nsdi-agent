@@ -12,7 +12,7 @@ from ...types import ROOT_CAUSES
 from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
-DIAGNOSE_PROMPT_VERSION = "rca-diagnose-forced-v5"
+DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v6"
 
 ROOT_CAUSE_DEFINITIONS = {
     "L1": "400G 端口一侧的设备或端口根因",
@@ -37,6 +37,18 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
         "historical_label_distribution": dict(request.historical_label_distribution),
         "expert_sop": getattr(request, "expert_sop", None),
         "numeric_decision_tree_path": getattr(request, "decision_tree_prediction", None),
+        "raw_measurements_with_units_and_lane_counts": getattr(request, "raw_measurements", {}),
+        "dual_similarity": {
+            "S_feature": getattr(request, "feature_similarity", 0.0),
+            "S_graph": getattr(request, "graph_similarity", 0.0),
+        },
+        "five_layer_evidence_paths": list(getattr(request, "evidence_paths", ())),
+        "opposing_historical_cases": list(getattr(request, "opposing_historical_cases", ())),
+        "largest_feature_differences": list(getattr(request, "largest_differences", ())),
+        "critical_missing_evidence": list(getattr(request, "critical_missing_evidence", ())),
+        "declared_predicates": list(getattr(request, "declared_predicates", ())),
+        "executed_sop_trace": list(getattr(request, "sop_trace", ())),
+        "deterministic_sop_candidates": list(getattr(request, "sop_candidates", ())),
     }
     sections = [
         "你是光链路故障定界专家。当前 case 与历史证据图相似度不足，"
@@ -65,9 +77,11 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
         sections.append("上一次回答未通过物理约束校验，请修正以下问题：\n" + retry_feedback)
     sections.append("本 case 证据：\n" + json.dumps(payload, ensure_ascii=False, indent=2))
     sections.append(
+        "只能使用 declared_predicates 中已有的阈值；禁止发明、移动或重新拟合阈值。"
+        "每一步必须引用 executed_sop_trace 中的 sop_step_id，并按 Q0→P→R→L→D 顺序。\n"
         "只输出一个 JSON 对象，结构如下：\n"
         "{\n"
-        '  "steps": [{"claim": "...", "cited_evidence": ["..."], '
+        '  "steps": [{"sop_step_id": "Q0|P|R|L|D", "cited_predicates": ["谓词 ID"], "claim": "...", "cited_evidence": ["证据 ID"], '
         '"cited_constraints": ["..."], "effect": "support | exclude | neutral", '
         '"target": "L1 | L2 | fiber | " }],\n'
         '  "verdict": "L1 | L2 | fiber",\n'

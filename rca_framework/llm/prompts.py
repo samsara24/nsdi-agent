@@ -35,7 +35,7 @@ from .prompt_templates.diagnose import DIAGNOSE_PROMPT_VERSION, build_diagnose_p
 #: 这不是 prompt 措辞问题——v6 的约束清单里确实写了 C16，但它混在 20 多条约束中间，
 #: 模型要先自己意识到「该用方向类约束」才会去读。v7 把方向表提到系统级硬规则，
 #: 让它在读证据之前就已经知道每一类观测指向哪一端。
-PROMPT_TEMPLATE_VERSION = "rca-forced-multidim-v12"
+PROMPT_TEMPLATE_VERSION = "rca-dual-sop-multidim-v13"
 SOP_VERSION = "expert-sop-n5c-v1+learned-sop-advisory-v2"
 
 ROOT_CAUSE_DEFINITIONS = {
@@ -95,6 +95,10 @@ SYSTEM_PREAMBLE = """你是光链路故障定界专家。你的任务是在给�
    且该步的 effect、target 和证据 token 前缀必须同时满足该约束的结构化引用契约。
 8. 约束编号必须从清单中逐字完整复制，例如 `C11_media_snr_floor`，禁止缩写为 `C11`。
 9. 不引用约束的推理步骤必须明确写 `"cited_constraints": []`。
+10. 每一步必须填写 `sop_step_id`，且只能按 Q0、P、R、L、D 的顺序引用已执行 SOP；
+    只能使用载荷中声明的谓词和阈值，禁止临时发明或修改连续阈值。
+11. 每一步必须至少引用一个当前 case 的 `cited_evidence` 和一个已声明的 `cited_predicates`；
+    引用不存在的证据或谓词会使整条结论作废。
 
 判据（强制三选一 + 多维低置信表达）：
 
@@ -119,6 +123,8 @@ OUTPUT_INSTRUCTION = """只输出一个 JSON 对象，结构如下：
 {
   "steps": [
     {
+      "sop_step_id": "Q0 | P | R | L | D",
+      "cited_predicates": ["载荷中声明的谓词 ID"],
       "claim": "这一步的断言",
       "cited_evidence": ["引用的证据 token"],
       "cited_constraints": ["引用的约束编号"],
@@ -159,6 +165,16 @@ def _evidence_section(request: Any) -> Dict[str, Any]:
             dict(request.historical_label_distribution),
         "训练集归纳 SOP（仅作检查路径与统计先验，不能作为 cited_evidence）":
             getattr(request, "sop_prediction", None),
+        "原始数值、单位与 lane 数": getattr(request, "raw_measurements", {}),
+        "S_feature": getattr(request, "feature_similarity", 0.0),
+        "S_graph": getattr(request, "graph_similarity", 0.0),
+        "五层证据路径": list(getattr(request, "evidence_paths", ())),
+        "对立历史 case": list(getattr(request, "opposing_historical_cases", ())),
+        "最大特征差异": list(getattr(request, "largest_differences", ())),
+        "关键缺失证据": list(getattr(request, "critical_missing_evidence", ())),
+        "允许使用的谓词与阈值来源": list(getattr(request, "declared_predicates", ())),
+        "已执行 SOP（必须按顺序引用 sop_step_id）": list(getattr(request, "sop_trace", ())),
+        "确定性 SOP 候选集": list(getattr(request, "sop_candidates", ())),
     }
 
 

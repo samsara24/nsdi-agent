@@ -19,7 +19,7 @@ T6 会接入 LLM，本模块现在做的是 T6 之前必须先做对的三件事
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Sequence, Tuple  # noqa: F401
 
 from ..anomaly import DOWN_THRESHOLDS, lane_values
@@ -93,6 +93,17 @@ class DiagnosisRequest:
     sop_prediction: Optional[Dict[str, Any]] = None
     decision_tree_prediction: Optional[Dict[str, Any]] = None
     expert_sop: Optional[Dict[str, Any]] = None
+    raw_measurements: Dict[str, Any] = field(default_factory=dict)
+    feature_similarity: float = 0.0
+    graph_similarity: float = 0.0
+    evidence_paths: Tuple[Dict[str, Any], ...] = ()
+    opposing_historical_cases: Tuple[Dict[str, Any], ...] = ()
+    largest_differences: Tuple[Dict[str, Any], ...] = ()
+    critical_missing_evidence: Tuple[str, ...] = ()
+    declared_predicates: Tuple[Dict[str, Any], ...] = ()
+    sop_trace: Tuple[Dict[str, Any], ...] = ()
+    sop_candidates: Tuple[str, ...] = ()
+    require_sop_step_ids: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -117,6 +128,17 @@ class DiagnosisRequest:
                 else None
             ),
             "expert_sop": dict(self.expert_sop) if self.expert_sop is not None else None,
+            "raw_measurements": dict(self.raw_measurements),
+            "feature_similarity": self.feature_similarity,
+            "graph_similarity": self.graph_similarity,
+            "evidence_paths": [dict(item) for item in self.evidence_paths],
+            "opposing_historical_cases": [dict(item) for item in self.opposing_historical_cases],
+            "largest_differences": [dict(item) for item in self.largest_differences],
+            "critical_missing_evidence": list(self.critical_missing_evidence),
+            "declared_predicates": [dict(item) for item in self.declared_predicates],
+            "sop_trace": [dict(item) for item in self.sop_trace],
+            "sop_candidates": list(self.sop_candidates),
+            "require_sop_step_ids": self.require_sop_step_ids,
         }
 
 

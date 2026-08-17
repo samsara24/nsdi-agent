@@ -2,23 +2,23 @@
 
 本轮使用 `expanded-expert-clean-v1`：剔除 6 条低质量 blackout 后，训练集为 122 条、
 测试集为 341 条；已审核 case 使用专家标签，未审核 case 保留原标签并在
-`data_contract.json` 中标为 `unreviewed`。不改 prompt、模型或 legacy 评估逻辑。
+`data_contract.json` 中标为 `unreviewed`。本入口运行新的双相似度、纯度/冲突门禁、可执行 SOP
+与受约束 LLM 链路；legacy 入口只作为 58/85 回归锚点保留。
 脚本使用远端已验证的本地 `DeepSeek-R1-Distill-Qwen-32B` checkpoint、自动选择两张空闲 GPU，并复用正式入口
-`python -m rca_framework.cli train-evaluate`。vLLM 在实验进程内加载模型，不需要 API
+`python scripts/run_expanded_dual_experiment.py`。vLLM 在实验进程内加载模型，不需要 API
 server、API key 或网络连接。
 
 ## 上传
 
 建议把整个当前仓库同步到远端 `/home/chenziang/nsdi-agent`，至少保证下列文件存在：
 
-- `datasets/organized_rca_v2_stratified_60_40_seed42/`（只读来源与兼容检查）；
 - `experiments/20260816_expanded-pattern-conflict/clean_train.jsonl`；
 - `experiments/20260816_expanded-pattern-conflict/clean_expanded_test.jsonl`；
 - `experiments/20260816_expanded-pattern-conflict/data_contract.json`；
 - `experiments/20260816_expanded-pattern-conflict/added_case_ids.txt`；
 - `experiments/20260816_expanded-pattern-conflict/added_cases_manifest.json`；
 - `experiments/20260816_expanded-pattern-conflict/run_expanded_remote_experiment.sh`；
-- `scripts/materialize_expanded_legacy_dataset.py`；
+- `scripts/run_expanded_dual_experiment.py`；
 - 当前 `rca_framework/` 代码。
 
 推荐结构：
@@ -26,8 +26,7 @@ server、API key 或网络连接。
 ```text
 /home/chenziang/nsdi-agent/
   rca_framework/
-  scripts/materialize_expanded_legacy_dataset.py
-  datasets/organized_rca_v2_stratified_60_40_seed42/
+  scripts/run_expanded_dual_experiment.py
   experiments/20260816_expanded-pattern-conflict/
 ```
 
@@ -118,6 +117,7 @@ bash experiments/20260816_expanded-pattern-conflict/run_expanded_remote_experime
 ```bash
 export NSDI_RCA_TRAIN_JSONL=/home/chenziang/nsdi-agent/experiments/20260816_expanded-pattern-conflict/clean_train.jsonl
 export NSDI_RCA_EXPANDED_TEST_JSONL=/home/chenziang/nsdi-agent/experiments/20260816_expanded-pattern-conflict/clean_expanded_test.jsonl
+export NSDI_RCA_DATA_CONTRACT=/home/chenziang/nsdi-agent/experiments/20260816_expanded-pattern-conflict/data_contract.json
 ```
 
 首次建议先做不加载权重的 dry-run。它会检查本地模型配置、vLLM/Transformers/PyTorch 环境
@@ -131,8 +131,10 @@ bash experiments/20260816_expanded-pattern-conflict/run_expanded_remote_experime
 
 dry-run 和正式运行必须使用不同的输出目录，因为脚本会拒绝覆盖任何已有目录。
 
-正式脚本会把“clean 122 train + clean 341 test”物化为临时 positional dataset，随后在选中的
-GPU 上加载 DeepSeek-R1-Distill-Qwen-32B 并一次性评估 341 条测试 case。它拒绝覆盖已有输出，记录实际命令、模型
+正式脚本直接读取“clean 122 train + clean 341 test”，先在训练集做双阈值留一法校准，再在选中的
+GPU 上加载 DeepSeek-R1-Distill-Qwen-32B，并只对 N5b/N5c 执行受约束推理。它同时报告 prior-only、
+双相似度历史复用、历史复用+SOP、历史复用+SOP+LLM 四组消融；生产选择性输出与观察用强制三分类分开。
+它拒绝覆盖已有输出，记录实际命令、模型
 preflight、git commit、运行日志和 GPU 选择前/模型启动前/进程退出后的显存快照。中断脚本时会
 终止实验子进程；模型进程退出后再从进程外记录 `nvidia-smi`。
 
@@ -153,8 +155,10 @@ preflight、git commit、运行日志和 GPU 选择前/模型启动前/进程退
 - `nvidia_smi_before_model.txt`
 - `nvidia_smi_after.txt`
 - `model_preflight.json`
+- `report.html`
 
-回传后放到本地任意目录，例如 `artifacts/expanded_deepseek32b_seed42/`，然后重建 HTML：
+`report.html` 已由正式入口直接生成，可逐 case 查看双相似度、五层路径、SOP trace、LLM 合规性与四组决策。
+旧的 pattern-conflict 审核报告如需合并远端预测，仍可单独重建：
 
 ```bash
 python3 scripts/analyze_expanded_rca_patterns.py \

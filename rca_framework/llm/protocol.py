@@ -50,12 +50,16 @@ DIAGNOSIS_OUTPUT_SCHEMA: Dict[str, Any] = {
             "items": {
                 "type": "object",
                 "properties": {
+                    "sop_step_id": {"type": "string"},
+                    "cited_predicates": {"type": "array", "items": {"type": "string"}},
                     "claim": {"type": "string"},
                     "cited_evidence": {"type": "array", "items": {"type": "string"}},
                     "cited_constraints": {"type": "array", "items": {"type": "string"}},
                     "effect": {"type": "string", "enum": list(EFFECTS)},
                     "target": {"type": "string", "enum": list(ROOT_CAUSES) + [""]},
                 },
+                # Optional for existing l2fixed/legacy-compatible callers.  The expanded
+                # runner requires and validates it after parsing.
                 "required": ["claim", "cited_evidence", "cited_constraints", "effect", "target"],
                 "additionalProperties": False,
             },
@@ -81,6 +85,8 @@ DIAGNOSIS_OUTPUT_SCHEMA: Dict[str, Any] = {
 @dataclass(frozen=True)
 class ReasoningStep:
     claim: str
+    sop_step_id: str = ""
+    cited_predicates: Tuple[str, ...] = ()
     cited_evidence: Tuple[str, ...] = ()
     cited_constraints: Tuple[str, ...] = ()
     effect: str = "neutral"
@@ -88,6 +94,8 @@ class ReasoningStep:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
+            "sop_step_id": self.sop_step_id,
+            "cited_predicates": list(self.cited_predicates),
             "claim": self.claim,
             "cited_evidence": list(self.cited_evidence),
             "cited_constraints": list(self.cited_constraints),
@@ -344,6 +352,8 @@ def parse_response(text: str) -> Optional[DiagnosisResponse]:
             return None
         steps.append(
             ReasoningStep(
+                sop_step_id=str(item.get("sop_step_id", "")),
+                cited_predicates=tuple(str(token) for token in item.get("cited_predicates", []) or ()),
                 claim=str(item.get("claim", "")),
                 cited_evidence=tuple(str(token) for token in item.get("cited_evidence", []) or ()),
                 cited_constraints=tuple(str(token) for token in item.get("cited_constraints", []) or ()),
