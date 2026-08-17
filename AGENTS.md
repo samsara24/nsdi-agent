@@ -41,6 +41,8 @@
 
 每一次 Loop 实验都必须围绕测试 bad case 做假设、改动和验证，并在 `experiments/<YYYYMMDD>_<short-name>/` 下沉淀完整报告。没有 HTML 报告、没有主流程图差异说明、没有逐 case bad case 分析的运行，不算有效实验。
 
+已绑定 GitHub 的实验机在启动正式实验前必须拉取目标分支最新提交；expanded expert-clean 实验统一使用 `run_synced_expanded_experiment.sh`，由它执行干净工作区门禁、`pull --ff-only`、实验、结果专属提交与 push。不得用自动 stash、强推或把其他本地改动混入实验提交。
+
 每次实验必须满足：
 
 - 报告首页必须放当前主流程图，并标注本轮只改了哪一处；允许的改动类别只有：证据图约束 / schema、阈值或路由、大模型 prompt、代码 bug fix。

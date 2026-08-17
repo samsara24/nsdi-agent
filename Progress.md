@@ -2183,3 +2183,13 @@ shell 语法和 Python 编译检查；当前 GPU 是否空闲仍由远端 dry-ru
   clean train 122 / test 341，模型与 BF16 TP=2 配置不变。
 - 门禁：Python 编译、shell 语法、HTML JavaScript 最小执行、15 个 expanded 定向测试函数
   全部通过；本机 Python 未安装 pytest，因此未运行完整 `python -m pytest -q`。
+
+### 9.39 Expanded 实验 Git 拉取与产物回传闭环（2026-08-18）
+
+新增 `run_synced_expanded_experiment.sh` 作为服务器正式运行入口。运行前要求工作区完全干净，
+从 `origin/codex/expanded-expert-clean-v1` 拉取最新提交；代码更新时重新启动一次包装脚本，确保
+实验实际使用拉取后的实现。运行完成后只暂存本次带时间戳的输出目录，失败运行也保留日志，
+提交前禁止混入目录外改动。长实验期间若远端前进，脚本先 fetch/rebase 再 push，禁止强推。
+
+原 `run_expanded_remote_experiment.sh` 保留为不操作 Git 的底层调试入口。同步入口支持覆盖 remote、
+branch 和自动提交作者；默认仍使用 DeepSeek-32B、BF16、TP=2 及 122/341 expert-clean 契约。

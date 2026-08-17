@@ -70,7 +70,43 @@ export NSDI_RCA_GPU_POLL_SECONDS=30
 32B BF16 的已验证配置是两张 RTX A6000 48GB、TP=2、显存利用率 0.85。通常不需要修改
 `NSDI_RCA_TENSOR_PARALLEL_SIZE` 和空闲显存门槛。
 
-## 执行
+## 推荐：拉取、运行并上传的一键入口
+
+服务器仓库绑定 GitHub 后，正式实验统一使用同步包装脚本。它会：
+
+1. 检查工作区必须干净；
+2. 从 `origin/codex/expanded-expert-clean-v1` 执行 `fetch` 和 `pull --ff-only`；
+3. 使用带时间戳的唯一目录运行实验；
+4. 无论实验成功或失败，都保存运行日志和 `git_sync.txt`；
+5. 只暂存本次输出目录，提交后对远端最新提交做 rebase 并 push。
+
+```bash
+cd /home/chenziang/nsdi-agent
+bash experiments/20260816_expanded-pattern-conflict/run_synced_expanded_experiment.sh
+```
+
+首次建议先做同步 dry-run；它同样会把 dry-run 产物上传：
+
+```bash
+NSDI_RCA_DRY_RUN=1 \
+bash experiments/20260816_expanded-pattern-conflict/run_synced_expanded_experiment.sh
+```
+
+默认 Git 参数可覆盖：
+
+```bash
+export NSDI_RCA_GIT_REMOTE=origin
+export NSDI_RCA_GIT_BRANCH=codex/expanded-expert-clean-v1
+export NSDI_RCA_GIT_AUTHOR_NAME="RCA Experiment Runner"
+export NSDI_RCA_GIT_AUTHOR_EMAIL="rca-experiment@users.noreply.github.com"
+```
+
+如果工作区有未提交文件，脚本会在拉取前停止，不会自动 stash 或覆盖文件。若实验运行期间其他
+机器推送了新提交，上传前会先 rebase；发生真实冲突时停止并保留现场，不会强推。
+
+## 仅执行、不自动上传
+
+下面的底层入口保留用于调试。它不执行 Git 拉取或上传，正式复现实验不要直接使用：
 
 ```bash
 cd /home/chenziang/nsdi-agent
