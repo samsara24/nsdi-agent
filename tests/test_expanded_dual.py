@@ -14,6 +14,8 @@ from rca_framework.expanded_dual import (
 )
 from rca_framework.llm.protocol import DiagnosisResponse, ReasoningStep
 from rca_framework.llm.backend import validate_context_window
+from rca_framework.llm.prompt_templates.diagnose import build_diagnose_prompt
+from scripts.run_expanded_dual_experiment import valid_llm_or_deterministic_fallback
 
 
 def _view(*, quality="valid", tokens=("a",), edges=("e",)):
@@ -130,3 +132,20 @@ def test_context_window_preflight_reserves_output_and_fails_before_model_load():
         assert "required_max_model_len>=182" in str(error)
     else:
         raise AssertionError("context preflight should reject an undersized window")
+
+
+def test_invalid_llm_output_uses_deterministic_observational_fallback():
+    assert valid_llm_or_deterministic_fallback(None, "L2") == "L2"
+    assert valid_llm_or_deterministic_fallback("L1", "L2") == "L1"
+
+
+def test_diagnose_prompt_requires_full_sop_step_ids():
+    request = SimpleNamespace(
+        case_id="case", branch="N5c", routing_reason="low", evidence_tokens=("e",),
+        missing_fields=(), telemetry_status="valid", candidate_root_causes=("L1", "L2"),
+        exclusions=(), nearest_similarity=0.0, historical_case_ids=(),
+        historical_label_distribution=(), decision_tree_prediction=None,
+    )
+    prompt = build_diagnose_prompt(request)
+    assert "P_apply_physical_boundaries" in prompt
+    assert "禁止使用 Q0/P/R/L/D 等缩写" in prompt

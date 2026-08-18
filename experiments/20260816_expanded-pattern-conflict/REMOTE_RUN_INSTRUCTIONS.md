@@ -85,6 +85,22 @@ cd /home/chenziang/nsdi-agent
 bash experiments/20260816_expanded-pattern-conflict/run_synced_expanded_experiment.sh
 ```
 
+### 快速长输出复跑
+
+2026-08-18 首次 dual-SOP 真机运行使用 512 个生成 token，339/340 个 LLM case 未形成完整 JSON。
+专用入口只把 `max_model_len` 固定为 16384、`max_new_tokens` 固定为 2048，其余数据、模型、
+双相似度、路由、SOP 和生成参数不变：
+
+```bash
+cd /home/chenziang/nsdi-agent-clean
+bash experiments/20260816_expanded-pattern-conflict/run_synced_expanded_long_output_experiment.sh
+```
+
+如需进一步增加输出，只显式覆盖生成长度，例如
+`NSDI_RCA_MAX_NEW_TOKENS=3072 bash experiments/20260816_expanded-pattern-conflict/run_synced_expanded_long_output_experiment.sh`。
+新报告会单列 `llm_execution_quality`；解析失败或被强制构造的输出回退到确定性 SOP 观察值，
+不再计作 LLM 预测。
+
 首次建议先做同步 dry-run；它同样会把 dry-run 产物上传：
 
 ```bash

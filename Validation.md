@@ -700,6 +700,10 @@ SOP 只生成候选、排查步骤和补采项。LLM 只有在远端实验的 42
 `run_synced_expanded_experiment.sh` 生成 GPU 前后快照、逐轮 LLM trace、summary 和 HTML 后才能形成结论。
 未执行前默认：LLM 权限为 `explanation_and_evidence_request_only`，不得宣称提升诊断效果。
 
+2026-08-18 更新：首轮正式运行基础设施成功，但 340/340 LLM case 均落入 forced fallback，不能
+形成 LLM 效果结论。已增加 2048-token 专用复跑入口和 `llm_execution_quality` 门禁。复跑有效输出率
+达到 95% 前，默认权限继续保持 `explanation_and_evidence_request_only`。
+
 ---
 
 ## 6. 汇总

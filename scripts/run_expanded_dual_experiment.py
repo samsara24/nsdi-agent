@@ -214,6 +214,13 @@ def decision(label: Optional[str], forced: str, candidates: Sequence[str], actio
             "decision_action": action, "source": source}
 
 
+def valid_llm_or_deterministic_fallback(
+    valid_llm_label: Optional[str], deterministic_prediction: str,
+) -> str:
+    """Invalid/forced LLM output is missing data, never an LLM prediction."""
+    return valid_llm_label or deterministic_prediction
+
+
 def calibrate_sop(cases: Sequence[Dict[str, Any]], views: Sequence[Any], majority: str) -> Dict[str, Any]:
     verdicts = [execute_sop(case, view, majority_label=majority).deterministic_verdict
                 for case, view in zip(cases, views)]
@@ -355,7 +362,7 @@ def main() -> int:
         llm_label = history or trusted_sop_label or item["llm_label"]
         forced_history = history or majority
         forced_sop = history or sop.forced_prediction
-        forced_llm = llm_label or (item["trace"].accepted.verdict if item["trace"] and item["trace"].accepted else forced_sop)
+        forced_llm = valid_llm_or_deterministic_fallback(llm_label, forced_sop)
         status = reviewed.get(str(case["case_id"]), {}).get("label_status", "unreviewed")
         rows.append({
             "case_id": str(case["case_id"]), "actual_label": str(case["label"]), "label_status": status,
@@ -387,7 +394,30 @@ def main() -> int:
     reviewed_metrics = {name: summarize(reviewed_rows, name) for name in ABLATIONS}
     unreviewed_metrics = {name: summarize(unreviewed_rows, name) for name in ABLATIONS}
     base, with_llm = reviewed_metrics["dual_history_sop"], reviewed_metrics["dual_history_sop_llm"]
+    llm_items = [item for item in work if item["request"] is not None]
+    valid_llm_count = sum(item["llm_label"] in ROOT_CAUSES for item in llm_items)
+    llm_execution_quality = {
+        "requested_case_count": len(llm_items),
+        "valid_response_count": valid_llm_count,
+        "valid_response_rate": valid_llm_count / len(llm_items) if llm_items else 0.0,
+        "forced_fallback_count": sum(
+            bool(item["trace"] and item["trace"].accepted and item["trace"].accepted.forced)
+            for item in llm_items
+        ),
+        "parse_failure_count": sum(
+            bool(item["trace"] and item["trace"].fallback_source == "parse_failure")
+            for item in llm_items
+        ),
+        "expanded_violation_count": sum(bool(item["llm_violations"]) for item in llm_items),
+        "minimum_valid_rate_for_effect_comparison": 0.95,
+        "valid_for_effect_comparison": (
+            valid_llm_count / len(llm_items) >= 0.95 if llm_items else False
+        ),
+        "invalid_output_policy": "use deterministic SOP forced_prediction; never count forced LLM fallback as LLM output",
+    }
     positive_gain = (
+        llm_execution_quality["valid_for_effect_comparison"]
+        and
         with_llm["selected_correct"] > base["selected_correct"]
         and with_llm["precision_at_coverage"] >= base["precision_at_coverage"]
         and all_metrics["dual_history_sop_llm"]["precision_at_coverage"]
@@ -406,7 +436,7 @@ def main() -> int:
         "branch_counts": dict(Counter(row["branch"] for row in rows)),
         "calibrated_policy": policy.to_dict(), "sop_selective_policy": sop_policy, "all_test": all_metrics,
         "expert_reviewed_test": reviewed_metrics, "unreviewed_test_observational": unreviewed_metrics,
-        "llm_intervention_policy": llm_policy,
+        "llm_execution_quality": llm_execution_quality, "llm_intervention_policy": llm_policy,
     }
     manifest = {
         "schema_version": SCHEMA_VERSION, "backend": args.backend, "model_path": args.model_path,

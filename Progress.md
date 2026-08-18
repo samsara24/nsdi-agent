@@ -2235,3 +2235,17 @@ local-ahead / remote-ahead：纯落后使用 fast-forward；双方都前进时�
 
 同步改变 HEAD 后包装脚本仍会自动重启一次，保证控制实验的是 rebase 后的最新脚本。失败实验日志
 提交不会被删除，会随下一次成功上传一起进入远端审计历史。
+
+### 9.43 DeepSeek-32B 长输出快速复跑入口（2026-08-18）
+
+提交 `c705c0b` 的首次 dual-SOP 真机运行完成 341 条，但 340 个 LLM case × 3 轮共 1020 次
+生成中，339 个 case 从未解析出完整 JSON，唯一解析 case 仍未通过校验；全部 340 条最终均为
+`forced=true`。根因是 DeepSeek-R1 在 `max_new_tokens=512` 内大量消耗于 `<think>`，即使 498 次
+完成 `</think>`，后续 JSON 仍普遍被截断。因此该次 45.75% 是强制 fallback 口径，不是模型准确率。
+
+新增 `run_synced_expanded_long_output_experiment.sh`，快速复跑固定 `max_model_len=16384`、
+`max_new_tokens=2048`，其余数据、模型、相似度、路由与 SOP 不变。同时完成两项最小必要修复：
+prompt 改为逐字要求五个完整 SOP step ID；解析失败/forced 输出不再进入 LLM 强制预测，而是回退
+到同 case 的确定性 SOP 观察值。summary 新增 `llm_execution_quality`，有效结构化输出率低于 95%
+时禁止据此开启诊断干预权限。无 LLM 341 条回归确认无有效响应时两组强制 accuracy 均为
+60.41%，fallback 不再改变消融结果。Python 编译、三份 shell 语法和 10 个定向测试函数已通过。

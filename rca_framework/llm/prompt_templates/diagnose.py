@@ -12,7 +12,15 @@ from ...types import ROOT_CAUSES
 from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
-DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v6"
+DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v7-full-step-ids"
+
+SOP_STEP_ID_SEQUENCE = (
+    "Q0_validate_measurements",
+    "P_apply_physical_boundaries",
+    "R_expand_directional_chain",
+    "L_apply_stable_learned_ranges",
+    "D_select_or_request_evidence",
+)
 
 ROOT_CAUSE_DEFINITIONS = {
     "L1": "400G 端口一侧的设备或端口根因",
@@ -78,10 +86,11 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
     sections.append("本 case 证据：\n" + json.dumps(payload, ensure_ascii=False, indent=2))
     sections.append(
         "只能使用 declared_predicates 中已有的阈值；禁止发明、移动或重新拟合阈值。"
-        "每一步必须引用 executed_sop_trace 中的 sop_step_id，并按 Q0→P→R→L→D 顺序。\n"
+        "每一步必须从 executed_sop_trace 逐字复制完整 sop_step_id，并严格按以下顺序："
+        + " → ".join(SOP_STEP_ID_SEQUENCE) + "。禁止使用 Q0/P/R/L/D 等缩写。\n"
         "只输出一个 JSON 对象，结构如下：\n"
         "{\n"
-        '  "steps": [{"sop_step_id": "Q0|P|R|L|D", "cited_predicates": ["谓词 ID"], "claim": "...", "cited_evidence": ["证据 ID"], '
+        '  "steps": [{"sop_step_id": "P_apply_physical_boundaries", "cited_predicates": ["谓词 ID"], "claim": "...", "cited_evidence": ["证据 ID"], '
         '"cited_constraints": ["..."], "effect": "support | exclude | neutral", '
         '"target": "L1 | L2 | fiber | " }],\n'
         '  "verdict": "L1 | L2 | fiber",\n'
