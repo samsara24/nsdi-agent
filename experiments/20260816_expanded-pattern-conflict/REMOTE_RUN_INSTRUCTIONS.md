@@ -74,7 +74,8 @@ export NSDI_RCA_GPU_POLL_SECONDS=30
 服务器仓库绑定 GitHub 后，正式实验统一使用同步包装脚本。它会：
 
 1. 检查工作区必须干净；
-2. 从 `origin/codex/expanded-expert-clean-v1` 执行 `fetch` 和 `pull --ff-only`；
+2. 从 `origin/codex/expanded-expert-clean-v1` 执行 fetch；只落后时 fast-forward，若本地保留了
+   尚未上传的实验提交且远端也前进，则把这些实验提交安全 rebase 到最新代码之上；
 3. 使用带时间戳的唯一目录运行实验；
 4. 无论实验成功或失败，都保存运行日志和 `git_sync.txt`；
 5. 只暂存本次输出目录，提交后对远端最新提交做 rebase 并 push。
@@ -100,8 +101,9 @@ export NSDI_RCA_GIT_AUTHOR_NAME="RCA Experiment Runner"
 export NSDI_RCA_GIT_AUTHOR_EMAIL="rca-experiment@users.noreply.github.com"
 ```
 
-如果工作区有未提交文件，脚本会在拉取前停止，不会自动 stash 或覆盖文件。若实验运行期间其他
-机器推送了新提交，上传前会先 rebase；发生真实冲突时停止并保留现场，不会强推。
+如果工作区有未提交文件，脚本会在同步前停止，不会自动 stash 或覆盖文件。上一次失败实验已经
+形成了本地提交时不会再被 `--ff-only` 卡住：脚本会保留该提交并 rebase 到最新代码。无论启动前
+还是长实验结束后，发生真实冲突都会停止并保留现场，不会强推。
 
 ## 仅执行、不自动上传
 

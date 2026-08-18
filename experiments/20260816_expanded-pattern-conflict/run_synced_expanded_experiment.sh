@@ -46,15 +46,32 @@ if [[ "$CURRENT_BRANCH" != "$BRANCH" ]]; then
   fi
 fi
 
-BEFORE_PULL="$(git rev-parse HEAD)"
-git pull --ff-only "$REMOTE" "$BRANCH"
-AFTER_PULL="$(git rev-parse HEAD)"
-echo "[expanded-sync] reproducible input commit: $AFTER_PULL"
+BEFORE_SYNC="$(git rev-parse HEAD)"
+read -r LOCAL_AHEAD REMOTE_AHEAD < <(
+  git rev-list --left-right --count "HEAD...$REMOTE/$BRANCH"
+)
+echo "[expanded-sync] divergence before run: local-ahead=$LOCAL_AHEAD remote-ahead=$REMOTE_AHEAD"
+
+if (( REMOTE_AHEAD > 0 && LOCAL_AHEAD == 0 )); then
+  git merge --ff-only "$REMOTE/$BRANCH"
+elif (( REMOTE_AHEAD > 0 && LOCAL_AHEAD > 0 )); then
+  echo "[expanded-sync] preserving $LOCAL_AHEAD local experiment commit(s) and rebasing onto $REMOTE/$BRANCH"
+  if ! git rebase "$REMOTE/$BRANCH"; then
+    echo "[expanded-sync] rebase conflict; experiment was not started." >&2
+    echo "[expanded-sync] resolve conflicts and run 'git rebase --continue', or restore with 'git rebase --abort'." >&2
+    exit 4
+  fi
+elif (( REMOTE_AHEAD == 0 )); then
+  echo "[expanded-sync] local branch already contains the remote tip"
+fi
+
+AFTER_SYNC="$(git rev-parse HEAD)"
+echo "[expanded-sync] reproducible input commit: $AFTER_SYNC"
 
 # Restart once when the pull changed this wrapper, ensuring the new version is
 # the one that controls the experiment.
-if [[ "$BEFORE_PULL" != "$AFTER_PULL" && "$SYNC_REEXECED" != "1" ]]; then
-  echo "[expanded-sync] code changed during pull; restarting with the new wrapper"
+if [[ "$BEFORE_SYNC" != "$AFTER_SYNC" && "$SYNC_REEXECED" != "1" ]]; then
+  echo "[expanded-sync] history changed during synchronization; restarting with the synchronized wrapper"
   export NSDI_RCA_SYNC_REEXECED=1
   exec bash "$ROOT/experiments/20260816_expanded-pattern-conflict/run_synced_expanded_experiment.sh"
 fi
@@ -87,7 +104,7 @@ cp "$TEMP_RUN_LOG" "$OUTPUT_DIR/sync_runner_console.log"
   printf 'schema_version=expanded-git-sync-v1\n'
   printf 'git_remote=%s\n' "$REMOTE"
   printf 'git_branch=%s\n' "$BRANCH"
-  printf 'input_commit=%s\n' "$AFTER_PULL"
+  printf 'input_commit=%s\n' "$AFTER_SYNC"
   printf 'experiment_exit_status=%s\n' "$RUN_STATUS"
   printf 'upload_started_at=%s\n' "$(timestamp)"
 } > "$OUTPUT_DIR/git_sync.txt"

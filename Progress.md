@@ -2225,3 +2225,13 @@ legacy 手工回归仍为 58/85=68.24%，85 条 case 的 case ID、预测和标�
 远端 dry-run 也不再只检查模型 config：它会运行完整训练校准与路由、构建全部 N5b/N5c prompt，
 写出 `prompt_context_preflight.json`，并在权重加载前报告最大 prompt tokens 或精确的
 `required_max_model_len`。新增上下文边界定向测试后，本轮新增测试函数共 8 个。
+
+### 9.42 同步入口处理本地实验提交与远端代码分叉（2026-08-18）
+
+服务器上一次失败实验先形成了本地提交 `e72c634`，同时 GitHub 从 `df694bb` 前进到 prompt 修复
+`f903454`，原启动逻辑的 `pull --ff-only` 因两条历史分叉而按设计拒绝运行。同步入口现显式计算
+local-ahead / remote-ahead：纯落后使用 fast-forward；双方都前进时保留本地实验提交并 rebase 到
+远端最新代码；真实冲突停止并提示 `rebase --continue` / `rebase --abort`，始终禁止强推。
+
+同步改变 HEAD 后包装脚本仍会自动重启一次，保证控制实验的是 rebase 后的最新脚本。失败实验日志
+提交不会被删除，会随下一次成功上传一起进入远端审计历史。
