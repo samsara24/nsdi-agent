@@ -120,8 +120,9 @@ export NSDI_RCA_EXPANDED_TEST_JSONL=/home/chenziang/nsdi-agent/experiments/20260
 export NSDI_RCA_DATA_CONTRACT=/home/chenziang/nsdi-agent/experiments/20260816_expanded-pattern-conflict/data_contract.json
 ```
 
-首次建议先做不加载权重的 dry-run。它会检查本地模型配置、vLLM/Transformers/PyTorch 环境
-和空闲 GPU，但不会启动正式实验：
+首次建议先做不加载权重的 dry-run。它会检查本地模型配置、vLLM/Transformers/PyTorch 环境、
+空闲 GPU，并实际构建全部 N5b/N5c prompt，用本地 tokenizer 验证 prompt、512 个生成 token 与
+32 个安全 token 能否放入默认 12288 上下文；不会加载模型权重：
 
 ```bash
 NSDI_RCA_OUTPUT_DIR=/home/chenziang/nsdi-agent/artifacts/expanded_deepseek32b_dryrun \
@@ -130,6 +131,8 @@ bash experiments/20260816_expanded-pattern-conflict/run_expanded_remote_experime
 ```
 
 dry-run 和正式运行必须使用不同的输出目录，因为脚本会拒绝覆盖任何已有目录。
+如后续 prompt 再增长，预检会给出 `required_max_model_len`，可通过
+`NSDI_RCA_MAX_MODEL_LEN` 显式上调；不要跳过预检直接重跑权重加载。
 
 正式脚本直接读取“clean 122 train + clean 341 test”，先在训练集做双阈值留一法校准，再在选中的
 GPU 上加载 DeepSeek-R1-Distill-Qwen-32B，并只对 N5b/N5c 执行受约束推理。它同时报告 prior-only、

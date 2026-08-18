@@ -2214,3 +2214,14 @@ legacy 手工回归仍为 58/85=68.24%，85 条 case 的 case ID、预测和标�
 
 验证状态：新模块编译、remote shell 语法、`git diff --check` 和 7 个新增定向测试函数通过；本机
 缺少 pytest 包，未执行完整 pytest runner。正式 DeepSeek-32B 四组消融等待远端同步脚本运行。
+
+### 9.41 Expanded prompt 上下文预检修复（2026-08-18）
+
+首次 dual-SOP 远端正式运行在 vLLM 输入校验阶段失败：实际 decoder prompt 为 9482 tokens，超过
+旧默认 `max_model_len=8192`；模型尚未生成任何结果。默认窗口已提高到 12288，仍保持
+`max_new_tokens=512`。`VLLMBackend` 现在先渲染并 tokenize 全批 prompt，按“最长 prompt + 输出预算
++ 32 safety tokens”校验上下文，校验通过后才初始化模型权重。
+
+远端 dry-run 也不再只检查模型 config：它会运行完整训练校准与路由、构建全部 N5b/N5c prompt，
+写出 `prompt_context_preflight.json`，并在权重加载前报告最大 prompt tokens 或精确的
+`required_max_model_len`。新增上下文边界定向测试后，本轮新增测试函数共 8 个。

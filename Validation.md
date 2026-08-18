@@ -28,8 +28,9 @@
 
 用户确认模型为 `/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B`，与仓库历史
 正式实验记录一致。默认恢复为 BF16、TP=2、`gpu_memory_utilization=0.85`、
-`max_model_len=8192`、`max_new_tokens=512`，两张卡各要求至少 44000 MiB 空闲；正式运行前仍用
-`NSDI_RCA_DRY_RUN=1` 检查当前环境与 GPU 状态。
+`max_model_len=12288`、`max_new_tokens=512`，两张卡各要求至少 44000 MiB 空闲。8192 已被
+expanded dual-SOP 的 9482-token prompt 实测证明不足；正式运行前仍用 `NSDI_RCA_DRY_RUN=1`
+检查当前环境、GPU 状态以及所有路由后 prompt 的 tokenizer 长度。
 
 ---
 

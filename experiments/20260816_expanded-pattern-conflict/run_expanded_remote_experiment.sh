@@ -25,7 +25,7 @@ GPU_WAIT_SECONDS="${NSDI_RCA_GPU_WAIT_SECONDS:-3600}"
 GPU_POLL_SECONDS="${NSDI_RCA_GPU_POLL_SECONDS:-30}"
 REQUESTED_CUDA="${CUDA_VISIBLE_DEVICES:-}"
 GPU_MEMORY_UTILIZATION="${NSDI_RCA_GPU_MEMORY_UTILIZATION:-0.85}"
-MAX_MODEL_LEN="${NSDI_RCA_MAX_MODEL_LEN:-8192}"
+MAX_MODEL_LEN="${NSDI_RCA_MAX_MODEL_LEN:-12288}"
 MAX_NEW_TOKENS="${NSDI_RCA_MAX_NEW_TOKENS:-512}"
 DRY_RUN="${NSDI_RCA_DRY_RUN:-0}"
 
@@ -136,19 +136,27 @@ nvidia-smi > "$OUTPUT_DIR/nvidia_smi_before_model.txt"
 echo "[expanded-rca] selected physical GPUs: $CUDA_VISIBLE_DEVICES"
 
 # Offline preflight: inspect local config without allocating model weights.
-NSDI_PREFLIGHT_MODEL="$MODEL_PATH" "$VLLM_PYTHON" - <<'PY' > "$OUTPUT_DIR/model_preflight.json"
+NSDI_PREFLIGHT_MODEL="$MODEL_PATH" NSDI_PREFLIGHT_MAX_LEN="$MAX_MODEL_LEN" "$VLLM_PYTHON" - <<'PY' > "$OUTPUT_DIR/model_preflight.json"
 import json, os
 import torch, transformers, vllm
 from transformers import AutoConfig
 
 path = os.environ["NSDI_PREFLIGHT_MODEL"]
 config = AutoConfig.from_pretrained(path, trust_remote_code=True, local_files_only=True)
+requested_max_len = int(os.environ["NSDI_PREFLIGHT_MAX_LEN"])
+model_max_len = getattr(config, "max_position_embeddings", None)
+if model_max_len is not None and requested_max_len > int(model_max_len):
+    raise ValueError(
+        f"requested max_model_len {requested_max_len} exceeds model capacity {model_max_len}"
+    )
 print(json.dumps({
     "model_path": path,
     "model_type": getattr(config, "model_type", None),
     "architectures": getattr(config, "architectures", None),
     "hidden_size": getattr(config, "hidden_size", None),
     "num_hidden_layers": getattr(config, "num_hidden_layers", None),
+    "model_max_position_embeddings": model_max_len,
+    "requested_max_model_len": requested_max_len,
     "torch_version": torch.__version__,
     "transformers_version": transformers.__version__,
     "vllm_version": vllm.__version__,
@@ -158,7 +166,19 @@ PY
 cat "$OUTPUT_DIR/model_preflight.json"
 
 if [[ "$DRY_RUN" == "1" ]]; then
-  echo "[expanded-rca] dry-run passed; model weights were not loaded and no experiment was executed"
+  echo "[expanded-rca] building all routed prompts and checking tokenizer context lengths"
+  env PYTHONPATH="$ROOT" "$VLLM_PYTHON" scripts/run_expanded_dual_experiment.py \
+    --train-jsonl "$TRAIN_JSONL" \
+    --test-jsonl "$EXPANDED_TEST_JSONL" \
+    --data-contract "$DATA_CONTRACT" \
+    --output-dir "$OUTPUT_DIR/preflight_unused" \
+    --backend none \
+    --model-path "$MODEL_PATH" \
+    --max-model-len "$MAX_MODEL_LEN" \
+    --max-new-tokens "$MAX_NEW_TOKENS" \
+    --prompt-preflight-only > "$OUTPUT_DIR/prompt_context_preflight.json"
+  cat "$OUTPUT_DIR/prompt_context_preflight.json"
+  echo "[expanded-rca] dry-run passed; prompt context fits and model weights were not loaded"
   exit 0
 fi
 

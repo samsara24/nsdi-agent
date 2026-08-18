@@ -13,6 +13,7 @@ from rca_framework.expanded_dual import (
     build_views,
 )
 from rca_framework.llm.protocol import DiagnosisResponse, ReasoningStep
+from rca_framework.llm.backend import validate_context_window
 
 
 def _view(*, quality="valid", tokens=("a",), edges=("e",)):
@@ -110,3 +111,22 @@ def test_labels_do_not_enter_feature_or_graph_views():
     views, _, _, _ = build_views((case, changed))
     assert views[0].feature_tokens == views[1].feature_tokens
     assert views[0].graph_edges == views[1].graph_edges
+
+
+def test_context_window_preflight_reserves_output_and_fails_before_model_load():
+    class CharacterTokenizer:
+        @staticmethod
+        def encode(text, add_special_tokens=False):
+            return list(text)
+
+    assert validate_context_window(
+        ("x" * 100,), CharacterTokenizer(), max_model_len=200, max_new_tokens=50,
+    ) == [100]
+    try:
+        validate_context_window(
+            ("x" * 100,), CharacterTokenizer(), max_model_len=181, max_new_tokens=50,
+        )
+    except ValueError as error:
+        assert "required_max_model_len>=182" in str(error)
+    else:
+        raise AssertionError("context preflight should reject an undersized window")

@@ -37,6 +37,8 @@ from rca_framework.expanded_dual import (
     validate_expanded_llm_response,
 )
 from rca_framework.llm import ConstrainedReasoner, NoneBackend, VLLMBackend
+from rca_framework.llm.backend import validate_context_window
+from rca_framework.llm.prompts import build_prompt
 from rca_framework.llm.prompts import PROMPT_TEMPLATE_VERSION, prompt_template_hash
 from rca_framework.types import ROOT_CAUSES
 
@@ -256,12 +258,13 @@ def main() -> int:
     parser.add_argument("--model-path", default="")
     parser.add_argument("--tensor-parallel-size", type=int, default=2)
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
-    parser.add_argument("--max-model-len", type=int, default=8192)
+    parser.add_argument("--max-model-len", type=int, default=12288)
     parser.add_argument("--max-new-tokens", type=int, default=1024)
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--enforce-eager", action="store_true")
     parser.add_argument("--disable-custom-all-reduce", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--prompt-preflight-only", action="store_true")
     args = parser.parse_args()
 
     train, test = read_jsonl(args.train_jsonl), read_jsonl(args.test_jsonl)
@@ -297,6 +300,32 @@ def main() -> int:
             requests.append(request)
             request_indices.append(index)
         work.append(record)
+
+    if args.prompt_preflight_only:
+        if not args.model_path:
+            raise ValueError("--model-path is required for --prompt-preflight-only")
+        from transformers import AutoTokenizer
+
+        tokenizer = AutoTokenizer.from_pretrained(
+            args.model_path, trust_remote_code=True, local_files_only=True,
+        )
+        backend_renderer = VLLMBackend(model_path=args.model_path)
+        backend_renderer._tokenizer = tokenizer
+        rendered = [backend_renderer._render(build_prompt(request)) for request in requests]
+        lengths = validate_context_window(
+            rendered, tokenizer, max_model_len=args.max_model_len,
+            max_new_tokens=args.max_new_tokens,
+        )
+        print(json.dumps({
+            "schema_version": "expanded-prompt-context-preflight-v1",
+            "request_count": len(lengths), "maximum_prompt_tokens": max(lengths, default=0),
+            "minimum_prompt_tokens": min(lengths, default=0),
+            "max_model_len": args.max_model_len, "max_new_tokens": args.max_new_tokens,
+            "safety_tokens": 32,
+            "remaining_tokens_at_maximum": args.max_model_len - max(lengths, default=0),
+            "passed": True,
+        }, ensure_ascii=False, indent=2))
+        return 0
 
     backend = NoneBackend() if args.backend == "none" else VLLMBackend(
         model_path=args.model_path, tensor_parallel_size=args.tensor_parallel_size,

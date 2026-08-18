@@ -16,6 +16,38 @@ from typing import Any, Callable, Dict, List, Optional, Sequence
 from .protocol import DIAGNOSIS_OUTPUT_SCHEMA
 
 
+CONTEXT_SAFETY_TOKENS = 32
+
+
+def prompt_token_lengths(prompts: Sequence[str], tokenizer: Any) -> List[int]:
+    """Count the exact rendered prompt tokens without loading model weights."""
+    return [len(tokenizer.encode(prompt, add_special_tokens=False)) for prompt in prompts]
+
+
+def validate_context_window(
+    prompts: Sequence[str],
+    tokenizer: Any,
+    *,
+    max_model_len: int,
+    max_new_tokens: int,
+) -> List[int]:
+    """Fail before model allocation when prompt + output cannot fit the window."""
+    lengths = prompt_token_lengths(prompts, tokenizer)
+    if not lengths:
+        return lengths
+    longest = max(lengths)
+    required = longest + max_new_tokens + CONTEXT_SAFETY_TOKENS
+    if required > max_model_len:
+        index = lengths.index(longest)
+        raise ValueError(
+            "prompt context preflight failed: "
+            f"request_index={index}, prompt_tokens={longest}, "
+            f"max_new_tokens={max_new_tokens}, safety_tokens={CONTEXT_SAFETY_TOKENS}, "
+            f"required_max_model_len>={required}, configured_max_model_len={max_model_len}"
+        )
+    return lengths
+
+
 class Backend:
     """后端协议。`name` 会进 `run_manifest.json`。"""
 
@@ -131,6 +163,13 @@ class VLLMBackend(Backend):
     def generate(self, prompts: Sequence[str]) -> List[str]:
         if not self.model_path:
             raise ValueError("model_path is required for the vllm backend")
+        rendered = [self._render(prompt) for prompt in prompts]
+        validate_context_window(
+            rendered,
+            self._tokenizer,
+            max_model_len=self.max_model_len,
+            max_new_tokens=self.max_new_tokens,
+        )
         from vllm import LLM
 
         if self._model is None:
@@ -145,7 +184,7 @@ class VLLMBackend(Backend):
                 disable_custom_all_reduce=self.disable_custom_all_reduce,
             )
         outputs = self._model.generate(
-            [self._render(prompt) for prompt in prompts], self._sampling_params()
+            rendered, self._sampling_params()
         )
         return [output.outputs[0].text for output in outputs]
 
