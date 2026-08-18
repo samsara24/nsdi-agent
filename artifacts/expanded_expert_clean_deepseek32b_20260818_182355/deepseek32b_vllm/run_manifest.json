@@ -1,0 +1,447 @@
+{
+  "schema_version": "expanded-dual-sop-experiment-v1",
+  "backend": "vllm",
+  "model_path": "/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B",
+  "seed": 42,
+  "train_size": 122,
+  "test_size": 341,
+  "train_sha256": "82ae1801f55a2771b6cddefbb33a8389cf155f1eb5e22855cb8c07941f46db5c",
+  "test_sha256": "0faa68fb1d2cdf549971da76b8ea517ba6a0bd86c990b2418c27e2e719964861",
+  "data_contract_sha256": "7ca296238a074d941b4935a9c3133589afccec9c6ce44982c4ee374276fb8516",
+  "feature_dictionary_version": "expanded-explainable-features-v2",
+  "evidence_graph_version": "expanded-five-layer-observable-graph-v2",
+  "dual_match_version": "expanded-dual-match-v1",
+  "routing_policy_version": "expanded-dual-routing-v1",
+  "sop_version": "expanded-executable-sop-v1",
+  "constraint_library_version": "constraint-library-v6",
+  "prompt_version": "rca-dual-sop-multidim-v14-full-step-ids",
+  "prompt_hash": "ce907fa53a74ee94",
+  "top_k": 5,
+  "minimum_joint_candidates": 3,
+  "n8_feedback_update": false,
+  "label_leakage": false,
+  "production_mode": "selective",
+  "forced_mode": "observational_only",
+  "calibrated_dual_policy": {
+    "version": "expanded-dual-routing-v1",
+    "feature_threshold": 1.0,
+    "graph_threshold": 1.0,
+    "support": 0,
+    "correct": 0,
+    "precision": 0.0,
+    "fallback_exact": true,
+    "max_selective_risk": 0.15,
+    "minimum_support": 20,
+    "minimum_joint_candidates": 3,
+    "top_k": 5,
+    "curve": [
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.7,
+        "support": 10,
+        "correct": 7,
+        "precision": 0.7
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.75,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.8,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.85,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.9,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.95,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 1.0,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.7,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.75,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.8,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.85,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.9,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.95,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 1.0,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.7,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.75,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.8,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.85,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.9,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.95,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 1.0,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.7,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.75,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.8,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.85,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.9,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.95,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 1.0,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.7,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.75,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.8,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.85,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.9,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.95,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 1.0,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.7,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.75,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.8,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.85,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.9,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.95,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 1.0,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.7,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.75,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.8,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.85,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.9,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.95,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 1.0,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      }
+    ]
+  },
+  "calibrated_sop_policy": {
+    "support": 42,
+    "correct": 22,
+    "precision": 0.5238095238095238,
+    "maximum_selective_risk": 0.15,
+    "minimum_support": 20,
+    "automatic_conclusion_enabled": false
+  },
+  "declared_predicates": [
+    {
+      "predicate_id": "P_tx_or_rx_exact_minus_40",
+      "boundary": "== -40.0",
+      "source": "physical_sentinel"
+    },
+    {
+      "predicate_id": "P_optical_engineering_drop",
+      "boundary": "<= -39.0",
+      "source": "engineering_constraint"
+    },
+    {
+      "predicate_id": "P_media_or_host_snr_floor",
+      "boundary": "<= 0.0",
+      "source": "physical_sentinel"
+    },
+    {
+      "predicate_id": "P_serdes_invalid",
+      "boundary": "<= 1.0",
+      "source": "measurement_contract"
+    },
+    {
+      "predicate_id": "L1_l2_media_snr_min_le_23_805",
+      "side": "L2",
+      "metric": "media_snr",
+      "aggregation": "min",
+      "operator": "<=",
+      "threshold": 23.805,
+      "target": "L1",
+      "support": 10,
+      "purity": 0.8,
+      "provenance": "learned-predicate-ranges-v1:clean-train-122"
+    },
+    {
+      "predicate_id": "L2_l2_rxpower_spread_gt_2_165",
+      "side": "L2",
+      "metric": "rxpower",
+      "aggregation": "spread",
+      "operator": ">",
+      "threshold": 2.165,
+      "target": "L1",
+      "support": 10,
+      "purity": 1.0,
+      "provenance": "learned-predicate-ranges-v1:clean-train-122"
+    }
+  ],
+  "llm_config": {
+    "tensor_parallel_size": 2,
+    "gpu_memory_utilization": 0.85,
+    "max_model_len": 16384,
+    "max_new_tokens": 2048,
+    "dtype": "bfloat16",
+    "enforce_eager": true,
+    "disable_custom_all_reduce": true,
+    "requested_case_count": 340
+  }
+}
