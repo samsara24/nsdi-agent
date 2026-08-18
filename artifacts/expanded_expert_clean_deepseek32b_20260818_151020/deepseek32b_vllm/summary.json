@@ -1,0 +1,1115 @@
+{
+  "schema_version": "expanded-dual-sop-experiment-v1",
+  "train_size": 122,
+  "test_size": 341,
+  "reviewed_test_size": 42,
+  "unreviewed_test_size": 299,
+  "branch_counts": {
+    "N5b": 263,
+    "N5c": 77,
+    "N5a": 1
+  },
+  "calibrated_policy": {
+    "version": "expanded-dual-routing-v1",
+    "feature_threshold": 1.0,
+    "graph_threshold": 1.0,
+    "support": 0,
+    "correct": 0,
+    "precision": 0.0,
+    "fallback_exact": true,
+    "max_selective_risk": 0.15,
+    "minimum_support": 20,
+    "minimum_joint_candidates": 3,
+    "top_k": 5,
+    "curve": [
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.7,
+        "support": 10,
+        "correct": 7,
+        "precision": 0.7
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.75,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.8,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.85,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.9,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 0.95,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.7,
+        "graph_threshold": 1.0,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.7,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.75,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.8,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.85,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.9,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 0.95,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.75,
+        "graph_threshold": 1.0,
+        "support": 9,
+        "correct": 7,
+        "precision": 0.77777778
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.7,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.75,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.8,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.85,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.9,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 0.95,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.8,
+        "graph_threshold": 1.0,
+        "support": 7,
+        "correct": 6,
+        "precision": 0.85714286
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.7,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.75,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.8,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.85,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.9,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 0.95,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.85,
+        "graph_threshold": 1.0,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.7,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.75,
+        "support": 3,
+        "correct": 2,
+        "precision": 0.66666667
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.8,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.85,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.9,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 0.95,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.9,
+        "graph_threshold": 1.0,
+        "support": 5,
+        "correct": 5,
+        "precision": 1.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.7,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.75,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.8,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.85,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.9,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 0.95,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 0.95,
+        "graph_threshold": 1.0,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.7,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.75,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.8,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.85,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.9,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 0.95,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      },
+      {
+        "feature_threshold": 1.0,
+        "graph_threshold": 1.0,
+        "support": 0,
+        "correct": 0,
+        "precision": 0.0
+      }
+    ]
+  },
+  "sop_selective_policy": {
+    "support": 42,
+    "correct": 22,
+    "precision": 0.5238095238095238,
+    "maximum_selective_risk": 0.15,
+    "minimum_support": 20,
+    "automatic_conclusion_enabled": false
+  },
+  "all_test": {
+    "prior_only": {
+      "case_count": 341,
+      "valid_prediction_count": 341,
+      "accuracy": 0.6099706744868035,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 0,
+          "L2": 124,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 0,
+          "L2": 208,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 9,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 124,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "L2": {
+          "support": 208,
+          "precision": 0.6099706744868035,
+          "recall": 1.0,
+          "f1": 0.7577413479052824
+        },
+        "fiber": {
+          "support": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.25258044930176077,
+      "balanced_recall": 0.3333333333333333,
+      "coverage": 0.0,
+      "selected_count": 0,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 1.0,
+      "fiber_candidate_recall": 1.0,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history": {
+      "case_count": 341,
+      "valid_prediction_count": 341,
+      "accuracy": 0.6099706744868035,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 0,
+          "L2": 124,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 0,
+          "L2": 208,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 9,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 124,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "L2": {
+          "support": 208,
+          "precision": 0.6099706744868035,
+          "recall": 1.0,
+          "f1": 0.7577413479052824
+        },
+        "fiber": {
+          "support": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.25258044930176077,
+      "balanced_recall": 0.3333333333333333,
+      "coverage": 0.002932551319648094,
+      "selected_count": 1,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9970674486803519,
+      "fiber_candidate_recall": 0.7777777777777778,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history_sop": {
+      "case_count": 341,
+      "valid_prediction_count": 341,
+      "accuracy": 0.6041055718475073,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 48,
+          "L2": 76,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 50,
+          "L2": 158,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 3,
+          "L2": 6,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 124,
+          "precision": 0.4752475247524752,
+          "recall": 0.3870967741935484,
+          "f1": 0.42666666666666664
+        },
+        "L2": {
+          "support": 208,
+          "precision": 0.6583333333333333,
+          "recall": 0.7596153846153846,
+          "f1": 0.7053571428571429
+        },
+        "fiber": {
+          "support": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.37734126984126987,
+      "balanced_recall": 0.3822373862696444,
+      "coverage": 0.002932551319648094,
+      "selected_count": 1,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9970674486803519,
+      "fiber_candidate_recall": 0.4444444444444444,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history_sop_llm": {
+      "case_count": 341,
+      "valid_prediction_count": 341,
+      "accuracy": 0.5659824046920822,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 54,
+          "L2": 70,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 69,
+          "L2": 139,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 3,
+          "L2": 6,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 124,
+          "precision": 0.42857142857142855,
+          "recall": 0.43548387096774194,
+          "f1": 0.432
+        },
+        "L2": {
+          "support": 208,
+          "precision": 0.6465116279069767,
+          "recall": 0.6682692307692307,
+          "f1": 0.657210401891253
+        },
+        "fiber": {
+          "support": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.363070133963751,
+      "balanced_recall": 0.36791770057899087,
+      "coverage": 0.1378299120234604,
+      "selected_count": 47,
+      "selected_correct": 18,
+      "precision_at_coverage": 0.3829787234042553,
+      "human_intervention_rate": 0.8621700879765396,
+      "fiber_candidate_recall": 0.4444444444444444,
+      "fiber_automatic_conclusion_count": 0
+    }
+  },
+  "expert_reviewed_test": {
+    "prior_only": {
+      "case_count": 42,
+      "valid_prediction_count": 42,
+      "accuracy": 0.42857142857142855,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 0,
+          "L2": 18,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 0,
+          "L2": 18,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 6,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 18,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "L2": {
+          "support": 18,
+          "precision": 0.42857142857142855,
+          "recall": 1.0,
+          "f1": 0.6
+        },
+        "fiber": {
+          "support": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.19999999999999998,
+      "balanced_recall": 0.3333333333333333,
+      "coverage": 0.0,
+      "selected_count": 0,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 1.0,
+      "fiber_candidate_recall": 1.0,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history": {
+      "case_count": 42,
+      "valid_prediction_count": 42,
+      "accuracy": 0.42857142857142855,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 0,
+          "L2": 18,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 0,
+          "L2": 18,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 6,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 18,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "L2": {
+          "support": 18,
+          "precision": 0.42857142857142855,
+          "recall": 1.0,
+          "f1": 0.6
+        },
+        "fiber": {
+          "support": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.19999999999999998,
+      "balanced_recall": 0.3333333333333333,
+      "coverage": 0.023809523809523808,
+      "selected_count": 1,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9761904761904762,
+      "fiber_candidate_recall": 0.6666666666666666,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history_sop": {
+      "case_count": 42,
+      "valid_prediction_count": 42,
+      "accuracy": 0.3333333333333333,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 7,
+          "L2": 11,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 11,
+          "L2": 7,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 1,
+          "L2": 5,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 18,
+          "precision": 0.3684210526315789,
+          "recall": 0.3888888888888889,
+          "f1": 0.37837837837837834
+        },
+        "L2": {
+          "support": 18,
+          "precision": 0.30434782608695654,
+          "recall": 0.3888888888888889,
+          "f1": 0.34146341463414637
+        },
+        "fiber": {
+          "support": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.23994726433750824,
+      "balanced_recall": 0.25925925925925924,
+      "coverage": 0.023809523809523808,
+      "selected_count": 1,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9761904761904762,
+      "fiber_candidate_recall": 0.6666666666666666,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history_sop_llm": {
+      "case_count": 42,
+      "valid_prediction_count": 42,
+      "accuracy": 0.3333333333333333,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 7,
+          "L2": 11,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 11,
+          "L2": 7,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 1,
+          "L2": 5,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 18,
+          "precision": 0.3684210526315789,
+          "recall": 0.3888888888888889,
+          "f1": 0.37837837837837834
+        },
+        "L2": {
+          "support": 18,
+          "precision": 0.30434782608695654,
+          "recall": 0.3888888888888889,
+          "f1": 0.34146341463414637
+        },
+        "fiber": {
+          "support": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.23994726433750824,
+      "balanced_recall": 0.25925925925925924,
+      "coverage": 0.047619047619047616,
+      "selected_count": 2,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9523809523809523,
+      "fiber_candidate_recall": 0.6666666666666666,
+      "fiber_automatic_conclusion_count": 0
+    }
+  },
+  "unreviewed_test_observational": {
+    "prior_only": {
+      "case_count": 299,
+      "valid_prediction_count": 299,
+      "accuracy": 0.6354515050167224,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 0,
+          "L2": 106,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 0,
+          "L2": 190,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 3,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 106,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "L2": {
+          "support": 190,
+          "precision": 0.6354515050167224,
+          "recall": 1.0,
+          "f1": 0.7770961145194274
+        },
+        "fiber": {
+          "support": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.25903203817314246,
+      "balanced_recall": 0.3333333333333333,
+      "coverage": 0.0,
+      "selected_count": 0,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 1.0,
+      "fiber_candidate_recall": 1.0,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history": {
+      "case_count": 299,
+      "valid_prediction_count": 299,
+      "accuracy": 0.6354515050167224,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 0,
+          "L2": 106,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 0,
+          "L2": 190,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 0,
+          "L2": 3,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 106,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "L2": {
+          "support": 190,
+          "precision": 0.6354515050167224,
+          "recall": 1.0,
+          "f1": 0.7770961145194274
+        },
+        "fiber": {
+          "support": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.25903203817314246,
+      "balanced_recall": 0.3333333333333333,
+      "coverage": 0.0,
+      "selected_count": 0,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 1.0,
+      "fiber_candidate_recall": 1.0,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history_sop": {
+      "case_count": 299,
+      "valid_prediction_count": 299,
+      "accuracy": 0.6421404682274248,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 41,
+          "L2": 65,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 39,
+          "L2": 151,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 2,
+          "L2": 1,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 106,
+          "precision": 0.5,
+          "recall": 0.3867924528301887,
+          "f1": 0.43617021276595747
+        },
+        "L2": {
+          "support": 190,
+          "precision": 0.695852534562212,
+          "recall": 0.7947368421052632,
+          "f1": 0.742014742014742
+        },
+        "fiber": {
+          "support": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.3927283182602332,
+      "balanced_recall": 0.3938430983118173,
+      "coverage": 0.0,
+      "selected_count": 0,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 1.0,
+      "fiber_candidate_recall": 0.0,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "dual_history_sop_llm": {
+      "case_count": 299,
+      "valid_prediction_count": 299,
+      "accuracy": 0.5986622073578596,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 47,
+          "L2": 59,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 58,
+          "L2": 132,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 2,
+          "L2": 1,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 106,
+          "precision": 0.4392523364485981,
+          "recall": 0.44339622641509435,
+          "f1": 0.4413145539906103
+        },
+        "L2": {
+          "support": 190,
+          "precision": 0.6875,
+          "recall": 0.6947368421052632,
+          "f1": 0.6910994764397906
+        },
+        "fiber": {
+          "support": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.3774713434768003,
+      "balanced_recall": 0.3793776895067859,
+      "coverage": 0.1505016722408027,
+      "selected_count": 45,
+      "selected_correct": 18,
+      "precision_at_coverage": 0.4,
+      "human_intervention_rate": 0.8494983277591973,
+      "fiber_candidate_recall": 0.0,
+      "fiber_automatic_conclusion_count": 0
+    }
+  },
+  "llm_execution_quality": {
+    "requested_case_count": 340,
+    "valid_response_count": 46,
+    "valid_response_rate": 0.13529411764705881,
+    "forced_fallback_count": 272,
+    "parse_failure_count": 0,
+    "expanded_violation_count": 232,
+    "minimum_valid_rate_for_effect_comparison": 0.95,
+    "valid_for_effect_comparison": false,
+    "invalid_output_policy": "use deterministic SOP forced_prediction; never count forced LLM fallback as LLM output"
+  },
+  "llm_intervention_policy": {
+    "diagnostic_intervention_enabled": false,
+    "default_permission": "explanation_and_evidence_request_only",
+    "criterion": "positive coverage/correctness gain on 42 reviewed cases without lower selective precision",
+    "reviewed_base": {
+      "case_count": 42,
+      "valid_prediction_count": 42,
+      "accuracy": 0.3333333333333333,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 7,
+          "L2": 11,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 11,
+          "L2": 7,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 1,
+          "L2": 5,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 18,
+          "precision": 0.3684210526315789,
+          "recall": 0.3888888888888889,
+          "f1": 0.37837837837837834
+        },
+        "L2": {
+          "support": 18,
+          "precision": 0.30434782608695654,
+          "recall": 0.3888888888888889,
+          "f1": 0.34146341463414637
+        },
+        "fiber": {
+          "support": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.23994726433750824,
+      "balanced_recall": 0.25925925925925924,
+      "coverage": 0.023809523809523808,
+      "selected_count": 1,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9761904761904762,
+      "fiber_candidate_recall": 0.6666666666666666,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "reviewed_with_llm": {
+      "case_count": 42,
+      "valid_prediction_count": 42,
+      "accuracy": 0.3333333333333333,
+      "confusion_matrix": {
+        "L1": {
+          "L1": 7,
+          "L2": 11,
+          "fiber": 0
+        },
+        "L2": {
+          "L1": 11,
+          "L2": 7,
+          "fiber": 0
+        },
+        "fiber": {
+          "L1": 1,
+          "L2": 5,
+          "fiber": 0
+        }
+      },
+      "per_class": {
+        "L1": {
+          "support": 18,
+          "precision": 0.3684210526315789,
+          "recall": 0.3888888888888889,
+          "f1": 0.37837837837837834
+        },
+        "L2": {
+          "support": 18,
+          "precision": 0.30434782608695654,
+          "recall": 0.3888888888888889,
+          "f1": 0.34146341463414637
+        },
+        "fiber": {
+          "support": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "macro_f1": 0.23994726433750824,
+      "balanced_recall": 0.25925925925925924,
+      "coverage": 0.047619047619047616,
+      "selected_count": 2,
+      "selected_correct": 0,
+      "precision_at_coverage": 0.0,
+      "human_intervention_rate": 0.9523809523809523,
+      "fiber_candidate_recall": 0.6666666666666666,
+      "fiber_automatic_conclusion_count": 0
+    },
+    "note": "The same reviewed set is used only to recommend future authority; production_decision in this run never consumes that recommendation."
+  }
+}
