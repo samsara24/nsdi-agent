@@ -140,23 +140,18 @@ def _opposite(side: str) -> str:
 
 
 def alarm_side(pack: EvidencePack, *, default: str = "L2") -> str:
-    """把专家规则里的「本端」还原成本数据集的 L1 / L2。
-
-    专家文档的 local / remote 是「告警端 / 对端」，而本数据集已经按端口速率
-    归一成 L1（400G）/ L2（200G），两者不是同一套坐标。`alarm_ip_interface`
-    与 `link_side_ip_interface_map` 保留了原始告警端，可以逐条还原。
-
-    268 条里 212 条告警在 L2、2 条在 L1、54 条没有可用映射。缺失时退回
-    `default`，并在诊断结果里标记 `alarm_side_resolved=False`——这批 case 的
-    「本端」兜底等价于报多数告警端，评估时必须单独分桶，不能混进规则命中率。
-    """
+    """Resolve the alarm endpoint in the unified local/remote coordinate system."""
     interface = pack.context.get("alarm_ip_interface")
     mapping = pack.context.get("link_side_ip_interface_map")
     if isinstance(interface, str) and isinstance(mapping, Mapping):
         for side, value in mapping.items():
             if side in SIDES and value == interface:
                 return str(side)
-    return default
+    source_default = {
+        "all_data": "L2",
+        "rule1_channel_not_4": "L1",
+    }.get(pack.source_dataset, default)
+    return source_default
 
 
 def _lane_values(pack: EvidencePack, side: str, metric: str) -> List[float]:

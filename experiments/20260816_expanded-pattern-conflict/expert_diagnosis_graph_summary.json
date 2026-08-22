@@ -1,0 +1,653 @@
+{
+  "summary": {
+    "schema_version": "expanded-expert-diagnosis-graph-v1",
+    "case_count": 122,
+    "label_distribution": {
+      "L1": 39,
+      "L2": 76,
+      "fiber": 7
+    },
+    "label_status_distribution": {
+      "unreviewed": 101,
+      "expert_reviewed": 21
+    },
+    "unique_diagnostic_signatures": 17,
+    "mixed_label_signature_groups": 7,
+    "cases_in_mixed_label_signatures": 107,
+    "pattern_summary": [
+      {
+        "pattern_id": "EP_Q0_BLACKOUT",
+        "title": "全链路 blackout",
+        "source": "measurement-contract:M4",
+        "status": "veto",
+        "meaning": "双端收发光与 SNR 同时触底时优先解释为量测无效，不做端点归因。",
+        "support": 0,
+        "label_distribution": {},
+        "majority_label": "",
+        "majority_purity": null
+      },
+      {
+        "pattern_id": "EP_TX_OFF",
+        "title": "本端发送器未出光",
+        "source": "physics:P1/P4/P5 + expert annotations",
+        "status": "physical",
+        "meaning": "bias=0 或 TX<=-39 表示本端发送链失效；精确 -40 单独保留为哨兵。",
+        "support": 4,
+        "label_distribution": {
+          "L2": 2,
+          "L1": 2
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.5
+      },
+      {
+        "pattern_id": "EP_RX_HARD_DOWN",
+        "title": "接收方向硬失效",
+        "source": "expert annotations: repeated hard-RX pattern",
+        "status": "expert_supported",
+        "meaning": "同侧 RX<=-39且media_snr<=0确定该接收方向断；SerDes状态作协同证据，但不能单独区分对端发送、介质和本端接收。",
+        "support": 36,
+        "label_distribution": {
+          "L2": 23,
+          "fiber": 4,
+          "L1": 9
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.638889
+      },
+      {
+        "pattern_id": "EP_DECODE_WITH_LIGHT",
+        "title": "有收光但解码链失效",
+        "source": "expert annotations: repeated RX-normal pattern",
+        "status": "expert_heuristic",
+        "meaning": "同侧 RX 有光而 media/SerDes 失效；专家标注多指向对端发送质量，但物理上也可能是本端解码链。",
+        "support": 12,
+        "label_distribution": {
+          "L1": 7,
+          "L2": 5
+        },
+        "majority_label": "L1",
+        "majority_purity": 0.583333
+      },
+      {
+        "pattern_id": "EP_BILATERAL_RX_DEGRADATION",
+        "title": "双端接收侧同时劣化",
+        "source": "expert annotations + measurement-contract:M6",
+        "status": "candidate_only",
+        "meaning": "不用跨端 TX-RX 相减；双端各自出现接收劣化时仅提升 fiber 候选，并请求 OTDR/镜检。",
+        "support": 0,
+        "label_distribution": {},
+        "majority_label": "",
+        "majority_purity": null
+      },
+      {
+        "pattern_id": "EP_INSUFFICIENT",
+        "title": "当前快照不可辨识",
+        "source": "expert annotations: missing_critical",
+        "status": "abstain",
+        "meaning": "没有硬边界或方向性证据时不根据告警端或多数类猜测。",
+        "support": 75,
+        "label_distribution": {
+          "L2": 48,
+          "L1": 24,
+          "fiber": 3
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.64
+      }
+    ],
+    "pattern_side_summary": [
+      {
+        "pattern": "EP_DECODE_WITH_LIGHT:L1",
+        "support": 6,
+        "label_distribution": {
+          "L1": 2,
+          "L2": 4
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.666667,
+        "by_label_status": {
+          "expert_reviewed": {
+            "L2": 1
+          },
+          "unreviewed": {
+            "L1": 2,
+            "L2": 3
+          }
+        }
+      },
+      {
+        "pattern": "EP_DECODE_WITH_LIGHT:L2",
+        "support": 6,
+        "label_distribution": {
+          "L1": 5,
+          "L2": 1
+        },
+        "majority_label": "L1",
+        "majority_purity": 0.833333,
+        "by_label_status": {
+          "expert_reviewed": {
+            "L1": 1
+          },
+          "unreviewed": {
+            "L1": 4,
+            "L2": 1
+          }
+        }
+      },
+      {
+        "pattern": "EP_INSUFFICIENT",
+        "support": 75,
+        "label_distribution": {
+          "L2": 48,
+          "L1": 24,
+          "fiber": 3
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.64,
+        "by_label_status": {
+          "expert_reviewed": {
+            "L1": 3,
+            "L2": 2
+          },
+          "unreviewed": {
+            "L2": 46,
+            "L1": 21,
+            "fiber": 3
+          }
+        }
+      },
+      {
+        "pattern": "EP_RX_HARD_DOWN:L1",
+        "support": 30,
+        "label_distribution": {
+          "L2": 19,
+          "fiber": 4,
+          "L1": 7
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.633333,
+        "by_label_status": {
+          "expert_reviewed": {
+            "fiber": 3,
+            "L1": 7
+          },
+          "unreviewed": {
+            "L2": 19,
+            "fiber": 1
+          }
+        }
+      },
+      {
+        "pattern": "EP_RX_HARD_DOWN:L2",
+        "support": 8,
+        "label_distribution": {
+          "L2": 5,
+          "L1": 3
+        },
+        "majority_label": "L2",
+        "majority_purity": 0.625,
+        "by_label_status": {
+          "expert_reviewed": {
+            "L2": 4,
+            "L1": 2
+          },
+          "unreviewed": {
+            "L2": 1,
+            "L1": 1
+          }
+        }
+      },
+      {
+        "pattern": "EP_TX_OFF:L1",
+        "support": 3,
+        "label_distribution": {
+          "L2": 1,
+          "L1": 2
+        },
+        "majority_label": "L1",
+        "majority_purity": 0.666667,
+        "by_label_status": {
+          "expert_reviewed": {
+            "L1": 2
+          },
+          "unreviewed": {
+            "L2": 1
+          }
+        }
+      },
+      {
+        "pattern": "EP_TX_OFF:L2",
+        "support": 1,
+        "label_distribution": {
+          "L2": 1
+        },
+        "majority_label": "L2",
+        "majority_purity": 1.0,
+        "by_label_status": {
+          "expert_reviewed": {},
+          "unreviewed": {
+            "L2": 1
+          }
+        }
+      }
+    ],
+    "boundary_semantics": {
+      "bias == 0 mA": "激光器未驱动/发送链失效",
+      "media_snr or host_snr <= 0": "无效或触底",
+      "serdes_snr <= 1": "失效状态；量纲未知",
+      "txpower or rxpower == -40 dBm": "精确哨兵；在非 blackout case 中表示无光",
+      "txpower or rxpower <= -39 dBm": "工程断光区间",
+      "txpower or rxpower == 0 dBm": "正常有光读数，不是故障边界"
+    },
+    "secondary_feature_audit": [
+      {
+        "pattern": "EP_RX_HARD_DOWN:L1",
+        "label": "L1",
+        "support": 7,
+        "metrics": {
+          "local_surviving_rx_mean": {
+            "median": 2.02,
+            "minimum": 1.013333,
+            "maximum": 2.233333,
+            "count": 5
+          },
+          "local_tx_mean": {
+            "median": 0.93,
+            "minimum": 0.74,
+            "maximum": 1.2225,
+            "count": 5
+          },
+          "peer_bias_mean": {
+            "median": 7.29,
+            "minimum": 6.7975,
+            "maximum": 7.775,
+            "count": 7
+          },
+          "peer_rx_mean": {
+            "median": 1.623333,
+            "minimum": -1.5975,
+            "maximum": 2.3075,
+            "count": 7
+          },
+          "peer_tx_healthy_lane_spread": {
+            "median": 0.44,
+            "minimum": 0.03,
+            "maximum": 0.89,
+            "count": 7
+          },
+          "peer_tx_mean": {
+            "median": 1.1025,
+            "minimum": 0.59,
+            "maximum": 1.255,
+            "count": 7
+          },
+          "peer_tx_off_lane_count": {
+            "median": 0.0,
+            "minimum": 0.0,
+            "maximum": 0.0,
+            "count": 7
+          }
+        }
+      },
+      {
+        "pattern": "EP_RX_HARD_DOWN:L1",
+        "label": "L2",
+        "support": 19,
+        "metrics": {
+          "local_surviving_rx_mean": {
+            "median": 2.021667,
+            "minimum": -0.12,
+            "maximum": 2.546667,
+            "count": 18
+          },
+          "local_tx_mean": {
+            "median": -0.425,
+            "minimum": -1.315,
+            "maximum": 1.075,
+            "count": 18
+          },
+          "peer_bias_mean": {
+            "median": 7.35,
+            "minimum": 5.5125,
+            "maximum": 7.7225,
+            "count": 19
+          },
+          "peer_rx_mean": {
+            "median": 0.43,
+            "minimum": -0.6475,
+            "maximum": 2.446667,
+            "count": 19
+          },
+          "peer_tx_healthy_lane_spread": {
+            "median": 0.41,
+            "minimum": 0.14,
+            "maximum": 0.89,
+            "count": 19
+          },
+          "peer_tx_mean": {
+            "median": 1.005,
+            "minimum": -1.53,
+            "maximum": 1.5275,
+            "count": 19
+          },
+          "peer_tx_off_lane_count": {
+            "median": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "count": 19
+          }
+        }
+      },
+      {
+        "pattern": "EP_RX_HARD_DOWN:L1",
+        "label": "fiber",
+        "support": 4,
+        "metrics": {
+          "local_surviving_rx_mean": {
+            "median": 1.75,
+            "minimum": 0.726667,
+            "maximum": 2.78,
+            "count": 4
+          },
+          "local_tx_mean": {
+            "median": -0.0975,
+            "minimum": -0.3625,
+            "maximum": 0.755,
+            "count": 4
+          },
+          "peer_bias_mean": {
+            "median": 7.26125,
+            "minimum": 6.82,
+            "maximum": 7.33,
+            "count": 4
+          },
+          "peer_rx_mean": {
+            "median": -0.09375,
+            "minimum": -0.705,
+            "maximum": 0.645,
+            "count": 4
+          },
+          "peer_tx_healthy_lane_spread": {
+            "median": 0.4,
+            "minimum": 0.0,
+            "maximum": 0.66,
+            "count": 4
+          },
+          "peer_tx_mean": {
+            "median": 0.57875,
+            "minimum": 0.4525,
+            "maximum": 1.0325,
+            "count": 4
+          },
+          "peer_tx_off_lane_count": {
+            "median": 0.0,
+            "minimum": 0.0,
+            "maximum": 0.0,
+            "count": 4
+          }
+        }
+      },
+      {
+        "pattern": "EP_RX_HARD_DOWN:L2",
+        "label": "L1",
+        "support": 3,
+        "metrics": {
+          "local_surviving_rx_mean": {
+            "median": 1.623333,
+            "minimum": -0.383333,
+            "maximum": 1.726667,
+            "count": 3
+          },
+          "local_tx_mean": {
+            "median": 0.59,
+            "minimum": -0.325,
+            "maximum": 0.88,
+            "count": 3
+          },
+          "peer_bias_mean": {
+            "median": 7.245,
+            "minimum": 0.0,
+            "maximum": 7.53,
+            "count": 3
+          },
+          "peer_rx_mean": {
+            "median": 0.18125,
+            "minimum": -0.285,
+            "maximum": 0.6475,
+            "count": 2
+          },
+          "peer_tx_healthy_lane_spread": {
+            "median": 0.36,
+            "minimum": 0.21,
+            "maximum": 0.51,
+            "count": 2
+          },
+          "peer_tx_mean": {
+            "median": -0.08375,
+            "minimum": -1.3625,
+            "maximum": 1.195,
+            "count": 2
+          },
+          "peer_tx_off_lane_count": {
+            "median": 0.0,
+            "minimum": 0.0,
+            "maximum": 4.0,
+            "count": 3
+          }
+        }
+      },
+      {
+        "pattern": "EP_RX_HARD_DOWN:L2",
+        "label": "L2",
+        "support": 5,
+        "metrics": {
+          "local_surviving_rx_mean": {
+            "median": 1.393333,
+            "minimum": 1.273333,
+            "maximum": 2.446667,
+            "count": 5
+          },
+          "local_tx_mean": {
+            "median": 1.0325,
+            "minimum": 0.6375,
+            "maximum": 1.31,
+            "count": 5
+          },
+          "peer_bias_mean": {
+            "median": 6.82,
+            "minimum": 0.0,
+            "maximum": 7.6675,
+            "count": 5
+          },
+          "peer_rx_mean": {
+            "median": 0.96625,
+            "minimum": 0.5175,
+            "maximum": 2.3075,
+            "count": 4
+          },
+          "peer_tx_healthy_lane_spread": {
+            "median": 0.275,
+            "minimum": 0.02,
+            "maximum": 0.39,
+            "count": 4
+          },
+          "peer_tx_mean": {
+            "median": 0.86875,
+            "minimum": 0.4875,
+            "maximum": 1.1,
+            "count": 4
+          },
+          "peer_tx_off_lane_count": {
+            "median": 0.0,
+            "minimum": 0.0,
+            "maximum": 4.0,
+            "count": 5
+          }
+        }
+      }
+    ],
+    "review_class_distribution": {
+      "direction_observed_root_not_identifiable": 43,
+      "insufficient_snapshot": 75,
+      "decisive_local_tx_off": 4
+    },
+    "label_assessment_distribution": {
+      "compatible_but_not_identifiable": 111,
+      "fiber_label_requires_external_evidence": 7,
+      "consistent_with_decisive_evidence": 3,
+      "suspected_label_conflict": 1
+    },
+    "suspected_label_conflicts": [
+      {
+        "case_id": "case_114e59515432",
+        "label": "L2",
+        "label_status": "unreviewed",
+        "review_class": "decisive_local_tx_off",
+        "candidate_set": [
+          "L1"
+        ],
+        "label_assessment": "suspected_label_conflict",
+        "rationale": "存在唯一一侧bias=0或TX<=-39；发送器未出光是比接收症状更强的本端证据",
+        "supporting_evidence": {
+          "L1": [
+            "专家重复模式支持本端接收链",
+            "专家重复模式支持本端接收链",
+            "专家重复模式支持本端接收链",
+            "专家重复模式支持本端接收链",
+            "本端发送器没有出光",
+            "本端发送器没有出光",
+            "本端发送器没有出光",
+            "本端发送器没有出光"
+          ],
+          "L2": [
+            "专家重复模式支持本端接收链"
+          ]
+        },
+        "competing_evidence": {
+          "L1": [
+            "对端TX有数值只证明有光，不证明发送信号质量正常"
+          ],
+          "L2": [
+            "对端TX有数值只证明有光，不证明发送信号质量正常",
+            "对端TX有数值只证明有光，不证明发送信号质量正常",
+            "对端TX有数值只证明有光，不证明发送信号质量正常",
+            "对端TX有数值只证明有光，不证明发送信号质量正常"
+          ],
+          "fiber": [
+            "无现场介质证据，不能排除传输路径",
+            "无现场介质证据，不能排除传输路径",
+            "无现场介质证据，不能排除传输路径",
+            "无现场介质证据，不能排除传输路径",
+            "无现场介质证据，不能排除传输路径"
+          ]
+        },
+        "excluded_candidates": {
+          "fiber": [
+            "介质不能解释未发出的光",
+            "介质不能解释未发出的光",
+            "介质不能解释未发出的光",
+            "介质不能解释未发出的光"
+          ]
+        },
+        "required_evidence": [],
+        "unsafe_expert_reasoning": false,
+        "unsafe_reasoning_note": ""
+      }
+    ]
+  },
+  "annotation_audit": {
+    "schema_version": "expanded-expert-patterns-v1",
+    "annotation_count": 44,
+    "safe_for_pattern_mining_count": 38,
+    "requires_domain_confirmation_count": 6,
+    "requires_domain_confirmation": [
+      {
+        "pattern_id": "PAT-015",
+        "left_case_id": "case_1fc24b82a165",
+        "right_case_id": "case_da829dd0f857",
+        "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常",
+        "reason": "跨端 lane 配对/功率标定未确认，禁止自动沉淀绝对损耗约束"
+      },
+      {
+        "pattern_id": "PAT-019",
+        "left_case_id": "case_2364d18e502f",
+        "right_case_id": "case_0e12ed53d250",
+        "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）某些lane均异常",
+        "reason": "跨端 lane 配对/功率标定未确认，禁止自动沉淀绝对损耗约束"
+      },
+      {
+        "pattern_id": "PAT-013",
+        "left_case_id": "case_1fc24b82a165",
+        "right_case_id": "case_5af065c8baca",
+        "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+        "reason": "跨端 lane 配对/功率标定未确认，禁止自动沉淀绝对损耗约束"
+      },
+      {
+        "pattern_id": "PAT-020",
+        "left_case_id": "case_1fc24b82a165",
+        "right_case_id": "case_0d380a152700",
+        "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+        "reason": "跨端 lane 配对/功率标定未确认，禁止自动沉淀绝对损耗约束"
+      },
+      {
+        "pattern_id": "PAT-001",
+        "left_case_id": "case_1fc24b82a165",
+        "right_case_id": "case_af0a23d25838",
+        "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧RX一个lane -40，L2侧RX四条lane都偏低",
+        "reason": "跨端 lane 配对/功率标定未确认，禁止自动沉淀绝对损耗约束"
+      },
+      {
+        "pattern_id": "PAT-005",
+        "left_case_id": "case_6fd458311d2d",
+        "right_case_id": "case_99dd8a24f695",
+        "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常，L1侧一条lane的RX -40，L2侧四条lane的RX均低",
+        "reason": "跨端 lane 配对/功率标定未确认，禁止自动沉淀绝对损耗约束"
+      }
+    ],
+    "patterns": [
+      {
+        "pattern_id": "EP_Q0_BLACKOUT",
+        "title": "全链路 blackout",
+        "source": "measurement-contract:M4",
+        "status": "veto",
+        "meaning": "双端收发光与 SNR 同时触底时优先解释为量测无效，不做端点归因。"
+      },
+      {
+        "pattern_id": "EP_TX_OFF",
+        "title": "本端发送器未出光",
+        "source": "physics:P1/P4/P5 + expert annotations",
+        "status": "physical",
+        "meaning": "bias=0 或 TX<=-39 表示本端发送链失效；精确 -40 单独保留为哨兵。"
+      },
+      {
+        "pattern_id": "EP_RX_HARD_DOWN",
+        "title": "接收方向硬失效",
+        "source": "expert annotations: repeated hard-RX pattern",
+        "status": "expert_supported",
+        "meaning": "同侧 RX<=-39且media_snr<=0确定该接收方向断；SerDes状态作协同证据，但不能单独区分对端发送、介质和本端接收。"
+      },
+      {
+        "pattern_id": "EP_DECODE_WITH_LIGHT",
+        "title": "有收光但解码链失效",
+        "source": "expert annotations: repeated RX-normal pattern",
+        "status": "expert_heuristic",
+        "meaning": "同侧 RX 有光而 media/SerDes 失效；专家标注多指向对端发送质量，但物理上也可能是本端解码链。"
+      },
+      {
+        "pattern_id": "EP_BILATERAL_RX_DEGRADATION",
+        "title": "双端接收侧同时劣化",
+        "source": "expert annotations + measurement-contract:M6",
+        "status": "candidate_only",
+        "meaning": "不用跨端 TX-RX 相减；双端各自出现接收劣化时仅提升 fiber 候选，并请求 OTDR/镜检。"
+      },
+      {
+        "pattern_id": "EP_INSUFFICIENT",
+        "title": "当前快照不可辨识",
+        "source": "expert annotations: missing_critical",
+        "status": "abstain",
+        "meaning": "没有硬边界或方向性证据时不根据告警端或多数类猜测。"
+      }
+    ]
+  }
+}

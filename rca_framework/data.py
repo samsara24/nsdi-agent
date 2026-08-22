@@ -367,11 +367,14 @@ def cases_by_manifest_split(
     manifest_name: str = "manifest.json",
 ) -> List[Dict[str, Any]]:
     manifest = load_split_manifest(data_dir, manifest_name)
-    wanted = [
-        row["file"]
-        for row in manifest.get("cases", [])
-        if row.get("split") == split
-    ]
+    wanted: List[str] = []
+    for row in manifest.get("cases", []):
+        if row.get("split") != split:
+            continue
+        filename = row.get("output_file") or row.get("file")
+        if not filename:
+            raise ValueError(f"manifest row has no output_file/file: {row.get('case_id')}")
+        wanted.append(str(filename))
     if not wanted:
         raise ValueError(f"manifest has no cases for split {split!r}")
     cases: List[Dict[str, Any]] = []
@@ -381,6 +384,15 @@ def cases_by_manifest_split(
         case.setdefault("case_id", path.stem)
         cases.append(case)
     return cases
+
+
+def manifest_splits(data_dir: Path, manifest_name: str = "manifest.json") -> Tuple[str, ...]:
+    manifest = load_split_manifest(data_dir, manifest_name)
+    return tuple(sorted({str(row.get("split")) for row in manifest.get("cases", []) if row.get("split")}))
+
+
+def split_manifest_hash(data_dir: Path, manifest_name: str = "manifest.json") -> str:
+    return sha256_file(data_dir / "_metadata" / manifest_name)
 
 
 def stratified_split_rows(

@@ -18,6 +18,8 @@ from .anomaly import ThresholdModel, fit_thresholds
 from .branches import fit_calibration, handle_many
 from .branches.base import BranchCalibration
 from .constraints.library import CONSTRAINT_LIBRARY
+from .constraints.measurement import MEASUREMENT_CONTRACT_LIBRARY
+from .constraints.physics import PHYSICS_LIBRARY
 from .decision_tree import (
     NumericDecisionTree,
     fit_numeric_decision_tree,
@@ -40,9 +42,16 @@ from .features.dictionary import dictionary_for
 from .features.extractor import CaseFeatures, FeatureModel, extract_features, fit_feature_model
 from .feedback import build_case_diagnosis
 from .sop import LearnedSOP, learn_sop
+from .topology import SOURCE_TOPOLOGIES
 
 
 KNOWLEDGE_BUNDLE_SCHEMA = "offline-knowledge-bundle-v1"
+
+
+def _active_constraint_version(pack: EvidencePack) -> str:
+    if pack.source_dataset in SOURCE_TOPOLOGIES:
+        return f"{PHYSICS_LIBRARY.version}+{MEASUREMENT_CONTRACT_LIBRARY.version}"
+    return CONSTRAINT_LIBRARY.version
 
 
 def _model_from_dict(value: Mapping[str, Any]) -> Any:
@@ -571,7 +580,7 @@ def fit_offline_knowledge(
                 outcome,
                 final_decision,
                 sop_version=sop.version,
-                constraint_library_version=CONSTRAINT_LIBRARY.version,
+                constraint_library_version=_active_constraint_version(pack),
                 confirmed_by="dataset:manifest-train",
                 confirmed_label=confirmed_label,
             )

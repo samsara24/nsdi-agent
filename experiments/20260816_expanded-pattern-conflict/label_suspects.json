@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "case_id": "case_114e59515432",
+    "current_label": "L2",
+    "label_status": "unreviewed",
+    "suspected_label": "L1",
+    "reason": "L1 四条 lane 的 bias 全为 0 mA、txpower 全为 -40 dBm，形成唯一一侧发送器未出光的决定性物理证据；L2 侧仍有正常 TX。接收侧症状不能覆盖该发送边界。",
+    "evidence": {
+      "L1.bias": [0, 0, 0, 0],
+      "L1.txpower": [-40, -40, -40, -40],
+      "L2.txpower": [1.42, 1.11, 0.82, 1.14]
+    },
+    "source": "expanded-expert-diagnosis-graph-v1:combined-case-review",
+    "action": "人工复核原始工单、告警时序和维修动作；未确认前不自动改标"
+  }
+]

@@ -1,0 +1,1441 @@
+{
+  "schema_version": "filtered-rule-label-audit-v1",
+  "expert_source_sha256": "4f7e015948c6feb49fbdd4b761f695a3e91dd66dde8e92ace0d244d746f0912f",
+  "reviewed_matches": [
+    {
+      "case_id": "case_0a93e0affe34d129",
+      "source_dataset": "all_data",
+      "source_file": "local/1674.json",
+      "source_sha256": "62a3f6b64fcc3a39ea4d1437887fd6e5819f3699607a24a81978de0fd1076c80",
+      "output_file": "test/all_data/case_0a93e0affe34d129.json",
+      "output_sha256": "8d47b4ec421705559ee094a856f0028198aa6202e1c603325f967772b13a230c",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_0d380a152700"
+      ]
+    },
+    {
+      "case_id": "case_116e14c0414f556f",
+      "source_dataset": "all_data",
+      "source_file": "fiber/2333.json",
+      "source_sha256": "06c565ace413a555b977f5315a7b589dcc0e7374f745a998abd132db76e52e93",
+      "output_file": "test/all_data/case_116e14c0414f556f.json",
+      "output_sha256": "6c7e16ed796f9e3b6e4fdc239ede07f93031d9b1e494486433df28a8dcbfd8f3",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "fiber",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_650ef8f60c89"
+      ]
+    },
+    {
+      "case_id": "case_13348aa9d22ad96b",
+      "source_dataset": "all_data",
+      "source_file": "local/2317.json",
+      "source_sha256": "54167ee9938a7a03f7b7654098068d9e1511831c4ed46313d837fed22f8f3aec",
+      "output_file": "test/all_data/case_13348aa9d22ad96b.json",
+      "output_sha256": "6451f03ddbe6a489e57c33d52dd03284d506d02b242b36abf1f8c378ec9489db",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_5af065c8baca"
+      ]
+    },
+    {
+      "case_id": "case_1990585214d8ea2b",
+      "source_dataset": "all_data",
+      "source_file": "local/1841.json",
+      "source_sha256": "c8dbff61d4c4d55bce459612534f6ca75cbbdf3d1e9493c50ae47b575c4a0f36",
+      "output_file": "test/all_data/case_1990585214d8ea2b.json",
+      "output_sha256": "e0def3e6b984008b21381214eb12e86903f7db09c3af03f1ef9bc0bd6b897a31",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_e3e756de7831"
+      ]
+    },
+    {
+      "case_id": "case_26b692ad3a60c651",
+      "source_dataset": "all_data",
+      "source_file": "remote/2068.json",
+      "source_sha256": "017db70df0467a36084e1ce56c6c89a06e4e5e42831f2731fd073f6f7bd4fce6",
+      "output_file": "test/all_data/case_26b692ad3a60c651.json",
+      "output_sha256": "2b34ea753ea6db4e4f151a61abca2246e440e97402c783d9893dbbb9cdf3a1ff",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_aa307cc7c7db"
+      ]
+    },
+    {
+      "case_id": "case_81b88f717067490c",
+      "source_dataset": "all_data",
+      "source_file": "remote/1798.json",
+      "source_sha256": "9d5af577eca9b83f49685b0eacac445b0531b04ff7446e0ffa0a72928097f171",
+      "output_file": "test/all_data/case_81b88f717067490c.json",
+      "output_sha256": "9fb3f5c5513a73019b026ddbd26c21bb77effb79819ffd07b5488ad7924b25ea",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_29654329b886"
+      ]
+    },
+    {
+      "case_id": "case_924a551015d6b239",
+      "source_dataset": "all_data",
+      "source_file": "remote/1796.json",
+      "source_sha256": "6cc11f72f6d87f91262bda5ebac2ea1e763b98ee4423efdf78d95099918d0ebb",
+      "output_file": "test/all_data/case_924a551015d6b239.json",
+      "output_sha256": "fb4fa853090a1099d73dff701b308d8788df20337d11ca983e462f8d4f634632",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_94ddf3d3ffba"
+      ]
+    },
+    {
+      "case_id": "case_af2563ab0241a5a3",
+      "source_dataset": "all_data",
+      "source_file": "local/2615.json",
+      "source_sha256": "26908897ae85abf30bd1d32a5e908642bf72412b2b4fd80ec8e53d73b7ee6306",
+      "output_file": "test/all_data/case_af2563ab0241a5a3.json",
+      "output_sha256": "f0c77a60ea0d8938cbdbe3576eb11ea621947a2f65010b559cd54afedee7793f",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_f9e287d18750"
+      ]
+    },
+    {
+      "case_id": "case_ced6ad9966c29320",
+      "source_dataset": "all_data",
+      "source_file": "local/1973.json",
+      "source_sha256": "e24fa07fbb2007066d5c33274a2bfbbf01c6b60c4ffd18ccb8ba349ec592bff8",
+      "output_file": "test/all_data/case_ced6ad9966c29320.json",
+      "output_sha256": "1e57e928bbf379c6fa9c53906be1d15ffe0d4dd679fc057312b14d2650bd18be",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_451529828130"
+      ]
+    },
+    {
+      "case_id": "case_dff684b53dcbc43e",
+      "source_dataset": "all_data",
+      "source_file": "local/2263.json",
+      "source_sha256": "32dcf4c0cc3123aa3aa0622f1b9fa9668b43531089d61304cd6b6e66e9b6f869",
+      "output_file": "test/all_data/case_dff684b53dcbc43e.json",
+      "output_sha256": "83e426a568a402ae5ab8377ae732bd69590445d557b8cfc969b5bf36d87774f9",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_ad8b5bbb7438"
+      ]
+    },
+    {
+      "case_id": "case_f071db9959de51d5",
+      "source_dataset": "all_data",
+      "source_file": "remote/2404.json",
+      "source_sha256": "11a6d61763a797edaf28df938aae8b6c9261e8a70ba7cfc8fa9f61f67e85ed2c",
+      "output_file": "test/all_data/case_f071db9959de51d5.json",
+      "output_sha256": "ad179f5593769c1f488ac26ed4c207a0af3360c0484946307966b73b4565441c",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_dfdc19c27794"
+      ]
+    },
+    {
+      "case_id": "case_f3af07d243e00d72",
+      "source_dataset": "all_data",
+      "source_file": "local/1782.json",
+      "source_sha256": "9c1e36930f612196fdadc3bc90163caf11f09043fcead5f9627a5d5038b1c379",
+      "output_file": "test/all_data/case_f3af07d243e00d72.json",
+      "output_sha256": "ed9dd9ca6a9783b34147d571560f4cc7e7fe56071c25f1bc73dda0a0b39e92fa",
+      "split": "test/all_data",
+      "month": "2025-10",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_8a3a61b7b587"
+      ]
+    },
+    {
+      "case_id": "case_c0319f193c3b2fb6",
+      "source_dataset": "all_data",
+      "source_file": "remote/2944.json",
+      "source_sha256": "46b40ee914cdeaebe6d3c62381f810933fc3cc6c72980e24cf9b1aa0d3e5b67e",
+      "output_file": "test/all_data/case_c0319f193c3b2fb6.json",
+      "output_sha256": "9cad21aff0d656989e9b5bafd987984808aaaaebc1ffb6fcde717f38eb545dd5",
+      "split": "test/all_data",
+      "month": "2025-11",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_3fcb5c9e2b00"
+      ]
+    },
+    {
+      "case_id": "case_8fdf56dfac3c970c",
+      "source_dataset": "all_data",
+      "source_file": "local/3709.json",
+      "source_sha256": "4b5b5a768e426f120293e9cdb44f801dd2e282d7899630e3fd0c6ce8ddf73dd1",
+      "output_file": "test/all_data/case_8fdf56dfac3c970c.json",
+      "output_sha256": "582f14fa15ec46c1c78a1b0426c09c7491369ae36bf8b7d77a9cdaf3d67dd023",
+      "split": "test/all_data",
+      "month": "2025-12",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_ab166db804f1"
+      ]
+    },
+    {
+      "case_id": "case_1ef1a41bd26b9397",
+      "source_dataset": "all_data",
+      "source_file": "remote/6001.json",
+      "source_sha256": "9864f93e57bbe071db0146d0144b3670cd1488b8331d953e847374e02017fa2a",
+      "output_file": "test/all_data/case_1ef1a41bd26b9397.json",
+      "output_sha256": "3d9ff30148c7fbd8c7d7b156f4a8095871193be0cd624678562bb30648a8451b",
+      "split": "test/all_data",
+      "month": "2026-02",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000347"
+      ]
+    },
+    {
+      "case_id": "case_2f302a30b39e52e2",
+      "source_dataset": "all_data",
+      "source_file": "remote/6362.json",
+      "source_sha256": "822cb947844a7b446729b9e0a31814d0cc9d1c939701f88e662a085394b8fdd1",
+      "output_file": "test/all_data/case_2f302a30b39e52e2.json",
+      "output_sha256": "8f48b487fa3efa30b7a03d7eb68a47406ba8c1e014d0507039ce6201411e739b",
+      "split": "test/all_data",
+      "month": "2026-03",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000195"
+      ]
+    },
+    {
+      "case_id": "case_866c50bb1c3d82f9",
+      "source_dataset": "all_data",
+      "source_file": "local/7987.json",
+      "source_sha256": "00025bad37d40e8ab33d7ae44dbf975bb01bba4e1a1d47a0be61188c95c38351",
+      "output_file": "test/all_data/case_866c50bb1c3d82f9.json",
+      "output_sha256": "511f1a24b8e3a1f57e9ce39b98ba3126ab32be6b1a2073e3e051ed493eea3f41",
+      "split": "test/all_data",
+      "month": "2026-04",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000320"
+      ]
+    },
+    {
+      "case_id": "case_fa9953c64cb9135a",
+      "source_dataset": "all_data",
+      "source_file": "remote/8081.json",
+      "source_sha256": "0a25c6f2ec946d00044f19452ba1debf5a4f2c5a2127624c5026dadb25bf441a",
+      "output_file": "test/all_data/case_fa9953c64cb9135a.json",
+      "output_sha256": "368e2d754159e0c827db271d15d59d40ea185b5de16a3662e4ab7fff5135e4b4",
+      "split": "test/all_data",
+      "month": "2026-04",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000382"
+      ]
+    },
+    {
+      "case_id": "case_12fd0360d66a4c7a",
+      "source_dataset": "all_data",
+      "source_file": "remote/8797.json",
+      "source_sha256": "170b2d95e493c161141249ef092c5ab603c5dbe839e34653069109b848b873ad",
+      "output_file": "test/all_data/case_12fd0360d66a4c7a.json",
+      "output_sha256": "0e4c6d97614124f661f810b5b17432114022c22df44806f323393fb16235d468",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000441"
+      ]
+    },
+    {
+      "case_id": "case_19f3c280235fbac0",
+      "source_dataset": "all_data",
+      "source_file": "remote/8496.json",
+      "source_sha256": "30ebcec053f1cd337f7a76f71308e1b9b668a3e61f0112b4b1dd090cfe7bbd16",
+      "output_file": "test/all_data/case_19f3c280235fbac0.json",
+      "output_sha256": "68ba0a05caa7bf2492267462f7de613729e3e625b6027dca4c042732763a0194",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000164"
+      ]
+    },
+    {
+      "case_id": "case_1bc73de540b8e45c",
+      "source_dataset": "all_data",
+      "source_file": "remote/8581.json",
+      "source_sha256": "f8d005e000f301bbc438ea8cdff991672ba15dbb42c10ef0dcaad51cd5176cb2",
+      "output_file": "test/all_data/case_1bc73de540b8e45c.json",
+      "output_sha256": "36c58d3d0e62ed16a57e3c007b97b2ddc5c9c65b4ce1e5d958d983dd1406fa3d",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000254"
+      ]
+    },
+    {
+      "case_id": "case_4ed7f001f0cdff89",
+      "source_dataset": "all_data",
+      "source_file": "remote/8519.json",
+      "source_sha256": "7e5af68ac921e9cf6c9375a4926fa244642f04fa45618e0c5477a90f45fb9bbd",
+      "output_file": "test/all_data/case_4ed7f001f0cdff89.json",
+      "output_sha256": "327b3b6fe30ddbf469a1ea242aea6b8cd73d060aa400f0135d355d72d3033161",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000099"
+      ]
+    },
+    {
+      "case_id": "case_81bf6b088849e8f1",
+      "source_dataset": "all_data",
+      "source_file": "local/8640.json",
+      "source_sha256": "f9facbc10d3ee6cbb8cc400519964ac4f894c79e7e19262f53fa6b0352157fd8",
+      "output_file": "test/all_data/case_81bf6b088849e8f1.json",
+      "output_sha256": "76c16c2fde4a46894734757e3a83bfef107f18aefd35950fbf714ac904a1bc0e",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000086"
+      ]
+    },
+    {
+      "case_id": "case_9e3f5ffedef9a5fc",
+      "source_dataset": "all_data",
+      "source_file": "remote/8596.json",
+      "source_sha256": "31fac88e44a26a6e9ef03649b1e3873da74c070d7600c694671b3dacd05cf92a",
+      "output_file": "test/all_data/case_9e3f5ffedef9a5fc.json",
+      "output_sha256": "f63a01724197e91cf0867d2ecc413a505cb49479cfa03cc77e06356cc203eb69",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000045"
+      ]
+    },
+    {
+      "case_id": "case_aebf853a30f34671",
+      "source_dataset": "all_data",
+      "source_file": "remote/8497.json",
+      "source_sha256": "6e65ad2835ea32be109025fae450feb0a78f872ceadac44111958f22ef27ef3f",
+      "output_file": "test/all_data/case_aebf853a30f34671.json",
+      "output_sha256": "87e9ff0347ab00e024685c7839a772c65e7aeacacdc1c43b61702cb3414c828c",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000022"
+      ]
+    },
+    {
+      "case_id": "case_b48fde127764786d",
+      "source_dataset": "all_data",
+      "source_file": "remote/8916.json",
+      "source_sha256": "bef3830e56c0a11a85b80cbea112850751c1659aa992ea3ea8442925525c6d03",
+      "output_file": "test/all_data/case_b48fde127764786d.json",
+      "output_sha256": "40364a8c1c538063d2c0e80e8efff6a6abd33c821d2a0ef35c3e55ee67e62787",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000238"
+      ]
+    },
+    {
+      "case_id": "case_c5a6dc5aa9a48b79",
+      "source_dataset": "all_data",
+      "source_file": "local/8277.json",
+      "source_sha256": "5305af61a35f84ca23eadf01f0f00927b854355bb4137fe48e2b304d9eea2154",
+      "output_file": "test/all_data/case_c5a6dc5aa9a48b79.json",
+      "output_sha256": "fdd1e81b1ae18c17084159b0f3d643e8716c924f4158d3758461e5cd96e64901",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000277"
+      ]
+    },
+    {
+      "case_id": "case_df7183507996acc3",
+      "source_dataset": "all_data",
+      "source_file": "remote/8452.json",
+      "source_sha256": "989deb196b8559ac18f9b66ee2e3c2be1f3ae06817e34c2dd138def38f61a7ca",
+      "output_file": "test/all_data/case_df7183507996acc3.json",
+      "output_sha256": "7ace4f83282a4eef618bf04d34886a948672e0109b4fb87251874b2f97299463",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000257"
+      ]
+    },
+    {
+      "case_id": "case_dfed19432530fbf9",
+      "source_dataset": "all_data",
+      "source_file": "local/8563.json",
+      "source_sha256": "5a0b22be093c44d44b627e1679430cbca57d5800cf7d4c3f89189b7f3f3ded54",
+      "output_file": "test/all_data/case_dfed19432530fbf9.json",
+      "output_sha256": "ab11b417b5324029cccf66e9213be88254cfadad004a853377c66c4f2cb7134a",
+      "split": "test/all_data",
+      "month": "2026-05",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000429"
+      ]
+    },
+    {
+      "case_id": "case_079d661ac9b59583",
+      "source_dataset": "all_data",
+      "source_file": "fiber/9283.json",
+      "source_sha256": "7eb4dfeed89469f86389db13112d8ba84eda11260b18f1c0f18533a86aef64c6",
+      "output_file": "test/all_data/case_079d661ac9b59583.json",
+      "output_sha256": "4adc6999424239191f58b5452e645415fb609465a476f998ecaf35e1c479c48c",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "fiber",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000106"
+      ]
+    },
+    {
+      "case_id": "case_45eb513a4b715340",
+      "source_dataset": "all_data",
+      "source_file": "remote/9951.json",
+      "source_sha256": "52b6a6e3048557a638a74414656b9e9a5977aba817f1e11d247f63251afaecec",
+      "output_file": "test/all_data/case_45eb513a4b715340.json",
+      "output_sha256": "9dc1c7478db2a4e73f52dec24933ffc7c4ab85b3103884444fd4f104fffa2450",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000173"
+      ]
+    },
+    {
+      "case_id": "case_74b9ae1efdb112bd",
+      "source_dataset": "all_data",
+      "source_file": "remote/9409.json",
+      "source_sha256": "d779946540e2a0e1d92c70e4c8d77f1445778da887aa253608f25bd347574a6c",
+      "output_file": "test/all_data/case_74b9ae1efdb112bd.json",
+      "output_sha256": "239b2b86b41b701e41df8568793c8827a7e212844c78ca949adffb1df1a7026a",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000354"
+      ]
+    },
+    {
+      "case_id": "case_937277a1315f2858",
+      "source_dataset": "all_data",
+      "source_file": "remote/9438.json",
+      "source_sha256": "917d5c4c3c0521556f82d4541bdc83bcd73575aa574a77ec1507ad2a698ff1ad",
+      "output_file": "test/all_data/case_937277a1315f2858.json",
+      "output_sha256": "9bde782200fd346e794c73fe5fa2490fcf5356a39c340c3721e05d2a233c68f8",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000355"
+      ]
+    },
+    {
+      "case_id": "case_a0e1708cc9afb0d2",
+      "source_dataset": "all_data",
+      "source_file": "local/9371.json",
+      "source_sha256": "9d78e922a46571b9f91daa04b8c057043fa599be89957ddc61f3189115ee7c75",
+      "output_file": "test/all_data/case_a0e1708cc9afb0d2.json",
+      "output_sha256": "ee95979697478546e006fc786c1fba7f7cf9d82efd8788473a7fa971d83c6d49",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000285"
+      ]
+    },
+    {
+      "case_id": "case_dfd5c7b582483049",
+      "source_dataset": "all_data",
+      "source_file": "local/9483.json",
+      "source_sha256": "612690ab944ad45cab353477bec29810def53cf99a7183695467744a68202096",
+      "output_file": "test/all_data/case_dfd5c7b582483049.json",
+      "output_sha256": "deb1889cc5d337599e36a24dcce41e24b6d55173e0ca40a3dc491419e89a8900",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000283"
+      ]
+    },
+    {
+      "case_id": "case_e5d8f76ae7573eb5",
+      "source_dataset": "all_data",
+      "source_file": "remote/9864.json",
+      "source_sha256": "b6e934ea77fc8ae6ed9c48d00e9bd03d670a50abaa1687312ac41db26bb01745",
+      "output_file": "test/all_data/case_e5d8f76ae7573eb5.json",
+      "output_sha256": "c9a80c287488744d916de78cfbe01ac74666d7e460471d68009e8d133238b5d0",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000152"
+      ]
+    },
+    {
+      "case_id": "case_e6568d06b579590e",
+      "source_dataset": "all_data",
+      "source_file": "local/9399.json",
+      "source_sha256": "b96b254761fdb536c4dceffa84d399fbfddfd36f7fc7be605941ea7bea5bbbee",
+      "output_file": "test/all_data/case_e6568d06b579590e.json",
+      "output_sha256": "2176e96fc8adfcbc2f1c359afcbbcbaba4923943834ff0877ccc1f4daa2ff4bc",
+      "split": "test/all_data",
+      "month": "2026-06",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_000275"
+      ]
+    },
+    {
+      "case_id": "case_1005baccaaaebb92",
+      "source_dataset": "all_data",
+      "source_file": "local/242.json",
+      "source_sha256": "29503ec2546697c1191f0536ee5125b126387da3cc20c05ce901a2079fc2af5f",
+      "output_file": "train/case_1005baccaaaebb92.json",
+      "output_sha256": "156ada0f3aeb7f5ea7e35ea9659647c06d2502cbfedf0d3cf4f9e514f60eaf17",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_6f8b6f6a4b28"
+      ]
+    },
+    {
+      "case_id": "case_6d4fb89f8945c701",
+      "source_dataset": "all_data",
+      "source_file": "local/504.json",
+      "source_sha256": "48c698f6737e4f09c9cb607e9af0bb4d79e85f190143b8ca75b42017673f6827",
+      "output_file": "train/case_6d4fb89f8945c701.json",
+      "output_sha256": "c5deffac1a9cba1717697b0772a2a3536832d9ffd55edb9b2bfd0acbebb7b363",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_f92c3782baa7"
+      ]
+    },
+    {
+      "case_id": "case_891dbab2523b90e3",
+      "source_dataset": "all_data",
+      "source_file": "remote/432.json",
+      "source_sha256": "7c2f9205a8c80fd8b6dbf6829d89841904056d5c1bf18ccbe66160b6568fc751",
+      "output_file": "train/case_891dbab2523b90e3.json",
+      "output_sha256": "3d4b75906ca772a33a2a6dae906b87f480185a52b4306658836462bd60f8a379",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_302d8bb1d8ff"
+      ]
+    },
+    {
+      "case_id": "case_8f86a9054091498b",
+      "source_dataset": "all_data",
+      "source_file": "local/746.json",
+      "source_sha256": "9bcd379e850dbff3c4ace6d09166aa817d24faf38ae754e3140a631fab0722aa",
+      "output_file": "train/case_8f86a9054091498b.json",
+      "output_sha256": "ae5454e7edc240ec65c49fed652f5c9490d8df500c836124c91f523bb56598c4",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_c3d4f347b125"
+      ]
+    },
+    {
+      "case_id": "case_c7d22292337626d1",
+      "source_dataset": "all_data",
+      "source_file": "remote/302.json",
+      "source_sha256": "6140d225819303aabdc0fcdfc785edd41d923c69311f909b0de4337c66364239",
+      "output_file": "train/case_c7d22292337626d1.json",
+      "output_sha256": "e7a6bdd8fb1ddff66ed5aad41132733902338cea8451d6e7c5ebcfc701503dde",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_bf363c1887d9"
+      ]
+    },
+    {
+      "case_id": "case_cc20e1069b1d1fb7",
+      "source_dataset": "all_data",
+      "source_file": "local/555.json",
+      "source_sha256": "95bf844fd8e116702458c00b77d2894824ffed5b8cf0c217aca626cedcf54bb8",
+      "output_file": "train/case_cc20e1069b1d1fb7.json",
+      "output_sha256": "9560b8fd632a3b2455109bbad6c1300ecfcce9a614432f4addea086fbe66318c",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_0e9829a2061b"
+      ]
+    },
+    {
+      "case_id": "case_d1f9bb9236b82c8d",
+      "source_dataset": "all_data",
+      "source_file": "local/332.json",
+      "source_sha256": "510f12bb07463c66033c82d1282de7722cb14c7b57f399f1c940cfe0ede17621",
+      "output_file": "train/case_d1f9bb9236b82c8d.json",
+      "output_sha256": "1a2dbd7d4d4303ffcbf0f511ceec0dd585781ecba7884f207a291dd4503aafb6",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_da829dd0f857"
+      ]
+    },
+    {
+      "case_id": "case_d5faed0d0014fc4b",
+      "source_dataset": "all_data",
+      "source_file": "local/328.json",
+      "source_sha256": "b35f07e01d598dd0732ad6d749e8c1e480cca77cd01fc2a463aad9495d7d46c6",
+      "output_file": "train/case_d5faed0d0014fc4b.json",
+      "output_sha256": "a53216bf2a177de860c6fbd8d4d579f03bf8513e24e8b03b86c8a32ba43777e8",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_e7f2b980e7b8"
+      ]
+    },
+    {
+      "case_id": "case_d6f0794862204d4b",
+      "source_dataset": "all_data",
+      "source_file": "fiber/1019.json",
+      "source_sha256": "e24b65aa7322ba2e4b641dbec2009d1102b9f22ad92b41215fe480f5645f4084",
+      "output_file": "train/case_d6f0794862204d4b.json",
+      "output_sha256": "931485ebedce14d56da68400c071d251a33b82281b1942a69971b87c259a3fe8",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "fiber",
+      "source_adjusted_label": "fiber",
+      "label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_6fd458311d2d"
+      ]
+    },
+    {
+      "case_id": "case_e20f489289d0fc34",
+      "source_dataset": "all_data",
+      "source_file": "local/305.json",
+      "source_sha256": "4fa03b3a5793a7cad2b3cb1c5ea076045b1ed3e3ef002bc560811f5a7badd2e1",
+      "output_file": "train/case_e20f489289d0fc34.json",
+      "output_sha256": "f8e86adbc807a0d3d5e8b2eb6aa405bb56ac1f649a2af13189a9b82e7abad51c",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "l2",
+      "label": "L2",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_5739c9defc70"
+      ]
+    },
+    {
+      "case_id": "case_f4ba40dd7b4b718e",
+      "source_dataset": "all_data",
+      "source_file": "remote/306.json",
+      "source_sha256": "1ad66397e6a5cbe57367603edf937ab6007158f52e1bd9d3a6e2c8a3b608d053",
+      "output_file": "train/case_f4ba40dd7b4b718e.json",
+      "output_sha256": "084734b20bf83f626f9ae2346a0b9d12c1074018082dc1148951064d3170b35a",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "label": "L1",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_d95088322c05"
+      ]
+    },
+    {
+      "case_id": "case_fec71fba5a745294",
+      "source_dataset": "all_data",
+      "source_file": "local/856.json",
+      "source_sha256": "3641eaa0269f226f015149332286b66191329f23457439f86bad986cbec3efc1",
+      "output_file": "train/case_fec71fba5a745294.json",
+      "output_sha256": "463f74ca740161601475f8016b5de504f310ed9d20b750599cf97a891865dacf",
+      "split": "train",
+      "month": "2025-09",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "label": "fiber",
+      "label_status": "expert_reviewed",
+      "expert_reference_case_ids": [
+        "case_2364d18e502f"
+      ]
+    }
+  ],
+  "label_changes": [
+    {
+      "case_id": "case_116e14c0414f556f",
+      "source_dataset": "all_data",
+      "source_file": "fiber/2333.json",
+      "split": "test/all_data",
+      "original_label": "fiber",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_650ef8f60c89"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-012",
+          "decision": "both_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+          "updated_at": "2026-08-17T05:34:16.595Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_079d661ac9b59583",
+      "source_dataset": "all_data",
+      "source_file": "fiber/9283.json",
+      "split": "test/all_data",
+      "original_label": "fiber",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000106"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-026",
+          "decision": "both_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:28:11.494Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_0a93e0affe34d129",
+      "source_dataset": "all_data",
+      "source_file": "local/1674.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "unified_label": "fiber",
+      "expert_reference_case_ids": [
+        "case_0d380a152700"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-020",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+          "updated_at": "2026-08-17T04:39:35.151Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_f3af07d243e00d72",
+      "source_dataset": "all_data",
+      "source_file": "local/1782.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_8a3a61b7b587"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-029",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "L1侧TX-40",
+          "updated_at": "2026-08-17T06:03:58.208Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_13348aa9d22ad96b",
+      "source_dataset": "all_data",
+      "source_file": "local/2317.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "unified_label": "fiber",
+      "expert_reference_case_ids": [
+        "case_5af065c8baca"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-013",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "L1侧media snr和serdes snr和RX都有一条lane异常低，L2侧整体RX power低，均为负值。因此两端光衰都大",
+          "updated_at": "2026-08-17T03:01:49.359Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_1005baccaaaebb92",
+      "source_dataset": "all_data",
+      "source_file": "local/242.json",
+      "split": "train",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_6f8b6f6a4b28"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-002",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T03:05:45.293Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_af2563ab0241a5a3",
+      "source_dataset": "all_data",
+      "source_file": "local/2615.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_f9e287d18750"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-025",
+          "decision": "train_label_suspect",
+          "evidence_status": "",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T03:26:36.595Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_d5faed0d0014fc4b",
+      "source_dataset": "all_data",
+      "source_file": "local/328.json",
+      "split": "train",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_e7f2b980e7b8"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-042",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常",
+          "updated_at": "2026-08-17T03:28:39.946Z"
+        },
+        {
+          "pattern_id": "PAT-031",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常",
+          "updated_at": "2026-08-17T04:25:10.387Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_d1f9bb9236b82c8d",
+      "source_dataset": "all_data",
+      "source_file": "local/332.json",
+      "split": "train",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "unified_label": "fiber",
+      "expert_reference_case_ids": [
+        "case_da829dd0f857"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-015",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）四条lane均异常",
+          "updated_at": "2026-08-17T02:26:33.191Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_8fdf56dfac3c970c",
+      "source_dataset": "all_data",
+      "source_file": "local/3709.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_ab166db804f1"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-017",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T05:37:33.520Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_cc20e1069b1d1fb7",
+      "source_dataset": "all_data",
+      "source_file": "local/555.json",
+      "split": "train",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_0e9829a2061b"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-008",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L2侧media snr和serdes snr低，但是RX power正常，且L1侧TX power正常",
+          "updated_at": "2026-08-17T03:25:10.694Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_8f86a9054091498b",
+      "source_dataset": "all_data",
+      "source_file": "local/746.json",
+      "split": "train",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_c3d4f347b125"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-032",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T02:54:34.862Z"
+        },
+        {
+          "pattern_id": "PAT-010",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:20:32.237Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_c5a6dc5aa9a48b79",
+      "source_dataset": "all_data",
+      "source_file": "local/8277.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_000277"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-035",
+          "decision": "test_label_suspect",
+          "evidence_status": "missing_noncritical",
+          "notes": "L1侧TX-40",
+          "updated_at": "2026-08-17T05:49:05.927Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_fec71fba5a745294",
+      "source_dataset": "all_data",
+      "source_file": "local/856.json",
+      "split": "train",
+      "original_label": "l2",
+      "source_adjusted_label": "fiber",
+      "unified_label": "fiber",
+      "expert_reference_case_ids": [
+        "case_2364d18e502f"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-019",
+          "decision": "train_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "media snr一条lane低，L1和L2两端的传输光衰（TX - RX）某些lane均异常",
+          "updated_at": "2026-08-17T02:35:44.602Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_dfed19432530fbf9",
+      "source_dataset": "all_data",
+      "source_file": "local/8563.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_000429"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-043",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T05:35:15.664Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_81bf6b088849e8f1",
+      "source_dataset": "all_data",
+      "source_file": "local/8640.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_000086"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-024",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:21:57.596Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_e6568d06b579590e",
+      "source_dataset": "all_data",
+      "source_file": "local/9399.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_000275"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-034",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:22:39.596Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_81b88f717067490c",
+      "source_dataset": "all_data",
+      "source_file": "remote/1798.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_29654329b886"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-012",
+          "decision": "both_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L2侧media snr和serdes snr低，RX power为-40，且L1侧TX power正常",
+          "updated_at": "2026-08-17T05:34:16.595Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_1ef1a41bd26b9397",
+      "source_dataset": "all_data",
+      "source_file": "remote/6001.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000347"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-039",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:47:58.508Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_2f302a30b39e52e2",
+      "source_dataset": "all_data",
+      "source_file": "remote/6362.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000195"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-030",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:46:05.289Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_df7183507996acc3",
+      "source_dataset": "all_data",
+      "source_file": "remote/8452.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000257"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-033",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:46:52.778Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_19f3c280235fbac0",
+      "source_dataset": "all_data",
+      "source_file": "remote/8496.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000164"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-028",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:45:18.208Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_aebf853a30f34671",
+      "source_dataset": "all_data",
+      "source_file": "remote/8497.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000022"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-021",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，只是值偏低，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:45:26.822Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_9e3f5ffedef9a5fc",
+      "source_dataset": "all_data",
+      "source_file": "remote/8596.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000045"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-022",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:32:36.004Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_74b9ae1efdb112bd",
+      "source_dataset": "all_data",
+      "source_file": "remote/9409.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000354"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-040",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:33:08.927Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_937277a1315f2858",
+      "source_dataset": "all_data",
+      "source_file": "remote/9438.json",
+      "split": "test/all_data",
+      "original_label": "l1",
+      "source_adjusted_label": "l2",
+      "unified_label": "L2",
+      "expert_reference_case_ids": [
+        "case_000355"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-041",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，但是RX power正常，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:33:50.593Z"
+        }
+      ]
+    },
+    {
+      "case_id": "case_e5d8f76ae7573eb5",
+      "source_dataset": "all_data",
+      "source_file": "remote/9864.json",
+      "split": "test/all_data",
+      "original_label": "l2",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "expert_reference_case_ids": [
+        "case_000152"
+      ],
+      "expert_annotations": [
+        {
+          "pattern_id": "PAT-027",
+          "decision": "test_label_suspect",
+          "evidence_status": "sufficient",
+          "notes": "单lane L1侧media snr和serdes snr低，RX power为-40，且L2侧TX power正常",
+          "updated_at": "2026-08-17T04:21:14.319Z"
+        }
+      ]
+    }
+  ],
+  "unmatched_reviewed_case_ids": [
+    "case_000080",
+    "case_007b3e28a693",
+    "case_0c88c31e492a",
+    "case_0e0ee81d3c6d",
+    "case_0e12ed53d250",
+    "case_1dda3cf529f2",
+    "case_1fc24b82a165",
+    "case_41a9ba77d097",
+    "case_43bd5d7a12d0",
+    "case_5bd987fbfe68",
+    "case_91bc67dc9c03",
+    "case_99dd8a24f695",
+    "case_9fe5cd420468",
+    "case_aef76fdb4997",
+    "case_af0a23d25838",
+    "case_c99aaca7f8ab",
+    "case_e6c83f5f9344"
+  ]
+}

@@ -37,6 +37,9 @@ class GraphCase:
     tokens: Tuple[str, ...]
     telemetry_status: str = "full_telemetry"
     confirmed_by: str = "dataset"
+    source_dataset: str = ""
+    topology_id: str = ""
+    lane_profile: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -45,6 +48,9 @@ class GraphCase:
             "tokens": list(self.tokens),
             "telemetry_status": self.telemetry_status,
             "confirmed_by": self.confirmed_by,
+            "source_dataset": self.source_dataset,
+            "topology_id": self.topology_id,
+            "lane_profile": self.lane_profile,
         }
 
     @classmethod
@@ -55,6 +61,9 @@ class GraphCase:
             tokens=tuple(value.get("tokens", [])),
             telemetry_status=value.get("telemetry_status", "full_telemetry"),
             confirmed_by=value.get("confirmed_by", "dataset"),
+            source_dataset=value.get("source_dataset", ""),
+            topology_id=value.get("topology_id", ""),
+            lane_profile=value.get("lane_profile", ""),
         )
 
 
@@ -178,6 +187,9 @@ class EvidenceGraph:
                 tokens=item.tokens,
                 telemetry_status=item.telemetry_status,
                 confirmed_by=confirmed_by,
+                source_dataset=item.source_dataset,
+                topology_id=item.topology_id,
+                lane_profile=item.lane_profile,
             )
             for item, label in zip(features, labels)
         )

@@ -27,6 +27,8 @@ from rca_framework.anomaly import fit_thresholds  # noqa: E402
 from rca_framework.branches import fit_calibration, handle_many  # noqa: E402
 from rca_framework.branches.base import majority_label  # noqa: E402
 from rca_framework.constraints.library import CONSTRAINT_LIBRARY  # noqa: E402
+from rca_framework.constraints.measurement import MEASUREMENT_CONTRACT_LIBRARY  # noqa: E402
+from rca_framework.constraints.physics import PHYSICS_LIBRARY  # noqa: E402
 from rca_framework.data import cases_by_manifest_split, load_cases, load_split_manifest  # noqa: E402
 from rca_framework.decision import (  # noqa: E402
     CANDIDATE_SOURCES,
@@ -67,6 +69,7 @@ from rca_framework.llm import (  # noqa: E402
     prompt_template_hash,
 )
 from rca_framework.types import ROOT_CAUSES  # noqa: E402
+from rca_framework.topology import SOURCE_TOPOLOGIES  # noqa: E402
 
 
 def branch_report(outcomes, decisions, actual: Sequence[str]) -> Dict[str, Any]:
@@ -661,7 +664,11 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
                 outcome,
                 final_decision,
                 sop_version=sop_model.version if sop_model is not None else SOP_VERSION,
-                constraint_library_version=CONSTRAINT_LIBRARY.version,
+                constraint_library_version=(
+                    f"{PHYSICS_LIBRARY.version}+{MEASUREMENT_CONTRACT_LIBRARY.version}"
+                    if test_packs[index].source_dataset in SOURCE_TOPOLOGIES
+                    else CONSTRAINT_LIBRARY.version
+                ),
             )
         report_record = build_report(outcome, final_decision, diagnosis=diagnosis).to_dict()
         feature_record = test_features[index].to_dict() if test_features is not None else None
@@ -1007,5 +1014,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
 

@@ -5,4 +5,7 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 
+# 活动 filtered-rule 数据仅使用 all_data 与 rule1_channel_not_4。
+datasets/filtered_by_rule/rule3_power_all_neg40/
+
 # 实验 artifacts 、报告和日志是私有仓库的可复现记录，需要入库。

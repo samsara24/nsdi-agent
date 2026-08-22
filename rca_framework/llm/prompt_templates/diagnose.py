@@ -12,7 +12,7 @@ from ...types import ROOT_CAUSES
 from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
-DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v7-full-step-ids"
+DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-local-remote-v1"
 
 SOP_STEP_ID_SEQUENCE = (
     "Q0_validate_measurements",
@@ -23,8 +23,8 @@ SOP_STEP_ID_SEQUENCE = (
 )
 
 ROOT_CAUSE_DEFINITIONS = {
-    "L1": "400G 端口一侧的设备或端口根因",
-    "L2": "200G 端口一侧的设备或端口根因",
+    "L1": "当前 case 本端的设备或端口根因",
+    "L2": "当前 case 对端的设备或端口根因",
     "fiber": "L1 与 L2 之间的光纤 / 链路介质根因",
 }
 
@@ -46,6 +46,7 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
         "expert_sop": getattr(request, "expert_sop", None),
         "numeric_decision_tree_path": getattr(request, "decision_tree_prediction", None),
         "raw_measurements_with_units_and_lane_counts": getattr(request, "raw_measurements", {}),
+        "source_and_topology": getattr(request, "topology_context", {}),
         "dual_similarity": {
             "S_feature": getattr(request, "feature_similarity", 0.0),
             "S_graph": getattr(request, "graph_similarity", 0.0),
@@ -59,7 +60,7 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
         "deterministic_sop_candidates": list(getattr(request, "sop_candidates", ())),
     }
     sections = [
-        "你是光链路故障定界专家。当前 case 与历史证据图相似度不足，"
+        "你是光链路故障定界专家。根据当前 case 的历史匹配分支，"
         "必须按专家排障 SOP 的检查顺序，在纯物理约束和量测契约内给出 L1/L2/fiber 三选一结论。\n"
         "遥测不完整不是拒答理由；证据不足必须体现为低 evidence_completeness 或低 reasoning_completeness。\n"
         "量测契约只能否决不可信推理，严禁写入 `cited_constraints` 作为 support/exclude 依据。\n"

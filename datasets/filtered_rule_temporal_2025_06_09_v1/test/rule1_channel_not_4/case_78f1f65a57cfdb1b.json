@@ -1,0 +1,218 @@
+{
+  "alarm_ip_interface": "2409:27ff:1013:0000:000f:0000:0000:000e--400GE12/0/11",
+  "alarm_time": "2025-10-15 01:59:24",
+  "region": "cn-east-4",
+  "alarm_name": "接口CRC",
+  "label": "L1",
+  "bias": {
+    "L1": {
+      "0": 7.83,
+      "1": 7.82,
+      "2": 7.83,
+      "3": 7.82,
+      "4": 7.83,
+      "5": 7.82,
+      "6": 7.83,
+      "7": 7.82
+    },
+    "L2": {
+      "0": 7.37,
+      "1": 7.37,
+      "2": 7.37,
+      "3": 7.37,
+      "4": 7.37,
+      "5": 7.37,
+      "6": 7.37,
+      "7": 7.37
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": -0.04,
+      "1": 0.19,
+      "2": -0.08,
+      "3": 0.11,
+      "4": -0.04,
+      "5": 0.16,
+      "6": 0.61,
+      "7": 0.27
+    },
+    "L2": {
+      "0": 2.45,
+      "1": 2.41,
+      "2": 2.92,
+      "3": 2.45,
+      "4": 2.49,
+      "5": 2.54,
+      "6": 2.6,
+      "7": 2.56
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 2.13,
+      "1": 2.18,
+      "2": 2.15,
+      "3": 2.32,
+      "4": 2.46,
+      "5": 2.27,
+      "6": 2.34,
+      "7": 2.25
+    },
+    "L2": {
+      "0": -0.94,
+      "1": -1.12,
+      "2": -1.32,
+      "3": -0.96,
+      "4": -1.27,
+      "5": -1.53,
+      "6": -0.99,
+      "7": -0.98
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": 0.32,
+      "1": 0.23,
+      "2": 0.77,
+      "3": 0.13,
+      "4": 0.03,
+      "5": 0.27,
+      "6": 0.26,
+      "7": 0.31
+    },
+    "L2-L1": {
+      "0": 0.9,
+      "1": 1.31,
+      "2": 1.24,
+      "3": 1.07,
+      "4": 1.23,
+      "5": 1.69,
+      "6": 1.6,
+      "7": 1.25
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 25.34,
+      "1": 25.96,
+      "2": 24.55,
+      "3": 25.34,
+      "4": 25.64,
+      "5": 25.64,
+      "6": 25.06,
+      "7": 25.64
+    },
+    "L2": {
+      "0": 26.3,
+      "1": 25.06,
+      "2": 25.64,
+      "3": 25.96,
+      "4": 26.3,
+      "5": 25.96,
+      "6": 26.3,
+      "7": 25.34
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null
+    },
+    "L2": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null
+    }
+  },
+  "serdes_snr": null,
+  "link_location": "参数面",
+  "link_side_ip_interface_map": {
+    "L1": "2409:27ff:1013:0000:000f:0000:0000:000e--400GE12/0/11",
+    "L2": "2409:27ff:1013:0000:000f:0000:0000:0040--400GE1/1/11"
+  },
+  "vendor": {
+    "L1": "其他",
+    "L2": "光迅光模块"
+  },
+  "vendor_sn": {
+    "L1": "VWAE6H00363",
+    "L2": "MH242106230582"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 51.48,
+    "L2": 41.87
+  },
+  "Voltage": {
+    "L1": 3.23,
+    "L2": 3.31
+  },
+  "Lane number": null,
+  "syslog": null,
+  "case_id": "case_78f1f65a57cfdb1b",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "local/1849.json",
+    "source_sha256": "f125a52b7ec079be1380be47c0bd5b67f1656bbf79d4fb0b329f04a370a75ac5",
+    "split": "test/rule1_channel_not_4",
+    "parsed_month": "2025-10",
+    "original_alarm_time": "2025-10-15 01:59:24",
+    "original_label": "l3",
+    "source_adjusted_label": "l3",
+    "unified_label": "L1",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        8
+      ],
+      "l4": [
+        8
+      ]
+    }
+  }
+}

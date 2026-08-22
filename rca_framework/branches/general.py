@@ -30,6 +30,7 @@ from ..evidence_graph.router import RoutingDecision
 from ..evidence_pack import EvidencePack
 from ..sop.expert_sop import expert_sop_to_dict
 from ..types import ROOT_CAUSES, SIDES
+from ..topology import SOURCE_TOPOLOGIES, TOPOLOGY_CONTRACT_VERSION
 from .base import BranchCalibration, BranchOutcome, EvidenceLink
 
 if False:  # pragma: no cover - typing only without importing optional module at runtime
@@ -104,6 +105,7 @@ class DiagnosisRequest:
     sop_trace: Tuple[Dict[str, Any], ...] = ()
     sop_candidates: Tuple[str, ...] = ()
     require_sop_step_ids: bool = False
+    topology_context: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -139,6 +141,7 @@ class DiagnosisRequest:
             "sop_trace": [dict(item) for item in self.sop_trace],
             "sop_candidates": list(self.sop_candidates),
             "require_sop_step_ids": self.require_sop_step_ids,
+            "topology_context": dict(self.topology_context),
         }
 
 
@@ -416,4 +419,22 @@ def build_request(
         sop_prediction=sop_prediction,
         decision_tree_prediction=decision_tree_prediction,
         expert_sop=expert_sop_to_dict() if request_branch == BRANCH else None,
+        raw_measurements={
+            "lane_widths": pack.lane_widths,
+            "scalars": dict(pack.scalars),
+        },
+        topology_context={
+            "contract_version": (
+                TOPOLOGY_CONTRACT_VERSION if pack.source_dataset in SOURCE_TOPOLOGIES else ""
+            ),
+            "source_dataset": pack.source_dataset,
+            "topology_id": pack.topology_id,
+            "lane_profile": pack.lane_profile,
+            "same_index_pairing_semantics": (
+                "logical optical-lane pairing for categorical and within-case relative evidence only"
+                if pack.source_dataset in SOURCE_TOPOLOGIES else ""
+            ),
+            "absolute_link_loss_allowed": False,
+            "serdes_to_optical_pairing_allowed": False,
+        },
     )

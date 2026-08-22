@@ -1,0 +1,186 @@
+{
+  "alarm_ip_interface": "29.97.244.175--200GHL1/2/23",
+  "alarm_time": "2025-10-24 22:32:18",
+  "region": "cn-southwest-2",
+  "alarm_name": "频繁升降lane",
+  "label": "L2",
+  "bias": {
+    "L1": {
+      "0": 7.29,
+      "1": 7.29,
+      "2": 7.29,
+      "3": 7.29
+    },
+    "L2": {
+      "0": 7.31,
+      "1": 7.32,
+      "2": 7.32,
+      "3": 7.35
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 0.81,
+      "1": 0.91,
+      "2": 0.37,
+      "3": -4.32
+    },
+    "L2": {
+      "0": 1.31,
+      "1": 2.05,
+      "2": 1.43,
+      "3": 1.43
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 0.81,
+      "1": 1.06,
+      "2": 0.54,
+      "3": 1.05
+    },
+    "L2": {
+      "0": 0.68,
+      "1": 0.67,
+      "2": 0.68,
+      "3": 0.7
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": 0.5,
+      "1": 0.99,
+      "2": 0.89,
+      "3": 0.38
+    },
+    "L2-L1": {
+      "0": 0.13,
+      "1": 0.24,
+      "2": -0.31,
+      "3": -5.02
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 24.55,
+      "1": 23.67,
+      "2": 24.09,
+      "3": 23.12
+    },
+    "L2": {
+      "0": 26.11,
+      "1": 25.75,
+      "2": 25.23,
+      "3": 25.24
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null
+    },
+    "L2": {
+      "0": 24.96,
+      "1": 25.19,
+      "2": 25.51,
+      "3": 25.19
+    }
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 699750,
+      "1": 651287,
+      "2": 696412,
+      "3": 675585
+    },
+    "L2": {
+      "0": 685760,
+      "1": 761572,
+      "2": 680950,
+      "3": 726706
+    }
+  },
+  "link_location": "超平面",
+  "link_side_ip_interface_map": {
+    "L1": "29.97.241.145--400GHL1/7/4:2",
+    "L2": "29.97.244.175--200GHL1/2/23"
+  },
+  "vendor": {
+    "L1": "华工光模块",
+    "L2": "海思光模块"
+  },
+  "vendor_sn": {
+    "L1": "3000143002185",
+    "L2": "035JUANMR2340363"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 47.93,
+    "L2": 52.14
+  },
+  "Voltage": {
+    "L1": 3.24,
+    "L2": 3.32
+  },
+  "Lane number": {
+    "L1": 4,
+    "L2": 4
+  },
+  "syslog": null,
+  "case_id": "case_3a6fa0345fdaf9cc",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "all_data",
+    "source_file": "local/2408.json",
+    "source_sha256": "248e29ddeff573919a48e32092e9b196dfa6c7fcfbce0edbb421eb6b97279b46",
+    "split": "test/all_data",
+    "parsed_month": "2025-10",
+    "original_alarm_time": "2025-10-24 22:32:18",
+    "original_label": "l2",
+    "source_adjusted_label": "l2",
+    "unified_label": "L2",
+    "endpoint_aliases": {
+      "l1": "L1",
+      "l2": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-200g-logical4",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "200G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l1": [
+        4
+      ],
+      "l2": [
+        4
+      ]
+    }
+  }
+}

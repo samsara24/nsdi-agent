@@ -1,0 +1,218 @@
+{
+  "alarm_ip_interface": "26.135.52.15--400GE4/0/23",
+  "alarm_time": "2025-10-26 03:56:45",
+  "region": "cn-north-9",
+  "alarm_name": "接口CRC",
+  "label": "L1",
+  "bias": {
+    "L1": {
+      "0": 7.35,
+      "1": 7.35,
+      "2": 7.35,
+      "3": 7.35,
+      "4": 7.35,
+      "5": 7.35,
+      "6": 7.35,
+      "7": 7.35
+    },
+    "L2": {
+      "0": 7.62,
+      "1": 7.62,
+      "2": 7.62,
+      "3": 7.62,
+      "4": 7.62,
+      "5": 7.62,
+      "6": 7.62,
+      "7": 7.62
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 2.09,
+      "1": 2.19,
+      "2": 2.34,
+      "3": 2.29,
+      "4": 1.88,
+      "5": 1.74,
+      "6": 1.25,
+      "7": 1.65
+    },
+    "L2": {
+      "0": 1.86,
+      "1": 1.79,
+      "2": 1.79,
+      "3": 1.92,
+      "4": 1.45,
+      "5": 1.76,
+      "6": 1.71,
+      "7": 1.36
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 0.78,
+      "1": 0.58,
+      "2": 0.62,
+      "3": 0.68,
+      "4": 0.64,
+      "5": 0.75,
+      "6": 0.54,
+      "7": 0.4
+    },
+    "L2": {
+      "0": 1.89,
+      "1": 1.89,
+      "2": 1.99,
+      "3": 2.19,
+      "4": 1.94,
+      "5": 1.85,
+      "6": 1.54,
+      "7": 1.65
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": 1.08,
+      "1": 1.21,
+      "2": 1.17,
+      "3": 1.24,
+      "4": 0.81,
+      "5": 1.01,
+      "6": 1.17,
+      "7": 0.96
+    },
+    "L2-L1": {
+      "0": 0.2,
+      "1": 0.3,
+      "2": 0.35,
+      "3": 0.1,
+      "4": -0.06,
+      "5": -0.11,
+      "6": -0.29,
+      "7": 0.0
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 26.3,
+      "1": 26.3,
+      "2": 26.68,
+      "3": 26.3,
+      "4": 25.96,
+      "5": 25.96,
+      "6": 25.34,
+      "7": 25.96
+    },
+    "L2": {
+      "0": 25.64,
+      "1": 25.96,
+      "2": 24.09,
+      "3": 25.96,
+      "4": 25.64,
+      "5": 25.96,
+      "6": 25.34,
+      "7": 25.34
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null
+    },
+    "L2": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null
+    }
+  },
+  "serdes_snr": null,
+  "link_location": "参数面",
+  "link_side_ip_interface_map": {
+    "L1": "26.135.52.15--400GE4/0/23",
+    "L2": "26.135.52.71--400GE1/1/12"
+  },
+  "vendor": {
+    "L1": "华工光模块",
+    "L2": "其他"
+  },
+  "vendor_sn": {
+    "L1": "3000099241385",
+    "L2": "VWAE5H00NZH"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 50.29,
+    "L2": 47.74
+  },
+  "Voltage": {
+    "L1": 3.3,
+    "L2": 3.32
+  },
+  "Lane number": null,
+  "syslog": null,
+  "case_id": "case_6747274793fd78ad",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "local/2474.json",
+    "source_sha256": "67948290e72f46bf5bf897684be8e5b1eb52e3c9852532c10ec6b5ffe105e207",
+    "split": "test/rule1_channel_not_4",
+    "parsed_month": "2025-10",
+    "original_alarm_time": "2025-10-26 03:56:45",
+    "original_label": "l3",
+    "source_adjusted_label": "l3",
+    "unified_label": "L1",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        8
+      ],
+      "l4": [
+        8
+      ]
+    }
+  }
+}

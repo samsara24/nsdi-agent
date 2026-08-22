@@ -24,6 +24,7 @@ from typing import Any, Dict, Iterable, Sequence, Tuple
 
 FEATURE_DICTIONARY_VERSION = "feature-dictionary-v1"
 FEATURE_DICTIONARY_V2_VERSION = "feature-dictionary-v2"
+FILTERED_RULE_DICTIONARY_VERSION = "filtered-rule-feature-dictionary-v1"
 FEATURE_DICTIONARY_V3_VERSION = "feature-dictionary-v3"
 
 #: 连续量分档采用训练集分位数，只把两侧尾部编码为 token，中间区间不产出 token。
@@ -36,7 +37,7 @@ DOWN_SENTINEL_DBM = -39.0
 
 #: 家族的准入状态。`v1` 是冻结进特征字典 v1 的家族，`candidate` 是已实现但未通过
 #: T1 选型的家族：它们保留在代码里供消融与后续数据集重测，但不进 v1 signature。
-FAMILY_STATUSES: Tuple[str, ...] = ("v1", "v2", "v3", "candidate")
+FAMILY_STATUSES: Tuple[str, ...] = ("v1", "v2", "v3", "filtered_rule_v1", "candidate")
 
 
 @dataclass(frozen=True)
@@ -205,6 +206,30 @@ _FAMILIES: Tuple[FeatureFamily, ...] = (
             "结论是它在当前 organized 数据集上不具备增量判别力，保留为 candidate，"
             "等合并数据集到位后按同一套 train-LOO 规则重测，不据此下最终结论。"
         ),
+    ),
+    FeatureFamily(
+        name="paired_lane_state",
+        dimension="数据契约内同号逻辑 lane 的双端状态与相对异常",
+        physical_meaning=(
+            "两个活动来源都在 transmission 字段中按同号 lane 计算远端 RX 与本端 TX 的差值，"
+            "因此同号 lane 是数据契约中的逻辑对应。该家族保留发光/收不到、双向异常、"
+            "异常 lane 波及范围和单 lane 相对离群；不把两端功率差解释成绝对链路损耗。"
+        ),
+        unit="类别与 lane 波及范围",
+        value_domain=(
+            "tx_ok_rx_down", "tx_down", "bidirectional_same_lane", "single_lane_outlier",
+            "single_lane", "partial_lanes", "all_lanes", "width_mismatch",
+        ),
+        extraction_rule=(
+            "仅在两端 txpower/rxpower lane key 集合兼容时按同号逻辑 lane 配对；"
+            "只使用断光状态和 case 内 lane 相对离群，不使用绝对 TX-RX 损耗。"
+            "SerDes lane 不与光学 lane 配对。"
+        ),
+        token_template="lane:{direction}:{state} / lane_scope:{direction}:{state}:{scope}",
+        sparsity="仅在同号 lane 出现方向性状态或相对离群时产出",
+        tier="core",
+        status="filtered_rule_v1",
+        selection_note="活动数据专属逻辑 lane 证据；按拓扑保留来源并在同拓扑历史中优先检索。",
     ),
     FeatureFamily(
         name="level_tail",
@@ -411,6 +436,15 @@ V2_FAMILIES: Tuple[str, ...] = (
 #: v3 = v2 + 专家阈值口径的异常与方向 token。加而不改：v2 的七个家族原样保留，
 #: 这样 v2 与 v3 的差异可以严格归因到「注入专家知识」这一件事上。
 V3_FAMILIES: Tuple[str, ...] = V2_FAMILIES + ("expert_anomaly", "expert_pattern")
+FILTERED_RULE_FAMILIES: Tuple[str, ...] = (
+    "signal_drop",
+    "status_fault",
+    "lane_imbalance",
+    "level_tail",
+    "paired_lane_state",
+    "telemetry_gap",
+    "serdes_state",
+)
 
 ALL_FAMILIES: Tuple[FeatureFamily, ...] = _FAMILIES
 
@@ -462,6 +496,17 @@ FEATURE_DICTIONARY_V3 = FeatureDictionary(
 )
 
 
+FILTERED_RULE_DICTIONARY = FeatureDictionary(
+    version=FILTERED_RULE_DICTIONARY_VERSION,
+    families=tuple(family for family in _FAMILIES if family.name in FILTERED_RULE_FAMILIES),
+    notes=(
+        "活动 filtered-rule 时间切分数据专用。",
+        "保留同号逻辑 optical lane 细节，禁止绝对链路损耗与 SerDes-to-optical lane 配对。",
+        "证据图优先同拓扑检索，跨拓扑仅作无同拓扑重叠时的通用物理 fallback。",
+    ),
+)
+
+
 #: 命名 profile，用于家族消融与 T10 的实验配置。
 PROFILES: Dict[str, Tuple[str, ...]] = {
     "v1": V1_FAMILIES,
@@ -478,6 +523,7 @@ PROFILES: Dict[str, Tuple[str, ...]] = {
     # （L1 根因下「L2 侧 SNR 更差」命中 32.7%，L2 根因下只有 9.0%），
     # 因此需要单独一个 profile 来回答「加回它能不能提升 LOO 泛化」，而不改动 v1/v2 字典本身。
     "v2_plus_side_asymmetry": V2_FAMILIES + ("side_asymmetry",),
+    "filtered_rule_v1": FILTERED_RULE_FAMILIES,
 }
 
 
@@ -488,6 +534,8 @@ def dictionary_for(profile: str) -> FeatureDictionary:
         return FEATURE_DICTIONARY_V2
     if profile == "v3":
         return FEATURE_DICTIONARY_V3
+    if profile == "filtered_rule_v1":
+        return FILTERED_RULE_DICTIONARY
     if profile not in PROFILES:
         raise KeyError(f"unknown feature profile: {profile}; available: {sorted(PROFILES)}")
     return FULL_DICTIONARY.subset(PROFILES[profile], version_suffix=f"::{profile}")

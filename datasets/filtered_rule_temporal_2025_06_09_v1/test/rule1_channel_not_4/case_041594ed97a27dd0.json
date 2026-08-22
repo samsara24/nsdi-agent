@@ -1,0 +1,197 @@
+{
+  "alarm_ip_interface": "2409:27ff:1011:0000:0011:0000:0000:000a--400GE3/0/31",
+  "alarm_time": "2025-11-07 01:09:09",
+  "region": "cn-east-4",
+  "alarm_name": "接口CRC",
+  "label": "L2",
+  "bias": {
+    "L1": {
+      "0": 8.09,
+      "1": 8.09,
+      "2": 8.09,
+      "3": 8.09,
+      "4": 8.09,
+      "5": 8.09,
+      "6": 8.09,
+      "7": 8.09
+    },
+    "L2": {
+      "0": 7.67,
+      "1": 7.67,
+      "2": 7.67,
+      "3": 7.67,
+      "4": 7.67,
+      "5": 7.67,
+      "6": 7.67,
+      "7": 7.67
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 2.17,
+      "1": -0.88,
+      "2": 2.05,
+      "3": 2.31,
+      "4": 2.12,
+      "5": 1.91,
+      "6": 2.35,
+      "7": 1.9
+    },
+    "L2": {
+      "0": 1.82,
+      "1": 1.75,
+      "2": 1.67,
+      "3": 1.75,
+      "4": 2.2,
+      "5": 1.76,
+      "6": 2.09,
+      "7": 2.23
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 1.49,
+      "1": 1.39,
+      "2": 1.62,
+      "3": 1.47,
+      "4": 2,
+      "5": 1.82,
+      "6": 1.55,
+      "7": 1.83
+    },
+    "L2": {
+      "0": 1.72,
+      "1": 1.67,
+      "2": 1.74,
+      "3": 1.64,
+      "4": 1.89,
+      "5": 1.74,
+      "6": 1.94,
+      "7": 1.58
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": 0.33,
+      "1": 0.36,
+      "2": 0.05,
+      "3": 0.28,
+      "4": 0.2,
+      "5": -0.06,
+      "6": 0.54,
+      "7": 0.4
+    },
+    "L2-L1": {
+      "0": 0.45,
+      "1": -2.55,
+      "2": 0.31,
+      "3": 0.67,
+      "4": 0.23,
+      "5": 0.17,
+      "6": 0.41,
+      "7": 0.32
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 22.95,
+      "1": 0,
+      "2": 22.79,
+      "3": 22.62,
+      "4": 22.18,
+      "5": 23.12,
+      "6": 22.95,
+      "7": 22.05
+    },
+    "L2": {
+      "0": 26.31,
+      "1": 25.96,
+      "2": 26.31,
+      "3": 25.06,
+      "4": 25.96,
+      "5": 25.96,
+      "6": 26.31,
+      "7": 25.64
+    }
+  },
+  "host_snr": null,
+  "serdes_snr": null,
+  "link_location": "参数面",
+  "link_side_ip_interface_map": {
+    "L1": "2409:27ff:1011:0000:0011:0000:0000:000a--400GE3/0/31",
+    "L2": "2409:27ff:1011:0000:0011:0000:0000:007c--400GE1/1/7"
+  },
+  "vendor": {
+    "L1": "其他",
+    "L2": "其他"
+  },
+  "vendor_sn": {
+    "L1": "INOAG2090340",
+    "L2": "VWAE6H00V8F"
+  },
+  "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Abnormal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 54.06,
+    "L2": 49.77
+  },
+  "Voltage": {
+    "L1": 3.26,
+    "L2": 3.27
+  },
+  "Lane number": null,
+  "syslog": null,
+  "case_id": "case_041594ed97a27dd0",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "remote/2668.json",
+    "source_sha256": "86c3f8f0666ec1e5002e7228c30a34f65fe3ff6818011049cdc46ff57b66bee1",
+    "split": "test/rule1_channel_not_4",
+    "parsed_month": "2025-11",
+    "original_alarm_time": "2025-11-07 01:09:09",
+    "original_label": "l4",
+    "source_adjusted_label": "l4",
+    "unified_label": "L2",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        8
+      ],
+      "l4": [
+        8
+      ]
+    }
+  }
+}

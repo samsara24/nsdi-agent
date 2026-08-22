@@ -221,6 +221,33 @@ def _lane_direction(case: Dict[str, Any], thresholds: ThresholdModel, model: Opt
     return tokens
 
 
+def _paired_lane_state(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
+    """Logical same-index optical evidence without absolute-link-loss inference."""
+    del model
+    tokens: List[str] = []
+    list_fields = {
+        "tx_ok_rx_down": "tx_ok_rx_down_lanes",
+        "tx_down": "tx_down_lanes",
+        "bidirectional_same_lane": "bidirectional_down_lanes",
+        "single_lane_outlier": "single_lane_outlier_lanes",
+    }
+    for source, target in (("L1", "L2"), ("L2", "L1")):
+        report = lane_directional_loss(case, source, target, thresholds)
+        direction = str(report["direction"])
+        if report["lane_count_mismatch"]:
+            tokens.append(f"lane:{direction}:width_mismatch")
+            continue
+        total = int(report["lane_count"])
+        for signature, field_name in list_fields.items():
+            lanes = tuple(report[field_name])
+            if not lanes:
+                continue
+            tokens.append(f"lane:{direction}:{signature}")
+            scope = "all_lanes" if total and len(lanes) == total else "single_lane" if len(lanes) == 1 else "partial_lanes"
+            tokens.append(f"lane_scope:{direction}:{signature}:{scope}")
+    return tokens
+
+
 def _level_tail(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
     if model is None:
         return []
@@ -355,6 +382,7 @@ FAMILY_EXTRACTORS: Dict[str, Callable[[Dict[str, Any], ThresholdModel, Optional[
     "fence_outlier": _fence_outlier,
     "lane_imbalance": _lane_imbalance,
     "lane_direction": _lane_direction,
+    "paired_lane_state": _paired_lane_state,
     "level_tail": _level_tail,
     "side_asymmetry": _side_asymmetry,
     "port_width": _port_width,
@@ -404,6 +432,9 @@ class CaseFeatures:
     conflicts: Tuple[Tuple[str, ...], ...] = ()
     #: 约束 C15：本 case 的 token 全部来自一条失效的采集通道，看似证据充分实则无效。
     optical_blackout: bool = False
+    source_dataset: str = ""
+    topology_id: str = ""
+    lane_profile: str = ""
 
     @property
     def signature(self) -> str:
@@ -429,6 +460,9 @@ class CaseFeatures:
             "missing_fields": list(self.missing_fields),
             "conflicts": [list(item) for item in self.conflicts],
             "optical_blackout": self.optical_blackout,
+            "source_dataset": self.source_dataset,
+            "topology_id": self.topology_id,
+            "lane_profile": self.lane_profile,
         }
 
     @classmethod
@@ -450,6 +484,9 @@ class CaseFeatures:
                 for conflict in value.get("conflicts", ())
             ),
             optical_blackout=bool(value.get("optical_blackout", False)),
+            source_dataset=str(value.get("source_dataset", "")),
+            topology_id=str(value.get("topology_id", "")),
+            lane_profile=str(value.get("lane_profile", "")),
         )
 
 
@@ -482,6 +519,9 @@ def extract_features(
         missing_fields=pack.missing_fields,
         conflicts=tuple(detect_token_conflicts(ordered)),
         optical_blackout=pack.optical_blackout,
+        source_dataset=pack.source_dataset,
+        topology_id=pack.topology_id,
+        lane_profile=pack.lane_profile,
     )
 
 
