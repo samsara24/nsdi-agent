@@ -31,6 +31,7 @@ from rca_framework.data import (  # noqa: E402
 from rca_framework.decision import DecisionPolicy  # noqa: E402
 from rca_framework.evidence_graph import (  # noqa: E402
     FILTERED_RULE_THREE_CHANNEL_POLICY,
+    MATCH_ALGORITHM_VERSION,
     match_many,
 )
 from rca_framework.evidence_pack import build_packs  # noqa: E402
@@ -62,6 +63,7 @@ EXPECTED_TEST_SIZES = {"test_all_data": 417, "test_rule1_channel_not_4": 67}
 FORMAL_MAX_NEW_TOKENS = 16384
 FORMAL_MAX_MODEL_LEN = 32768
 FORMAL_MAX_ATTEMPTS = 1
+FORMAL_GUIDED_JSON = True
 
 
 def _utc_now() -> str:
@@ -223,6 +225,7 @@ def main() -> None:
         gpu_memory_utilization=args.gpu_memory_utilization,
         disable_custom_all_reduce=args.disable_custom_all_reduce,
         enforce_eager=args.enforce_eager,
+        guided_json=FORMAL_GUIDED_JSON,
         seed=args.seed,
     )
     reasoner = ConstrainedReasoner(backend=backend, max_attempts=args.max_attempts)
@@ -398,7 +401,12 @@ def main() -> None:
                 "train": _quality_summary(train_cases, build_packs(train_cases, source_dataset=str(args.data_dir)), bundle.training_features),
                 **dataset_summaries,
             },
-            "retrieval": {"top_k": args.top_k, "policy": policy.to_dict(), "same_topology_preferred": True},
+            "retrieval": {
+                "top_k": args.top_k,
+                "policy": policy.to_dict(),
+                "match_algorithm_version": MATCH_ALGORITHM_VERSION,
+                "same_topology_preferred": True,
+            },
             "decision": decision_policy.to_dict(),
             "personal_alignment_gate": personal_alignment_gate(decision_policy),
             "llm": {
@@ -411,6 +419,8 @@ def main() -> None:
                 "gpu_memory_utilization": args.gpu_memory_utilization,
                 "max_attempts": args.max_attempts,
                 "single_pass": True,
+                "structured_output": "json_schema",
+                "guided_json": FORMAL_GUIDED_JSON,
                 "seed": args.seed,
             },
             "label_leakage": False,

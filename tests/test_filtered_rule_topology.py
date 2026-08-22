@@ -8,6 +8,7 @@ from rca_framework.evidence_pack import build_packs
 from rca_framework.features.dictionary import FILTERED_RULE_DICTIONARY
 from rca_framework.features.extractor import CaseFeatures
 from scripts.run_filtered_rule_temporal_experiment import (
+    FORMAL_GUIDED_JSON,
     FORMAL_MAX_ATTEMPTS,
     FORMAL_MAX_MODEL_LEN,
     FORMAL_MAX_NEW_TOKENS,
@@ -91,7 +92,36 @@ def test_formal_filtered_rule_generation_contract_is_single_pass_with_long_outpu
     assert args.max_attempts == FORMAL_MAX_ATTEMPTS == 1
     assert args.max_new_tokens == FORMAL_MAX_NEW_TOKENS == 16384
     assert args.max_model_len == FORMAL_MAX_MODEL_LEN == 32768
-    assert args.policy == "filtered-rule-three-channel-v1"
+    assert args.policy == "filtered-rule-three-channel-v2"
+    assert FORMAL_GUIDED_JSON is True
+
+
+def test_filtered_match_keeps_feature_and_graph_similarity_independent():
+    history = _features(
+        "history",
+        ("drop:L1:rxpower:all_lanes",),
+        "all_data",
+        "topology-a",
+    )
+    graph = EvidenceGraph.build(
+        (history,),
+        ("L1",),
+        dictionary=FILTERED_RULE_DICTIONARY,
+        source_dataset="combined",
+    )
+    query = _features(
+        "query",
+        ("drop:L1:rxpower:single_lane",),
+        "all_data",
+        "topology-a",
+    )
+    result = match(graph, query, top_k=0)
+    candidate = result.candidates[0]
+    assert candidate.feature_similarity == 0.0
+    assert 0.0 < candidate.graph_similarity < 1.0
+    assert candidate.shared_graph_edges
+    assert result.max_feature_similarity == 0.0
+    assert result.max_graph_similarity == candidate.graph_similarity
 
 
 def test_single_pass_trace_gate_rejects_repeated_or_missing_case_generation():

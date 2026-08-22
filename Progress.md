@@ -74,12 +74,16 @@ Expert label 通过核心遥测精确指纹应用：命中 49 条，修正 27 �
 - 活动 Prompt 使用物理约束库与量测契约库，不使用旧数据统计型 measured constraints。
 - Prompt 路由按数据契约隔离：legacy N5c 保持 400G/200G 语义和
   `rca-dual-sop-multidim-v14-full-step-ids`，活动数据使用
-  `filtered-rule-three-channel-single-pass-v2`；推理 trace 和 manifest 分别记录实际版本。
-- 活动正式流程使用 `filtered-rule-three-channel-v1`：先由训练集冻结可解释特征模型和
-  证据图，再按 IDF-Jaccard 相似度与特征覆盖率把每条 case 唯一分到 N5a/N5b/N5c。
+  `filtered-rule-three-channel-single-pass-v3`；推理 trace 和 manifest 分别记录实际版本。
+- 活动正式流程使用 `filtered-rule-three-channel-v2`：先由训练集冻结可解释特征模型和
+  证据图，再分别计算完整 token 的 `S_feature` 和语义前缀图的 `S_graph`，把每条 case
+  唯一分到 N5a/N5b/N5c。N5a 要求双相似度均为 1.0，N5b 要求双相似度均不低于 0.70。
   N6 只做单次推理后的置信度与降级门禁，不再作为推理前第四通道。
+- 三个分支使用独立载荷：N5a 注入历史证据链，N5b 注入 shared/missing/conflict 与
+  关键缺失证据，N5c 注入完整专家 SOP；每个请求同时携带当前五层物理路径和真实 lane 数值。
 - 每条训练或测试 case 固定只生成一次，失败输出直接进入低置信 forced/fallback，
-  不再向 GPU 发起重写请求；运行时逐 trace 强制校验 `attempt_count == 1`。
+  不再向 GPU 发起重写请求；正式 vLLM 开启 JSON Schema 结构化解码，运行时逐 trace
+  强制校验 `attempt_count == 1`。
 - N8 自动回灌保持关闭；测试标签只在推理完成后参与指标计算。
 
 ### 4.4 正式实验入口
@@ -113,7 +117,7 @@ ok=true, case_count=608, errors=[]
 
 ```text
 .venv/bin/python -m pytest -q
-350 passed in 16.31s
+354 passed in 19.35s
 ```
 
 回归同时锁定 legacy 证据图 hash `5e10b5b25d559777`、legacy Prompt v14、活动
@@ -124,9 +128,9 @@ local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需�
 
 | split | N5a | N5b | N5c | 推理前 N6 | LLM 请求数 |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| train LOO | 10 | 25 | 89 | 0 | 124 |
-| test/all_data | 12 | 110 | 295 | 0 | 417 |
-| test/rule1_channel_not_4 | 1 | 18 | 48 | 0 | 67 |
+| train LOO | 10 | 42 | 72 | 0 | 124 |
+| test/all_data | 12 | 146 | 259 | 0 | 417 |
+| test/rule1_channel_not_4 | 1 | 36 | 30 | 0 | 67 |
 
 总生成请求固定为 608 条，每条 case 一次；不再出现 `124→103→86` 或
 `417→361→330` 形式的多轮重写批次。
@@ -135,7 +139,7 @@ local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需�
 
 默认模型为 `/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B`。
 
-- routing policy：`filtered-rule-three-channel-v1`
+- routing policy：`filtered-rule-three-channel-v2`
 - M9 candidate order：仅 `branch`
 - Top-K：全量候选
 - N8：冻结
@@ -144,6 +148,7 @@ local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需�
 - max model length：32768
 - max new tokens：16384
 - max attempts：1（单次生成，无重写）
+- structured output：JSON Schema guided decoding
 - tensor parallel：根据空闲 GPU 和模型结构自动选择，最多 4
 
 正式同步运行：

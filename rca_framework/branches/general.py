@@ -28,10 +28,12 @@ from ..decision_tree.features import numeric_features_from_pack
 from ..evidence_graph.match import MatchResult
 from ..evidence_graph.router import RoutingDecision
 from ..evidence_pack import EvidencePack
+from ..expanded_evidence import physical_evidence_paths
 from ..sop.expert_sop import expert_sop_to_dict
 from ..types import ROOT_CAUSES, SIDES
 from ..topology import SOURCE_TOPOLOGIES, TOPOLOGY_CONTRACT_VERSION
 from .base import BranchCalibration, BranchOutcome, EvidenceLink
+from .partial import critical_missing
 
 if False:  # pragma: no cover - typing only without importing optional module at runtime
     from ..features.extractor import CaseFeatures
@@ -98,6 +100,7 @@ class DiagnosisRequest:
     feature_similarity: float = 0.0
     graph_similarity: float = 0.0
     evidence_paths: Tuple[Dict[str, Any], ...] = ()
+    historical_evidence_chains: Tuple[Dict[str, Any], ...] = ()
     opposing_historical_cases: Tuple[Dict[str, Any], ...] = ()
     largest_differences: Tuple[Dict[str, Any], ...] = ()
     critical_missing_evidence: Tuple[str, ...] = ()
@@ -134,6 +137,7 @@ class DiagnosisRequest:
             "feature_similarity": self.feature_similarity,
             "graph_similarity": self.graph_similarity,
             "evidence_paths": [dict(item) for item in self.evidence_paths],
+            "historical_evidence_chains": [dict(item) for item in self.historical_evidence_chains],
             "opposing_historical_cases": [dict(item) for item in self.opposing_historical_cases],
             "largest_differences": [dict(item) for item in self.largest_differences],
             "critical_missing_evidence": list(self.critical_missing_evidence),
@@ -392,8 +396,13 @@ def build_request(
     """构造 T6/T7 的约束推理或历史冲突仲裁载荷。"""
     exclusions = deterministic_exclusions(pack)
     excluded = {item.root_cause for item in exclusions}
+    request_branch = decision.branch if decision is not None else BRANCH
+    if request_branch in {"N5a", "N5b"} and result.dual_top_candidates:
+        historical_candidates = result.dual_top_candidates
+    else:
+        historical_candidates = result.top_candidates or result.dual_top_candidates
     label_counts: Dict[str, int] = {}
-    for candidate in result.top_candidates:
+    for candidate in historical_candidates:
         if candidate.label is not None:
             label_counts[candidate.label] = label_counts.get(candidate.label, 0) + 1
     sop_prediction = _predict_sop_or_tree(sop_model, pack, features)
@@ -402,7 +411,55 @@ def build_request(
         if sop_prediction is not None and getattr(sop_model, "version", "").startswith("numeric-decision-tree")
         else None
     )
-    request_branch = decision.branch if decision is not None else BRANCH
+    physical_paths = tuple(physical_evidence_paths(pack.telemetry))
+    declared_predicates = tuple(
+        {
+            "predicate_id": str(path.get("predicate", "")),
+            "criterion": str(path.get("criterion", "")),
+            "provenance": str(path.get("provenance", "")),
+            "token": str(path.get("token", "")),
+        }
+        for path in physical_paths
+        if path.get("predicate")
+    )
+    primary_label = next(
+        (candidate.label for candidate in historical_candidates if candidate.label is not None),
+        None,
+    )
+    opposing = tuple(
+        {
+            "case_id": candidate.case_id,
+            "label": candidate.label,
+            "S_feature": candidate.feature_similarity,
+            "S_graph": candidate.graph_similarity,
+            "shared_evidence": list(candidate.shared_evidence),
+            "conflicting_evidence": [list(pair) for pair in candidate.conflicting_evidence],
+            "evidence_chain": list(candidate.evidence_chain_summary),
+        }
+        for candidate in result.retrieval_candidates
+        if primary_label is not None and candidate.label not in {None, primary_label}
+    )[:3]
+    differences = tuple(
+        {
+            "case_id": candidate.case_id,
+            "label": candidate.label,
+            "missing_feature_evidence": list(candidate.missing_evidence),
+            "extra_feature_evidence": list(candidate.extra_evidence),
+            "conflicting_evidence": [list(pair) for pair in candidate.conflicting_evidence],
+            "missing_graph_edges": list(candidate.missing_graph_edges),
+            "extra_graph_edges": list(candidate.extra_graph_edges),
+            "missing_historical_chain_steps": list(candidate.missing_chain_steps),
+        }
+        for candidate in historical_candidates[:3]
+    )
+    historical_missing_set = (
+        set(historical_candidates[0].missing_evidence)
+        if historical_candidates else set()
+    )
+    for candidate in historical_candidates[1:]:
+        historical_missing_set &= set(candidate.missing_evidence)
+    historical_missing = tuple(sorted(historical_missing_set))
+    best_candidate = historical_candidates[0] if historical_candidates else None
     return DiagnosisRequest(
         case_id=result.query_case_id,
         evidence_tokens=result.query_tokens,
@@ -411,10 +468,10 @@ def build_request(
         candidate_root_causes=tuple(label for label in ROOT_CAUSES if label not in excluded),
         exclusions=exclusions,
         constraint_ids=tuple(item.constraint_id for item in relevant_constraints(result.query_tokens, library)),
-        nearest_similarity=result.max_similarity,
+        nearest_similarity=(best_candidate.feature_similarity if best_candidate else result.max_similarity),
         branch=request_branch,
         routing_reason=decision.reason if decision is not None else "历史匹配不足，走约束推理",
-        historical_case_ids=tuple(item.case_id for item in result.top_candidates),
+        historical_case_ids=tuple(item.case_id for item in historical_candidates),
         historical_label_distribution=tuple(sorted(label_counts.items())),
         sop_prediction=sop_prediction,
         decision_tree_prediction=decision_tree_prediction,
@@ -422,7 +479,33 @@ def build_request(
         raw_measurements={
             "lane_widths": pack.lane_widths,
             "scalars": dict(pack.scalars),
+            "per_lane": {
+                f"{reading.side}.{reading.metric}": dict(reading.lanes)
+                for reading in pack.readings
+            },
+            "statuses": dict(pack.statuses),
         },
+        feature_similarity=(best_candidate.feature_similarity if best_candidate else 0.0),
+        graph_similarity=(best_candidate.graph_similarity if best_candidate else 0.0),
+        evidence_paths=physical_paths,
+        historical_evidence_chains=tuple(
+            {
+                "case_id": candidate.case_id,
+                "label": candidate.label,
+                "S_feature": candidate.feature_similarity,
+                "S_graph": candidate.graph_similarity,
+                "shared_evidence": list(candidate.shared_evidence),
+                "chain_steps": list(candidate.evidence_chain_summary),
+                "missing_chain_steps": list(candidate.missing_chain_steps),
+            }
+            for candidate in historical_candidates[:3]
+        ),
+        opposing_historical_cases=opposing,
+        largest_differences=differences,
+        critical_missing_evidence=(
+            critical_missing(historical_missing) if request_branch == "N5b" else ()
+        ),
+        declared_predicates=declared_predicates,
         topology_context={
             "contract_version": (
                 TOPOLOGY_CONTRACT_VERSION if pack.source_dataset in SOURCE_TOPOLOGIES else ""

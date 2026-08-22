@@ -40,6 +40,7 @@ from rca_framework.decision import (  # noqa: E402
     decide_many,
     fit_decision_policy,
 )
+from rca_framework.decision_tree.features import numeric_features_from_pack  # noqa: E402
 from rca_framework.evidence_graph import (  # noqa: E402
     BOARD_POLICY,
     COVERAGE_POLICY,
@@ -296,6 +297,7 @@ def match_record(result) -> Dict[str, Any]:
     value = result.to_dict()
     value["retrieved_candidate_count"] = len(result.candidates)
     value["candidates"] = [item.to_dict() for item in result.top_candidates]
+    value["dual_candidates"] = [item.to_dict() for item in result.dual_top_candidates]
     return value
 
 
@@ -602,7 +604,11 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
     decisions = [item[0] for item in paired]
     outcomes = [item[1] for item in paired]
     sop_predictions: List[Optional[Dict[str, Any]]] = [
-        sop_model.predict(test_features[index]).to_dict()
+        sop_model.predict(
+            numeric_features_from_pack(test_packs[index])
+            if getattr(sop_model, "version", "").startswith("numeric-decision-tree")
+            else test_features[index]
+        ).to_dict()
         if sop_model is not None and test_features is not None
         else None
         for index in range(len(outcomes))
@@ -1014,4 +1020,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -7,6 +7,7 @@ legacy 的 `retrieve` 只返回相似度和重叠列表，回答不了这两个�
 """
 
 from .match import (
+    MATCH_ALGORITHM_VERSION,
     Candidate,
     MatchResult,
     match,
@@ -52,6 +53,7 @@ __all__ = [
     "EvidenceGraph",
     "GraphCase",
     "MatchResult",
+    "MATCH_ALGORITHM_VERSION",
     "RoutingDecision",
     "RoutingPolicy",
     "match",

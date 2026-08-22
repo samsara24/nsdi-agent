@@ -101,10 +101,8 @@ class VLLMBackend(Backend):
     """vLLM 后端。参数与 legacy `PathLLMReasoner` 保持一致，
     这样两条路径可以用同一份模型配置做对照实验。
 
-    `guided_json` 对**推理型模型默认应当关闭**。结构化解码会从第一个 token 起就
-    强制 JSON 语法，等于禁止模型输出 `<think>` 段——而 DeepSeek-R1 系列的能力
-    恰恰来自那段思考。关掉它、让模型自由思考再从末尾抓 JSON，
-    比锁死语法但拿不到推理更有价值。解析失败的代价已经由重写循环兜住了。
+    `guided_json` 保留为通用后端开关；要求单次调用的正式实验必须开启它，确保
+    模型在一次生成内直接返回协议 JSON，而不是只输出 `<think>` 后提前结束。
     """
 
     model_path: str = ""
@@ -127,13 +125,20 @@ class VLLMBackend(Backend):
             from transformers import AutoTokenizer
 
             self._tokenizer = AutoTokenizer.from_pretrained(self.model_path, trust_remote_code=True)
+        if hasattr(self._tokenizer, "apply_chat_template"):
+            try:
+                return self._tokenizer.apply_chat_template(
+                    [{"role": "user", "content": prompt}],
+                    tokenize=False,
+                    add_generation_prompt=True,
+                )
+            except (TypeError, ValueError):
+                # Older remote tokenizers occasionally expose the method but no
+                # usable template. Fall back only after the canonical renderer fails.
+                pass
         template = getattr(self._tokenizer, "chat_template", "") or ""
         if "<｜User｜>" in template:
             return f"{self._tokenizer.bos_token or ''}<｜User｜>{prompt}<｜Assistant｜>"
-        if hasattr(self._tokenizer, "apply_chat_template"):
-            return self._tokenizer.apply_chat_template(
-                [{"role": "user", "content": prompt}], tokenize=False, add_generation_prompt=True,
-            )
         return prompt
 
     def _sampling_params(self) -> Any:

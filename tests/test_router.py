@@ -73,7 +73,7 @@ def world():
 def test_policies_are_registered_and_serializable():
     assert policy_for("board-100-70") is BOARD_POLICY
     assert policy_for("coverage-v2") is COVERAGE_POLICY
-    assert policy_for("filtered-rule-three-channel-v1") is FILTERED_RULE_THREE_CHANNEL_POLICY
+    assert policy_for("filtered-rule-three-channel-v2") is FILTERED_RULE_THREE_CHANNEL_POLICY
     with pytest.raises(KeyError, match="unknown routing policy"):
         policy_for("nope")
     assert json.loads(json.dumps(COVERAGE_POLICY.to_dict()))["partial_similarity"] is None
@@ -100,6 +100,23 @@ def test_filtered_rule_policy_has_exactly_three_pre_inference_channels(world):
     assert sum(summary["counts"][branch] for branch in ("N5a", "N5b", "N5c")) == len(decisions)
     for result in world["test_results"]:
         assert route(result, FILTERED_RULE_THREE_CHANNEL_POLICY).branch in {"N5a", "N5b", "N5c"}
+
+
+def test_diagnosis_request_carries_dual_match_and_historical_differences(world):
+    result, pack = next(
+        (result, pack)
+        for result, pack in zip(world["test_results"], world["test_packs"])
+        if result.dual_top_candidates
+    )
+    decision = route(result, FILTERED_RULE_THREE_CHANNEL_POLICY)
+    request = build_request(result, pack, decision=decision)
+    candidate = result.dual_top_candidates[0]
+    assert request.feature_similarity == candidate.feature_similarity
+    assert request.graph_similarity == candidate.graph_similarity
+    assert request.historical_case_ids
+    assert request.historical_evidence_chains
+    assert request.largest_differences
+    assert request.raw_measurements["per_lane"]
 
 
 def test_routing_reason_is_human_readable(world):
