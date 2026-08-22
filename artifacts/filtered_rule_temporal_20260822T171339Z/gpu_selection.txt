@@ -1,0 +1,9 @@
+CUDA_VISIBLE_DEVICES=0,4
+tensor_parallel_size=2
+attention_heads=40
+hidden_size=5120
+model_path=/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B
+data_dir=/home/chenziang/nsdi-agent-clean/datasets/filtered_rule_temporal_2025_06_09_v1
+max_model_len=32768
+max_new_tokens=16384
+max_attempts=1
