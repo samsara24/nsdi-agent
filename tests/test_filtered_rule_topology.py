@@ -1,10 +1,19 @@
 from pathlib import Path
 
+import pytest
+
 from rca_framework.data import cases_by_manifest_split, manifest_splits
 from rca_framework.evidence_graph import EvidenceGraph, match
 from rca_framework.evidence_pack import build_packs
 from rca_framework.features.dictionary import FILTERED_RULE_DICTIONARY
 from rca_framework.features.extractor import CaseFeatures
+from scripts.run_filtered_rule_temporal_experiment import (
+    FORMAL_MAX_ATTEMPTS,
+    FORMAL_MAX_MODEL_LEN,
+    FORMAL_MAX_NEW_TOKENS,
+    _assert_single_pass_traces,
+    _parser,
+)
 
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "datasets" / "filtered_rule_temporal_2025_06_09_v1"
@@ -75,3 +84,27 @@ def test_cross_topology_is_explicit_fallback_when_no_compatible_overlap():
     result = match(graph, query, top_k=1)
     assert result.candidates[0].case_id == "cross"
     assert result.uses_cross_topology_fallback is True
+
+
+def test_formal_filtered_rule_generation_contract_is_single_pass_with_long_output():
+    args = _parser().parse_args(["--output-dir", "unused", "--model-path", "unused"])
+    assert args.max_attempts == FORMAL_MAX_ATTEMPTS == 1
+    assert args.max_new_tokens == FORMAL_MAX_NEW_TOKENS == 16384
+    assert args.max_model_len == FORMAL_MAX_MODEL_LEN == 32768
+    assert args.policy == "filtered-rule-three-channel-v1"
+
+
+def test_single_pass_trace_gate_rejects_repeated_or_missing_case_generation():
+    _assert_single_pass_traces(
+        {"case-a": {"attempt_count": 1}, "case-b": {"attempt_count": 1}},
+        expected_case_count=2,
+        scope="test",
+    )
+    with pytest.raises(RuntimeError, match="single-pass contract violated"):
+        _assert_single_pass_traces(
+            {"case-a": {"attempt_count": 2}},
+            expected_case_count=1,
+            scope="test",
+        )
+    with pytest.raises(RuntimeError, match="expected one trace per case"):
+        _assert_single_pass_traces({}, expected_case_count=1, scope="test")

@@ -74,7 +74,12 @@ Expert label 通过核心遥测精确指纹应用：命中 49 条，修正 27 �
 - 活动 Prompt 使用物理约束库与量测契约库，不使用旧数据统计型 measured constraints。
 - Prompt 路由按数据契约隔离：legacy N5c 保持 400G/200G 语义和
   `rca-dual-sop-multidim-v14-full-step-ids`，活动数据使用
-  `filtered-rule-local-remote-v1`；推理 trace 和 manifest 分别记录实际版本。
+  `filtered-rule-three-channel-single-pass-v2`；推理 trace 和 manifest 分别记录实际版本。
+- 活动正式流程使用 `filtered-rule-three-channel-v1`：先由训练集冻结可解释特征模型和
+  证据图，再按 IDF-Jaccard 相似度与特征覆盖率把每条 case 唯一分到 N5a/N5b/N5c。
+  N6 只做单次推理后的置信度与降级门禁，不再作为推理前第四通道。
+- 每条训练或测试 case 固定只生成一次，失败输出直接进入低置信 forced/fallback，
+  不再向 GPU 发起重写请求；运行时逐 trace 强制校验 `attempt_count == 1`。
 - N8 自动回灌保持关闭；测试标签只在推理完成后参与指标计算。
 
 ### 4.4 正式实验入口
@@ -108,25 +113,37 @@ ok=true, case_count=608, errors=[]
 
 ```text
 .venv/bin/python -m pytest -q
-347 passed in 15.72s
+350 passed in 16.31s
 ```
 
 回归同时锁定 legacy 证据图 hash `5e10b5b25d559777`、legacy Prompt v14、活动
 local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需在拉取最新 `main`
 后按同步入口再次执行门禁。
 
+活动数据三通道静态路由分布：
+
+| split | N5a | N5b | N5c | 推理前 N6 | LLM 请求数 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| train LOO | 10 | 25 | 89 | 0 | 124 |
+| test/all_data | 12 | 110 | 295 | 0 | 417 |
+| test/rule1_channel_not_4 | 1 | 18 | 48 | 0 | 67 |
+
+总生成请求固定为 608 条，每条 case 一次；不再出现 `124→103→86` 或
+`417→361→330` 形式的多轮重写批次。
+
 ## 6. 正式配置
 
 默认模型为 `/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B`。
 
-- routing policy：`coverage-v2`
+- routing policy：`filtered-rule-three-channel-v1`
 - M9 candidate order：仅 `branch`
 - Top-K：全量候选
 - N8：冻结
 - seed：42
 - dtype：BF16
-- max model length：16384
-- max new tokens：2048
+- max model length：32768
+- max new tokens：16384
+- max attempts：1（单次生成，无重写）
 - tensor parallel：根据空闲 GPU 和模型结构自动选择，最多 4
 
 正式同步运行：

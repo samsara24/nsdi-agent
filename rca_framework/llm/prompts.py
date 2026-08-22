@@ -38,7 +38,7 @@ from .prompt_templates.diagnose import build_diagnose_prompt, diagnose_prompt_ve
 #: 模型要先自己意识到「该用方向类约束」才会去读。v7 把方向表提到系统级硬规则，
 #: 让它在读证据之前就已经知道每一类观测指向哪一端。
 LEGACY_PROMPT_TEMPLATE_VERSION = "rca-dual-sop-multidim-v14-full-step-ids"
-FILTERED_RULE_PROMPT_TEMPLATE_VERSION = "filtered-rule-local-remote-v1"
+FILTERED_RULE_PROMPT_TEMPLATE_VERSION = "filtered-rule-three-channel-single-pass-v2"
 # Existing entrypoints import this name directly; keep it on the legacy contract.
 PROMPT_TEMPLATE_VERSION = LEGACY_PROMPT_TEMPLATE_VERSION
 SOP_VERSION = "expert-sop-n5c-v1+learned-sop-advisory-v2"

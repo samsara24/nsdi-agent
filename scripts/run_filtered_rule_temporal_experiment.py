@@ -29,7 +29,10 @@ from rca_framework.data import (  # noqa: E402
     split_manifest_hash,
 )
 from rca_framework.decision import DecisionPolicy  # noqa: E402
-from rca_framework.evidence_graph import BOARD_POLICY, COVERAGE_POLICY, match_many  # noqa: E402
+from rca_framework.evidence_graph import (  # noqa: E402
+    FILTERED_RULE_THREE_CHANNEL_POLICY,
+    match_many,
+)
 from rca_framework.evidence_pack import build_packs  # noqa: E402
 from rca_framework.html_report import render_experiment_html  # noqa: E402
 from rca_framework.knowledge import KNOWLEDGE_BUNDLE_SCHEMA, OfflineKnowledgeBundle, fit_offline_knowledge  # noqa: E402
@@ -56,6 +59,9 @@ TEST_SPLITS = {
     "test_rule1_channel_not_4": "test/rule1_channel_not_4",
 }
 EXPECTED_TEST_SIZES = {"test_all_data": 417, "test_rule1_channel_not_4": 67}
+FORMAL_MAX_NEW_TOKENS = 16384
+FORMAL_MAX_MODEL_LEN = 32768
+FORMAL_MAX_ATTEMPTS = 1
 
 
 def _utc_now() -> str:
@@ -120,24 +126,57 @@ def _topology_summary(results: Sequence[Any]) -> Dict[str, Any]:
     }
 
 
+def _assert_single_pass_traces(
+    traces: Mapping[str, Any],
+    *,
+    expected_case_count: int,
+    scope: str,
+) -> None:
+    if len(traces) != expected_case_count:
+        raise RuntimeError(
+            f"{scope}: expected one trace per case ({expected_case_count}), got {len(traces)}"
+        )
+    invalid = []
+    for case_id, trace in traces.items():
+        attempt_count = (
+            int(trace.get("attempt_count", 0))
+            if isinstance(trace, Mapping)
+            else int(getattr(trace, "attempt_count", 0))
+        )
+        if attempt_count != 1:
+            invalid.append((case_id, attempt_count))
+    if invalid:
+        raise RuntimeError(f"{scope}: single-pass contract violated: {invalid[:10]}")
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=Path("datasets/filtered_rule_temporal_2025_06_09_v1"))
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--feature-profile", default="filtered_rule_v1", choices=("filtered_rule_v1",))
-    parser.add_argument("--policy", default=COVERAGE_POLICY.name, choices=(BOARD_POLICY.name, COVERAGE_POLICY.name))
+    parser.add_argument(
+        "--policy",
+        default=FILTERED_RULE_THREE_CHANNEL_POLICY.name,
+        choices=(FILTERED_RULE_THREE_CHANNEL_POLICY.name,),
+    )
     parser.add_argument("--top-k", type=int, default=0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--expected-train-size", type=int, default=124)
     parser.add_argument("--model-path", required=True)
     parser.add_argument("--tensor-parallel-size", type=int, default=1)
     parser.add_argument("--dtype", default="bfloat16")
-    parser.add_argument("--max-new-tokens", type=int, default=2048)
-    parser.add_argument("--max-model-len", type=int, default=16384)
+    parser.add_argument("--max-new-tokens", type=int, default=FORMAL_MAX_NEW_TOKENS)
+    parser.add_argument("--max-model-len", type=int, default=FORMAL_MAX_MODEL_LEN)
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
     parser.add_argument("--disable-custom-all-reduce", action="store_true")
     parser.add_argument("--enforce-eager", action="store_true")
-    parser.add_argument("--max-attempts", type=int, default=3)
+    parser.add_argument(
+        "--max-attempts",
+        type=int,
+        choices=(FORMAL_MAX_ATTEMPTS,),
+        default=FORMAL_MAX_ATTEMPTS,
+        help="活动正式流程固定单次生成；不对失败 case 发起第二次模型请求",
+    )
     parser.add_argument("--decision-lower-bound", type=float, default=0.5)
     parser.add_argument("--decision-min-support", type=int, default=10)
     parser.add_argument("--target-selective-risk", type=float, default=None)
@@ -199,7 +238,7 @@ def main() -> None:
             for name, manifest_split in TEST_SPLITS.items()
         }
         _validate_dataset(train_cases, test_sets, args.expected_train_size)
-        policy = {BOARD_POLICY.name: BOARD_POLICY, COVERAGE_POLICY.name: COVERAGE_POLICY}[args.policy]
+        policy = FILTERED_RULE_THREE_CHANNEL_POLICY
         base_decision_policy = DecisionPolicy(
             final_lower_bound=args.decision_lower_bound,
             minimum_support=args.decision_min_support,
@@ -226,6 +265,11 @@ def main() -> None:
                 "prompt_template": FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
                 "prompt_template_hash": prompt_template_hash("filtered_rule_v1"),
             },
+        )
+        _assert_single_pass_traces(
+            training_artifacts.traces[policy.name],
+            expected_case_count=len(train_cases),
+            scope="train",
         )
         knowledge_dir = args.output_dir / "knowledge"
         bundle_path = bundle.save(knowledge_dir / "knowledge_bundle.json")
@@ -254,6 +298,11 @@ def main() -> None:
                 branch_calibration=bundle.branch_calibrations[policy.name],
                 llm_calibration_override=bundle.llm_calibrations.get(policy.name),
                 expert_calibration=bundle.expert_calibration,
+            )
+            _assert_single_pass_traces(
+                traces,
+                expected_case_count=len(test_cases),
+                scope=split,
             )
             split_dir = args.output_dir / split
             outcomes = {policy.name: records}
@@ -311,6 +360,7 @@ def main() -> None:
                 "self_evolution": False,
                 "feedback_update": False,
                 "flow": "one temporal train -> persisted knowledge reload -> two independent source tests",
+                "generation": "route once -> one LLM generation -> N6 confidence gate",
             },
             "data": {
                 "data_dir": str(args.data_dir),
@@ -360,6 +410,7 @@ def main() -> None:
                 "max_model_len": args.max_model_len,
                 "gpu_memory_utilization": args.gpu_memory_utilization,
                 "max_attempts": args.max_attempts,
+                "single_pass": True,
                 "seed": args.seed,
             },
             "label_leakage": False,

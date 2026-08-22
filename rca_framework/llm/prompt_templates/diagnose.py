@@ -13,7 +13,7 @@ from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
 LEGACY_DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v7-full-step-ids"
-FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-local-remote-v1"
+FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-three-channel-v2"
 # Backward-compatible public constant used by legacy experiment manifests.
 DIAGNOSE_PROMPT_VERSION = LEGACY_DIAGNOSE_PROMPT_VERSION
 
@@ -35,6 +35,20 @@ FILTERED_RULE_ROOT_CAUSE_DEFINITIONS = {
     "L1": "当前 case 本端的设备或端口根因",
     "L2": "当前 case 对端的设备或端口根因",
     "fiber": "L1 与 L2 之间的光纤 / 链路介质根因",
+}
+
+BRANCH_INSTRUCTIONS = {
+    "N5a": (
+        "完全匹配通道：历史证据链只作为可审计上下文；必须基于当前 case 的物理证据"
+        "给出独立候选和置信度，不得直接复制历史标签。"
+    ),
+    "N5b": (
+        "部分匹配通道：围绕 shared、missing、conflicting evidence 判断缺失项是否关键，"
+        "再使用物理约束完成一次仲裁。"
+    ),
+    "N5c": (
+        "低匹配通道：不得复用历史结论，按专家 SOP、纯物理约束和量测契约完成一次推理。"
+    ),
 }
 
 
@@ -59,6 +73,7 @@ def build_diagnose_prompt(
     payload = {
         "case_id": request.case_id,
         "branch": request.branch,
+        "branch_instruction": BRANCH_INSTRUCTIONS.get(request.branch, BRANCH_INSTRUCTIONS["N5c"]),
         "routing_reason": request.routing_reason,
         "root_causes": root_cause_definitions,
         "available_evidence": list(request.evidence_tokens),

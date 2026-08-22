@@ -237,11 +237,18 @@ Expert label 只通过核心遥测精确指纹匹配：
 - 输出 parser 对三个标签和降级状态有完整测试。
 - Prompt 内容和变量顺序通过 hash 版本化。
 
-验证证据：活动 Prompt 版本为 `filtered-rule-local-remote-v1`，hash 同时覆盖物理约束库、量测契约库和固定模板；拓扑上下文进入每个推理请求。
+验证证据：活动 Prompt 版本为 `filtered-rule-three-channel-single-pass-v2`，hash 同时覆盖物理约束库、量测契约库和固定模板；拓扑上下文进入每个推理请求。
+
+正式生成契约：`max_new_tokens=16384`、`max_model_len=32768`、`max_attempts=1`。
+每条 case 只能产生一个 trace 和一次 attempt；不合规输出进入 N6 低置信门禁，不触发第二次模型请求。
 
 ### V14 路由与置信度标定
 
 N4/N6 必须在活动训练集内部标定，测试标签只用于最终评估。
+
+活动固定策略为 `filtered-rule-three-channel-v1`：N4 只能输出 N5a、N5b、N5c，
+依据训练图上的 IDF-Jaccard 相似度、可解释特征覆盖率、冲突与缺失证据分流；N6 是三通道
+单次推理之后的置信度门禁，不是第四个推理通道。
 
 通过条件：
 
@@ -319,7 +326,7 @@ Fiber 是少数类，活动训练集 11 条，两个测试集分别为 15 条和
 拓扑字段不得改变 legacy v1 图的冻结指纹。
 
 验证证据：本机项目虚拟环境使用 pytest 9.1.1 完成全量回归，结果为
-`347 passed in 15.72s`；`tests/test_baseline_lock.py`、legacy 图 hash
+`350 passed in 16.31s`；`tests/test_baseline_lock.py`、legacy 图 hash
 `5e10b5b25d559777`、legacy Prompt v14 以及活动 local/remote Prompt 隔离测试全部通过。
 
 ## 3. 正式实验执行与结果验收

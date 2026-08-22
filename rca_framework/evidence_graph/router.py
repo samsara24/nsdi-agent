@@ -78,11 +78,26 @@ COVERAGE_POLICY = RoutingPolicy(
     abstain_on_optical_blackout=True,
 )
 
+FILTERED_RULE_THREE_CHANNEL_POLICY = RoutingPolicy(
+    name="filtered-rule-three-channel-v1",
+    description=(
+        "活动数据三通道路由：sim=1.0 进 N5a；历史 case 完整覆盖当前可解释特征进 N5b；"
+        "其余（包括零特征和量测 blackout）进 N5c。N6 只在单次推理后执行置信度降级，"
+        "不作为推理前的第四通道。"
+    ),
+    exact_similarity=1.0,
+    partial_similarity=None,
+    partial_requires_full_coverage=True,
+    abstain_on_empty_evidence=False,
+    abstain_on_optical_blackout=False,
+)
+
 DEFAULT_POLICY = COVERAGE_POLICY
 
 POLICIES: Dict[str, RoutingPolicy] = {
     BOARD_POLICY.name: BOARD_POLICY,
     COVERAGE_POLICY.name: COVERAGE_POLICY,
+    FILTERED_RULE_THREE_CHANNEL_POLICY.name: FILTERED_RULE_THREE_CHANNEL_POLICY,
 }
 
 

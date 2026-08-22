@@ -20,6 +20,8 @@ max_used_mb="${MAX_GPU_USED_MB:-2048}"
 max_util="${MAX_GPU_UTILIZATION:-10}"
 wait_seconds="${GPU_WAIT_SECONDS:-3600}"
 poll_seconds="${GPU_POLL_SECONDS:-30}"
+max_model_len="${MAX_MODEL_LEN:-32768}"
+max_new_tokens="${MAX_NEW_TOKENS:-16384}"
 
 command -v nvidia-smi >/dev/null || { echo "nvidia-smi is required" >&2; exit 2; }
 test -x "$(command -v "$python_bin")" || { echo "python not found: $python_bin" >&2; exit 2; }
@@ -73,6 +75,9 @@ nvidia-smi > "$output_dir/nvidia_smi_before.txt"
   echo "hidden_size=$hidden_size"
   echo "model_path=$model_path"
   echo "data_dir=$data_dir"
+  echo "max_model_len=$max_model_len"
+  echo "max_new_tokens=$max_new_tokens"
+  echo "max_attempts=1"
 } > "$output_dir/gpu_selection.txt"
 
 cmd=(
@@ -82,10 +87,10 @@ cmd=(
   --model-path "$model_path"
   --tensor-parallel-size "$tp_size"
   --dtype bfloat16
-  --max-model-len "${MAX_MODEL_LEN:-16384}"
-  --max-new-tokens "${MAX_NEW_TOKENS:-2048}"
+  --max-model-len "$max_model_len"
+  --max-new-tokens "$max_new_tokens"
   --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION:-0.85}"
-  --max-attempts "${MAX_ATTEMPTS:-3}"
+  --max-attempts 1
 )
 [[ "${DISABLE_CUSTOM_ALL_REDUCE:-1}" == "1" ]] && cmd+=(--disable-custom-all-reduce)
 [[ "${ENFORCE_EAGER:-1}" == "1" ]] && cmd+=(--enforce-eager)

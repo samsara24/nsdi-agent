@@ -28,6 +28,7 @@ from rca_framework.data import load_cases
 from rca_framework.evidence_graph import (
     BOARD_POLICY,
     COVERAGE_POLICY,
+    FILTERED_RULE_THREE_CHANNEL_POLICY,
     EvidenceGraph,
     match_many,
     policy_for,
@@ -72,6 +73,7 @@ def world():
 def test_policies_are_registered_and_serializable():
     assert policy_for("board-100-70") is BOARD_POLICY
     assert policy_for("coverage-v2") is COVERAGE_POLICY
+    assert policy_for("filtered-rule-three-channel-v1") is FILTERED_RULE_THREE_CHANNEL_POLICY
     with pytest.raises(KeyError, match="unknown routing policy"):
         policy_for("nope")
     assert json.loads(json.dumps(COVERAGE_POLICY.to_dict()))["partial_similarity"] is None
@@ -89,6 +91,15 @@ def test_coverage_policy_split(world):
     summary = routing_summary(decisions)
     # C15 把 2 条全链路遥测失效的 case 从 N5a / N5b 拉进 N6。
     assert summary["counts"] == {"N5a": 20, "N5b": 17, "N5c": 46, "N6": 2}
+
+
+def test_filtered_rule_policy_has_exactly_three_pre_inference_channels(world):
+    decisions = route_many(world["test_results"], FILTERED_RULE_THREE_CHANNEL_POLICY)
+    summary = routing_summary(decisions)
+    assert summary["counts"]["N6"] == 0
+    assert sum(summary["counts"][branch] for branch in ("N5a", "N5b", "N5c")) == len(decisions)
+    for result in world["test_results"]:
+        assert route(result, FILTERED_RULE_THREE_CHANNEL_POLICY).branch in {"N5a", "N5b", "N5c"}
 
 
 def test_routing_reason_is_human_readable(world):
