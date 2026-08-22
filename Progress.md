@@ -72,6 +72,9 @@ Expert label 通过核心遥测精确指纹应用：命中 49 条，修正 27 �
 - L1/L2 在协议中统一为 local/remote endpoint。
 - Prompt 输入包含来源拓扑、lane profile、lane 宽度、同 lane 逻辑契约和禁止推断项。
 - 活动 Prompt 使用物理约束库与量测契约库，不使用旧数据统计型 measured constraints。
+- Prompt 路由按数据契约隔离：legacy N5c 保持 400G/200G 语义和
+  `rca-dual-sop-multidim-v14-full-step-ids`，活动数据使用
+  `filtered-rule-local-remote-v1`；推理 trace 和 manifest 分别记录实际版本。
 - N8 自动回灌保持关闭；测试标签只在推理完成后参与指标计算。
 
 ### 4.4 正式实验入口
@@ -101,7 +104,16 @@ ok=true, case_count=608, errors=[]
 - 67 条 `rule1_channel_not_4` 核心检索全部 Top-1 来自同来源，无跨拓扑兜底。
 - 逻辑同 lane token 在两个测试集中分别覆盖 157 条和 15 条。
 
-本机 Python 环境没有安装 pytest，因此完整 legacy 回归尚未在本机执行；正式实验机需要补跑完整测试。
+本机项目虚拟环境已安装 pytest 9.1.1。完整回归结果为：
+
+```text
+.venv/bin/python -m pytest -q
+347 passed in 15.72s
+```
+
+回归同时锁定 legacy 证据图 hash `5e10b5b25d559777`、legacy Prompt v14、活动
+local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需在拉取最新 `main`
+后按同步入口再次执行门禁。
 
 ## 6. 正式配置
 
@@ -131,10 +143,9 @@ scripts/run_filtered_rule_temporal_gpu_experiment.sh
 
 ## 7. 待完成工作
 
-1. 在具备项目依赖的环境运行完整 `python -m pytest -q`。
-2. 在 GPU 实验机通过同步入口执行正式实验。
-3. 审核两个独立 HTML 报告、fiber 个案、降级比例和跨拓扑兜底 case。
-4. 根据训练内标定和正式 bad case 归因开展消融，不修改同轮测试知识。
-5. 正式结果稳定后归档不再使用的旧实验说明和重复文档；legacy 代码与基线 artifact 暂时保留。
+1. 在 GPU 实验机通过同步入口执行正式实验。
+2. 审核两个独立 HTML 报告、fiber 个案、降级比例和跨拓扑兜底 case。
+3. 根据训练内标定和正式 bad case 归因开展消融，不修改同轮测试知识。
+4. 正式结果稳定后归档不再使用的旧实验说明和重复文档；legacy 代码与基线 artifact 暂时保留。
 
 旧 organized、l2fixed 和 expanded 结果只作为历史参考，不与活动数据指标混表。

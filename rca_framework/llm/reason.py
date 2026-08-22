@@ -20,7 +20,7 @@ from ..constraints.library import CONSTRAINT_LIBRARY, ConstraintLibrary
 from ..evidence_pack import EvidencePack
 from ..types import ROOT_CAUSES
 from .backend import Backend, NoneBackend
-from .prompts import PROMPT_TEMPLATE_VERSION, build_prompt
+from .prompts import PROMPT_TEMPLATE_VERSION, build_prompt, prompt_template_version_for
 from .protocol import ConfidenceBreakdown, DiagnosisResponse, parse_response
 
 
@@ -190,6 +190,7 @@ class ConstrainedReasoner:
                 accepted=accepted[i],
                 evidence_check=evidence_checks[i],
                 backend_name=self.backend.name,
+                prompt_version=prompt_template_version_for(requests[i]),
                 constraint_library_version=self.library.version,
                 abstain_reason=_degradation_reason(accepted[i], attempts[i]),
                 degradation_reason=_degradation_reason(accepted[i], attempts[i]),

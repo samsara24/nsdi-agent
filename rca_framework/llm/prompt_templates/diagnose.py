@@ -12,7 +12,10 @@ from ...types import ROOT_CAUSES
 from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
-DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-local-remote-v1"
+LEGACY_DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v7-full-step-ids"
+FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-local-remote-v1"
+# Backward-compatible public constant used by legacy experiment manifests.
+DIAGNOSE_PROMPT_VERSION = LEGACY_DIAGNOSE_PROMPT_VERSION
 
 SOP_STEP_ID_SEQUENCE = (
     "Q0_validate_measurements",
@@ -22,19 +25,42 @@ SOP_STEP_ID_SEQUENCE = (
     "D_select_or_request_evidence",
 )
 
-ROOT_CAUSE_DEFINITIONS = {
+LEGACY_ROOT_CAUSE_DEFINITIONS = {
+    "L1": "400G 端口一侧的设备或端口根因",
+    "L2": "200G 端口一侧的设备或端口根因",
+    "fiber": "L1 与 L2 之间的光纤 / 链路介质根因",
+}
+
+FILTERED_RULE_ROOT_CAUSE_DEFINITIONS = {
     "L1": "当前 case 本端的设备或端口根因",
     "L2": "当前 case 对端的设备或端口根因",
     "fiber": "L1 与 L2 之间的光纤 / 链路介质根因",
 }
 
 
-def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
+def diagnose_prompt_version_for(profile: str = "legacy") -> str:
+    if profile == "filtered_rule_v1":
+        return FILTERED_RULE_DIAGNOSE_PROMPT_VERSION
+    return LEGACY_DIAGNOSE_PROMPT_VERSION
+
+
+def build_diagnose_prompt(
+    request: Any,
+    *,
+    retry_feedback: str = "",
+    profile: str = "legacy",
+) -> str:
+    filtered_rule = profile == "filtered_rule_v1"
+    root_cause_definitions = (
+        FILTERED_RULE_ROOT_CAUSE_DEFINITIONS
+        if filtered_rule
+        else LEGACY_ROOT_CAUSE_DEFINITIONS
+    )
     payload = {
         "case_id": request.case_id,
         "branch": request.branch,
         "routing_reason": request.routing_reason,
-        "root_causes": ROOT_CAUSE_DEFINITIONS,
+        "root_causes": root_cause_definitions,
         "available_evidence": list(request.evidence_tokens),
         "missing_fields": list(request.missing_fields),
         "telemetry_status": request.telemetry_status,
@@ -46,7 +72,6 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
         "expert_sop": getattr(request, "expert_sop", None),
         "numeric_decision_tree_path": getattr(request, "decision_tree_prediction", None),
         "raw_measurements_with_units_and_lane_counts": getattr(request, "raw_measurements", {}),
-        "source_and_topology": getattr(request, "topology_context", {}),
         "dual_similarity": {
             "S_feature": getattr(request, "feature_similarity", 0.0),
             "S_graph": getattr(request, "graph_similarity", 0.0),
@@ -59,8 +84,15 @@ def build_diagnose_prompt(request: Any, *, retry_feedback: str = "") -> str:
         "executed_sop_trace": list(getattr(request, "sop_trace", ())),
         "deterministic_sop_candidates": list(getattr(request, "sop_candidates", ())),
     }
+    if filtered_rule:
+        payload["source_and_topology"] = getattr(request, "topology_context", {})
+    history_context = (
+        "根据当前 case 的历史匹配分支"
+        if filtered_rule
+        else "当前 case 与历史证据图相似度不足"
+    )
     sections = [
-        "你是光链路故障定界专家。根据当前 case 的历史匹配分支，"
+        f"你是光链路故障定界专家。{history_context}，"
         "必须按专家排障 SOP 的检查顺序，在纯物理约束和量测契约内给出 L1/L2/fiber 三选一结论。\n"
         "遥测不完整不是拒答理由；证据不足必须体现为低 evidence_completeness 或低 reasoning_completeness。\n"
         "量测契约只能否决不可信推理，严禁写入 `cited_constraints` 作为 support/exclude 依据。\n"

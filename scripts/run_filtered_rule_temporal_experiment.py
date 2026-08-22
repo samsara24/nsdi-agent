@@ -33,7 +33,12 @@ from rca_framework.evidence_graph import BOARD_POLICY, COVERAGE_POLICY, match_ma
 from rca_framework.evidence_pack import build_packs  # noqa: E402
 from rca_framework.html_report import render_experiment_html  # noqa: E402
 from rca_framework.knowledge import KNOWLEDGE_BUNDLE_SCHEMA, OfflineKnowledgeBundle, fit_offline_knowledge  # noqa: E402
-from rca_framework.llm import PROMPT_TEMPLATE_VERSION, ConstrainedReasoner, backend_for, prompt_template_hash  # noqa: E402
+from rca_framework.llm import (  # noqa: E402
+    FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
+    ConstrainedReasoner,
+    backend_for,
+    prompt_template_hash,
+)
 from rca_framework.sop import EXPERT_SOP_VERSION, expert_sop_hash  # noqa: E402
 from rca_framework.topology import TOPOLOGY_CONTRACT_VERSION  # noqa: E402
 from scripts.evaluate_routing import personal_alignment_gate, run_policy, show  # noqa: E402
@@ -218,8 +223,8 @@ def main() -> None:
                 "seed": args.seed,
                 "model_path": str(model_path),
                 "topology_contract": TOPOLOGY_CONTRACT_VERSION,
-                "prompt_template": PROMPT_TEMPLATE_VERSION,
-                "prompt_template_hash": prompt_template_hash(),
+                "prompt_template": FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
+                "prompt_template_hash": prompt_template_hash("filtered_rule_v1"),
             },
         )
         knowledge_dir = args.output_dir / "knowledge"
@@ -335,8 +340,8 @@ def main() -> None:
                 "measurement_contract_library_hash": MEASUREMENT_CONTRACT_LIBRARY.content_hash(),
                 "expert_sop": EXPERT_SOP_VERSION,
                 "expert_sop_hash": expert_sop_hash(),
-                "prompt_template": PROMPT_TEMPLATE_VERSION,
-                "prompt_template_hash": prompt_template_hash(),
+                "prompt_template": FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
+                "prompt_template_hash": prompt_template_hash("filtered_rule_v1"),
                 "decision_policy": decision_policy.version,
             },
             "data_quality": {

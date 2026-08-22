@@ -19,7 +19,11 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
-from ..features.dictionary import FEATURE_DICTIONARY, FeatureDictionary
+from ..features.dictionary import (
+    FEATURE_DICTIONARY,
+    FILTERED_RULE_DICTIONARY_VERSION,
+    FeatureDictionary,
+)
 from ..features.extractor import CaseFeatures, FeatureModel
 from ..types import ROOT_CAUSES
 
@@ -52,6 +56,25 @@ class GraphCase:
             "topology_id": self.topology_id,
             "lane_profile": self.lane_profile,
         }
+
+    def content_hash_dict(self, *, include_topology: bool = False) -> Dict[str, Any]:
+        """Canonical hash payload with backward compatibility for legacy cases."""
+        value = {
+            "case_id": self.case_id,
+            "label": self.label,
+            "tokens": list(self.tokens),
+            "telemetry_status": self.telemetry_status,
+            "confirmed_by": self.confirmed_by,
+        }
+        # Topology metadata did not exist in legacy evidence-graph-v1 and must not
+        # invalidate its frozen hashes. The filtered-rule profile versions it.
+        if include_topology and self.source_dataset:
+            value["source_dataset"] = self.source_dataset
+        if include_topology and self.topology_id:
+            value["topology_id"] = self.topology_id
+        if include_topology and self.lane_profile:
+            value["lane_profile"] = self.lane_profile
+        return value
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "GraphCase":
@@ -306,8 +329,12 @@ class EvidenceGraph:
     # --- 版本与持久化 -------------------------------------------------------
 
     def content_hash(self) -> str:
+        include_topology = self.dictionary_version == FILTERED_RULE_DICTIONARY_VERSION
         value = {
-            "cases": [case.to_dict() for case in sorted(self.cases, key=lambda item: item.case_id)],
+            "cases": [
+                case.content_hash_dict(include_topology=include_topology)
+                for case in sorted(self.cases, key=lambda item: item.case_id)
+            ],
             "dictionary_hash": self.dictionary_hash,
             "feature_model": self.feature_model,
         }

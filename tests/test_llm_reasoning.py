@@ -26,7 +26,12 @@ from rca_framework.llm import (
     build_prompt,
     parse_response,
 )
-from rca_framework.llm.prompts import PROMPT_TEMPLATE_VERSION, prompt_template_hash
+from rca_framework.llm.prompts import (
+    FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
+    PROMPT_TEMPLATE_VERSION,
+    prompt_template_hash,
+    prompt_template_version_for,
+)
 from rca_framework.llm.protocol import DIAGNOSIS_OUTPUT_SCHEMA
 
 
@@ -223,8 +228,26 @@ def test_retry_feedback_is_labelled_as_a_past_mistake(n5c):
 
 def test_prompt_is_deterministic(n5c):
     assert build_prompt(n5c["request"]) == build_prompt(n5c["request"])
-    assert PROMPT_TEMPLATE_VERSION == "rca-forced-multidim-v12"
+    assert PROMPT_TEMPLATE_VERSION == "rca-dual-sop-multidim-v14-full-step-ids"
     assert len(prompt_template_hash()) == 16
+
+
+def test_filtered_rule_prompt_has_independent_topology_contract(n5c):
+    from dataclasses import replace
+
+    request = replace(
+        n5c["request"],
+        topology_context={
+            "contract_version": "filtered-rule-topology-v1",
+            "source_dataset": "rule1_channel_not_4",
+            "topology_id": "400g-400g-logical8",
+        },
+    )
+    prompt = build_prompt(request)
+    assert "当前 case 本端的设备或端口根因" in prompt
+    assert '"source_dataset": "rule1_channel_not_4"' in prompt
+    assert prompt_template_version_for(request) == FILTERED_RULE_PROMPT_TEMPLATE_VERSION
+    assert prompt_template_hash("filtered_rule_v1") != prompt_template_hash()
 
 
 def test_prompt_exposes_checker_effect_target_and_token_contracts(n5c):

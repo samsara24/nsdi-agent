@@ -32,7 +32,7 @@
 | V16 | 测试只读与防泄漏 | PASS | 所有实验 |
 | V17 | 报告与 bad case 审计 | READY | 实验交付 |
 | V18 | 可复现性与资源释放 | READY | 正式运行 |
-| V19 | Legacy 回归隔离 | IMPLEMENT | 合并代码 |
+| V19 | Legacy 回归隔离 | PASS | 合并代码 |
 
 ## 2. 验收门禁
 
@@ -315,7 +315,12 @@ Fiber 是少数类，活动训练集 11 条，两个测试集分别为 15 条和
 - `tests/test_baseline_lock.py` 保持既有逐 case 锁。
 - 活动数据指标和旧 organized/l2fixed 指标分表展示。
 
-固定策略：无法运行完整 pytest 的本地环境只能完成数据与静态检查，正式合并前必须在具备依赖的测试环境补跑。
+固定策略：legacy Prompt、活动 Prompt 和证据图内容指纹按数据契约分别版本化；活动
+拓扑字段不得改变 legacy v1 图的冻结指纹。
+
+验证证据：本机项目虚拟环境使用 pytest 9.1.1 完成全量回归，结果为
+`347 passed in 15.72s`；`tests/test_baseline_lock.py`、legacy 图 hash
+`5e10b5b25d559777`、legacy Prompt v14 以及活动 local/remote Prompt 隔离测试全部通过。
 
 ## 3. 正式实验执行与结果验收
 
