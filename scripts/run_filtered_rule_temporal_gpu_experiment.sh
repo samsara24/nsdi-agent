@@ -77,7 +77,7 @@ nvidia-smi > "$output_dir/nvidia_smi_before.txt"
   echo "data_dir=$data_dir"
   echo "max_model_len=$max_model_len"
   echo "max_new_tokens=$max_new_tokens"
-  echo "max_attempts=1"
+  echo "max_attempts=3"
 } > "$output_dir/gpu_selection.txt"
 
 cmd=(
@@ -90,7 +90,7 @@ cmd=(
   --max-model-len "$max_model_len"
   --max-new-tokens "$max_new_tokens"
   --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION:-0.85}"
-  --max-attempts 1
+  --max-attempts 3
 )
 [[ "${DISABLE_CUSTOM_ALL_REDUCE:-1}" == "1" ]] && cmd+=(--disable-custom-all-reduce)
 [[ "${ENFORCE_EAGER:-1}" == "1" ]] && cmd+=(--enforce-eager)

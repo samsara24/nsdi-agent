@@ -62,7 +62,7 @@ TEST_SPLITS = {
 EXPECTED_TEST_SIZES = {"test_all_data": 417, "test_rule1_channel_not_4": 67}
 FORMAL_MAX_NEW_TOKENS = 16384
 FORMAL_MAX_MODEL_LEN = 32768
-FORMAL_MAX_ATTEMPTS = 1
+FORMAL_MAX_ATTEMPTS = 3
 FORMAL_GUIDED_JSON = True
 
 
@@ -128,11 +128,12 @@ def _topology_summary(results: Sequence[Any]) -> Dict[str, Any]:
     }
 
 
-def _assert_single_pass_traces(
+def _assert_retry_contract_traces(
     traces: Mapping[str, Any],
     *,
     expected_case_count: int,
     scope: str,
+    max_attempts: int = FORMAL_MAX_ATTEMPTS,
 ) -> None:
     if len(traces) != expected_case_count:
         raise RuntimeError(
@@ -145,10 +146,12 @@ def _assert_single_pass_traces(
             if isinstance(trace, Mapping)
             else int(getattr(trace, "attempt_count", 0))
         )
-        if attempt_count != 1:
+        if not 1 <= attempt_count <= max_attempts:
             invalid.append((case_id, attempt_count))
     if invalid:
-        raise RuntimeError(f"{scope}: single-pass contract violated: {invalid[:10]}")
+        raise RuntimeError(
+            f"{scope}: retry contract violated (allowed 1..{max_attempts}): {invalid[:10]}"
+        )
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -177,7 +180,7 @@ def _parser() -> argparse.ArgumentParser:
         type=int,
         choices=(FORMAL_MAX_ATTEMPTS,),
         default=FORMAL_MAX_ATTEMPTS,
-        help="活动正式流程固定单次生成；不对失败 case 发起第二次模型请求",
+        help="活动正式流程最多三轮；只对解析或物理校验失败的 case 重试",
     )
     parser.add_argument("--decision-lower-bound", type=float, default=0.5)
     parser.add_argument("--decision-min-support", type=int, default=10)
@@ -269,10 +272,11 @@ def main() -> None:
                 "prompt_template_hash": prompt_template_hash("filtered_rule_v1"),
             },
         )
-        _assert_single_pass_traces(
+        _assert_retry_contract_traces(
             training_artifacts.traces[policy.name],
             expected_case_count=len(train_cases),
             scope="train",
+            max_attempts=args.max_attempts,
         )
         knowledge_dir = args.output_dir / "knowledge"
         bundle_path = bundle.save(knowledge_dir / "knowledge_bundle.json")
@@ -302,10 +306,11 @@ def main() -> None:
                 llm_calibration_override=bundle.llm_calibrations.get(policy.name),
                 expert_calibration=bundle.expert_calibration,
             )
-            _assert_single_pass_traces(
+            _assert_retry_contract_traces(
                 traces,
                 expected_case_count=len(test_cases),
                 scope=split,
+                max_attempts=args.max_attempts,
             )
             split_dir = args.output_dir / split
             outcomes = {policy.name: records}
@@ -418,7 +423,8 @@ def main() -> None:
                 "max_model_len": args.max_model_len,
                 "gpu_memory_utilization": args.gpu_memory_utilization,
                 "max_attempts": args.max_attempts,
-                "single_pass": True,
+                "single_pass": False,
+                "retry_failed_cases_only": True,
                 "structured_output": "json_schema",
                 "guided_json": FORMAL_GUIDED_JSON,
                 "seed": args.seed,

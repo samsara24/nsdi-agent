@@ -12,7 +12,7 @@ from scripts.run_filtered_rule_temporal_experiment import (
     FORMAL_MAX_ATTEMPTS,
     FORMAL_MAX_MODEL_LEN,
     FORMAL_MAX_NEW_TOKENS,
-    _assert_single_pass_traces,
+    _assert_retry_contract_traces,
     _parser,
 )
 
@@ -87,9 +87,9 @@ def test_cross_topology_is_explicit_fallback_when_no_compatible_overlap():
     assert result.uses_cross_topology_fallback is True
 
 
-def test_formal_filtered_rule_generation_contract_is_single_pass_with_long_output():
+def test_formal_filtered_rule_generation_contract_retries_failures_with_long_output():
     args = _parser().parse_args(["--output-dir", "unused", "--model-path", "unused"])
-    assert args.max_attempts == FORMAL_MAX_ATTEMPTS == 1
+    assert args.max_attempts == FORMAL_MAX_ATTEMPTS == 3
     assert args.max_new_tokens == FORMAL_MAX_NEW_TOKENS == 16384
     assert args.max_model_len == FORMAL_MAX_MODEL_LEN == 32768
     assert args.policy == "filtered-rule-three-channel-v2"
@@ -124,17 +124,17 @@ def test_filtered_match_keeps_feature_and_graph_similarity_independent():
     assert result.max_graph_similarity == candidate.graph_similarity
 
 
-def test_single_pass_trace_gate_rejects_repeated_or_missing_case_generation():
-    _assert_single_pass_traces(
-        {"case-a": {"attempt_count": 1}, "case-b": {"attempt_count": 1}},
+def test_retry_trace_gate_accepts_one_to_three_attempts_and_rejects_invalid_counts():
+    _assert_retry_contract_traces(
+        {"case-a": {"attempt_count": 1}, "case-b": {"attempt_count": 3}},
         expected_case_count=2,
         scope="test",
     )
-    with pytest.raises(RuntimeError, match="single-pass contract violated"):
-        _assert_single_pass_traces(
-            {"case-a": {"attempt_count": 2}},
+    with pytest.raises(RuntimeError, match="retry contract violated"):
+        _assert_retry_contract_traces(
+            {"case-a": {"attempt_count": 4}},
             expected_case_count=1,
             scope="test",
         )
     with pytest.raises(RuntimeError, match="expected one trace per case"):
-        _assert_single_pass_traces({}, expected_case_count=1, scope="test")
+        _assert_retry_contract_traces({}, expected_case_count=1, scope="test")

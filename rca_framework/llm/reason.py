@@ -201,6 +201,10 @@ class ConstrainedReasoner:
 
 
 def _round_feedback(feedback: str, round_index: int, max_attempts: int) -> str:
+    # The first request has no prior answer. Never label the first/only round as
+    # a rewrite merely because it is also the configured final round.
+    if round_index == 0:
+        return ""
     if round_index < max(1, max_attempts) - 1:
         return feedback
     final_hint = (

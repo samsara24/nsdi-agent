@@ -250,6 +250,22 @@ def test_filtered_rule_prompt_has_independent_topology_contract(n5c):
     assert prompt_template_hash("filtered_rule_v1") != prompt_template_hash()
 
 
+def test_filtered_rule_prompt_uses_general_optional_reasoning_contract(n5c):
+    from dataclasses import replace
+
+    request = replace(
+        n5c["request"],
+        branch="N5b",
+        topology_context={"contract_version": "filtered-rule-topology-v1"},
+    )
+    prompt = build_prompt(request)
+    assert "不要求固定步骤数" in prompt
+    assert "sop_step_id 和 cited_predicates 都是可选字段" in prompt
+    assert "Q0_validate_measurements → P_apply_physical_boundaries" not in prompt
+    assert "current_physical_evidence_paths" in prompt
+    assert "historical_evidence_chains" in prompt
+
+
 def test_prompt_exposes_checker_effect_target_and_token_contracts(n5c):
     prompt = build_prompt(n5c["request"])
     assert "结构化引用契约" in prompt
@@ -329,6 +345,8 @@ def test_compliant_answer_is_accepted_on_the_first_try(n5c):
     assert trace.accepted.verdict == "L2"
     assert trace.attempt_count == 1
     assert not trace.rewrote
+    assert "上一次回答未通过" not in backend.prompts_seen[0][0]
+    assert "这是最后一轮" not in backend.prompts_seen[0][0]
 
 
 def test_violating_answer_triggers_a_rewrite_with_feedback(n5c):

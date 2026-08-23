@@ -237,11 +237,12 @@ Expert label 只通过核心遥测精确指纹匹配：
 - 输出 parser 对三个标签和降级状态有完整测试。
 - Prompt 内容和变量顺序通过 hash 版本化。
 
-验证证据：活动 Prompt 版本为 `filtered-rule-three-channel-single-pass-v3`，hash 同时覆盖物理约束库、量测契约库和固定模板；拓扑上下文、双相似度、当前物理路径、历史证据链和差异清单进入每个推理请求。N5a/N5b 只注入相关物理约束与量测 veto，N5c 注入完整专家 SOP。
+验证证据：活动 Prompt 版本为 `filtered-rule-general-structured-retry-v4`，hash 同时覆盖物理约束库、量测契约库和固定模板；拓扑上下文、双相似度、当前物理路径、历史证据链和差异清单进入对应分支请求。N5a/N5b 只注入相关物理约束与量测 veto，N5c 注入完整专家 SOP。统一模板不要求固定步骤数，SOP 与谓词引用字段均为可选。
 
-正式生成契约：`max_new_tokens=16384`、`max_model_len=32768`、`max_attempts=1`。
+正式生成契约：`max_new_tokens=16384`、`max_model_len=32768`、`max_attempts=3`。
 正式 vLLM 固定启用 JSON Schema guided decoding，并优先使用模型 tokenizer 的原生 chat template。
-每条 case 只能产生一个 trace 和一次 attempt；不合规输出进入 N6 低置信门禁，不触发第二次模型请求。
+每条 case 只产生一个 trace；首轮后仅重试未通过 parser/checker 的 case，已通过 case 不再请求模型。
+`attempt_count` 必须为 1–3；三轮后仍失败的输出进入低置信 fallback 和 N6 门禁。
 
 ### V14 路由与置信度标定
 
@@ -329,7 +330,7 @@ Fiber 是少数类，活动训练集 11 条，两个测试集分别为 15 条和
 拓扑字段不得改变 legacy v1 图的冻结指纹。
 
 验证证据：本机项目虚拟环境使用 pytest 9.1.1 完成全量回归，结果为
-`354 passed in 19.22s`；`tests/test_baseline_lock.py`、legacy 图 hash
+`355 passed in 19.97s`；`tests/test_baseline_lock.py`、legacy 图 hash
 `5e10b5b25d559777`、legacy Prompt v14 以及活动 local/remote Prompt 隔离测试全部通过。
 
 ## 3. 正式实验执行与结果验收

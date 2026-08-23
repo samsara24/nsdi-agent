@@ -74,16 +74,18 @@ Expert label 通过核心遥测精确指纹应用：命中 49 条，修正 27 �
 - 活动 Prompt 使用物理约束库与量测契约库，不使用旧数据统计型 measured constraints。
 - Prompt 路由按数据契约隔离：legacy N5c 保持 400G/200G 语义和
   `rca-dual-sop-multidim-v14-full-step-ids`，活动数据使用
-  `filtered-rule-three-channel-single-pass-v3`；推理 trace 和 manifest 分别记录实际版本。
+  `filtered-rule-general-structured-retry-v4`；推理 trace 和 manifest 分别记录实际版本。
 - 活动正式流程使用 `filtered-rule-three-channel-v2`：先由训练集冻结可解释特征模型和
   证据图，再分别计算完整 token 的 `S_feature` 和语义前缀图的 `S_graph`，把每条 case
   唯一分到 N5a/N5b/N5c。N5a 要求双相似度均为 1.0，N5b 要求双相似度均不低于 0.70。
-  N6 只做单次推理后的置信度与降级门禁，不再作为推理前第四通道。
+  N6 只做受约束推理后的置信度与降级门禁，不再作为推理前第四通道。
 - 三个分支使用独立载荷：N5a 注入历史证据链，N5b 注入 shared/missing/conflict 与
   关键缺失证据，N5c 注入完整专家 SOP；每个请求同时携带当前五层物理路径和真实 lane 数值。
-- 每条训练或测试 case 固定只生成一次，失败输出直接进入低置信 forced/fallback，
-  不再向 GPU 发起重写请求；正式 vLLM 开启 JSON Schema 结构化解码，运行时逐 trace
-  强制校验 `attempt_count == 1`。
+- 正式 vLLM 开启 JSON Schema 结构化解码。每条 case 首轮生成一次；仅对 JSON 解析失败
+  或物理 checker 未通过的 case 重试，最多 3 轮。三轮后仍失败时保留最后一个可解析候选
+  并把物理合规分降为 0；完全不可解析时进入低置信 forced/fallback。
+- 活动 Prompt 使用一套通用推理协议，不强制固定步骤数。`sop_step_id` 与
+  `cited_predicates` 只在输入确实提供相应内容时引用，不再混用 S1-S5 与 Q0/P/R/L/D。
 - N8 自动回灌保持关闭；测试标签只在推理完成后参与指标计算。
 
 ### 4.4 正式实验入口
@@ -117,7 +119,7 @@ ok=true, case_count=608, errors=[]
 
 ```text
 .venv/bin/python -m pytest -q
-354 passed in 19.35s
+355 passed in 19.97s
 ```
 
 回归同时锁定 legacy 证据图 hash `5e10b5b25d559777`、legacy Prompt v14、活动
@@ -132,8 +134,8 @@ local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需�
 | test/all_data | 12 | 146 | 259 | 0 | 417 |
 | test/rule1_channel_not_4 | 1 | 36 | 30 | 0 | 67 |
 
-总生成请求固定为 608 条，每条 case 一次；不再出现 `124→103→86` 或
-`417→361→330` 形式的多轮重写批次。
+首轮生成请求固定为 608 条。后续批次只包含前一轮解析或校验失败的 case；已经通过的
+case 不重复生成。每条 case 的 `attempt_count` 必须位于 1–3。
 
 ## 6. 正式配置
 
@@ -147,7 +149,7 @@ local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需�
 - dtype：BF16
 - max model length：32768
 - max new tokens：16384
-- max attempts：1（单次生成，无重写）
+- max attempts：3（仅失败 case 重试）
 - structured output：JSON Schema guided decoding
 - tensor parallel：根据空闲 GPU 和模型结构自动选择，最多 4
 

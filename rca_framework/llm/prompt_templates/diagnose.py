@@ -13,7 +13,7 @@ from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
 LEGACY_DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v7-full-step-ids"
-FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-three-channel-v3"
+FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-general-retry-v4"
 # Backward-compatible public constant used by legacy experiment manifests.
 DIAGNOSE_PROMPT_VERSION = LEGACY_DIAGNOSE_PROMPT_VERSION
 
@@ -86,6 +86,135 @@ def diagnose_prompt_version_for(profile: str = "legacy") -> str:
     return LEGACY_DIAGNOSE_PROMPT_VERSION
 
 
+def _filtered_rule_payload(request: Any) -> dict[str, Any]:
+    physical_paths = [
+        {
+            key: path[key]
+            for key in ("token", "predicate", "symptom", "layer", "criterion")
+            if key in path
+        }
+        for path in getattr(request, "evidence_paths", ())
+    ]
+
+    def compact_history(rows: Any) -> list[dict[str, Any]]:
+        return [
+            {
+                **{key: row.get(key) for key in ("case_id", "label", "S_feature", "S_graph")},
+                "shared_evidence": list(row.get("shared_evidence", ()))[:8],
+                "chain_steps": list(row.get("chain_steps", ()))[:6],
+                "missing_chain_steps": list(row.get("missing_chain_steps", ()))[:6],
+            }
+            for row in rows[:1]
+        ]
+
+    def compact_differences(rows: Any) -> list[dict[str, Any]]:
+        keys = (
+            "missing_feature_evidence", "extra_feature_evidence",
+            "conflicting_evidence", "missing_historical_chain_steps",
+        )
+        return [
+            {
+                "case_id": row.get("case_id"),
+                "label": row.get("label"),
+                **{key: list(row.get(key, ()))[:8] for key in keys},
+            }
+            for row in rows[:1]
+        ]
+
+    payload = {
+        "case_id": request.case_id,
+        "branch": request.branch,
+        "branch_instruction": BRANCH_INSTRUCTIONS.get(request.branch, BRANCH_INSTRUCTIONS["N5c"]),
+        "routing_reason": request.routing_reason,
+        "root_causes": FILTERED_RULE_ROOT_CAUSE_DEFINITIONS,
+        "available_evidence": list(request.evidence_tokens),
+        "missing_fields": list(request.missing_fields),
+        "telemetry_status": request.telemetry_status,
+        "candidate_root_causes": list(request.candidate_root_causes),
+        "deterministic_exclusions": [item.to_dict() for item in request.exclusions],
+        "dual_similarity": {
+            "S_feature": getattr(request, "feature_similarity", 0.0),
+            "S_graph": getattr(request, "graph_similarity", 0.0),
+        },
+        "current_physical_evidence_paths": physical_paths,
+        "numeric_decision_tree_path": getattr(request, "decision_tree_prediction", None),
+        "raw_measurements_with_units_and_lane_counts": getattr(request, "raw_measurements", {}),
+        "source_and_topology": getattr(request, "topology_context", {}),
+    }
+    if request.branch == "N5a":
+        payload["historical_evidence_chains"] = compact_history(
+            getattr(request, "historical_evidence_chains", ())
+        )
+    elif request.branch == "N5b":
+        payload["historical_evidence_chains"] = compact_history(
+            getattr(request, "historical_evidence_chains", ())
+        )
+        payload["opposing_historical_cases"] = [
+            {
+                **{key: row.get(key) for key in ("case_id", "label", "S_feature", "S_graph")},
+                "shared_evidence": list(row.get("shared_evidence", ()))[:8],
+                "conflicting_evidence": list(row.get("conflicting_evidence", ()))[:8],
+                "evidence_chain": list(row.get("evidence_chain", ()))[:6],
+            }
+            for row in getattr(request, "opposing_historical_cases", ())[:1]
+        ]
+        payload["largest_differences"] = compact_differences(
+            getattr(request, "largest_differences", ())
+        )
+        payload["critical_missing_evidence"] = list(
+            getattr(request, "critical_missing_evidence", ())
+        )
+    else:
+        payload["expert_sop"] = getattr(request, "expert_sop", None)
+    return payload
+
+
+def _build_filtered_rule_prompt(request: Any, *, retry_feedback: str) -> str:
+    sections = [
+        "你是光链路故障定界专家。请根据结构化输入，在 L1/L2/fiber 中判断最可能根因。\n"
+        "L1 表示当前 case 本端，L2 表示对端，fiber 表示两端之间的链路介质。\n\n"
+        "通用推理原则：\n"
+        "1. 当前 case 的 available_evidence、原始量测和物理证据路径是主要事实来源。\n"
+        "2. 历史证据链、双相似度和数值决策树只提供上下文，不得单独作为物理证据。\n"
+        "3. 接收类异常默认指向对端发送链；发送类和本地电口异常默认指向本端。\n"
+        "4. 只有两端已发光且存在同 lane 双向对称路径异常时，才可自动判定 fiber；"
+        "否则把现场验证写入 missing_information。\n"
+        "5. 不要求固定步骤数。只保留对当前 case 有作用的支持、排除或中性步骤。\n"
+        "6. 每个步骤至少引用一个 available_evidence token 或一个已列出的完整物理约束 ID。"
+        "不得引用输入中不存在的证据和约束。\n"
+        "7. sop_step_id 和 cited_predicates 都是可选字段。只有确实使用输入中已有的 SOP 步骤或谓词时才填写；"
+        "不得为了满足格式而编造。\n"
+        "8. 遥测不完整不是拒答理由。仍需三选一，但应降低 evidence_completeness 或"
+        "reasoning_completeness，并列出需要补采的信息。",
+    ]
+    sections.extend(_branch_knowledge_sections(request))
+    sections.append(CONFIDENCE_RUBRIC)
+    if retry_feedback:
+        sections.append(
+            "上一轮输出未通过结构或物理校验。请只修正以下问题，保留仍然有效的证据判断：\n"
+            + retry_feedback
+        )
+    sections.append("结构化输入：\n" + json.dumps(_filtered_rule_payload(request), ensure_ascii=False, indent=2))
+    sections.append(
+        "只输出一个 JSON 对象，不要输出 <think>、Markdown 代码块或额外说明。"
+        "首字符必须是 `{`，末字符必须是 `}`。\n"
+        "输出字段：\n"
+        "{\n"
+        '  "steps": [{"claim": "...", "cited_evidence": ["输入中的 token"], '
+        '"cited_constraints": ["输入中的完整约束 ID"], "effect": "support | exclude | neutral", '
+        '"target": "L1 | L2 | fiber | ", "sop_step_id": "可选", "cited_predicates": ["可选"]}],\n'
+        '  "verdict": "L1 | L2 | fiber",\n'
+        '  "confidence": 0.0,\n'
+        '  "confidence_breakdown": {"evidence_completeness": 0.0, "physical_compliance": 0.0, '
+        '"reasoning_completeness": 0.0, "history_similarity": 0.0},\n'
+        '  "missing_information": ["..."]\n'
+        "}\n"
+        "verdict 必须与 steps 中 support/exclude 的有效投票一致。若证据无法唯一决定，"
+        "选择现有证据下最可能的端点，并通过低置信度和补采清单表达不确定性。"
+    )
+    return "\n\n".join(sections)
+
+
 def build_diagnose_prompt(
     request: Any,
     *,
@@ -93,6 +222,8 @@ def build_diagnose_prompt(
     profile: str = "legacy",
 ) -> str:
     filtered_rule = profile == "filtered_rule_v1"
+    if filtered_rule:
+        return _build_filtered_rule_prompt(request, retry_feedback=retry_feedback)
     root_cause_definitions = (
         FILTERED_RULE_ROOT_CAUSE_DEFINITIONS
         if filtered_rule
