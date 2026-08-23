@@ -63,7 +63,7 @@ def _model_from_dict(value: Mapping[str, Any]) -> Any:
 
 @dataclass(frozen=True)
 class TrainingKnowledgeArtifacts:
-    """LLM-assisted train-only build logs; raw traces live outside the bundle."""
+    """Train-only build logs; optional LLM traces live outside the bundle."""
 
     summary: Mapping[str, Any] = field(default_factory=dict)
     traces: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
@@ -442,11 +442,13 @@ def fit_offline_knowledge(
     decision_non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
     decision_class_conditional: bool = False,
 ) -> Tuple[OfflineKnowledgeBundle, TrainingKnowledgeArtifacts]:
-    """Fit and optionally LLM-enrich all train-only artifacts.
+    """Fit all train-only artifacts and optionally run an LLM calibration pass.
 
-    When a reasoner is supplied, every train case that enters an LLM-capable
-    branch is processed in leave-one-out mode. The validated SOP+LLM chain is
-    attached to the historical case as EvidenceGraph v2 diagnosis knowledge.
+    The default ``reasoner=None`` path is fully deterministic: feature statistics,
+    the evidence graph, learned SOP, branch calibration, decision thresholds and
+    historical diagnosis chains are all derived from the manifest train split.
+    Supplying a reasoner is reserved for explicit LLM-calibration ablations; it
+    must not be required by the formal filtered-rule knowledge build.
     """
     labels = labels_of(train_cases)
     dictionary = dictionary_for(feature_profile)

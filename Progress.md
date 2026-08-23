@@ -90,7 +90,13 @@ Expert label 通过核心遥测精确指纹应用：命中 49 条，修正 27 �
 
 ### 4.4 正式实验入口
 
-`scripts/run_filtered_rule_temporal_experiment.py` 仅使用 GPU vLLM，从 124 条 train 构建一次知识包并落盘，重新加载后依次运行两个测试集。每个测试集独立输出 summary、outcomes、traces 和逐 case HTML。
+`scripts/run_filtered_rule_temporal_experiment.py` 从 124 条 train 以确定性代码构建知识包，
+训练阶段不调用 LLM；知识包落盘并重新加载后，GPU vLLM 只处理两个测试集。每个测试集
+独立输出 summary、outcomes、traces 和逐 case HTML。
+
+`scripts/build_filtered_rule_deterministic_knowledge.py` 是本地训练知识构建与逐 case 审计入口。
+固定产物位于 `artifacts/filtered_rule_deterministic_knowledge_v1/`，包含知识包、124 条
+逐 case 特征/数值/SOP/留一法历史候选、signature 分组和 token 支持统计。
 
 `scripts/run_filtered_rule_temporal_gpu_experiment.sh` 不执行 CPU 模型 dry run；它检测空闲显存和模型结构，在 1–4 张 GPU 中选择最大的合法 tensor parallel size，并保存运行前后 GPU 快照、命令和日志。
 
@@ -109,11 +115,28 @@ ok=true, case_count=608, errors=[]
 
 活动训练核心构建检查：
 
-- 124 条训练 case 可构建活动特征字典和证据图。
+- 124 条训练 case 可在约 5 秒内构建活动特征字典、证据图和 learned SOP，LLM 调用数为 0。
 - 图中来源分布为 `all_data=88`、`rule1_channel_not_4=36`。
+- 证据图版本为 `evidence-graph-v1:124:affc399cf8706073`，包含 124 个历史 case 和
+  124 条训练确认诊断子图；可跨机器复现的知识包 hash 为 `23a39fe3ced1910e`。
+- 118 个 signature 中 117 个标签纯净；只有 1 个混合标签 signature，覆盖 2 条 case。
+  其中 112 个 signature 只有单条支持，因此训练纯度不能直接解释为泛化能力。
+- 数值 learned SOP hash 为 `2e84eb36c2257ea7`；训练内命中 79/124，fiber 为 0/11。
+  SerDes SNR 数值尺度仍未完成量测语义确认，该树只作为统计先验和审计路径。
 - 417 条 `all_data` 核心检索中 415 条 Top-1 来自同来源，2 条显式跨拓扑兜底。
 - 67 条 `rule1_channel_not_4` 核心检索全部 Top-1 来自同来源，无跨拓扑兜底。
 - 逻辑同 lane token 在两个测试集中分别覆盖 157 条和 15 条。
+
+无 LLM 的 train/test 分布审计确认：
+
+- `all_data` 测试双相似度精确匹配 12/417，S_feature/S_graph 中位数为 0.671/0.703，
+  最近历史标签直接复用准确率为 52.76%，有 11 种同来源训练未见 token。
+- `rule1_channel_not_4` 测试精确匹配 1/67，S_feature/S_graph 中位数为 0.729/0.747，
+  最近历史标签直接复用准确率为 49.25%，有 18 种同来源训练未见 token。
+- `rule1_channel_not_4` 存在显著时间 schema 漂移：同来源训练仅 6/36 的两端 SerDes
+  缺失，测试为 67/67 缺失。缺测只降低完整度，不参与根因投票。
+- 两个来源均存在标签先验漂移；统一训练池共享物理知识，但历史标签、阈值和正式指标
+  必须按来源分层解释。
 
 本机项目虚拟环境已安装 pytest 9.1.1。完整回归结果为：
 
@@ -130,11 +153,11 @@ local/remote Prompt 独立版本与 topology-aware hash。正式实验机仍需�
 
 | split | N5a | N5b | N5c | 推理前 N6 | LLM 请求数 |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| train LOO | 10 | 42 | 72 | 0 | 124 |
+| train LOO | 10 | 42 | 72 | 0 | 0 |
 | test/all_data | 12 | 146 | 259 | 0 | 417 |
 | test/rule1_channel_not_4 | 1 | 36 | 30 | 0 | 67 |
 
-首轮生成请求固定为 608 条。后续批次只包含前一轮解析或校验失败的 case；已经通过的
+首轮生成请求固定为两个测试集共 484 条。后续批次只包含前一轮解析或校验失败的 case；已经通过的
 case 不重复生成。每条 case 的 `attempt_count` 必须位于 1–3。
 
 ## 6. 正式配置

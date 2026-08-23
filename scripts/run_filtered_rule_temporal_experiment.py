@@ -64,6 +64,9 @@ FORMAL_MAX_NEW_TOKENS = 16384
 FORMAL_MAX_MODEL_LEN = 32768
 FORMAL_MAX_ATTEMPTS = 3
 FORMAL_GUIDED_JSON = True
+DETERMINISTIC_KNOWLEDGE_SUMMARY = Path(
+    "artifacts/filtered_rule_deterministic_knowledge_v1/audit_summary.json"
+)
 
 
 def _utc_now() -> str:
@@ -184,7 +187,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--decision-lower-bound", type=float, default=0.5)
     parser.add_argument("--decision-min-support", type=int, default=10)
-    parser.add_argument("--target-selective-risk", type=float, default=None)
+    parser.add_argument("--target-selective-risk", type=float, default=0.15)
     parser.add_argument("--class-conditional-bounds", action="store_true")
     return parser
 
@@ -218,20 +221,8 @@ def main() -> None:
     }
     _write_json(lifecycle_path, lifecycle)
 
-    backend = backend_for(
-        "vllm",
-        model_path=str(model_path),
-        tensor_parallel_size=args.tensor_parallel_size,
-        dtype=args.dtype,
-        max_new_tokens=args.max_new_tokens,
-        max_model_len=args.max_model_len,
-        gpu_memory_utilization=args.gpu_memory_utilization,
-        disable_custom_all_reduce=args.disable_custom_all_reduce,
-        enforce_eager=args.enforce_eager,
-        guided_json=FORMAL_GUIDED_JSON,
-        seed=args.seed,
-    )
-    reasoner = ConstrainedReasoner(backend=backend, max_attempts=args.max_attempts)
+    backend = None
+    reasoner = None
     run_manifest: Dict[str, Any] = {}
     manifest_path = args.output_dir / "run_manifest.json"
 
@@ -244,6 +235,7 @@ def main() -> None:
             for name, manifest_split in TEST_SPLITS.items()
         }
         _validate_dataset(train_cases, test_sets, args.expected_train_size)
+        source_id = args.data_dir.name
         policy = FILTERED_RULE_THREE_CHANNEL_POLICY
         base_decision_policy = DecisionPolicy(
             final_lower_bound=args.decision_lower_bound,
@@ -252,43 +244,69 @@ def main() -> None:
         )
         bundle, training_artifacts = fit_offline_knowledge(
             train_cases,
-            source_dataset=str(args.data_dir),
+            source_dataset=source_id,
             split_manifest_hash=manifest_hash,
             feature_profile=args.feature_profile,
             policies=(policy,),
-            reasoner=reasoner,
+            # Training is deterministic knowledge deposition. The LLM is only
+            # invoked for unseen test/online cases after the bundle is reloaded.
+            reasoner=None,
             top_k=args.top_k,
             target_selective_risk=args.target_selective_risk,
             decision_minimum_support=args.decision_min_support,
             decision_candidate_order=("branch",),
             decision_class_conditional=args.class_conditional_bounds,
             build_metadata={
-                "created_at_utc": _utc_now(),
-                "git_revision": _git_revision(repo),
-                "seed": args.seed,
-                "model_path": str(model_path),
-                "topology_contract": TOPOLOGY_CONTRACT_VERSION,
-                "prompt_template": FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
-                "prompt_template_hash": prompt_template_hash("filtered_rule_v1"),
+                "knowledge_build_mode": "deterministic-train-only-v1",
+                "llm_calls": 0,
+                "label_leakage": False,
+                "n8_frozen": True,
             },
         )
-        _assert_retry_contract_traces(
-            training_artifacts.traces[policy.name],
-            expected_case_count=len(train_cases),
-            scope="train",
-            max_attempts=args.max_attempts,
-        )
+        if any(training_artifacts.traces.values()):
+            raise RuntimeError("formal train build must not produce LLM traces")
         knowledge_dir = args.output_dir / "knowledge"
         bundle_path = bundle.save(knowledge_dir / "knowledge_bundle.json")
         _write_json(knowledge_dir / "training_summary.json", training_artifacts.summary)
         _write_json(knowledge_dir / "training_traces.json", training_artifacts.traces)
         bundle = OfflineKnowledgeBundle.load(bundle_path)
+        reference_summary_path = repo / DETERMINISTIC_KNOWLEDGE_SUMMARY
+        if reference_summary_path.exists():
+            reference = json.loads(reference_summary_path.read_text(encoding="utf-8"))
+            observed = {
+                "knowledge_bundle_hash": bundle.content_hash(),
+                "evidence_graph_version": bundle.graph.version,
+                "learned_sop_hash": bundle.sop.content_hash(),
+            }
+            expected = {key: reference.get(key) for key in observed}
+            if observed != expected:
+                raise RuntimeError(
+                    f"deterministic knowledge does not match committed reference: "
+                    f"observed={observed}, expected={expected}"
+                )
         decision_policy = bundle.decision_policies.get(policy.name, base_decision_policy)
+
+        # Allocate the model only after deterministic train knowledge has been
+        # persisted and reloaded. Training performs zero generation requests.
+        backend = backend_for(
+            "vllm",
+            model_path=str(model_path),
+            tensor_parallel_size=args.tensor_parallel_size,
+            dtype=args.dtype,
+            max_new_tokens=args.max_new_tokens,
+            max_model_len=args.max_model_len,
+            gpu_memory_utilization=args.gpu_memory_utilization,
+            disable_custom_all_reduce=args.disable_custom_all_reduce,
+            enforce_eager=args.enforce_eager,
+            guided_json=FORMAL_GUIDED_JSON,
+            seed=args.seed,
+        )
+        reasoner = ConstrainedReasoner(backend=backend, max_attempts=args.max_attempts)
 
         reports: Dict[str, Any] = {}
         dataset_summaries: Dict[str, Any] = {}
         for split, test_cases in test_sets.items():
-            test_packs, test_features = bundle.extract_test_features(test_cases, source_dataset=str(args.data_dir))
+            test_packs, test_features = bundle.extract_test_features(test_cases, source_dataset=source_id)
             test_results = match_many(bundle.graph, test_features, top_k=args.top_k)
             report, records, traces = run_policy(
                 policy,
@@ -368,7 +386,8 @@ def main() -> None:
                 "self_evolution": False,
                 "feedback_update": False,
                 "flow": "one temporal train -> persisted knowledge reload -> two independent source tests",
-                "generation": "route once -> one LLM generation -> N6 confidence gate",
+                "training": "deterministic knowledge deposition; zero LLM calls",
+                "generation": "test route once -> LLM generation -> failed-case-only retry -> N6 confidence gate",
             },
             "data": {
                 "data_dir": str(args.data_dir),
@@ -389,6 +408,9 @@ def main() -> None:
                 "feature_dictionary_hash": bundle.graph.dictionary_hash,
                 "learned_sop_version": bundle.sop.version,
                 "learned_sop_hash": bundle.sop.content_hash(),
+                "build_mode": "deterministic-train-only-v1",
+                "training_llm_calls": 0,
+                "training_llm_traces": 0,
             },
             "versions": {
                 "topology_contract": TOPOLOGY_CONTRACT_VERSION,
@@ -403,7 +425,7 @@ def main() -> None:
                 "decision_policy": decision_policy.version,
             },
             "data_quality": {
-                "train": _quality_summary(train_cases, build_packs(train_cases, source_dataset=str(args.data_dir)), bundle.training_features),
+                "train": _quality_summary(train_cases, build_packs(train_cases, source_dataset=source_id), bundle.training_features),
                 **dataset_summaries,
             },
             "retrieval": {
@@ -415,7 +437,7 @@ def main() -> None:
             "decision": decision_policy.to_dict(),
             "personal_alignment_gate": personal_alignment_gate(decision_policy),
             "llm": {
-                "backend": backend.name,
+                "backend": backend.name if backend is not None else "not-initialized",
                 "model_path": str(model_path),
                 "tensor_parallel_size": args.tensor_parallel_size,
                 "dtype": args.dtype,
@@ -442,8 +464,9 @@ def main() -> None:
         raise
     finally:
         try:
-            backend.close()
-            lifecycle["backend_close_called"] = True
+            if backend is not None:
+                backend.close()
+                lifecycle["backend_close_called"] = True
         finally:
             reasoner = None
             gc.collect()

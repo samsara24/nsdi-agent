@@ -8,6 +8,7 @@ from rca_framework.evidence_pack import build_packs
 from rca_framework.features.dictionary import FILTERED_RULE_DICTIONARY
 from rca_framework.features.extractor import CaseFeatures
 from scripts.run_filtered_rule_temporal_experiment import (
+    DETERMINISTIC_KNOWLEDGE_SUMMARY,
     FORMAL_GUIDED_JSON,
     FORMAL_MAX_ATTEMPTS,
     FORMAL_MAX_MODEL_LEN,
@@ -94,6 +95,8 @@ def test_formal_filtered_rule_generation_contract_retries_failures_with_long_out
     assert args.max_model_len == FORMAL_MAX_MODEL_LEN == 32768
     assert args.policy == "filtered-rule-three-channel-v2"
     assert FORMAL_GUIDED_JSON is True
+    assert args.target_selective_risk == 0.15
+    assert DETERMINISTIC_KNOWLEDGE_SUMMARY.exists()
 
 
 def test_filtered_match_keeps_feature_and_graph_similarity_independent():

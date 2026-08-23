@@ -24,7 +24,7 @@
 | V8 | SerDes SNR 量测语义 | IMPLEMENT | 特征解释与阈值 |
 | V9 | host_snr 缺测语义 | PASS | 缺测路由 |
 | V10 | 来源拓扑与 schema 漂移 | PASS | 特征与检索 |
-| V11 | 训练知识重建 | READY | N3-N6 |
+| V11 | 训练知识重建 | PASS | N3-N6 |
 | V12 | Topology-aware 检索 | PASS | N3-N5 |
 | V13 | Prompt 与输出协议 | PASS | LLM 正式运行 |
 | V14 | 路由与置信度标定 | READY | N4/N6 |
@@ -206,6 +206,18 @@ Expert label 只通过核心遥测精确指纹匹配：
 
 固定策略：organized、l2fixed 和 expanded 数据产生的训练知识只作为参考，不进入活动数据正式推理。
 
+验证证据：`scripts/build_filtered_rule_deterministic_knowledge.py` 已从 124 条 train 在约
+5 秒内生成 `artifacts/filtered_rule_deterministic_knowledge_v1/`，训练 LLM 调用和 trace
+均为 0。知识包 hash 为 `23a39fe3ced1910e`，证据图版本为
+`evidence-graph-v1:124:affc399cf8706073`，逐 case 审计覆盖 124/124。118 个 signature 中
+112 个为单例；数值 learned SOP 训练内命中 79/124、fiber 0/11，故二者均保留支持数与
+不确定性，不作为物理真值。
+
+测试分布预审计同样不调用 LLM：`all_data` 和 `rule1_channel_not_4` 的双相似度精确匹配
+分别只有 12/417 和 1/67，最近历史标签准确率分别为 52.76% 和 49.25%。正式入口必须在
+vLLM 初始化前完成确定性知识落盘、重新加载，并与仓库参考 hash 比对；不允许因相似度非零
+就把历史标签当作测试结论。
+
 ### V12 Topology-aware 检索
 
 统一训练池需要同时支持来源内历史匹配和跨来源通用物理关系共享。
@@ -340,7 +352,8 @@ Fiber 是少数类，活动训练集 11 条，两个测试集分别为 15 条和
 1. 同步脚本确认工作树干净，切换并拉取 `origin/main`。
 2. 实验机补跑完整 pytest；legacy 回归失败时不发布结果。
 3. GPU 包装器验证数据 manifest、模型目录和空闲 GPU，直接启动 vLLM，不执行 CPU 模型 dry run。
-4. 从 124 条 train 构建并持久化知识包，重新加载后分别运行 417 条和 67 条测试。
+4. 从 124 条 train 以确定性代码构建并持久化知识包，训练侧 LLM 调用固定为 0；重新加载后
+   才分别对 417 条和 67 条测试运行 LLM。
 5. 两个测试集各自生成指标、traces 和逐 case HTML；测试标签不进入推理输入。
 6. 进程内关闭 vLLM，并使用进程外 `nvidia-smi` 复核资源释放。
 7. V11、V14、V17、V18 只有在正式 artifact 完整且可审计后从 READY 更新为 PASS。
