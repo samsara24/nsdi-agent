@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "actual": "fiber",
+      "case_id": "case_c73bd102a7abb1f4",
+      "predicted": "L1",
+      "reason": "纯净精确历史模式与当前标注冲突，需要人工复核标签或模式缺边"
+    }
+  ]
+}
