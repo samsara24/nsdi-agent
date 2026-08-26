@@ -1,0 +1,2108 @@
+{
+  "empty_signature_case_count": 0,
+  "groups": [
+    {
+      "case_ids": [
+        "case_037d936ff4af1a2e"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:host_snr:all_lanes",
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:media_snr_min:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_83da3e589e0982af"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:host_snr:all_lanes",
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_eb401138ccec15a0"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:all_lanes",
+        "drop_ratio:L1:rxpower:all_lanes",
+        "drop_ratio:L1:serdes_snr:all_lanes",
+        "drop_ratio:L1:txpower:all_lanes",
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+        "lane_scope:L1_to_L2:tx_down:all_lanes",
+        "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_45f51f9f1f3546ac"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:majority_lanes",
+        "drop_ratio:L1:rxpower:majority_lanes",
+        "drop_ratio:L1:serdes_snr:majority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:partial_lanes",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_4b306a22919c3f2b"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_b8f6ef8e8f3f8586"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_93b1941976dabf93"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "drop_ratio:L2:txpower:minority_lanes",
+        "lane:L2_to_L1:tx_down",
+        "lane_scope:L2_to_L1:tx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_4a639380c5725abc"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_3e1ce56bb15ce77e"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_c7d22292337626d1"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_8f86a9054091498b"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_9eeaafee55564dca"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_d1f9bb9236b82c8d"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_fec71fba5a745294"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_f4ba40dd7b4b718e"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_9718e128c9353ced"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_6a3e0c5ef4424288"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_1283a9fcda8a5ec4"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_1005baccaaaebb92"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_f9e1b96903367e51"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_d6f0794862204d4b"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_31c0a4be5fb1c63c"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_bbcd66dc5890cf80"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_55a38d0d1ca1900b"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_dd0601c326b16be6"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_6712cc1a943b7ed4"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "drop_ratio:L2:host_snr:majority_lanes",
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_1ae989095bd541fd"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_50630e81b16102a3"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_0cb18fb8a323d73f"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_7530fefac9d3b885"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_dbfc080555b0d7ca"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_e20f489289d0fc34"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_46126d083b476184"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_476f1cd361d5d074"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_ae60de329fa0d15c"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_aaf2a73810c59a40",
+        "case_d1f5cf895438f425"
+      ],
+      "label_distribution": {
+        "L1": 2
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 2
+    },
+    {
+      "case_ids": [
+        "case_54af508a3a41d98b"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_b54623452a89ec4c"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "drop_ratio:L2:host_snr:majority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_e3469fd4ab369749"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_07a326b37f1c31ea"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_7e63bb604cac1bdf"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L1:txpower:minority_lanes",
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_down",
+        "lane_scope:L1_to_L2:tx_down:single_lane",
+        "status:L1:TxLOL",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_1a73b6b538f7abbb"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_890c461e973cfc49"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_e2418d9f5ac35f49"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "lane:L1_to_L2:width_mismatch",
+        "lane:L2_to_L1:width_mismatch",
+        "status:L1:RxLOL",
+        "status:L2:RxLOL",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_70171118d16509ef"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_22d47fc942665fdb"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_de36a48c495e6cf2"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_87de9ea9f2df9224"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:majority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_4613bcf2e6a714ef"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_7aad24b5bed3559c",
+        "case_8e8eeb7345004069"
+      ],
+      "label_distribution": {
+        "L1": 1,
+        "fiber": 1
+      },
+      "pure": false,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes"
+      ],
+      "support": 2
+    },
+    {
+      "case_ids": [
+        "case_ad1821c431e2cce4"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_c2812c960c24c215"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_109023151cf2e2ba"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_b06a21c65fe3484c"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_a75aa071858b5dd6"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_7107f8ac2e32ac29"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_ce5c64fc9ab7a632"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_719f194f6c321afd"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_f5a0f2b18b255fe9"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_956c2a9e59369919",
+        "case_f292cdadbd875faf"
+      ],
+      "label_distribution": {
+        "fiber": 2
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 2
+    },
+    {
+      "case_ids": [
+        "case_02bd925ffa2cc4e3"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_611f27a9bb4cee1b"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_60a488882f9ee1ea"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_e4a1270e54b1336f"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_c73461ba74a9c18e"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_99ccd988fa2a451a"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_f2bb5d25c64b2546"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_4cff1302873400d7"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_d5faed0d0014fc4b"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_3d57871044fc3e73"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_b12ec6214303ca32"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_cc20e1069b1d1fb7"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_79bcc838af6f2197"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_f8222b06b6a10020"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_e798218f3f3a9c60"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_3572423afaf6af17"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_31d25421936f1675"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_39c5ce14b9961fef"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_6931da3c6063d849"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_a5fabe7c22449c74"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_5e7bfa4ecb79c9d5"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_869567d500e4fd78"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_c7a2df561c3607ef"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_00c0b87c34f46052"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L2:media_snr_min:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_3a8615a52129bdf8"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_423f46ddbb11b69d"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "drop_ratio:L2:txpower:majority_lanes",
+        "lane:L2_to_L1:tx_down",
+        "lane_scope:L2_to_L1:tx_down:partial_lanes",
+        "status:L1:RxLOS",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_444d5c16176a6739"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_3636c6d1ae9ca747"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_d9f8dc4a057dd510",
+        "case_f2960ab1b5e3b4ea"
+      ],
+      "label_distribution": {
+        "L1": 2
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "support": 2
+    },
+    {
+      "case_ids": [
+        "case_6556acda7b09f5f8"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_ef010fcd642ba300"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_7fc5153b66705e1c"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_f40b103690ddcc44"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_4c48be2b9ad2fd9a"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_c236ebca6a5203bc"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_1be709e07a8c40d3"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_7113b9af9622ef23"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_6832b2a792b4641e"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_26e3772b0f8e00c5"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_32a43a4b07738478"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_977e0cbc2bfa20d9"
+      ],
+      "label_distribution": {
+        "fiber": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_2917bd435ac9fb56"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_76a8d8fad267fff8"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_9b1bd50ce970aa7d",
+        "case_57eb92b311d39de1"
+      ],
+      "label_distribution": {
+        "L1": 1,
+        "L2": 1
+      },
+      "pure": false,
+      "signature_tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "support": 2
+    },
+    {
+      "case_ids": [
+        "case_fb35417c4bda50a8"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_b83327eb6df81567"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_891dbab2523b90e3"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_48373881de68c0ea"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_6d4fb89f8945c701"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_37546800aaedf1f3"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_e20b3ac1eb339249"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_330a5e9f6d6743f2"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_0590a0d8be939d37"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_5c62360b12d3f0f5",
+        "case_8a91a3dc026afbff",
+        "case_978fd681124e3989"
+      ],
+      "label_distribution": {
+        "L1": 1,
+        "L2": 2
+      },
+      "pure": false,
+      "signature_tokens": [
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "support": 3
+    },
+    {
+      "case_ids": [
+        "case_649e0a541a4ef089"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_728de8409397f549"
+      ],
+      "label_distribution": {
+        "L1": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    },
+    {
+      "case_ids": [
+        "case_2fd0eb4dec40a969"
+      ],
+      "label_distribution": {
+        "L2": 1
+      },
+      "pure": true,
+      "signature_tokens": [
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "support": 1
+    }
+  ],
+  "mixed_signature_case_count": 7,
+  "mixed_signature_count": 3,
+  "pure_signature_count": 114,
+  "signature_count": 117
+}

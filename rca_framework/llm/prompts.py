@@ -242,7 +242,7 @@ def _is_filtered_rule_request(request: Any) -> bool:
 
 
 def prompt_template_version_for(request: Any = None, *, profile: str = "") -> str:
-    if profile == "filtered_rule_v1" or (request is not None and _is_filtered_rule_request(request)):
+    if profile.startswith("filtered_rule_") or (request is not None and _is_filtered_rule_request(request)):
         return FILTERED_RULE_PROMPT_TEMPLATE_VERSION
     return LEGACY_PROMPT_TEMPLATE_VERSION
 

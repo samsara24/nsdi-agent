@@ -1,0 +1,573 @@
+{
+  "token_count": 64,
+  "tokens": [
+    {
+      "label_distribution": {
+        "L2": 1,
+        "fiber": 1
+      },
+      "label_purity": 0.5,
+      "support": 2,
+      "token": "drop_ratio:L1:host_snr:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:media_snr:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:media_snr:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 13,
+        "L2": 18,
+        "fiber": 3
+      },
+      "label_purity": 0.529412,
+      "support": 34,
+      "token": "drop_ratio:L1:media_snr:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:rxpower:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:rxpower:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 5,
+        "L2": 13,
+        "fiber": 3
+      },
+      "label_purity": 0.619048,
+      "support": 21,
+      "token": "drop_ratio:L1:rxpower:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:serdes_snr:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:serdes_snr:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 3,
+        "L2": 5
+      },
+      "label_purity": 0.625,
+      "support": 8,
+      "token": "drop_ratio:L1:serdes_snr:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:txpower:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L1:txpower:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 3,
+        "fiber": 1
+      },
+      "label_purity": 0.75,
+      "support": 4,
+      "token": "drop_ratio:L2:host_snr:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 1
+      },
+      "label_purity": 0.5,
+      "support": 2,
+      "token": "drop_ratio:L2:host_snr:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 4
+      },
+      "label_purity": 0.8,
+      "support": 5,
+      "token": "drop_ratio:L2:host_snr:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 1
+      },
+      "label_purity": 0.5,
+      "support": 2,
+      "token": "drop_ratio:L2:media_snr:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 17,
+        "L2": 13,
+        "fiber": 5
+      },
+      "label_purity": 0.485714,
+      "support": 35,
+      "token": "drop_ratio:L2:media_snr:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L2:rxpower:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 5,
+        "L2": 5,
+        "fiber": 4
+      },
+      "label_purity": 0.357143,
+      "support": 14,
+      "token": "drop_ratio:L2:rxpower:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 8,
+        "L2": 10
+      },
+      "label_purity": 0.555556,
+      "support": 18,
+      "token": "drop_ratio:L2:serdes_snr:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L2:txpower:majority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "drop_ratio:L2:txpower:minority_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane:L1_to_L2:bidirectional_same_lane"
+    },
+    {
+      "label_distribution": {
+        "L1": 9
+      },
+      "label_purity": 1.0,
+      "support": 9,
+      "token": "lane:L1_to_L2:single_lane_outlier"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 1
+      },
+      "label_purity": 0.5,
+      "support": 2,
+      "token": "lane:L1_to_L2:tx_down"
+    },
+    {
+      "label_distribution": {
+        "L1": 5,
+        "L2": 4,
+        "fiber": 4
+      },
+      "label_purity": 0.384615,
+      "support": 13,
+      "token": "lane:L1_to_L2:tx_ok_rx_down"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane:L1_to_L2:width_mismatch"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane:L2_to_L1:bidirectional_same_lane"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 4
+      },
+      "label_purity": 0.8,
+      "support": 5,
+      "token": "lane:L2_to_L1:single_lane_outlier"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 1
+      },
+      "label_purity": 0.5,
+      "support": 2,
+      "token": "lane:L2_to_L1:tx_down"
+    },
+    {
+      "label_distribution": {
+        "L1": 6,
+        "L2": 13,
+        "fiber": 3
+      },
+      "label_purity": 0.590909,
+      "support": 22,
+      "token": "lane:L2_to_L1:tx_ok_rx_down"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane:L2_to_L1:width_mismatch"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 9
+      },
+      "label_purity": 1.0,
+      "support": 9,
+      "token": "lane_scope:L1_to_L2:single_lane_outlier:single_lane"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L1_to_L2:tx_down:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L1_to_L2:tx_down:single_lane"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 4,
+        "L2": 4,
+        "fiber": 4
+      },
+      "label_purity": 0.333333,
+      "support": 12,
+      "token": "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1,
+        "L2": 4
+      },
+      "label_purity": 0.8,
+      "support": 5,
+      "token": "lane_scope:L2_to_L1:single_lane_outlier:single_lane"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L2_to_L1:tx_down:partial_lanes"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L2_to_L1:tx_down:single_lane"
+    },
+    {
+      "label_distribution": {
+        "L2": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "lane_scope:L2_to_L1:tx_ok_rx_down:partial_lanes"
+    },
+    {
+      "label_distribution": {
+        "L1": 5,
+        "L2": 12,
+        "fiber": 3
+      },
+      "label_purity": 0.6,
+      "support": 20,
+      "token": "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane"
+    },
+    {
+      "label_distribution": {
+        "L1": 8,
+        "L2": 17,
+        "fiber": 3
+      },
+      "label_purity": 0.607143,
+      "support": 28,
+      "token": "status:L1:RxLOL"
+    },
+    {
+      "label_distribution": {
+        "L1": 5,
+        "L2": 9,
+        "fiber": 3
+      },
+      "label_purity": 0.529412,
+      "support": 17,
+      "token": "status:L1:RxLOS"
+    },
+    {
+      "label_distribution": {
+        "L1": 1
+      },
+      "label_purity": 1.0,
+      "support": 1,
+      "token": "status:L1:TxLOL"
+    },
+    {
+      "label_distribution": {
+        "L1": 12,
+        "L2": 10
+      },
+      "label_purity": 0.545455,
+      "support": 22,
+      "token": "status:L2:RxLOL"
+    },
+    {
+      "label_distribution": {
+        "L1": 4,
+        "L2": 3
+      },
+      "label_purity": 0.571429,
+      "support": 7,
+      "token": "status:L2:RxLOS"
+    },
+    {
+      "label_distribution": {
+        "L2": 2
+      },
+      "label_purity": 1.0,
+      "support": 2,
+      "token": "status:L2:TxLOL"
+    },
+    {
+      "label_distribution": {
+        "L2": 2
+      },
+      "label_purity": 1.0,
+      "support": 2,
+      "token": "status:L2:TxLOS"
+    },
+    {
+      "label_distribution": {
+        "L1": 12,
+        "L2": 12,
+        "fiber": 2
+      },
+      "label_purity": 0.461538,
+      "support": 26,
+      "token": "topology_level:L1:media_snr_min:high_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 15,
+        "L2": 12,
+        "fiber": 3
+      },
+      "label_purity": 0.5,
+      "support": 30,
+      "token": "topology_level:L1:media_snr_min:low_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 13,
+        "L2": 17,
+        "fiber": 1
+      },
+      "label_purity": 0.548387,
+      "support": 31,
+      "token": "topology_level:L1:rxpower_mean:high_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 15,
+        "L2": 15
+      },
+      "label_purity": 0.5,
+      "support": 30,
+      "token": "topology_level:L1:rxpower_mean:low_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 16,
+        "L2": 14,
+        "fiber": 1
+      },
+      "label_purity": 0.516129,
+      "support": 31,
+      "token": "topology_level:L1:txpower_mean:high_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 8,
+        "L2": 19,
+        "fiber": 4
+      },
+      "label_purity": 0.612903,
+      "support": 31,
+      "token": "topology_level:L1:txpower_mean:low_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 12,
+        "L2": 15,
+        "fiber": 1
+      },
+      "label_purity": 0.535714,
+      "support": 28,
+      "token": "topology_level:L2:media_snr_min:high_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 15,
+        "L2": 13,
+        "fiber": 3
+      },
+      "label_purity": 0.483871,
+      "support": 31,
+      "token": "topology_level:L2:media_snr_min:low_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 11,
+        "L2": 19,
+        "fiber": 1
+      },
+      "label_purity": 0.612903,
+      "support": 31,
+      "token": "topology_level:L2:rxpower_mean:high_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 12,
+        "L2": 15,
+        "fiber": 4
+      },
+      "label_purity": 0.483871,
+      "support": 31,
+      "token": "topology_level:L2:rxpower_mean:low_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 12,
+        "L2": 16,
+        "fiber": 3
+      },
+      "label_purity": 0.516129,
+      "support": 31,
+      "token": "topology_level:L2:txpower_mean:high_tail"
+    },
+    {
+      "label_distribution": {
+        "L1": 15,
+        "L2": 14,
+        "fiber": 1
+      },
+      "label_purity": 0.5,
+      "support": 30,
+      "token": "topology_level:L2:txpower_mean:low_tail"
+    }
+  ]
+}

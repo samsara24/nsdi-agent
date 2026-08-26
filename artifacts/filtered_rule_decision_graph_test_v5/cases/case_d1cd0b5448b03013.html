@@ -1,0 +1,316 @@
+<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><title>case_d1cd0b5448b03013</title><style>body{max-width:1180px;margin:auto;padding:25px;font:14px/1.6 system-ui;background:#f5f7fb;color:#172033}header,section{background:white;border:1px solid #d8deea;border-radius:10px;padding:16px;margin-bottom:14px}h1,h2{margin-top:0}.result{border-left:6px solid #b54708}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#101828;color:#e6edf8;padding:12px;border-radius:7px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.grid{grid-template-columns:1fr}}</style></head><body><header class='result'><h1>case_d1cd0b5448b03013</h1><p><b>预测：</b>证据不足　<b>真实：</b>L2　<b>复盘：</b>missing_evidence</p><p>关键遥测缺失或未检出可定位异常，证据不足是合理降级。 真实标签为L2；盲测输出为证据不足。专家路径=expert:no_anomaly，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=0。</p></header><section><h2>盲推理步骤</h2><ol><li>量测质量：partial_telemetry，缺失字段2个</li><li>可解释特征：3个，topology_level_tail</li><li>专家路径：expert:no_anomaly；总体支持12，拓扑支持8，拓扑Wilson下界0.000</li><li>接收症状因果上下文：not_applicable；统计门未通过，因果门通过</li><li>物理/历史候选：0个；最终证据不足</li></ol></section><div class='grid'><section><h2>可解释特征</h2><pre>{
+  &quot;case_id&quot;: &quot;case_d1cd0b5448b03013&quot;,
+  &quot;tokens&quot;: [
+    &quot;topology_level:L1:txpower_mean:high_tail&quot;,
+    &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+    &quot;topology_level:L2:txpower_mean:high_tail&quot;
+  ],
+  &quot;by_family&quot;: {
+    &quot;topology_level_tail&quot;: [
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ]
+  },
+  &quot;dictionary_version&quot;: &quot;filtered-rule-feature-dictionary-v2&quot;,
+  &quot;dictionary_hash&quot;: &quot;7764aa3a23d2ac2e&quot;,
+  &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;L1.host_snr&quot;,
+    &quot;L2.host_snr&quot;
+  ],
+  &quot;conflicts&quot;: [],
+  &quot;optical_blackout&quot;: false,
+  &quot;source_dataset&quot;: &quot;all_data&quot;,
+  &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+  &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;
+}</pre></section><section><h2>排障决策与候选</h2><pre>{
+  &quot;expert&quot;: {
+    &quot;version&quot;: &quot;expert-rules-v1&quot;,
+    &quot;verdict&quot;: null,
+    &quot;group&quot;: &quot;expert:no_anomaly&quot;,
+    &quot;priority&quot;: &quot;8&quot;,
+    &quot;reason&quot;: &quot;两端指标无明显异常，按专家规则兜底反馈本端&quot;,
+    &quot;alarm_side_resolved&quot;: true,
+    &quot;sides&quot;: []
+  },
+  &quot;global_rule_stats&quot;: {
+    &quot;accuracy&quot;: 0.0,
+    &quot;correct&quot;: 0,
+    &quot;group&quot;: &quot;expert:no_anomaly&quot;,
+    &quot;support&quot;: 12,
+    &quot;truth_distribution&quot;: {
+      &quot;L1&quot;: 4,
+      &quot;L2&quot;: 7,
+      &quot;fiber&quot;: 1
+    },
+    &quot;wilson_lower_bound&quot;: 0.0
+  },
+  &quot;topology_rule_stats&quot;: {
+    &quot;accuracy&quot;: 0.0,
+    &quot;correct&quot;: 0,
+    &quot;group&quot;: &quot;expert:no_anomaly&quot;,
+    &quot;support&quot;: 8,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;truth_distribution&quot;: {
+      &quot;L1&quot;: 1,
+      &quot;L2&quot;: 6,
+      &quot;fiber&quot;: 1
+    },
+    &quot;wilson_lower_bound&quot;: 0.0
+  },
+  &quot;receive_causal_context&quot;: &quot;not_applicable&quot;,
+  &quot;statistical_gate&quot;: false,
+  &quot;causal_gate&quot;: true,
+  &quot;votes&quot;: [],
+  &quot;learned_positive_path&quot;: null,
+  &quot;media_topology_positive_path&quot;: false,
+  &quot;reason&quot;: &quot;未检出可终裁异常路径&quot;
+}</pre></section></div><div class='grid'><section><h2>训练历史候选</h2><pre>[
+  {
+    &quot;case_id&quot;: &quot;case_6d4fb89f8945c701&quot;,
+    &quot;label&quot;: &quot;L2&quot;,
+    &quot;similarity&quot;: 0.75,
+    &quot;shared_evidence&quot;: [
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L2:media_snr_min:low_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.75，证据覆盖率 75%）&quot;,
+      &quot;本 case 有 1 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.75，证据覆盖率 75%）&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.75,
+    &quot;graph_similarity&quot;: 0.78085531,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L2:media_snr_min|segment_3|path:topology_level:L2:media_snr_min:low_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:media_snr_min&quot;
+    ],
+    &quot;extra_graph_edges&quot;: []
+  },
+  {
+    &quot;case_id&quot;: &quot;case_728de8409397f549&quot;,
+    &quot;label&quot;: &quot;L1&quot;,
+    &quot;similarity&quot;: 0.66666667,
+    &quot;shared_evidence&quot;: [
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;双相似度未同时达到部分匹配门槛（最高 S_feature=0.67，最高 S_graph=0.64），走专家 SOP 冷启动推理&quot;,
+      &quot;注入 6 条与本 case 相关的物理约束（constraint-library-v6，全部待专家审核）&quot;,
+      &quot;numeric tree leaf predicts L2 from train distribution {&#x27;L1&#x27;: 20, &#x27;L2&#x27;: 26, &#x27;fiber&#x27;: 0}&quot;,
+      &quot;冷启动分支注入专家排障 SOP expert-sop-playbook-v2，用于约束 LLM 检查顺序，不作为当前 case 物理证据&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;注入 6 条与本 case 相关的物理约束（constraint-library-v6，全部待专家审核）&quot;,
+      &quot;numeric tree leaf predicts L2 from train distribution {&#x27;L1&#x27;: 20, &#x27;L2&#x27;: 26, &#x27;fiber&#x27;: 0}&quot;,
+      &quot;冷启动分支注入专家排障 SOP expert-sop-playbook-v2，用于约束 LLM 检查顺序，不作为当前 case 物理证据&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.66666667,
+    &quot;graph_similarity&quot;: 0.63681349,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [],
+    &quot;extra_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_37546800aaedf1f3&quot;,
+    &quot;label&quot;: &quot;L2&quot;,
+    &quot;similarity&quot;: 0.5,
+    &quot;shared_evidence&quot;: [
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L2:media_snr_min:low_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.75，证据覆盖率 100%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.75，证据覆盖率 100%）&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.5,
+    &quot;graph_similarity&quot;: 0.56432064,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L2:media_snr_min|segment_3|path:topology_level:L2:media_snr_min:low_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:media_snr_min&quot;
+    ],
+    &quot;extra_graph_edges&quot;: [
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_891dbab2523b90e3&quot;,
+    &quot;label&quot;: &quot;L1&quot;,
+    &quot;similarity&quot;: 0.5,
+    &quot;shared_evidence&quot;: [
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L1:rxpower_mean:high_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.74，证据覆盖率 100%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.74，证据覆盖率 100%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.5,
+    &quot;graph_similarity&quot;: 0.56531225,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L1:rxpower_mean|segment_3|path:topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:rxpower_mean&quot;
+    ],
+    &quot;extra_graph_edges&quot;: [
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_d5faed0d0014fc4b&quot;,
+    &quot;label&quot;: &quot;L1&quot;,
+    &quot;similarity&quot;: 0.41888681,
+    &quot;shared_evidence&quot;: [
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;drop_ratio:L2:media_snr:minority_lanes&quot;,
+      &quot;status:L2:RxLOL&quot;,
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L1:rxpower_mean:high_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;双相似度未同时达到部分匹配门槛（最高 S_feature=0.57，最高 S_graph=0.60），走专家 SOP 冷启动推理&quot;,
+      &quot;注入 17 条与本 case 相关的物理约束（constraint-library-v6，全部待专家审核）&quot;,
+      &quot;numeric tree leaf predicts L1 from train distribution {&#x27;L1&#x27;: 18, &#x27;L2&#x27;: 12, &#x27;fiber&#x27;: 9}&quot;,
+      &quot;冷启动分支注入专家排障 SOP expert-sop-playbook-v2，用于约束 LLM 检查顺序，不作为当前 case 物理证据&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;双相似度未同时达到部分匹配门槛（最高 S_feature=0.57，最高 S_graph=0.60），走专家 SOP 冷启动推理&quot;,
+      &quot;注入 17 条与本 case 相关的物理约束（constraint-library-v6，全部待专家审核）&quot;,
+      &quot;numeric tree leaf predicts L1 from train distribution {&#x27;L1&#x27;: 18, &#x27;L2&#x27;: 12, &#x27;fiber&#x27;: 9}&quot;,
+      &quot;冷启动分支注入专家排障 SOP expert-sop-playbook-v2，用于约束 LLM 检查顺序，不作为当前 case 物理证据&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.41888681,
+    &quot;graph_similarity&quot;: 0.42307918,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;family:drop_ratio|segment_1|path:drop_ratio:L2&quot;,
+      &quot;family:status|segment_1|path:status:L2&quot;,
+      &quot;path:drop_ratio:L2:media_snr|segment_3|path:drop_ratio:L2:media_snr:minority_lanes&quot;,
+      &quot;path:drop_ratio:L2|segment_2|path:drop_ratio:L2:media_snr&quot;,
+      &quot;path:status:L2|segment_2|path:status:L2:RxLOL&quot;,
+      &quot;path:topology_level:L1:media_snr_min|segment_3|path:topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L1:rxpower_mean|segment_3|path:topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:media_snr_min&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:rxpower_mean&quot;
+    ],
+    &quot;extra_graph_edges&quot;: []
+  }
+]</pre></section><section><h2>补采建议</h2><pre>[
+  &quot;补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。&quot;,
+  &quot;补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。&quot;,
+  &quot;补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。&quot;
+]</pre></section></div><section><h2>真实标签揭示后的复盘</h2><pre>{
+  &quot;actual&quot;: &quot;L2&quot;,
+  &quot;original_label&quot;: &quot;l2&quot;,
+  &quot;label_status&quot;: &quot;unreviewed&quot;,
+  &quot;category&quot;: &quot;missing_evidence&quot;,
+  &quot;analysis&quot;: &quot;关键遥测缺失或未检出可定位异常，证据不足是合理降级。 真实标签为L2；盲测输出为证据不足。专家路径=expert:no_anomaly，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=0。&quot;
+}</pre></section></body></html>

@@ -1,0 +1,1215 @@
+[
+  {
+    "actual": "fiber",
+    "analysis": "训练留一正向路径通过门禁但方向错误，需要提高支持数、加入否定证据或拆分路径。 真实标签为fiber；盲测输出为L2。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_13348aa9d22ad96b",
+    "category": "decision_graph_error",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L2_to_L1:tx_ok_rx_down",
+          "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes",
+          "drop_ratio:L1:rxpower:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL",
+          "status:L1:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:rxpower_mean:high_tail",
+          "topology_level:L1:txpower_mean:low_tail",
+          "topology_level:L2:media_snr_min:high_tail",
+          "topology_level:L2:rxpower_mean:low_tail",
+          "topology_level:L2:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_13348aa9d22ad96b",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.75,
+      "neighbors": [
+        {
+          "case_id": "case_9718e128c9353ced",
+          "label": "L2",
+          "similarity": 0.9090909090909091
+        },
+        {
+          "case_id": "case_1283a9fcda8a5ec4",
+          "label": "L2",
+          "similarity": 0.8181818181818182
+        },
+        {
+          "case_id": "case_6a3e0c5ef4424288",
+          "label": "L2",
+          "similarity": 0.75
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    "prediction": "L2",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L2；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_135cb6cf2e5b4f7e",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:rxpower_mean:high_tail",
+          "topology_level:L1:txpower_mean:high_tail",
+          "topology_level:L2:rxpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_135cb6cf2e5b4f7e",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.42857142857142855
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.42857142857142855
+        },
+        {
+          "case_id": "case_ae60de329fa0d15c",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L1；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_6c33a45e112476c3",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_6c33a45e112476c3",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_ae60de329fa0d15c",
+          "label": "L1",
+          "similarity": 0.5
+        },
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L2；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_1ef1a41bd26b9397",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_1ef1a41bd26b9397",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_ae60de329fa0d15c",
+          "label": "L1",
+          "similarity": 0.5
+        },
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L2；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_2f302a30b39e52e2",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:low_tail",
+          "topology_level:L1:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_2f302a30b39e52e2",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.4,
+      "neighbors": [
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.5
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.5
+        },
+        {
+          "case_id": "case_54af508a3a41d98b",
+          "label": "L1",
+          "similarity": 0.4
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "训练留一正向路径通过门禁但方向错误，需要提高支持数、加入否定证据或拆分路径。 真实标签为L2；盲测输出为L1。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_3353d2c38537929d",
+    "category": "decision_graph_error",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L1_to_L2:tx_ok_rx_down",
+          "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L2:media_snr:majority_lanes",
+          "drop_ratio:L2:rxpower:majority_lanes"
+        ],
+        "status_fault": [
+          "status:L2:RxLOL",
+          "status:L2:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:low_tail",
+          "topology_level:L1:rxpower_mean:low_tail",
+          "topology_level:L2:txpower_mean:low_tail"
+        ]
+      },
+      "case_id": "case_3353d2c38537929d",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:majority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_87de9ea9f2df9224",
+          "label": "L1",
+          "similarity": 0.5
+        },
+        {
+          "case_id": "case_a75aa071858b5dd6",
+          "label": "L1",
+          "similarity": 0.38461538461538464
+        },
+        {
+          "case_id": "case_109023151cf2e2ba",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": "L1",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "训练留一正向路径通过门禁但方向错误，需要提高支持数、加入否定证据或拆分路径。 真实标签为L1；盲测输出为L2。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_5218c45be8f90f99",
+    "category": "decision_graph_error",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L2_to_L1:single_lane_outlier",
+          "lane_scope:L2_to_L1:single_lane_outlier:single_lane"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL",
+          "status:L1:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:high_tail",
+          "topology_level:L1:rxpower_mean:low_tail",
+          "topology_level:L2:rxpower_mean:high_tail",
+          "topology_level:L2:txpower_mean:low_tail"
+        ]
+      },
+      "case_id": "case_5218c45be8f90f99",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.38461538461538464,
+      "neighbors": [
+        {
+          "case_id": "case_7530fefac9d3b885",
+          "label": "L2",
+          "similarity": 0.6363636363636364
+        },
+        {
+          "case_id": "case_46126d083b476184",
+          "label": "L2",
+          "similarity": 0.45454545454545453
+        },
+        {
+          "case_id": "case_9eeaafee55564dca",
+          "label": "L2",
+          "similarity": 0.38461538461538464
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    "prediction": "L2",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "训练留一正向路径通过门禁但方向错误，需要提高支持数、加入否定证据或拆分路径。 真实标签为L1；盲测输出为L2。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_d0abe710f4d1d519",
+    "category": "decision_graph_error",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L2_to_L1:single_lane_outlier",
+          "lane_scope:L2_to_L1:single_lane_outlier:single_lane"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL",
+          "status:L1:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:high_tail",
+          "topology_level:L1:rxpower_mean:low_tail",
+          "topology_level:L2:rxpower_mean:high_tail",
+          "topology_level:L2:txpower_mean:low_tail"
+        ]
+      },
+      "case_id": "case_d0abe710f4d1d519",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.38461538461538464,
+      "neighbors": [
+        {
+          "case_id": "case_7530fefac9d3b885",
+          "label": "L2",
+          "similarity": 0.6363636363636364
+        },
+        {
+          "case_id": "case_46126d083b476184",
+          "label": "L2",
+          "similarity": 0.45454545454545453
+        },
+        {
+          "case_id": "case_9eeaafee55564dca",
+          "label": "L2",
+          "similarity": 0.38461538461538464
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    "prediction": "L2",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L1；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_3dfcdbc76268522c",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:rxpower_mean:high_tail",
+          "topology_level:L1:txpower_mean:high_tail",
+          "topology_level:L2:rxpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_3dfcdbc76268522c",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.42857142857142855
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.42857142857142855
+        },
+        {
+          "case_id": "case_ae60de329fa0d15c",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "训练留一正向路径只命中一条近邻；当前错误说明该路径支持不足并发生过拟合。 真实标签为L2；盲测输出为L1。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_3f02b44926ebb9b4",
+    "category": "overfitting",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L1_to_L2:tx_ok_rx_down",
+          "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L2:media_snr:majority_lanes",
+          "drop_ratio:L2:rxpower:majority_lanes"
+        ],
+        "status_fault": [
+          "status:L2:RxLOL",
+          "status:L2:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:rxpower_mean:high_tail",
+          "topology_level:L2:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_3f02b44926ebb9b4",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:majority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.3076923076923077,
+      "neighbors": [
+        {
+          "case_id": "case_87de9ea9f2df9224",
+          "label": "L1",
+          "similarity": 0.3076923076923077
+        }
+      ],
+      "purity": 1.0,
+      "support": 1,
+      "supporting": 1,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": "L1",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L1；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_5057a5f5ce53981a",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:low_tail",
+          "topology_level:L1:txpower_mean:high_tail",
+          "topology_level:L2:media_snr_min:low_tail"
+        ]
+      },
+      "case_id": "case_5057a5f5ce53981a",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.6,
+      "neighbors": [
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.6666666666666666
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.6666666666666666
+        },
+        {
+          "case_id": "case_54af508a3a41d98b",
+          "label": "L1",
+          "similarity": 0.6
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "训练留一正向路径只命中一条近邻；当前错误说明该路径支持不足并发生过拟合。 真实标签为L2；盲测输出为L1。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_94050629e7835204",
+    "category": "overfitting",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L1_to_L2:tx_ok_rx_down",
+          "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L2:media_snr:majority_lanes",
+          "drop_ratio:L2:rxpower:majority_lanes"
+        ],
+        "status_fault": [
+          "status:L2:RxLOL",
+          "status:L2:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L2:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_94050629e7835204",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:majority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_87de9ea9f2df9224",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 1,
+      "supporting": 1,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": "L1",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L1；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_9696476add30ff4e",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:low_tail",
+          "topology_level:L1:rxpower_mean:low_tail",
+          "topology_level:L1:txpower_mean:high_tail",
+          "topology_level:L2:media_snr_min:high_tail"
+        ]
+      },
+      "case_id": "case_9696476add30ff4e",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.375
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.375
+        },
+        {
+          "case_id": "case_476f1cd361d5d074",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "训练留一正向路径只命中一条近邻；当前错误说明该路径支持不足并发生过拟合。 真实标签为L2；盲测输出为L1。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_99e9f7e50a994b1f",
+    "category": "overfitting",
+    "features": {
+      "by_family": {
+        "paired_lane_state": [
+          "lane:L1_to_L2:tx_ok_rx_down",
+          "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes"
+        ],
+        "signal_drop_ratio": [
+          "drop_ratio:L2:media_snr:majority_lanes",
+          "drop_ratio:L2:rxpower:majority_lanes"
+        ],
+        "status_fault": [
+          "status:L2:RxLOL",
+          "status:L2:RxLOS"
+        ],
+        "topology_level_tail": [
+          "topology_level:L2:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_99e9f7e50a994b1f",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr",
+        "L2.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:majority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "group": "expert:multi_metric",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_87de9ea9f2df9224",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 1,
+      "supporting": 1,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": "L1",
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L2",
+    "analysis": "已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L2；盲测输出为证据不足。专家路径=expert:single:serdes_snr，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+    "case_id": "case_df7183507996acc3",
+    "category": "decision_graph_gap",
+    "features": {
+      "by_family": {
+        "signal_drop_ratio": [
+          "drop_ratio:L1:media_snr:minority_lanes"
+        ],
+        "status_fault": [
+          "status:L1:RxLOL"
+        ],
+        "topology_level_tail": [
+          "topology_level:L1:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_df7183507996acc3",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-200g-logical4:optical-4x4:serdes-4x4",
+      "missing_fields": [
+        "L1.host_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "all_data",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "group": "expert:single:serdes_snr",
+      "min_similarity": 0.3333333333333333,
+      "neighbors": [
+        {
+          "case_id": "case_ae60de329fa0d15c",
+          "label": "L1",
+          "similarity": 0.5
+        },
+        {
+          "case_id": "case_aaf2a73810c59a40",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        },
+        {
+          "case_id": "case_d1f5cf895438f425",
+          "label": "L1",
+          "similarity": 0.3333333333333333
+        }
+      ],
+      "purity": 1.0,
+      "support": 3,
+      "supporting": 3,
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    "prediction": null,
+    "split": "test/all_data"
+  },
+  {
+    "actual": "L1",
+    "analysis": "结论依赖单条精确历史模式，支持不足导致过拟合。 真实标签为L1；盲测输出为L2。专家路径=expert:single:media_snr，拓扑=400g-400g-logical8，接收症状因果上下文=uncorroborated_receive_symptom，物理/历史候选数=1。",
+    "case_id": "case_fe6294c59b029cb2",
+    "category": "overfitting",
+    "features": {
+      "by_family": {
+        "topology_level_tail": [
+          "topology_level:L1:media_snr_min:low_tail",
+          "topology_level:L1:rxpower_mean:high_tail",
+          "topology_level:L1:txpower_mean:high_tail",
+          "topology_level:L2:media_snr_min:low_tail",
+          "topology_level:L2:rxpower_mean:high_tail",
+          "topology_level:L2:txpower_mean:high_tail"
+        ]
+      },
+      "case_id": "case_fe6294c59b029cb2",
+      "conflicts": [],
+      "dictionary_hash": "7764aa3a23d2ac2e",
+      "dictionary_version": "filtered-rule-feature-dictionary-v2",
+      "lane_profile": "400g-400g-logical8:optical-8x8:serdes-0x0",
+      "missing_fields": [
+        "L1.host_snr",
+        "L1.serdes_snr",
+        "L2.host_snr",
+        "L2.serdes_snr"
+      ],
+      "optical_blackout": false,
+      "source_dataset": "rule1_channel_not_4",
+      "telemetry_status": "partial_telemetry",
+      "tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8"
+    },
+    "learned_positive_path": {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.5,
+        "top_k": 3
+      },
+      "group": "expert:single:media_snr",
+      "min_similarity": 0.8333333333333334,
+      "neighbors": [
+        {
+          "case_id": "case_2917bd435ac9fb56",
+          "label": "L2",
+          "similarity": 0.8333333333333334
+        }
+      ],
+      "purity": 1.0,
+      "support": 1,
+      "supporting": 1,
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    "prediction": "L2",
+    "split": "test/rule1_channel_not_4"
+  }
+]

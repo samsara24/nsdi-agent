@@ -183,12 +183,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--knowledge-bundle",
         type=Path,
-        default=Path("artifacts/filtered_rule_deterministic_knowledge_v1/knowledge_bundle.json"),
+        default=Path("artifacts/filtered_rule_deterministic_knowledge_v2/knowledge_bundle.json"),
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("artifacts/filtered_rule_deterministic_knowledge_v1/distribution_audit"),
+        default=Path("artifacts/filtered_rule_deterministic_knowledge_v2/distribution_audit"),
     )
     return parser
 

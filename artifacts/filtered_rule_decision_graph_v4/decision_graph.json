@@ -1,0 +1,6316 @@
+{
+  "build_boundary": "expert rules + physical/data contracts + train-only path support; no test cases or labels",
+  "design_conclusions": [
+    "无异常、端口双Down和未解决冲突统一进入证据不足，不再默认L1。",
+    "专家规则是图谱骨架；训练标签只附着为路径支持度、分布和Wilson下界，不进入物理谓词。",
+    "接收侧rxpower/media_snr异常先进入症状节点，必须经过Tx与paired-lane因果门禁才能指向端点或fiber。",
+    "同优先级相反定界只表示候选冲突；fiber需要正向介质证据。",
+    "低支持或混合标签训练路径保留审计，但不进入自动终裁。",
+    "rxpower/media_snr总体训练准确率不能替代因果证据；训练集中这些路径没有opposite_tx_fault样本，因此不允许直接终裁端点。",
+    "统计可靠性按topology_id分层；某一拓扑未通过Wilson门禁时，不借用另一拓扑的总体支持。",
+    "multi_metric、SerDes和单向传播使用训练留一标定的正向近邻路径；相似度、支持或纯度不够时仍降级。",
+    "rxpower至少需要两条近邻；SerDes近邻只保留为候选。覆盖恢复由同拓扑media_snr统计路径承担。"
+  ],
+  "edges": [
+    {
+      "attrs": {},
+      "condition": "always",
+      "dst": "quality",
+      "kind": "next",
+      "source": "architecture",
+      "src": "start"
+    },
+    {
+      "attrs": {},
+      "condition": "telemetry evaluable",
+      "dst": "port_gate",
+      "kind": "pass",
+      "source": "measurement-contract",
+      "src": "quality"
+    },
+    {
+      "attrs": {},
+      "condition": "critical telemetry missing",
+      "dst": "insufficient",
+      "kind": "degrade",
+      "source": "measurement-contract",
+      "src": "quality"
+    },
+    {
+      "attrs": {},
+      "condition": "continue collecting causal evidence",
+      "dst": "side_eval",
+      "kind": "next",
+      "source": "review",
+      "src": "port_gate"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: rxpower",
+      "dst": "pred:rxpower:lane_down",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: rxpower",
+      "dst": "pred:rxpower:low_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: rxpower",
+      "dst": "pred:rxpower:high_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: rxpower",
+      "dst": "pred:rxpower:lane_diff",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: txpower",
+      "dst": "pred:txpower:lane_down",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: txpower",
+      "dst": "pred:txpower:low_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: txpower",
+      "dst": "pred:txpower:high_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: txpower",
+      "dst": "pred:txpower:lane_diff",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: host_snr",
+      "dst": "pred:host_snr:lane_down",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: host_snr",
+      "dst": "pred:host_snr:low_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: host_snr",
+      "dst": "pred:host_snr:high_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: host_snr",
+      "dst": "pred:host_snr:lane_diff",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: media_snr",
+      "dst": "pred:media_snr:lane_down",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: media_snr",
+      "dst": "pred:media_snr:low_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: media_snr",
+      "dst": "pred:media_snr:high_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: media_snr",
+      "dst": "pred:media_snr:lane_diff",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: serdes_snr",
+      "dst": "pred:serdes_snr:lane_down",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: serdes_snr",
+      "dst": "pred:serdes_snr:low_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: serdes_snr",
+      "dst": "pred:serdes_snr:high_value",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "for each side: serdes_snr",
+      "dst": "pred:serdes_snr:lane_diff",
+      "kind": "evaluate",
+      "source": "expert-document",
+      "src": "side_eval"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_down",
+      "dst": "pattern:tx_down",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:txpower:lane_down"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_down",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:host_snr:lane_down"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_down",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:serdes_snr:lane_down"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_down",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:rxpower:lane_down"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_down",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:media_snr:lane_down"
+    },
+    {
+      "attrs": {},
+      "condition": "low_value",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:txpower:low_value"
+    },
+    {
+      "attrs": {},
+      "condition": "low_value",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:host_snr:low_value"
+    },
+    {
+      "attrs": {},
+      "condition": "low_value",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:serdes_snr:low_value"
+    },
+    {
+      "attrs": {},
+      "condition": "low_value",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:rxpower:low_value"
+    },
+    {
+      "attrs": {},
+      "condition": "low_value",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:media_snr:low_value"
+    },
+    {
+      "attrs": {},
+      "condition": "high_value",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:txpower:high_value"
+    },
+    {
+      "attrs": {},
+      "condition": "high_value",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:host_snr:high_value"
+    },
+    {
+      "attrs": {},
+      "condition": "high_value",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:serdes_snr:high_value"
+    },
+    {
+      "attrs": {},
+      "condition": "high_value",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:rxpower:high_value"
+    },
+    {
+      "attrs": {},
+      "condition": "high_value",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:media_snr:high_value"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_diff",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:txpower:lane_diff"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_diff",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:host_snr:lane_diff"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_diff",
+      "dst": "pattern:local_digital",
+      "kind": "supports",
+      "source": "expert-document",
+      "src": "pred:serdes_snr:lane_diff"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_diff",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:rxpower:lane_diff"
+    },
+    {
+      "attrs": {},
+      "condition": "lane_diff",
+      "dst": "pattern:receive_symptom",
+      "kind": "supports",
+      "source": "physics+review",
+      "src": "pred:media_snr:lane_diff"
+    },
+    {
+      "attrs": {},
+      "condition": "pattern matched",
+      "dst": "causal_gate",
+      "kind": "candidate",
+      "source": "architecture",
+      "src": "pattern:tx_down"
+    },
+    {
+      "attrs": {},
+      "condition": "pattern matched",
+      "dst": "causal_gate",
+      "kind": "candidate",
+      "source": "architecture",
+      "src": "pattern:multi"
+    },
+    {
+      "attrs": {},
+      "condition": "pattern matched",
+      "dst": "causal_gate",
+      "kind": "candidate",
+      "source": "architecture",
+      "src": "pattern:local_digital"
+    },
+    {
+      "attrs": {},
+      "condition": "pattern matched",
+      "dst": "causal_gate",
+      "kind": "candidate",
+      "source": "architecture",
+      "src": "pattern:receive_symptom"
+    },
+    {
+      "attrs": {},
+      "condition": "pattern matched",
+      "dst": "causal_gate",
+      "kind": "candidate",
+      "source": "architecture",
+      "src": "pattern:paired_loss"
+    },
+    {
+      "attrs": {},
+      "condition": "causal checks pass",
+      "dst": "merge",
+      "kind": "validated",
+      "source": "physics+review",
+      "src": "causal_gate"
+    },
+    {
+      "attrs": {},
+      "condition": "critical evidence absent/conflicting",
+      "dst": "insufficient",
+      "kind": "degrade",
+      "source": "review",
+      "src": "causal_gate"
+    },
+    {
+      "attrs": {},
+      "condition": "L1 evidence dominates",
+      "dst": "out:L1",
+      "kind": "decide",
+      "source": "architecture",
+      "src": "merge"
+    },
+    {
+      "attrs": {},
+      "condition": "L2 evidence dominates",
+      "dst": "out:L2",
+      "kind": "decide",
+      "source": "architecture",
+      "src": "merge"
+    },
+    {
+      "attrs": {},
+      "condition": "positive medium evidence",
+      "dst": "out:fiber",
+      "kind": "decide",
+      "source": "physics+review",
+      "src": "merge"
+    },
+    {
+      "attrs": {},
+      "condition": "low confidence or unresolved tie",
+      "dst": "insufficient",
+      "kind": "degrade",
+      "source": "review",
+      "src": "merge"
+    },
+    {
+      "attrs": {},
+      "condition": "check opposite Tx and paired direction",
+      "dst": "receive_tx_gate",
+      "kind": "validate",
+      "source": "physics+train-audit",
+      "src": "pattern:receive_symptom"
+    },
+    {
+      "attrs": {},
+      "condition": "positive opposite Tx fault",
+      "dst": "merge",
+      "kind": "validated",
+      "source": "physics+train-audit",
+      "src": "receive_tx_gate"
+    },
+    {
+      "attrs": {},
+      "condition": "healthy/unobserved Tx or missing direction",
+      "dst": "insufficient",
+      "kind": "degrade",
+      "source": "physics+train-audit",
+      "src": "receive_tx_gate"
+    },
+    {
+      "attrs": {},
+      "condition": "evaluate within topology",
+      "dst": "topology_calibration",
+      "kind": "calibrate",
+      "source": "train-audit",
+      "src": "causal_gate"
+    },
+    {
+      "attrs": {},
+      "condition": "topology-specific reliability passes",
+      "dst": "merge",
+      "kind": "validated",
+      "source": "train-audit",
+      "src": "topology_calibration"
+    },
+    {
+      "attrs": {},
+      "condition": "topology support or lower bound fails",
+      "dst": "insufficient",
+      "kind": "degrade",
+      "source": "train-audit",
+      "src": "topology_calibration"
+    },
+    {
+      "attrs": {},
+      "condition": "same topology, rule and direction",
+      "dst": "learned_positive_path",
+      "kind": "retrieve",
+      "source": "train-loo",
+      "src": "topology_calibration"
+    },
+    {
+      "attrs": {},
+      "condition": "similarity/support/purity pass",
+      "dst": "merge",
+      "kind": "validated",
+      "source": "train-loo",
+      "src": "learned_positive_path"
+    },
+    {
+      "attrs": {},
+      "condition": "no calibrated positive path",
+      "dst": "insufficient",
+      "kind": "degrade",
+      "source": "train-loo",
+      "src": "learned_positive_path"
+    },
+    {
+      "attrs": {},
+      "condition": "media_snr support>=8 and Wilson>=0.50",
+      "dst": "media_topology_path",
+      "kind": "validate",
+      "source": "train-topology-calibration",
+      "src": "topology_calibration"
+    },
+    {
+      "attrs": {},
+      "condition": "topology-specific media path passes",
+      "dst": "merge",
+      "kind": "validated",
+      "source": "train-topology-calibration",
+      "src": "media_topology_path"
+    }
+  ],
+  "expert_no_fallback_correct": 71,
+  "expert_no_fallback_coverage": 0.8951612903225806,
+  "expert_no_fallback_selective_accuracy": 0.6396396396396397,
+  "knowledge_bundle_hash": "565a61e23207d798",
+  "learned_path_calibrations": [
+    {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "top_k": 3
+      },
+      "eligible_train_cases": 43,
+      "group": "expert:multi_metric",
+      "loo_case_ids": [
+        "case_4a639380c5725abc",
+        "case_6a3e0c5ef4424288",
+        "case_02bd925ffa2cc4e3",
+        "case_e20f489289d0fc34",
+        "case_4b306a22919c3f2b",
+        "case_bbcd66dc5890cf80"
+      ],
+      "loo_correct": 6,
+      "loo_covered": 6,
+      "loo_selective_accuracy": 1.0
+    },
+    {
+      "config": {
+        "min_neighbors": 3,
+        "min_purity": 0.7,
+        "min_similarity": 0.3,
+        "terminal": 0,
+        "top_k": 3
+      },
+      "eligible_train_cases": 35,
+      "group": "expert:single:serdes_snr",
+      "loo_case_ids": [
+        "case_aaf2a73810c59a40",
+        "case_d1f5cf895438f425",
+        "case_54af508a3a41d98b",
+        "case_ae60de329fa0d15c",
+        "case_5e7bfa4ecb79c9d5",
+        "case_60a488882f9ee1ea",
+        "case_611f27a9bb4cee1b"
+      ],
+      "loo_correct": 7,
+      "loo_covered": 7,
+      "loo_selective_accuracy": 1.0
+    },
+    {
+      "config": {
+        "min_neighbors": 1,
+        "min_purity": 0.7,
+        "min_similarity": 0.5,
+        "top_k": 3
+      },
+      "eligible_train_cases": 12,
+      "group": "expert:single:media_snr",
+      "loo_case_ids": [
+        "case_d9f8dc4a057dd510",
+        "case_f2960ab1b5e3b4ea",
+        "case_f40b103690ddcc44",
+        "case_7fc5153b66705e1c"
+      ],
+      "loo_correct": 4,
+      "loo_covered": 4,
+      "loo_selective_accuracy": 1.0
+    },
+    {
+      "config": {
+        "min_neighbors": 2,
+        "min_purity": 0.7,
+        "min_similarity": 0.6,
+        "terminal": 1,
+        "top_k": 3
+      },
+      "eligible_train_cases": 10,
+      "group": "expert:single:rxpower",
+      "loo_case_ids": [],
+      "loo_correct": 0,
+      "loo_covered": 0,
+      "loo_selective_accuracy": 0.0
+    }
+  ],
+  "learned_path_rows": [
+    {
+      "case_id": "case_31d25421936f1675",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_6931da3c6063d849",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_ce5c64fc9ab7a632",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_45f51f9f1f3546ac",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:majority_lanes",
+        "drop_ratio:L1:rxpower:majority_lanes",
+        "drop_ratio:L1:serdes_snr:majority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:partial_lanes",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_55a38d0d1ca1900b",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_07a326b37f1c31ea",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_1283a9fcda8a5ec4",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_2fd0eb4dec40a969",
+      "group": "expert:single:media_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_32a43a4b07738478",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_3572423afaf6af17",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_4a639380c5725abc",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_4cff1302873400d7",
+      "group": "expert:single:host_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_649e0a541a4ef089",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_6a3e0c5ef4424288",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_7107f8ac2e32ac29",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_7113b9af9622ef23",
+      "group": "expert:no_anomaly",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_719f194f6c321afd",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_76a8d8fad267fff8",
+      "group": "expert:single:rxpower",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_79bcc838af6f2197",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_7aad24b5bed3559c",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_87de9ea9f2df9224",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:majority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:partial_lanes",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_956c2a9e59369919",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_9b1bd50ce970aa7d",
+      "group": "expert:single:rxpower",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_9eeaafee55564dca",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_a5fabe7c22449c74",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_aaf2a73810c59a40",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_b8f6ef8e8f3f8586",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_c236ebca6a5203bc",
+      "group": "expert:single:rxpower",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_c73461ba74a9c18e",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_d1f5cf895438f425",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_d9f8dc4a057dd510",
+      "group": "expert:single:media_snr",
+      "label": "L1",
+      "tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_dd0601c326b16be6",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_e3469fd4ab369749",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_f292cdadbd875faf",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_f2960ab1b5e3b4ea",
+      "group": "expert:single:media_snr",
+      "label": "L1",
+      "tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_f40b103690ddcc44",
+      "group": "expert:single:media_snr",
+      "label": "L2",
+      "tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_f5a0f2b18b255fe9",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_fb35417c4bda50a8",
+      "group": "expert:single:rxpower",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_02bd925ffa2cc4e3",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_037d936ff4af1a2e",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:host_snr:all_lanes",
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:media_snr_min:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_0590a0d8be939d37",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_1005baccaaaebb92",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_109023151cf2e2ba",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_1a73b6b538f7abbb",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_1be709e07a8c40d3",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_31c0a4be5fb1c63c",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_330a5e9f6d6743f2",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_3636c6d1ae9ca747",
+      "group": "expert:single:rxpower",
+      "label": "L1",
+      "tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_37546800aaedf1f3",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_3a8615a52129bdf8",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_3d57871044fc3e73",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_3e1ce56bb15ce77e",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_444d5c16176a6739",
+      "group": "expert:single:media_snr",
+      "label": "L1",
+      "tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_46126d083b476184",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_4613bcf2e6a714ef",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_476f1cd361d5d074",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_48373881de68c0ea",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_4c48be2b9ad2fd9a",
+      "group": "expert:single:rxpower",
+      "label": "L2",
+      "tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_54af508a3a41d98b",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_6556acda7b09f5f8",
+      "group": "expert:single:rxpower",
+      "label": "L1",
+      "tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_6832b2a792b4641e",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_6d4fb89f8945c701",
+      "group": "expert:single:media_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_728de8409397f549",
+      "group": "expert:single:rxpower",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_7530fefac9d3b885",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_7e63bb604cac1bdf",
+      "group": "expert:txpower_lane_down",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:txpower:minority_lanes",
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_down",
+        "lane_scope:L1_to_L2:tx_down:single_lane",
+        "status:L1:TxLOL",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_7fc5153b66705e1c",
+      "group": "expert:single:media_snr",
+      "label": "L2",
+      "tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_83da3e589e0982af",
+      "group": "expert:no_anomaly",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L1:host_snr:all_lanes",
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_869567d500e4fd78",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_890c461e973cfc49",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:host_snr:all_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_891dbab2523b90e3",
+      "group": "expert:single:media_snr",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_8f86a9054091498b",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_93b1941976dabf93",
+      "group": "expert:txpower_lane_down",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "drop_ratio:L2:txpower:minority_lanes",
+        "lane:L2_to_L1:tx_down",
+        "lane_scope:L2_to_L1:tx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_9718e128c9353ced",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_a75aa071858b5dd6",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_ae60de329fa0d15c",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_c7d22292337626d1",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_cc20e1069b1d1fb7",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_d1f9bb9236b82c8d",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_d5faed0d0014fc4b",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_d6f0794862204d4b",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_dbfc080555b0d7ca",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_e20f489289d0fc34",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_e798218f3f3a9c60",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_eb401138ccec15a0",
+      "group": "expert:port_status_gate",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:all_lanes",
+        "drop_ratio:L1:rxpower:all_lanes",
+        "drop_ratio:L1:serdes_snr:all_lanes",
+        "drop_ratio:L1:txpower:all_lanes",
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+        "lane_scope:L1_to_L2:tx_down:all_lanes",
+        "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": null
+    },
+    {
+      "case_id": "case_f4ba40dd7b4b718e",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_f8222b06b6a10020",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_f9e1b96903367e51",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_fec71fba5a745294",
+      "group": "expert:multi_metric",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-200g-logical4",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_26e3772b0f8e00c5",
+      "group": "expert:single:serdes_snr",
+      "label": "fiber",
+      "tokens": [
+        "topology_level:L1:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_5e7bfa4ecb79c9d5",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_60a488882f9ee1ea",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_611f27a9bb4cee1b",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_8e8eeb7345004069",
+      "group": "expert:single:serdes_snr",
+      "label": "fiber",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_0cb18fb8a323d73f",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_22d47fc942665fdb",
+      "group": "expert:single:host_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_39c5ce14b9961fef",
+      "group": "expert:single:media_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_4b306a22919c3f2b",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_50630e81b16102a3",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_5c62360b12d3f0f5",
+      "group": "expert:single:rxpower",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_70171118d16509ef",
+      "group": "expert:single:host_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_8a91a3dc026afbff",
+      "group": "expert:single:rxpower",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_99ccd988fa2a451a",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_b06a21c65fe3484c",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_b54623452a89ec4c",
+      "group": "expert:single:host_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "drop_ratio:L2:host_snr:majority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_e2418d9f5ac35f49",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "lane:L1_to_L2:width_mismatch",
+        "lane:L2_to_L1:width_mismatch",
+        "status:L1:RxLOL",
+        "status:L2:RxLOL",
+        "topology_level:L2:rxpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_ef010fcd642ba300",
+      "group": "expert:single:media_snr",
+      "label": "L1",
+      "tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_f2bb5d25c64b2546",
+      "group": "expert:single:host_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "lane:L1_to_L2:single_lane_outlier",
+        "lane_scope:L1_to_L2:single_lane_outlier:single_lane",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_00c0b87c34f46052",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L2:media_snr_min:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_1ae989095bd541fd",
+      "group": "expert:single:host_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "status:L1:RxLOL",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_423f46ddbb11b69d",
+      "group": "expert:txpower_lane_down",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:txpower:majority_lanes",
+        "lane:L2_to_L1:tx_down",
+        "lane_scope:L2_to_L1:tx_down:partial_lanes",
+        "status:L1:RxLOS",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_6712cc1a943b7ed4",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:serdes_snr:minority_lanes",
+        "drop_ratio:L2:host_snr:majority_lanes",
+        "lane:L2_to_L1:single_lane_outlier",
+        "lane_scope:L2_to_L1:single_lane_outlier:single_lane",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_978fd681124e3989",
+      "group": "expert:no_anomaly",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L2:media_snr_min:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": null
+    },
+    {
+      "case_id": "case_b12ec6214303ca32",
+      "group": "expert:single:media_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L1:media_snr_min:high_tail",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_b83327eb6df81567",
+      "group": "expert:no_anomaly",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": null
+    },
+    {
+      "case_id": "case_bbcd66dc5890cf80",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L1:media_snr:minority_lanes",
+        "drop_ratio:L1:rxpower:minority_lanes",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+        "status:L1:RxLOL",
+        "topology_level:L2:rxpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_c2812c960c24c215",
+      "group": "expert:multi_metric",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_c7a2df561c3607ef",
+      "group": "expert:single:serdes_snr",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_de36a48c495e6cf2",
+      "group": "expert:single:host_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "topology_level:L1:rxpower_mean:low_tail",
+        "topology_level:L1:txpower_mean:low_tail",
+        "topology_level:L2:media_snr_min:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_e4a1270e54b1336f",
+      "group": "expert:single:serdes_snr",
+      "label": "L2",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "status:L2:RxLOL",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_2917bd435ac9fb56",
+      "group": "expert:single:media_snr",
+      "label": "L2",
+      "tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L2"
+    },
+    {
+      "case_id": "case_57eb92b311d39de1",
+      "group": "expert:no_anomaly",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": null
+    },
+    {
+      "case_id": "case_977e0cbc2bfa20d9",
+      "group": "expert:both_anomaly",
+      "label": "fiber",
+      "tokens": [
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:rxpower_mean:high_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:media_snr_min:low_tail",
+        "topology_level:L2:rxpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:high_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "fiber"
+    },
+    {
+      "case_id": "case_ad1821c431e2cce4",
+      "group": "expert:multi_metric",
+      "label": "L1",
+      "tokens": [
+        "drop_ratio:L2:media_snr:minority_lanes",
+        "drop_ratio:L2:rxpower:minority_lanes",
+        "drop_ratio:L2:serdes_snr:minority_lanes",
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS",
+        "topology_level:L1:media_snr_min:low_tail",
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:rxpower_mean:low_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": "L1"
+    },
+    {
+      "case_id": "case_e20b3ac1eb339249",
+      "group": "expert:no_anomaly",
+      "label": "L1",
+      "tokens": [
+        "topology_level:L1:txpower_mean:high_tail",
+        "topology_level:L2:txpower_mean:low_tail"
+      ],
+      "topology_id": "400g-400g-logical8",
+      "verdict": null
+    }
+  ],
+  "mixed_label_path_count": 12,
+  "n8_frozen": true,
+  "nodes": [
+    {
+      "attrs": {},
+      "id": "start",
+      "kind": "Input",
+      "layer": 0,
+      "plain": "把原始工单整理成统一格式。",
+      "professional": "统一端点、指标、lane宽度和缺失状态。",
+      "source": "data-contract",
+      "status": "active",
+      "title": "标准化EvidencePack"
+    },
+    {
+      "attrs": {},
+      "id": "quality",
+      "kind": "QualityGate",
+      "layer": 1,
+      "plain": "先确认数据够不够用。",
+      "professional": "检查no/partial telemetry、host_snr无效、宽度冲突和采集哨兵。",
+      "source": "measurement-contract",
+      "status": "active",
+      "title": "量测质量门"
+    },
+    {
+      "attrs": {},
+      "id": "port_gate",
+      "kind": "Predicate",
+      "layer": 2,
+      "plain": "判断整端口是否已经完全掉线。",
+      "professional": "仅当txpower与rxpower均无有效发光时标记该端Down；Down是高严重度上下文，不再直接终裁。",
+      "source": "expert+review",
+      "status": "revised",
+      "title": "端口状态门"
+    },
+    {
+      "attrs": {},
+      "id": "side_eval",
+      "kind": "Fork",
+      "layer": 3,
+      "plain": "两端用同一把尺子检查。",
+      "professional": "对两端执行完全相同的谓词与模式，不绑定速率和lane数量。",
+      "source": "architecture",
+      "status": "active",
+      "title": "L1/L2对称评估"
+    },
+    {
+      "attrs": {
+        "threshold": -40.0
+      },
+      "id": "pred:rxpower:lane_down",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "接收光是否异常：lane_down。",
+      "professional": "按专家阈值表判断rxpower的lane_down，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "rxpower · lane_down"
+    },
+    {
+      "attrs": {
+        "threshold": -2.5
+      },
+      "id": "pred:rxpower:low_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "接收光是否异常：low_value。",
+      "professional": "按专家阈值表判断rxpower的low_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "rxpower · low_value"
+    },
+    {
+      "attrs": {
+        "threshold": 4.6
+      },
+      "id": "pred:rxpower:high_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "接收光是否异常：high_value。",
+      "professional": "按专家阈值表判断rxpower的high_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "rxpower · high_value"
+    },
+    {
+      "attrs": {
+        "threshold": 1.0
+      },
+      "id": "pred:rxpower:lane_diff",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "接收光是否异常：lane_diff。",
+      "professional": "按专家阈值表判断rxpower的lane_diff，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "rxpower · lane_diff"
+    },
+    {
+      "attrs": {
+        "threshold": -40.0
+      },
+      "id": "pred:txpower:lane_down",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "发送光是否异常：lane_down。",
+      "professional": "按专家阈值表判断txpower的lane_down，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "txpower · lane_down"
+    },
+    {
+      "attrs": {
+        "threshold": -2.5
+      },
+      "id": "pred:txpower:low_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "发送光是否异常：low_value。",
+      "professional": "按专家阈值表判断txpower的low_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "txpower · low_value"
+    },
+    {
+      "attrs": {
+        "threshold": 2.5
+      },
+      "id": "pred:txpower:high_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "发送光是否异常：high_value。",
+      "professional": "按专家阈值表判断txpower的high_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "txpower · high_value"
+    },
+    {
+      "attrs": {
+        "threshold": 1.3
+      },
+      "id": "pred:txpower:lane_diff",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "发送光是否异常：lane_diff。",
+      "professional": "按专家阈值表判断txpower的lane_diff，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "txpower · lane_diff"
+    },
+    {
+      "attrs": {
+        "threshold": 0.0
+      },
+      "id": "pred:host_snr:lane_down",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "主机侧电信号质量：lane_down。",
+      "professional": "按专家阈值表判断host_snr的lane_down，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "host_snr · lane_down"
+    },
+    {
+      "attrs": {
+        "threshold": 22.8
+      },
+      "id": "pred:host_snr:low_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "主机侧电信号质量：low_value。",
+      "professional": "按专家阈值表判断host_snr的low_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "host_snr · low_value"
+    },
+    {
+      "attrs": {
+        "threshold": 27.5
+      },
+      "id": "pred:host_snr:high_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "主机侧电信号质量：high_value。",
+      "professional": "按专家阈值表判断host_snr的high_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "host_snr · high_value"
+    },
+    {
+      "attrs": {
+        "threshold": 2.5
+      },
+      "id": "pred:host_snr:lane_diff",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "主机侧电信号质量：lane_diff。",
+      "professional": "按专家阈值表判断host_snr的lane_diff，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "host_snr · lane_diff"
+    },
+    {
+      "attrs": {
+        "threshold": 0.0
+      },
+      "id": "pred:media_snr:lane_down",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "介质侧信号质量：lane_down。",
+      "professional": "按专家阈值表判断media_snr的lane_down，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "media_snr · lane_down"
+    },
+    {
+      "attrs": {
+        "threshold": 22.4
+      },
+      "id": "pred:media_snr:low_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "介质侧信号质量：low_value。",
+      "professional": "按专家阈值表判断media_snr的low_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "media_snr · low_value"
+    },
+    {
+      "attrs": {
+        "threshold": 28.7
+      },
+      "id": "pred:media_snr:high_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "介质侧信号质量：high_value。",
+      "professional": "按专家阈值表判断media_snr的high_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "media_snr · high_value"
+    },
+    {
+      "attrs": {
+        "threshold": 3.0
+      },
+      "id": "pred:media_snr:lane_diff",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "介质侧信号质量：lane_diff。",
+      "professional": "按专家阈值表判断media_snr的lane_diff，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "media_snr · lane_diff"
+    },
+    {
+      "attrs": {
+        "threshold": 0.0
+      },
+      "id": "pred:serdes_snr:lane_down",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "SerDes数字侧质量：lane_down。",
+      "professional": "按专家阈值表判断serdes_snr的lane_down，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "serdes_snr · lane_down"
+    },
+    {
+      "attrs": {
+        "threshold": 458750.0
+      },
+      "id": "pred:serdes_snr:low_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "SerDes数字侧质量：low_value。",
+      "professional": "按专家阈值表判断serdes_snr的low_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "serdes_snr · low_value"
+    },
+    {
+      "attrs": {
+        "threshold": 947750.0
+      },
+      "id": "pred:serdes_snr:high_value",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "SerDes数字侧质量：high_value。",
+      "professional": "按专家阈值表判断serdes_snr的high_value，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "serdes_snr · high_value"
+    },
+    {
+      "attrs": {
+        "threshold": 230000.0
+      },
+      "id": "pred:serdes_snr:lane_diff",
+      "kind": "MetricPredicate",
+      "layer": 4,
+      "plain": "SerDes数字侧质量：lane_diff。",
+      "professional": "按专家阈值表判断serdes_snr的lane_diff，保留多谓词而非短路后丢弃其它状态。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "serdes_snr · lane_diff"
+    },
+    {
+      "attrs": {},
+      "id": "pattern:tx_down",
+      "kind": "Pattern",
+      "layer": 5,
+      "plain": "发送光已经掉了，优先查这一端。",
+      "professional": "txpower lane_down直接支持异常端发送侧根因。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "发送关闭模式"
+    },
+    {
+      "attrs": {},
+      "id": "pattern:multi",
+      "kind": "Pattern",
+      "layer": 5,
+      "plain": "多个指标一起异常，但不能直接拍板。",
+      "professional": "serdes+media+rx组合仅形成候选；训练冲突较高，必须经过因果门禁。",
+      "source": "expert+review",
+      "status": "active",
+      "title": "多指标组合模式"
+    },
+    {
+      "attrs": {},
+      "id": "pattern:local_digital",
+      "kind": "Pattern",
+      "layer": 5,
+      "plain": "设备内部数字信号差，先怀疑这一端。",
+      "professional": "host_snr/serdes_snr异常支持同侧设备候选。",
+      "source": "expert-document",
+      "status": "active",
+      "title": "本地数字侧模式"
+    },
+    {
+      "attrs": {},
+      "id": "pattern:receive_symptom",
+      "kind": "Pattern",
+      "layer": 5,
+      "plain": "收得差不等于接收端坏了，还要查发送端和光纤。",
+      "professional": "rxpower/media_snr异常是接收症状，需检查对端Tx与介质路径后再定向。",
+      "source": "physics+review",
+      "status": "active",
+      "title": "接收侧症状模式"
+    },
+    {
+      "attrs": {},
+      "id": "pattern:paired_loss",
+      "kind": "Pattern",
+      "layer": 5,
+      "plain": "利用同号lane判断光在哪里断。",
+      "professional": "tx_ok_rx_down支持该方向介质/接收路径；tx_down支持发送端；双向同lane异常形成fiber候选。",
+      "source": "data-contract+physics",
+      "status": "active",
+      "title": "跨端同lane方向模式"
+    },
+    {
+      "attrs": {},
+      "id": "causal_gate",
+      "kind": "CausalGate",
+      "layer": 6,
+      "plain": "把症状沿光传播方向追到可能原因。",
+      "professional": "组合本端Tx、对端Rx、LOS/LOL、paired-lane和缺失证据，区分发送端、接收端与介质。",
+      "source": "physics+review",
+      "status": "active",
+      "title": "方向与因果门禁"
+    },
+    {
+      "attrs": {},
+      "id": "merge",
+      "kind": "Arbitration",
+      "layer": 7,
+      "plain": "把两端检查结果放在一起判断。",
+      "professional": "比较两端候选、证据等级、冲突与缺失；同优先级相反定界只表示冲突，不自动等于fiber。",
+      "source": "expert+review",
+      "status": "revised",
+      "title": "双端候选仲裁"
+    },
+    {
+      "attrs": {},
+      "id": "out:L1",
+      "kind": "Outcome",
+      "layer": 8,
+      "plain": "问题更可能在本端。",
+      "professional": "证据链支持本端设备或发送/数字侧根因。",
+      "source": "label-contract",
+      "status": "active",
+      "title": "L1 / 本端"
+    },
+    {
+      "attrs": {},
+      "id": "out:L2",
+      "kind": "Outcome",
+      "layer": 8,
+      "plain": "问题更可能在对端。",
+      "professional": "证据链支持对端设备或发送/数字侧根因。",
+      "source": "label-contract",
+      "status": "active",
+      "title": "L2 / 对端"
+    },
+    {
+      "attrs": {},
+      "id": "out:fiber",
+      "kind": "Outcome",
+      "layer": 8,
+      "plain": "两端设备发光正常，但中间链路有问题。",
+      "professional": "需要发送健康且跨端接收异常、双向介质一致性或已确认历史模式。",
+      "source": "physics+review",
+      "status": "active",
+      "title": "fiber / 介质"
+    },
+    {
+      "attrs": {},
+      "id": "insufficient",
+      "kind": "Fallback",
+      "layer": 8,
+      "plain": "现在的数据还不能可靠判断。",
+      "professional": "无异常、关键字段缺失、候选冲突或低支持路径进入补采/人工，不默认L1。",
+      "source": "review",
+      "status": "revised",
+      "title": "证据不足"
+    },
+    {
+      "attrs": {},
+      "id": "receive_tx_gate",
+      "kind": "CausalGate",
+      "layer": 6,
+      "plain": "收得差以后，还必须看到另一端确实发不出来，才能怪另一端。",
+      "professional": "rxpower/media_snr只描述接收症状；只有对端TxLOS/TxLOL、发送触底或同方向tx_down才允许形成对端根因票。",
+      "source": "physics+train-audit",
+      "status": "revised",
+      "title": "接收症状发送端校验门"
+    },
+    {
+      "attrs": {},
+      "id": "topology_calibration",
+      "kind": "CausalGate",
+      "layer": 6,
+      "plain": "四路和八路的数据分别算可靠性，不能混在一起给规则背书。",
+      "professional": "规则支持度按400G-200G logical4与400G-400G logical8分别计算，避免总体统计掩盖拓扑漂移。",
+      "source": "train-audit",
+      "status": "revised",
+      "title": "拓扑分层可靠性门"
+    },
+    {
+      "attrs": {},
+      "id": "learned_positive_path",
+      "kind": "CausalGate",
+      "layer": 7,
+      "plain": "只有和同类历史故障足够像、且历史结论足够一致时才恢复自动判断。",
+      "professional": "multi_metric、SerDes与单向接收症状只有在同拓扑、同规则、同方向近邻满足相似度、支持数和纯度时形成统计终裁候选。",
+      "source": "train-loo",
+      "status": "new",
+      "title": "训练留一正向路径门"
+    },
+    {
+      "attrs": {},
+      "id": "media_topology_path",
+      "kind": "CausalGate",
+      "layer": 7,
+      "plain": "某种接线中这条经验足够稳定时才启用，并且不能借给另一种接线。",
+      "professional": "仅当当前拓扑上的media_snr规则支持数和Wilson下界通过门禁时，允许形成统计方向票；不外推到其他拓扑。",
+      "source": "train-topology-calibration",
+      "status": "new",
+      "title": "Media SNR拓扑校准路径"
+    }
+  ],
+  "path_count": 68,
+  "receive_context_stats": [
+    {
+      "accuracy": 0.875,
+      "context": "uncorroborated_receive_symptom",
+      "correct": 7,
+      "group": "expert:single:media_snr",
+      "support": 8,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 4,
+        "L2": 4,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.529105
+    },
+    {
+      "accuracy": 0.75,
+      "context": "uncorroborated_receive_symptom",
+      "correct": 3,
+      "group": "expert:single:media_snr",
+      "support": 4,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 2,
+        "L2": 2,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.300636
+    },
+    {
+      "accuracy": 0.875,
+      "context": "uncorroborated_receive_symptom",
+      "correct": 7,
+      "group": "expert:single:rxpower",
+      "support": 8,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 4,
+        "L2": 4,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.529105
+    },
+    {
+      "accuracy": 1.0,
+      "context": "uncorroborated_receive_symptom",
+      "correct": 2,
+      "group": "expert:single:rxpower",
+      "support": 2,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 0,
+        "L2": 2,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.342372
+    }
+  ],
+  "rule_stats": [
+    {
+      "accuracy": 1.0,
+      "correct": 1,
+      "group": "expert:both_anomaly",
+      "support": 1,
+      "truth_distribution": {
+        "L1": 0,
+        "L2": 0,
+        "fiber": 1
+      },
+      "wilson_lower_bound": 0.206543
+    },
+    {
+      "accuracy": 0.5348837209302325,
+      "correct": 23,
+      "group": "expert:multi_metric",
+      "support": 43,
+      "truth_distribution": {
+        "L1": 16,
+        "L2": 20,
+        "fiber": 7
+      },
+      "wilson_lower_bound": 0.389154
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "group": "expert:no_anomaly",
+      "support": 12,
+      "truth_distribution": {
+        "L1": 4,
+        "L2": 7,
+        "fiber": 1
+      },
+      "wilson_lower_bound": 0.0
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "group": "expert:port_status_gate",
+      "support": 1,
+      "truth_distribution": {
+        "L1": 0,
+        "L2": 1,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.0
+    },
+    {
+      "accuracy": 0.8571428571428571,
+      "correct": 6,
+      "group": "expert:single:host_snr",
+      "support": 7,
+      "truth_distribution": {
+        "L1": 3,
+        "L2": 4,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.486865
+    },
+    {
+      "accuracy": 0.8333333333333334,
+      "correct": 10,
+      "group": "expert:single:media_snr",
+      "support": 12,
+      "truth_distribution": {
+        "L1": 6,
+        "L2": 6,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.551964
+    },
+    {
+      "accuracy": 0.9,
+      "correct": 9,
+      "group": "expert:single:rxpower",
+      "support": 10,
+      "truth_distribution": {
+        "L1": 4,
+        "L2": 6,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.595844
+    },
+    {
+      "accuracy": 0.5714285714285714,
+      "correct": 20,
+      "group": "expert:single:serdes_snr",
+      "support": 35,
+      "truth_distribution": {
+        "L1": 15,
+        "L2": 18,
+        "fiber": 2
+      },
+      "wilson_lower_bound": 0.408571
+    },
+    {
+      "accuracy": 0.6666666666666666,
+      "correct": 2,
+      "group": "expert:txpower_lane_down",
+      "support": 3,
+      "truth_distribution": {
+        "L1": 2,
+        "L2": 1,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.207655
+    }
+  ],
+  "schema_version": "filtered-rule-decision-graph-v4",
+  "singleton_path_count": 47,
+  "source_document": "/Users/ziangchen/Downloads/专家模型.md",
+  "topology_rule_stats": [
+    {
+      "accuracy": 1.0,
+      "correct": 1,
+      "group": "expert:both_anomaly",
+      "support": 1,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 0,
+        "L2": 0,
+        "fiber": 1
+      },
+      "wilson_lower_bound": 0.206543
+    },
+    {
+      "accuracy": 0.5555555555555556,
+      "correct": 20,
+      "group": "expert:multi_metric",
+      "support": 36,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 14,
+        "L2": 15,
+        "fiber": 7
+      },
+      "wilson_lower_bound": 0.395808
+    },
+    {
+      "accuracy": 0.42857142857142855,
+      "correct": 3,
+      "group": "expert:multi_metric",
+      "support": 7,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 2,
+        "L2": 5,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.158217
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "group": "expert:no_anomaly",
+      "support": 8,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 1,
+        "L2": 6,
+        "fiber": 1
+      },
+      "wilson_lower_bound": 0.0
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "group": "expert:no_anomaly",
+      "support": 4,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 3,
+        "L2": 1,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.0
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "group": "expert:port_status_gate",
+      "support": 1,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 0,
+        "L2": 1,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 1,
+      "group": "expert:single:host_snr",
+      "support": 1,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 1,
+        "L2": 0,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.206543
+    },
+    {
+      "accuracy": 0.8333333333333334,
+      "correct": 5,
+      "group": "expert:single:host_snr",
+      "support": 6,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 2,
+        "L2": 4,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.436491
+    },
+    {
+      "accuracy": 0.875,
+      "correct": 7,
+      "group": "expert:single:media_snr",
+      "support": 8,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 4,
+        "L2": 4,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.529105
+    },
+    {
+      "accuracy": 0.75,
+      "correct": 3,
+      "group": "expert:single:media_snr",
+      "support": 4,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 2,
+        "L2": 2,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.300636
+    },
+    {
+      "accuracy": 0.875,
+      "correct": 7,
+      "group": "expert:single:rxpower",
+      "support": 8,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 4,
+        "L2": 4,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.529105
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 2,
+      "group": "expert:single:rxpower",
+      "support": 2,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 0,
+        "L2": 2,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.342372
+    },
+    {
+      "accuracy": 0.5,
+      "correct": 12,
+      "group": "expert:single:serdes_snr",
+      "support": 24,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 13,
+        "L2": 11,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.314271
+    },
+    {
+      "accuracy": 0.7272727272727273,
+      "correct": 8,
+      "group": "expert:single:serdes_snr",
+      "support": 11,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 2,
+        "L2": 7,
+        "fiber": 2
+      },
+      "wilson_lower_bound": 0.43435
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 2,
+      "group": "expert:txpower_lane_down",
+      "support": 2,
+      "topology_id": "400g-200g-logical4",
+      "truth_distribution": {
+        "L1": 1,
+        "L2": 1,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.342372
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "group": "expert:txpower_lane_down",
+      "support": 1,
+      "topology_id": "400g-400g-logical8",
+      "truth_distribution": {
+        "L1": 1,
+        "L2": 0,
+        "fiber": 0
+      },
+      "wilson_lower_bound": 0.0
+    }
+  ],
+  "train_case_count": 124,
+  "train_manifest_hash": "5d7b2b0aa2d19769138fe13f82a19cd498088ec6ea36c0090124798ceb3fe45e",
+  "train_paths": [
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {}
+      },
+      "case_ids": [
+        "case_649e0a541a4ef089",
+        "case_7113b9af9622ef23",
+        "case_037d936ff4af1a2e",
+        "case_1a73b6b538f7abbb",
+        "case_330a5e9f6d6743f2",
+        "case_6832b2a792b4641e",
+        "case_83da3e589e0982af",
+        "case_890c461e973cfc49",
+        "case_978fd681124e3989",
+        "case_b83327eb6df81567",
+        "case_57eb92b311d39de1",
+        "case_e20b3ac1eb339249"
+      ],
+      "decision_group": "expert:no_anomaly",
+      "expert_predictions": {
+        "insufficient": 12
+      },
+      "labels": {
+        "L1": 4,
+        "L2": 7,
+        "fiber": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.5833333333333334,
+      "path_id": "train-path-001",
+      "physical_tokens": [],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": null
+      },
+      "support": 12
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_1283a9fcda8a5ec4",
+        "case_6a3e0c5ef4424288",
+        "case_9eeaafee55564dca",
+        "case_1005baccaaaebb92",
+        "case_3e1ce56bb15ce77e",
+        "case_8f86a9054091498b",
+        "case_9718e128c9353ced",
+        "case_c7d22292337626d1",
+        "case_d1f9bb9236b82c8d",
+        "case_d6f0794862204d4b",
+        "case_f4ba40dd7b4b718e"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 11
+      },
+      "labels": {
+        "L1": 4,
+        "L2": 5,
+        "fiber": 2
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.45454545454545453,
+      "path_id": "train-path-002",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "pure": false,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 11
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_3572423afaf6af17",
+        "case_79bcc838af6f2197",
+        "case_3d57871044fc3e73",
+        "case_cc20e1069b1d1fb7",
+        "case_d5faed0d0014fc4b"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 5
+      },
+      "labels": {
+        "L1": 3,
+        "L2": 2
+      },
+      "majority_label": "L1",
+      "majority_rate": 0.6,
+      "path_id": "train-path-003",
+      "physical_tokens": [
+        "status:L2:RxLOL"
+      ],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 5
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_3a8615a52129bdf8",
+        "case_869567d500e4fd78",
+        "case_5e7bfa4ecb79c9d5",
+        "case_00c0b87c34f46052",
+        "case_c7a2df561c3607ef"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 5
+      },
+      "labels": {
+        "L1": 2,
+        "L2": 3
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.6,
+      "path_id": "train-path-004",
+      "physical_tokens": [],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 5
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_9b1bd50ce970aa7d",
+        "case_c236ebca6a5203bc",
+        "case_fb35417c4bda50a8",
+        "case_5c62360b12d3f0f5",
+        "case_8a91a3dc026afbff"
+      ],
+      "decision_group": "expert:single:rxpower",
+      "expert_predictions": {
+        "L2": 5
+      },
+      "labels": {
+        "L1": 1,
+        "L2": 4
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.8,
+      "path_id": "train-path-005",
+      "physical_tokens": [],
+      "pure": false,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 5
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_ce5c64fc9ab7a632",
+        "case_7107f8ac2e32ac29",
+        "case_719f194f6c321afd",
+        "case_956c2a9e59369919",
+        "case_f292cdadbd875faf"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 5
+      },
+      "labels": {
+        "L1": 1,
+        "L2": 1,
+        "fiber": 3
+      },
+      "majority_label": "fiber",
+      "majority_rate": 0.6,
+      "path_id": "train-path-006",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down"
+      ],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 5
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_31d25421936f1675",
+        "case_6931da3c6063d849",
+        "case_7aad24b5bed3559c"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 3
+      },
+      "labels": {
+        "L1": 2,
+        "L2": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 0.6666666666666666,
+      "path_id": "train-path-007",
+      "physical_tokens": [],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 3
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_55a38d0d1ca1900b",
+        "case_4a639380c5725abc",
+        "case_dd0601c326b16be6"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 3
+      },
+      "labels": {
+        "L1": 1,
+        "L2": 2
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.6666666666666666,
+      "path_id": "train-path-008",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_ok_rx_down"
+      ],
+      "pure": false,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 3
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_60a488882f9ee1ea",
+        "case_611f27a9bb4cee1b",
+        "case_e4a1270e54b1336f"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 3
+      },
+      "labels": {
+        "L2": 3
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-009",
+      "physical_tokens": [
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 3
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_aaf2a73810c59a40",
+        "case_d1f5cf895438f425",
+        "case_54af508a3a41d98b"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 3
+      },
+      "labels": {
+        "L1": 3
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-010",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 3
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_109023151cf2e2ba",
+        "case_ad1821c431e2cce4"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 2
+      },
+      "labels": {
+        "L1": 2
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-011",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "host_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_22d47fc942665fdb",
+        "case_70171118d16509ef"
+      ],
+      "decision_group": "expert:single:host_snr",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L2": 2
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-012",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "host_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "20",
+          "rule": "single:host_snr",
+          "side": "L2"
+        }
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_31c0a4be5fb1c63c",
+        "case_bbcd66dc5890cf80"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L2": 2
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-013",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_45f51f9f1f3546ac",
+        "case_b8f6ef8e8f3f8586"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L1": 1,
+        "L2": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 0.5,
+      "path_id": "train-path-014",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_ok_rx_down"
+      ],
+      "pure": false,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_diff",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_46126d083b476184",
+        "case_e20f489289d0fc34"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L2": 2
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-015",
+      "physical_tokens": [
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_diff",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_476f1cd361d5d074",
+        "case_ae60de329fa0d15c"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 2
+      },
+      "labels": {
+        "L1": 2
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-016",
+      "physical_tokens": [
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "low_value",
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_6d4fb89f8945c701",
+        "case_891dbab2523b90e3"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L1": 2
+      },
+      "labels": {
+        "L1": 1,
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.5,
+      "path_id": "train-path-017",
+      "physical_tokens": [],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_c73461ba74a9c18e",
+        "case_99ccd988fa2a451a"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L1": 1,
+        "L2": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 0.5,
+      "path_id": "train-path-018",
+      "physical_tokens": [],
+      "pure": false,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "low_value",
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_f2960ab1b5e3b4ea",
+        "case_444d5c16176a6739"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L1": 2
+      },
+      "labels": {
+        "L1": 2
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-019",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "low_value",
+          "rxpower": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_f40b103690ddcc44",
+        "case_7fc5153b66705e1c"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L2": 2
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-020",
+      "physical_tokens": [
+        "lane:L2_to_L1:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "rxpower": "low_value"
+          },
+          "location": "L2",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_f9e1b96903367e51",
+        "case_fec71fba5a745294"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 2
+      },
+      "labels": {
+        "L2": 1,
+        "fiber": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 0.5,
+      "path_id": "train-path-021",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "pure": false,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L2"
+        }
+      },
+      "support": 2
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "low_value",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_02bd925ffa2cc4e3"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-022",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier",
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "low_value",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "serdes_snr": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_0590a0d8be939d37"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-023",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "serdes_snr": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "32",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "low_value",
+          "serdes_snr": "lane_down"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_07a326b37f1c31ea"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-024",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down"
+        },
+        "L2": {
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_0cb18fb8a323d73f"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-025",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "40",
+          "rule": "single:media_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "serdes_snr": "lane_down"
+        },
+        "L2": {
+          "host_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_1ae989095bd541fd"
+      ],
+      "decision_group": "expert:single:host_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-026",
+      "physical_tokens": [
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "host_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "20",
+          "rule": "single:host_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "rxpower": "lane_diff",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_1be709e07a8c40d3"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-027",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "rxpower": "lane_diff",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "serdes_snr": "low_value"
+        },
+        "L2": {
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_26e3772b0f8e00c5"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "fiber": 1
+      },
+      "majority_label": "fiber",
+      "majority_rate": 1.0,
+      "path_id": "train-path-028",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_2917bd435ac9fb56"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-029",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_diff",
+          "txpower": "lane_diff"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_2fd0eb4dec40a969"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-030",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_diff",
+            "txpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "42",
+          "rule": "single:media_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "low_value",
+          "rxpower": "lane_diff",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_32a43a4b07738478"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-031",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "rxpower": "lane_diff",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_3636c6d1ae9ca747"
+      ],
+      "decision_group": "expert:single:rxpower",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-032",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_37546800aaedf1f3"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-033",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_39c5ce14b9961fef"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-034",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "40",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff",
+          "txpower": "lane_diff"
+        },
+        "L2": {
+          "txpower": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_423f46ddbb11b69d"
+      ],
+      "decision_group": "expert:txpower_lane_down",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-035",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_down",
+        "status:L1:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff",
+            "txpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "txpower": "lane_down"
+          },
+          "location": "L2",
+          "priority": "0",
+          "rule": "txpower_lane_down",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_4613bcf2e6a714ef"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-036",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_48373881de68c0ea"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-037",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_4b306a22919c3f2b"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-038",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_4c48be2b9ad2fd9a"
+      ],
+      "decision_group": "expert:single:rxpower",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-039",
+      "physical_tokens": [
+        "lane:L2_to_L1:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "host_snr": "low_value"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_4cff1302873400d7"
+      ],
+      "decision_group": "expert:single:host_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-040",
+      "physical_tokens": [
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "host_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "21",
+          "rule": "single:host_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "serdes_snr": "lane_down"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_50630e81b16102a3"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-041",
+      "physical_tokens": [
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "rxpower": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_6556acda7b09f5f8"
+      ],
+      "decision_group": "expert:single:rxpower",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-042",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "rxpower": "low_value"
+          },
+          "location": "L1",
+          "priority": "51",
+          "rule": "single:rxpower",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "low_value",
+          "serdes_snr": "lane_down"
+        },
+        "L2": {
+          "host_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_6712cc1a943b7ed4"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-043",
+      "physical_tokens": [
+        "lane:L2_to_L1:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "low_value",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "host_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "20",
+          "rule": "single:host_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_728de8409397f549"
+      ],
+      "decision_group": "expert:single:rxpower",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-044",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_diff",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_7530fefac9d3b885"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-045",
+      "physical_tokens": [
+        "lane:L2_to_L1:single_lane_outlier",
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_diff",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff",
+          "txpower": "lane_diff"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_76a8d8fad267fff8"
+      ],
+      "decision_group": "expert:single:rxpower",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-046",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff",
+            "txpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "txpower": "lane_down"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_7e63bb604cac1bdf"
+      ],
+      "decision_group": "expert:txpower_lane_down",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-047",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_down",
+        "status:L1:TxLOL",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "txpower": "lane_down"
+          },
+          "location": "L1",
+          "priority": "0",
+          "rule": "txpower_lane_down",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value",
+          "txpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_87de9ea9f2df9224"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-048",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value",
+            "txpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "serdes_snr": "low_value"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_8e8eeb7345004069"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "fiber": 1
+      },
+      "majority_label": "fiber",
+      "majority_rate": 1.0,
+      "path_id": "train-path-049",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "40",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {
+          "txpower": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_93b1941976dabf93"
+      ],
+      "decision_group": "expert:txpower_lane_down",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-050",
+      "physical_tokens": [
+        "lane:L2_to_L1:tx_down",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "txpower": "lane_down"
+          },
+          "location": "L2",
+          "priority": "0",
+          "rule": "txpower_lane_down",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "low_value"
+        },
+        "L2": {
+          "media_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_977e0cbc2bfa20d9"
+      ],
+      "decision_group": "expert:both_anomaly",
+      "expert_predictions": {
+        "fiber": 1
+      },
+      "labels": {
+        "fiber": 1
+      },
+      "majority_label": "fiber",
+      "majority_rate": 1.0,
+      "path_id": "train-path-051",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "low_value"
+          },
+          "location": "L2",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "rxpower": "low_value",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_a5fabe7c22449c74"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-052",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "rxpower": "low_value",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_a75aa071858b5dd6"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-053",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_b06a21c65fe3484c"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-054",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_b12ec6214303ca32"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-055",
+      "physical_tokens": [
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "40",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "serdes_snr": "lane_down"
+        },
+        "L2": {
+          "host_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_b54623452a89ec4c"
+      ],
+      "decision_group": "expert:single:host_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-056",
+      "physical_tokens": [
+        "status:L1:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "host_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "20",
+          "rule": "single:host_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "txpower": "lane_diff"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_c2812c960c24c215"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-057",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "txpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "62",
+          "rule": "single:txpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "low_value",
+          "rxpower": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_d9f8dc4a057dd510"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-058",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "rxpower": "low_value"
+          },
+          "location": "L1",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "serdes_snr": "low_value"
+        },
+        "L2": {}
+      },
+      "case_ids": [
+        "case_dbfc080555b0d7ca"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-059",
+      "physical_tokens": [
+        "status:L1:RxLOL",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "31",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": null
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "txpower": "lane_diff"
+        },
+        "L2": {
+          "host_snr": "lane_down"
+        }
+      },
+      "case_ids": [
+        "case_de36a48c495e6cf2"
+      ],
+      "decision_group": "expert:single:host_snr",
+      "expert_predictions": {
+        "L2": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-060",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "txpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "62",
+          "rule": "single:txpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "host_snr": "lane_down"
+          },
+          "location": "L2",
+          "priority": "20",
+          "rule": "single:host_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "host_snr": "lane_down",
+          "media_snr": "lane_down",
+          "rxpower": "low_value",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_e2418d9f5ac35f49"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-061",
+      "physical_tokens": [
+        "lane:L1_to_L2:width_mismatch",
+        "lane:L2_to_L1:width_mismatch",
+        "status:L1:RxLOL",
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "host_snr": "lane_down",
+            "media_snr": "lane_down",
+            "rxpower": "low_value",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "serdes_snr": "lane_down"
+        },
+        "L2": {
+          "rxpower": "lane_diff"
+        }
+      },
+      "case_ids": [
+        "case_e3469fd4ab369749"
+      ],
+      "decision_group": "expert:single:serdes_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-062",
+      "physical_tokens": [],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "serdes_snr": "lane_down"
+          },
+          "location": "L1",
+          "priority": "30",
+          "rule": "single:serdes_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_diff",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_e798218f3f3a9c60"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-063",
+      "physical_tokens": [
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_diff",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "lane_down",
+          "txpower": "lane_down"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_eb401138ccec15a0"
+      ],
+      "decision_group": "expert:port_status_gate",
+      "expert_predictions": {
+        "insufficient": 1
+      },
+      "labels": {
+        "L2": 1
+      },
+      "majority_label": "L2",
+      "majority_rate": 1.0,
+      "path_id": "train-path-064",
+      "physical_tokens": [
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane:L2_to_L1:tx_ok_rx_down",
+        "status:L1:RxLOL",
+        "status:L1:RxLOS",
+        "status:L2:RxLOL",
+        "status:L2:RxLOS"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "lane_down",
+            "txpower": "lane_down"
+          },
+          "location": "L1",
+          "priority": "0",
+          "rule": "txpower_lane_down",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "txpower": "lane_diff"
+        },
+        "L2": {
+          "media_snr": "low_value",
+          "rxpower": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_ef010fcd642ba300"
+      ],
+      "decision_group": "expert:single:media_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-065",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "txpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "62",
+          "rule": "single:txpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "low_value",
+            "rxpower": "low_value"
+          },
+          "location": "L1",
+          "priority": "41",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "host_snr": "low_value",
+          "txpower": "lane_diff"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_f2bb5d25c64b2546"
+      ],
+      "decision_group": "expert:single:host_snr",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-066",
+      "physical_tokens": [
+        "lane:L1_to_L2:single_lane_outlier"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "host_snr": "low_value",
+            "txpower": "lane_diff"
+          },
+          "location": "L1",
+          "priority": "21",
+          "rule": "single:host_snr",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "low_value"
+          },
+          "location": "L1",
+          "priority": "40",
+          "rule": "single:media_snr",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {
+          "rxpower": "lane_diff"
+        },
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_down",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_f5a0f2b18b255fe9"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "fiber": 1
+      },
+      "majority_label": "fiber",
+      "majority_rate": 1.0,
+      "path_id": "train-path-067",
+      "physical_tokens": [
+        "lane:L1_to_L2:tx_ok_rx_down"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": {
+          "anomalies": {
+            "rxpower": "lane_diff"
+          },
+          "location": "L2",
+          "priority": "52",
+          "rule": "single:rxpower",
+          "side": "L1"
+        },
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_down",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    },
+    {
+      "anomalies": {
+        "L1": {},
+        "L2": {
+          "media_snr": "lane_down",
+          "rxpower": "lane_diff",
+          "serdes_snr": "low_value"
+        }
+      },
+      "case_ids": [
+        "case_f8222b06b6a10020"
+      ],
+      "decision_group": "expert:multi_metric",
+      "expert_predictions": {
+        "L1": 1
+      },
+      "labels": {
+        "L1": 1
+      },
+      "majority_label": "L1",
+      "majority_rate": 1.0,
+      "path_id": "train-path-068",
+      "physical_tokens": [
+        "status:L2:RxLOL"
+      ],
+      "pure": true,
+      "side_rules": {
+        "L1": null,
+        "L2": {
+          "anomalies": {
+            "media_snr": "lane_down",
+            "rxpower": "lane_diff",
+            "serdes_snr": "low_value"
+          },
+          "location": "L1",
+          "priority": "1",
+          "rule": "multi_metric",
+          "side": "L2"
+        }
+      },
+      "support": 1
+    }
+  ]
+}

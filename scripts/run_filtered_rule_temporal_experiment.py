@@ -65,7 +65,7 @@ FORMAL_MAX_MODEL_LEN = 32768
 FORMAL_MAX_ATTEMPTS = 3
 FORMAL_GUIDED_JSON = True
 DETERMINISTIC_KNOWLEDGE_SUMMARY = Path(
-    "artifacts/filtered_rule_deterministic_knowledge_v1/audit_summary.json"
+    "artifacts/filtered_rule_deterministic_knowledge_v2/audit_summary.json"
 )
 
 
@@ -161,7 +161,7 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=Path("datasets/filtered_rule_temporal_2025_06_09_v1"))
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--feature-profile", default="filtered_rule_v1", choices=("filtered_rule_v1",))
+    parser.add_argument("--feature-profile", default="filtered_rule_v2", choices=("filtered_rule_v2",))
     parser.add_argument(
         "--policy",
         default=FILTERED_RULE_THREE_CHANNEL_POLICY.name,
@@ -421,7 +421,7 @@ def main() -> None:
                 "expert_sop": EXPERT_SOP_VERSION,
                 "expert_sop_hash": expert_sop_hash(),
                 "prompt_template": FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
-                "prompt_template_hash": prompt_template_hash("filtered_rule_v1"),
+                "prompt_template_hash": prompt_template_hash(args.feature_profile),
                 "decision_policy": decision_policy.version,
             },
             "data_quality": {

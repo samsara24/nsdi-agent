@@ -81,7 +81,7 @@ def _branch_knowledge_sections(request: Any) -> list[str]:
 
 
 def diagnose_prompt_version_for(profile: str = "legacy") -> str:
-    if profile == "filtered_rule_v1":
+    if profile.startswith("filtered_rule_"):
         return FILTERED_RULE_DIAGNOSE_PROMPT_VERSION
     return LEGACY_DIAGNOSE_PROMPT_VERSION
 
@@ -221,7 +221,7 @@ def build_diagnose_prompt(
     retry_feedback: str = "",
     profile: str = "legacy",
 ) -> str:
-    filtered_rule = profile == "filtered_rule_v1"
+    filtered_rule = profile.startswith("filtered_rule_")
     if filtered_rule:
         return _build_filtered_rule_prompt(request, retry_feedback=retry_feedback)
     root_cause_definitions = (

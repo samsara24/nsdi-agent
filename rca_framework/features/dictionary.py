@@ -25,6 +25,7 @@ from typing import Any, Dict, Iterable, Sequence, Tuple
 FEATURE_DICTIONARY_VERSION = "feature-dictionary-v1"
 FEATURE_DICTIONARY_V2_VERSION = "feature-dictionary-v2"
 FILTERED_RULE_DICTIONARY_VERSION = "filtered-rule-feature-dictionary-v1"
+FILTERED_RULE_DICTIONARY_V2_VERSION = "filtered-rule-feature-dictionary-v2"
 FEATURE_DICTIONARY_V3_VERSION = "feature-dictionary-v3"
 
 #: 连续量分档采用训练集分位数，只把两侧尾部编码为 token，中间区间不产出 token。
@@ -37,7 +38,7 @@ DOWN_SENTINEL_DBM = -39.0
 
 #: 家族的准入状态。`v1` 是冻结进特征字典 v1 的家族，`candidate` 是已实现但未通过
 #: T1 选型的家族：它们保留在代码里供消融与后续数据集重测，但不进 v1 signature。
-FAMILY_STATUSES: Tuple[str, ...] = ("v1", "v2", "v3", "filtered_rule_v1", "candidate")
+FAMILY_STATUSES: Tuple[str, ...] = ("v1", "v2", "v3", "filtered_rule_v1", "filtered_rule_v2", "candidate")
 
 
 @dataclass(frozen=True)
@@ -230,6 +231,44 @@ _FAMILIES: Tuple[FeatureFamily, ...] = (
         tier="core",
         status="filtered_rule_v1",
         selection_note="活动数据专属逻辑 lane 证据；按拓扑保留来源并在同拓扑历史中优先检索。",
+    ),
+    FeatureFamily(
+        name="signal_drop_ratio",
+        dimension="每侧每指标的异常 lane 比例分档",
+        physical_meaning=(
+            "统计达到该指标失效哨兵的 lane 比例，而不是绑定某个 lane 编号或绝对异常条数。"
+            "比例分档使 4-lane 与 8-lane 端口表达相同的影响范围语义。"
+        ),
+        unit="异常 lane 比例",
+        value_domain=("minority_lanes", "majority_lanes", "all_lanes"),
+        extraction_rule=(
+            "按指标专属 DOWN_THRESHOLDS 计算异常 lane 数 d 与有效 lane 数 n；"
+            "d/n<=0.25 为 minority，0.25<d/n<1 为 majority，d/n=1 为 all。"
+        ),
+        token_template="drop_ratio:{side}:{metric}:{scope}",
+        sparsity="只在存在失效 lane 时产出",
+        tier="core",
+        status="filtered_rule_v2",
+        selection_note="替代按绝对条数分档的 signal_drop，保证不同 lane 宽度共享影响范围语义。",
+    ),
+    FeatureFamily(
+        name="topology_level_tail",
+        dimension="按拓扑与 lane 宽度标定的每侧连续量尾部档位",
+        physical_meaning=(
+            "在相同来源拓扑、相同指标 lane 宽度内比较收发光功率和介质 SNR 的整体水平。"
+            "光功率取均值，media_snr 取 25% 低分位，避免 8-lane 的最小值天然更低。"
+        ),
+        unit="dBm（光功率）/ SNR 指标值",
+        value_domain=("low_tail", "high_tail"),
+        extraction_rule=(
+            "训练阶段按 topology_id、side、statistic、实际 lane width 分组拟合 25%/75% 分位；"
+            "测试只使用对应冻结边界。组内不足 4 条时不生成该维度。"
+        ),
+        token_template="topology_level:{side}:{statistic}:{bucket}",
+        sparsity="仅在同拓扑同宽度分组的尾部产出",
+        tier="core",
+        status="filtered_rule_v2",
+        selection_note="替代混合拓扑 level_tail，消除 4/8 lane 和来源 schema 对边界的直接污染。",
     ),
     FeatureFamily(
         name="level_tail",
@@ -446,6 +485,13 @@ FILTERED_RULE_FAMILIES: Tuple[str, ...] = (
     "serdes_state",
 )
 
+FILTERED_RULE_V2_FAMILIES: Tuple[str, ...] = (
+    "signal_drop_ratio",
+    "status_fault",
+    "paired_lane_state",
+    "topology_level_tail",
+)
+
 ALL_FAMILIES: Tuple[FeatureFamily, ...] = _FAMILIES
 
 #: 声明了全部家族的完整字典，供 `scripts/sweep_feature_families.py` 做消融。
@@ -506,6 +552,17 @@ FILTERED_RULE_DICTIONARY = FeatureDictionary(
     ),
 )
 
+FILTERED_RULE_DICTIONARY_V2 = FeatureDictionary(
+    version=FILTERED_RULE_DICTIONARY_V2_VERSION,
+    families=tuple(family for family in _FAMILIES if family.name in FILTERED_RULE_V2_FAMILIES),
+    notes=(
+        "活动 filtered-rule 特征优化版：所有 signature 维度对同步 lane 重编号不变。",
+        "用异常 lane 比例替代绝对异常条数；连续量按拓扑和实际 lane 宽度冻结标定。",
+        "telemetry_gap 与 serdes_state 移出检索 signature，仅由 EvidencePack/N6 作为量测质量读取。",
+        "同号 optical lane 配对只在数据契约允许时使用；禁止 SerDes-to-optical lane 配对。",
+    ),
+)
+
 
 #: 命名 profile，用于家族消融与 T10 的实验配置。
 PROFILES: Dict[str, Tuple[str, ...]] = {
@@ -524,6 +581,7 @@ PROFILES: Dict[str, Tuple[str, ...]] = {
     # 因此需要单独一个 profile 来回答「加回它能不能提升 LOO 泛化」，而不改动 v1/v2 字典本身。
     "v2_plus_side_asymmetry": V2_FAMILIES + ("side_asymmetry",),
     "filtered_rule_v1": FILTERED_RULE_FAMILIES,
+    "filtered_rule_v2": FILTERED_RULE_V2_FAMILIES,
 }
 
 
@@ -536,6 +594,8 @@ def dictionary_for(profile: str) -> FeatureDictionary:
         return FEATURE_DICTIONARY_V3
     if profile == "filtered_rule_v1":
         return FILTERED_RULE_DICTIONARY
+    if profile == "filtered_rule_v2":
+        return FILTERED_RULE_DICTIONARY_V2
     if profile not in PROFILES:
         raise KeyError(f"unknown feature profile: {profile}; available: {sorted(PROFILES)}")
     return FULL_DICTIONARY.subset(PROFILES[profile], version_suffix=f"::{profile}")

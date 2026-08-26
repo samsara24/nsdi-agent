@@ -1,0 +1,11 @@
+{
+  "case_count": 484,
+  "decision_graph_hash": "ad0a981160feb999c14accd33f41b588c09db56d93ac53614987b8e5ff32133d",
+  "knowledge_bundle_hash": "565a61e23207d798",
+  "labels_visible_during_prediction": false,
+  "n8_frozen": true,
+  "prediction_sha256": "4b87a38baccb87a1643a57720e93a2afdb301433919218b83e31deb9dc6cea40",
+  "prior_iteration_used_for": "rxpower multi-neighbor and SerDes advisory gates from prior loop; coverage restored only by train topology-calibrated media path",
+  "prior_test_informed_iteration": true,
+  "schema_version": "decision-graph-blind-freeze-v5"
+}

@@ -24,7 +24,7 @@ from rca_framework.knowledge import fit_offline_knowledge  # noqa: E402
 
 
 DEFAULT_DATA_DIR = Path("datasets/filtered_rule_temporal_2025_06_09_v1")
-DEFAULT_OUTPUT_DIR = Path("artifacts/filtered_rule_deterministic_knowledge_v1")
+DEFAULT_OUTPUT_DIR = Path("artifacts/filtered_rule_deterministic_knowledge_v2")
 
 
 def _write_json(path: Path, value: Any) -> None:
@@ -193,7 +193,7 @@ def main() -> None:
         train_cases,
         source_dataset=source_id,
         split_manifest_hash=split_manifest_hash(args.data_dir),
-        feature_profile="filtered_rule_v1",
+        feature_profile="filtered_rule_v2",
         policies=(policy,),
         reasoner=None,
         top_k=0,
