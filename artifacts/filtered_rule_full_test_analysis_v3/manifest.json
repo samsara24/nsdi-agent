@@ -1,0 +1,8 @@
+{
+  "schema_version": "filtered-rule-full-test-analysis-manifest-v3",
+  "case_count": 484,
+  "blind_join_sha256": "165d63f7689f49e42cf28d652f361a8e982038e4f2118e5bac6e740a4c165edb",
+  "summary_sha256": "2bb7b0937c168759599ad29f04aedff019fed0012d36bad776ee5ccd8d35bed7",
+  "case_reviews_sha256": "9a9b8b343b6faa40e9266bf9f0c487826e0948a483cf24cc38d9dd7f16f6da7c",
+  "reasoning_label_mismatches_sha256": "3e0dda3994d2898643782d35037b7f334510d3430f2101d9976ce70f0c2de146"
+}

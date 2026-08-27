@@ -50,6 +50,7 @@ from rca_framework.evidence_graph import (  # noqa: E402
 )
 from rca_framework.evidence_pack import build_packs, labels_of  # noqa: E402
 from rca_framework.expert import ExpertCalibration, diagnose_many  # noqa: E402
+from rca_framework.filtered_rule_expert import assess_filtered_rule_expert  # noqa: E402
 from rca_framework.feedback import build_case_diagnosis  # noqa: E402
 from rca_framework.knowledge import (  # noqa: E402
     _out_of_fold_sop_predictions,
@@ -619,6 +620,17 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
         expert_calibration.prediction(diagnosis) if expert_calibration is not None else None
         for diagnosis in expert_diagnoses
     ]
+    causal_expert_assessments = [
+        assess_filtered_rule_expert(
+            expert_group=diagnosis.group,
+            expert_verdict=diagnosis.verdict,
+            symptom_side=diagnosis.sides[0].side if diagnosis.sides else None,
+            tokens=test_features[index].tokens if test_features is not None else (),
+            telemetry=test_packs[index].to_dict().get("telemetry", {}),
+        )
+        if test_packs[index].source_dataset in SOURCE_TOPOLOGIES else None
+        for index, diagnosis in enumerate(expert_diagnoses)
+    ]
     final_decisions = decide_many(
         outcomes,
         decision_policy,
@@ -686,6 +698,10 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
             "features": feature_record,
             "sop_prediction": sop_prediction,
             "expert_diagnosis": expert_diagnoses[index].to_dict(),
+            "filtered_rule_expert_assessment": (
+                causal_expert_assessments[index].to_dict()
+                if causal_expert_assessments[index] is not None else None
+            ),
             "expert_prediction": expert_predictions[index],
             "match": match_record(result),
             "routing": routing.to_dict(),

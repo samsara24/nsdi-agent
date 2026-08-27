@@ -13,7 +13,7 @@ from ..confidence_rubric import CONFIDENCE_RUBRIC
 
 
 LEGACY_DIAGNOSE_PROMPT_VERSION = "rca-diagnose-dual-sop-v7-full-step-ids"
-FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-general-retry-v4"
+FILTERED_RULE_DIAGNOSE_PROMPT_VERSION = "filtered-rule-diagnose-causal-optional-host-v5"
 # Backward-compatible public constant used by legacy experiment manifests.
 DIAGNOSE_PROMPT_VERSION = LEGACY_DIAGNOSE_PROMPT_VERSION
 
@@ -128,7 +128,9 @@ def _filtered_rule_payload(request: Any) -> dict[str, Any]:
         "routing_reason": request.routing_reason,
         "root_causes": FILTERED_RULE_ROOT_CAUSE_DEFINITIONS,
         "available_evidence": list(request.evidence_tokens),
-        "missing_fields": list(request.missing_fields),
+        "missing_fields": [
+            field for field in request.missing_fields if not str(field).endswith(".host_snr")
+        ],
         "telemetry_status": request.telemetry_status,
         "candidate_root_causes": list(request.candidate_root_causes),
         "deterministic_exclusions": [item.to_dict() for item in request.exclusions],
@@ -176,7 +178,8 @@ def _build_filtered_rule_prompt(request: Any, *, retry_feedback: str) -> str:
         "通用推理原则：\n"
         "1. 当前 case 的 available_evidence、原始量测和物理证据路径是主要事实来源。\n"
         "2. 历史证据链、双相似度和数值决策树只提供上下文，不得单独作为物理证据。\n"
-        "3. 接收类异常默认指向对端发送链；发送类和本地电口异常默认指向本端。\n"
+        "3. 接收类异常只说明故障发生在‘对端发送器—链路介质—本端接收器’这条传播链上；"
+        "只有对端 TxLOS/TxLOL 或发送功率异常等独立证据存在时，才可唯一归因对端。\n"
         "4. 只有两端已发光且存在同 lane 双向对称路径异常时，才可自动判定 fiber；"
         "否则把现场验证写入 missing_information。\n"
         "5. 不要求固定步骤数。只保留对当前 case 有作用的支持、排除或中性步骤。\n"
@@ -185,7 +188,8 @@ def _build_filtered_rule_prompt(request: Any, *, retry_feedback: str) -> str:
         "7. sop_step_id 和 cited_predicates 都是可选字段。只有确实使用输入中已有的 SOP 步骤或谓词时才填写；"
         "不得为了满足格式而编造。\n"
         "8. 遥测不完整不是拒答理由。仍需三选一，但应降低 evidence_completeness 或"
-        "reasoning_completeness，并列出需要补采的信息。",
+        "reasoning_completeness，并列出真正关键的补采信息。host_snr 是可选增强证据："
+        "有有效异常时可增强本端电口判断，缺失时不扣分、不要求补采、也不影响三选一。",
     ]
     sections.extend(_branch_knowledge_sections(request))
     sections.append(CONFIDENCE_RUBRIC)

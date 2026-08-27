@@ -1,0 +1,5243 @@
+[
+  {
+    "case_id": "case_218bf334495bd030",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "topology_level:L1:rxpower_mean:low_tail",
+      "topology_level:L1:txpower_mean:low_tail",
+      "topology_level:L2:rxpower_mean:low_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L1",
+    "llm_proposed_verdict": "L1",
+    "expert_candidate": "L2",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L2",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L2"
+      ],
+      "candidates": [
+        "L2"
+      ],
+      "original_verdict": "L2"
+    },
+    "llm_pre_reconcile_verdict": "L1",
+    "llm_step_aggregate_verdict": "L1",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L1",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.788491,
+    "confidence_lower_bound": 0.025679,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.75,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.71745455
+    },
+    "compliance_penalties": [],
+    "llm_output_valid": true,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 的 media_snr_min 异常",
+        "tokens": [
+          "level:L1:media_snr_min:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 的 txpower_mean 异常",
+        "tokens": [
+          "level:L1:txpower_mean:low_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "仲裁第 3 步：L2 的 rxpower_mean 异常",
+        "tokens": [
+          "level:L2:rxpower_mean:low_tail"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 4 步：L2 的 txpower_mean 异常",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "仲裁第 5 步：L1 的 rxpower_mean 异常",
+        "tokens": [
+          "level:L1:rxpower_mean:low_tail"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2025-10-10 22:35:25",
+      "alarm_ip_interface": "29.182.2.33--200GHL1/2/28",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.58,
+          "1": 7.58,
+          "2": 7.58,
+          "3": 7.58
+        },
+        "L2": {
+          "0": 7.48,
+          "1": 7.48,
+          "2": 7.48,
+          "3": 7.48
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -0.37,
+          "1": -0.54,
+          "2": -0.62,
+          "3": -0.32
+        },
+        "L2": {
+          "0": 0,
+          "1": 0.44,
+          "2": 0.24,
+          "3": 0.13
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 0.19,
+          "1": 0.01,
+          "2": -0.31,
+          "3": 0.06
+        },
+        "L2": {
+          "0": -2.63,
+          "1": -1.4,
+          "2": -1.35,
+          "3": -0.84
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -2.26,
+          "1": -0.86,
+          "2": -0.73,
+          "3": -0.52
+        },
+        "L2-L1": {
+          "0": 0.19,
+          "1": -0.43,
+          "2": -0.55,
+          "3": -0.07
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 25.96,
+          "1": 25.96,
+          "2": 25.64,
+          "3": 25.64
+        },
+        "L2": {
+          "0": 25.06,
+          "1": 25.96,
+          "2": 25.34,
+          "3": 25.96
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 712685,
+          "1": 728078,
+          "2": 684595,
+          "3": 690343
+        },
+        "L2": {
+          "0": 693939,
+          "1": 694809,
+          "2": 645293,
+          "3": 434502
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 53.39,
+        "L2": 46.79
+      },
+      "Voltage": {
+        "L1": 3.27,
+        "L2": 3.21
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L2",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_8ecb0ceb17209304",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "topology_level:L1:media_snr_min:high_tail",
+      "topology_level:L1:txpower_mean:high_tail",
+      "topology_level:L2:txpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L1",
+    "expert_candidate": "L2",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L2",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L2"
+      ],
+      "candidates": [
+        "L2"
+      ],
+      "original_verdict": "L2"
+    },
+    "llm_pre_reconcile_verdict": "L1",
+    "llm_step_aggregate_verdict": "L1",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": "L1",
+    "pilot_gate": false,
+    "confidence": 0.405118,
+    "confidence_lower_bound": 0.410403,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.60058878
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+        "physical_compliance_cap": 0.0,
+        "step_index": 3
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L2",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1 的 media_snr_min 和 rxpower_mean 均为 high_tail，表明 L1 侧接收信号质量异常。",
+        "tokens": [
+          "level:L1:media_snr_min:high_tail",
+          "level:L1:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 2 步：L2 的 serdes_snr 存在不平衡，可能表明 L2 侧的信号处理异常。",
+        "tokens": [
+          "imbalance:L2:serdes_snr"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 3 步：L1 的 txpower_mean 为 high_tail，表明 L1 侧发送功率异常。",
+        "tokens": [
+          "level:L1:txpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 4 步：L2 的 txpower_mean 无异常，排除 L2 发送链路问题。",
+        "tokens": [],
+        "source": "llm"
+      },
+      {
+        "statement": "第 5 步：L1 的 media_snr 和 rxpower 异常，结合 L1 的 txpower 异常，指向 L1 侧的发送链路问题。",
+        "tokens": [
+          "level:L1:media_snr_min:high_tail",
+          "level:L1:rxpower_mean:high_tail",
+          "level:L1:txpower_mean:high_tail"
+        ],
+        "source": "llm"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2025-10-24 00:02:14",
+      "alarm_ip_interface": "2409:27ff:1012:0000:001b:0000:0000:00cf--200GHL1/1/1",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.62,
+          "1": 7.62,
+          "2": 7.62,
+          "3": 7.62
+        },
+        "L2": {
+          "0": 7.24,
+          "1": 7.24,
+          "2": 7.24,
+          "3": 7.24
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 1.4,
+          "1": 1.34,
+          "2": 1.1,
+          "3": 1.05
+        },
+        "L2": {
+          "0": 1.1,
+          "1": 1.3,
+          "2": 0.81,
+          "3": 1.04
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 2.69,
+          "1": 1.33,
+          "2": 1.56,
+          "3": 1.37
+        },
+        "L2": {
+          "0": 1.42,
+          "1": 1.44,
+          "2": 1.47,
+          "3": 1.42
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 0.02,
+          "1": 0.1,
+          "2": 0.37,
+          "3": 0.37
+        },
+        "L2-L1": {
+          "0": 1.59,
+          "1": 0.03,
+          "2": 0.75,
+          "3": 0.33
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 26.31,
+          "1": 25.96,
+          "2": 25.64,
+          "3": 26.31
+        },
+        "L2": {
+          "0": 26.68,
+          "1": 25.64,
+          "2": 25.34,
+          "3": 25.96
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 702902,
+          "1": 689116,
+          "2": 683034,
+          "3": 713424
+        },
+        "L2": {
+          "0": 520066,
+          "1": 775770,
+          "2": 299864,
+          "3": 684000
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 43.74,
+        "L2": 44.36
+      },
+      "Voltage": {
+        "L1": 3.27,
+        "L2": 3.23
+      },
+      "Lane number": {
+        "L1": 1,
+        "L2": 1
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L2",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_6c33a45e112476c3",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:minority_lanes",
+      "status:L1:RxLOL",
+      "topology_level:L1:txpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L1"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": "L2",
+    "pilot_gate": false,
+    "confidence": 0.660969,
+    "confidence_lower_bound": 0.307218,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.52984748
+    },
+    "compliance_penalties": [],
+    "llm_output_valid": true,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1 端 media_snr 存在单 lane 异常",
+        "tokens": [
+          "drop:L1:media_snr:single_lane"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 2 步：L1 端 media_snr 异常指向对端发送链路",
+        "tokens": [
+          "drop:L1:media_snr:single_lane"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 3 步：L1 端 media_snr 异常且 L2 端无异常，优先考虑 L2",
+        "tokens": [
+          "drop:L1:media_snr:single_lane"
+        ],
+        "source": "llm"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2025-11-07 20:39:18",
+      "alarm_ip_interface": "2409:27ff:101c:0000:0013:0000:0000:006f--200GHL1/2/11",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.57,
+          "1": 7.56,
+          "2": 7.57,
+          "3": 7.56
+        },
+        "L2": {
+          "0": 7.32,
+          "1": 7.31,
+          "2": 7.31,
+          "3": 7.35
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 1.44,
+          "1": 1.21,
+          "2": 1.31,
+          "3": 1.15
+        },
+        "L2": {
+          "0": 0.66,
+          "1": 0.66,
+          "2": 0.66,
+          "3": 0.68
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 1.46,
+          "1": 1.16,
+          "2": 1.26,
+          "3": 1.55
+        },
+        "L2": {
+          "0": 0.55,
+          "1": 0.55,
+          "2": 0.84,
+          "3": 0.53
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -0.89,
+          "1": -0.66,
+          "2": -0.47,
+          "3": -0.62
+        },
+        "L2-L1": {
+          "0": 0.8,
+          "1": 0.5,
+          "2": 0.6,
+          "3": 0.87
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 25.64,
+          "1": 25.34,
+          "2": 25.34,
+          "3": 0
+        },
+        "L2": {
+          "0": 25.93,
+          "1": 26.21,
+          "2": 25.44,
+          "3": 26.63
+        }
+      },
+      "host_snr": {
+        "L1": null,
+        "L2": {
+          "0": 26,
+          "1": 25.9,
+          "2": 25.71,
+          "3": 26
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 661923,
+          "1": 662007,
+          "2": 685950,
+          "3": 98645
+        },
+        "L2": {
+          "0": 694101,
+          "1": 748448,
+          "2": 755294,
+          "3": 795712
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 42.86,
+        "L2": 52.76
+      },
+      "Voltage": {
+        "L1": 3.28,
+        "L2": 3.32
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_a47db7aeefc7d90f",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "topology_level:L1:media_snr_min:high_tail",
+      "topology_level:L1:txpower_mean:high_tail",
+      "topology_level:L2:rxpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L1",
+    "llm_proposed_verdict": "L1",
+    "expert_candidate": "L2",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L2",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L2"
+      ],
+      "candidates": [
+        "L2"
+      ],
+      "original_verdict": "L2"
+    },
+    "llm_pre_reconcile_verdict": "L1",
+    "llm_step_aggregate_verdict": "L1",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": "L1",
+    "pilot_gate": false,
+    "confidence": 0.658862,
+    "confidence_lower_bound": 0.307218,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.51931084
+    },
+    "compliance_penalties": [],
+    "llm_output_valid": true,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1 的 media_snr_min 异常",
+        "tokens": [
+          "level:L1:media_snr_min:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 2 步：L1 的 txpower_mean 异常",
+        "tokens": [
+          "level:L1:txpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 3 步：L2 的 rxpower_mean 异常",
+        "tokens": [
+          "level:L2:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 4 步：L1 的 serdes_snr 有效",
+        "tokens": [
+          "serdes:L1:valid"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 5 步：L2 的 serdes_snr 有效",
+        "tokens": [
+          "serdes:L2:valid"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 6 步：L1 和 L2 的温度和电压在正常范围内",
+        "tokens": [],
+        "source": "P2_temperature_spec_band|P3_voltage_nominal_band"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2025-11-07 22:13:46",
+      "alarm_ip_interface": "2409:27ff:1012:0000:0036:0000:0000:0037--200GHL1/1/2",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.67,
+          "1": 7.67,
+          "2": 7.67,
+          "3": 7.67
+        },
+        "L2": {
+          "0": 7.73,
+          "1": 7.72,
+          "2": 7.73,
+          "3": 7.72
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 1.44,
+          "1": 1.52,
+          "2": 1.53,
+          "3": 1.34
+        },
+        "L2": {
+          "0": 0.55,
+          "1": 0.53,
+          "2": 0.56,
+          "3": 1.11
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 1.99,
+          "1": 1.3,
+          "2": 1.04,
+          "3": 1.52
+        },
+        "L2": {
+          "0": 1.77,
+          "1": 1.7,
+          "2": 1.28,
+          "3": 1.68
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 0.33,
+          "1": 0.18,
+          "2": -0.25,
+          "3": 0.34
+        },
+        "L2-L1": {
+          "0": 1.44,
+          "1": 0.77,
+          "2": 0.48,
+          "3": 0.41
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 25.96,
+          "1": 25.96,
+          "2": 25.64,
+          "3": 26.69
+        },
+        "L2": {
+          "0": 26.31,
+          "1": 25.96,
+          "2": 25.64,
+          "3": 26.31
+        }
+      },
+      "host_snr": null,
+      "serdes_snr": {
+        "L1": {
+          "0": 729918,
+          "1": 729900,
+          "2": 653675,
+          "3": 719901
+        },
+        "L2": {
+          "0": 637001,
+          "1": 490630,
+          "2": 634796,
+          "3": 729761
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 48.33,
+        "L2": 54.79
+      },
+      "Voltage": {
+        "L1": 3.26,
+        "L2": 3.35
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L2",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_efb7575abcdcb563",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "topology_level:L1:rxpower_mean:high_tail",
+      "topology_level:L2:rxpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L1"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L1",
+    "numeric_tree_candidate": "L2",
+    "pilot_gate": false,
+    "confidence": 0.328461,
+    "confidence_lower_bound": 0.410403,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.45,
+      "history_similarity": 0.51730459
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "这一步既没有引用证据也没有引用约束，属于凭空断言",
+        "physical_compliance_cap": 0.0,
+        "step_index": 5
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：确认异常级别",
+        "tokens": [
+          "level:L1:rxpower_mean:high_tail",
+          "level:L2:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 2 步：L1 侧 rxpower 异常",
+        "tokens": [
+          "level:L1:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 3 步：L2 侧 rxpower 异常",
+        "tokens": [
+          "level:L2:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 4 步：两端 rxpower 异常，优先级相同",
+        "tokens": [
+          "level:L1:rxpower_mean:high_tail",
+          "level:L2:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 5 步：两端异常，优先级相同，无法裁决",
+        "tokens": [
+          "level:L1:rxpower_mean:high_tail",
+          "level:L2:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 6 步：无法确定具体根因，选择 L2",
+        "tokens": [],
+        "source": "llm"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2025-11-19 19:36:12",
+      "alarm_ip_interface": "2409:27ff:1012:0000:0036:0000:0000:02ad--200GHL1/1/15",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 6.82,
+          "1": 6.82,
+          "2": 6.82,
+          "3": 6.82
+        },
+        "L2": {
+          "0": 6.82,
+          "1": 6.82,
+          "2": 6.82,
+          "3": 6.82
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 1.02,
+          "1": 0.94,
+          "2": 1.19,
+          "3": 1.01
+        },
+        "L2": {
+          "0": 0.88,
+          "1": 0.82,
+          "2": 0.91,
+          "3": 0.77
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 1.97,
+          "1": 2.01,
+          "2": 2.11,
+          "3": 1.87
+        },
+        "L2": {
+          "0": 2.13,
+          "1": 1.94,
+          "2": 1.98,
+          "3": 1.9
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 1.11,
+          "1": 1.0,
+          "2": 0.79,
+          "3": 0.89
+        },
+        "L2-L1": {
+          "0": 1.09,
+          "1": 1.19,
+          "2": 1.2,
+          "3": 1.1
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 25.06,
+          "1": 25.64,
+          "2": 25.96,
+          "3": 24.79
+        },
+        "L2": {
+          "0": 25.34,
+          "1": 25.96,
+          "2": 25.34,
+          "3": 25.64
+        }
+      },
+      "host_snr": null,
+      "serdes_snr": {
+        "L1": {
+          "0": 113735,
+          "1": 703882,
+          "2": 628174,
+          "3": 635096
+        },
+        "L2": {
+          "0": 677430,
+          "1": 702297,
+          "2": 692640,
+          "3": 751777
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 50.49,
+        "L2": 51.34
+      },
+      "Voltage": {
+        "L1": 3.23,
+        "L2": 3.27
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_69960ef29abad969",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:minority_lanes",
+      "status:L1:RxLOL",
+      "topology_level:L2:rxpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L1"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L1",
+    "numeric_tree_candidate": "L1",
+    "pilot_gate": false,
+    "confidence": 0.301541,
+    "confidence_lower_bound": 0.410403,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.3,
+      "history_similarity": 0.53270508
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "fabricated_evidence",
+        "message": "引用了本 case 不存在的证据：drop:L1:serdes_snr:single_lane。只能引用给定证据清单里的 token",
+        "physical_compliance_cap": 0.0,
+        "step_index": 1
+      },
+      {
+        "constraint_id": "",
+        "kind": "fabricated_evidence",
+        "message": "引用了本 case 不存在的证据：level:L2:media_snr:single_lane。只能引用给定证据清单里的 token",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      },
+      {
+        "constraint_id": "P10_receive_symptom_points_to_far_transmit_chain",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 effect=exclude；允许值为 support",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1 侧 media_snr 存在单 lane 异常，指向 L1 侧接收链路问题。",
+        "tokens": [
+          "drop:L1:media_snr:single_lane"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 2 步：L1 侧 serdes_snr 存在单 lane 异常，指向 L1 侧本地电口问题。",
+        "tokens": [
+          "drop:L1:serdes_snr:single_lane"
+        ],
+        "source": "P13_local_signal_metrics_point_local"
+      },
+      {
+        "statement": "第 3 步：L2 侧 media_snr 正常，排除 L2 侧接收链路问题。",
+        "tokens": [
+          "level:L2:media_snr:single_lane"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2025-12-12 02:57:20",
+      "alarm_ip_interface": "29.176.4.124--200GHL1/2/41",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.35,
+          "1": 7.35,
+          "2": 7.35,
+          "3": 7.35
+        },
+        "L2": {
+          "0": 7.35,
+          "1": 7.35,
+          "2": 7.35,
+          "3": 7.35
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 0.65,
+          "1": 0.63,
+          "2": 0.88,
+          "3": 0.92
+        },
+        "L2": {
+          "0": 0.65,
+          "1": 1.11,
+          "2": 0.87,
+          "3": 1.07
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 1.8,
+          "1": 1.65,
+          "2": 1.75,
+          "3": 1.89
+        },
+        "L2": {
+          "0": 1.76,
+          "1": 1.65,
+          "2": 1.82,
+          "3": 2.04
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 1.11,
+          "1": 1.02,
+          "2": 0.94,
+          "3": 1.12
+        },
+        "L2-L1": {
+          "0": 1.15,
+          "1": 0.54,
+          "2": 0.88,
+          "3": 0.82
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 24.31,
+          "1": 25.64,
+          "2": 25.06,
+          "3": 0
+        },
+        "L2": {
+          "0": 24.55,
+          "1": 25.34,
+          "2": 25.64,
+          "3": 25.64
+        }
+      },
+      "host_snr": null,
+      "serdes_snr": {
+        "L1": {
+          "0": 670409,
+          "1": 742007,
+          "2": 667565,
+          "3": 1
+        },
+        "L2": {
+          "0": 600480,
+          "1": 747333,
+          "2": 645740,
+          "3": 628283
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 50.83,
+        "L2": 50.45
+      },
+      "Voltage": {
+        "L1": 3.23,
+        "L2": 3.35
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_2b978099fb572600",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:majority_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "topology_level:L2:rxpower_mean:low_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": "L2",
+    "pilot_gate": false,
+    "confidence": 0.413394,
+    "confidence_lower_bound": 0.410403,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.64196913
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "P10_receive_symptom_points_to_far_transmit_chain",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 effect=exclude；允许值为 support",
+        "physical_compliance_cap": 0.0,
+        "step_index": 3
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1 侧存在发送光功率处于断光哨兵（<= -39 dBm）的 lane，光纤无法解释一束从未被发出的光，故排除介质根因",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "第 2 步：L1 侧 media_snr 和 rxpower 全部 lane 异常，指向 L1 侧接收链路问题",
+        "tokens": [
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:rxpower:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 3 步：L1 侧 serdes_snr 部分 lane 异常，指向 L1 侧本地电口问题",
+        "tokens": [
+          "drop:L1:serdes_snr:partial_lanes"
+        ],
+        "source": "P13_local_signal_metrics_point_local"
+      },
+      {
+        "statement": "第 4 步：L2 侧 rxpower 和 media_snr 正常，排除 L2 侧问题",
+        "tokens": [
+          "level:L2:rxpower_mean:low_tail",
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 5 步：L1 侧同时存在接收链路和本地电口异常，优先考虑接收链路问题",
+        "tokens": [
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:serdes_snr:partial_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain|P13_local_signal_metrics_point_local"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2026-04-25 06:52:29",
+      "alarm_ip_interface": "200GHL1/2/41",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 7.53,
+          "1": 7.53,
+          "2": 7.53,
+          "3": 7.53
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": -1.25,
+          "1": -1.27,
+          "2": -1.13,
+          "3": -1
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": -0.2,
+          "1": 0.01,
+          "2": 0.5,
+          "3": -0.12
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 25.96,
+          "1": 25.96,
+          "2": 25.64,
+          "3": 25.96
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 1,
+          "1": 1,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 679030,
+          "1": 812822,
+          "2": 751923,
+          "3": 783860
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 41.61,
+        "L2": 49.98
+      },
+      "Voltage": {
+        "L1": 3.28,
+        "L2": 3.34
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_5057a5f5ce53981a",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:minority_lanes",
+      "status:L1:RxLOL",
+      "topology_level:L1:media_snr_min:low_tail",
+      "topology_level:L1:txpower_mean:high_tail",
+      "topology_level:L2:media_snr_min:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "human_review",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L1"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.446283,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.80641438
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "M6_fiber_not_identifiable_without_field_evidence",
+        "kind": "measurement_veto",
+        "message": "当前遥测缺少同 lane 双向对称丢失证据，也没有 OTDR、端面镜检或双向功率标定，fiber 只能作为候选与补采请求，不得成为自动结论",
+        "physical_compliance_cap": 0.3,
+        "step_index": null
+      },
+      {
+        "constraint_id": "P9_scope_all_lanes_vs_single_lane",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 effect=support；允许值为 neutral",
+        "physical_compliance_cap": 0.0,
+        "step_index": 0
+      },
+      {
+        "constraint_id": "P9_scope_all_lanes_vs_single_lane",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 target=L1；允许值为 ",
+        "physical_compliance_cap": 0.0,
+        "step_index": 0
+      },
+      {
+        "constraint_id": "",
+        "kind": "fabricated_evidence",
+        "message": "引用了本 case 不存在的证据：drop:L2:media_snr:single_lane。只能引用给定证据清单里的 token",
+        "physical_compliance_cap": 0.0,
+        "step_index": 1
+      },
+      {
+        "constraint_id": "P9_scope_all_lanes_vs_single_lane",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 effect=support；允许值为 neutral",
+        "physical_compliance_cap": 0.0,
+        "step_index": 1
+      },
+      {
+        "constraint_id": "P9_scope_all_lanes_vs_single_lane",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 target=L2；允许值为 ",
+        "physical_compliance_cap": 0.0,
+        "step_index": 1
+      },
+      {
+        "constraint_id": "",
+        "kind": "fabricated_evidence",
+        "message": "引用了本 case 不存在的证据：drop:L2:media_snr:single_lane。只能引用给定证据清单里的 token",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      },
+      {
+        "constraint_id": "P8_bidirectional_symmetry_points_shared_path",
+        "kind": "constraint_violation",
+        "message": "引用的证据 token 家族与该约束的适用范围不匹配",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧 media_snr 存在单 lane 异常，优先级为 4。",
+        "tokens": [
+          "drop:L1:media_snr:single_lane"
+        ],
+        "source": "P9_scope_all_lanes_vs_single_lane"
+      },
+      {
+        "statement": "仲裁第 2 步：L2 侧 media_snr 存在单 lane 异常，优先级为 4。",
+        "tokens": [
+          "drop:L2:media_snr:single_lane"
+        ],
+        "source": "P9_scope_all_lanes_vs_single_lane"
+      },
+      {
+        "statement": "仲裁第 3 步：两端 media_snr 异常，且在同一 lane 双向异常，支持 fiber。",
+        "tokens": [
+          "drop:L1:media_snr:single_lane",
+          "drop:L2:media_snr:single_lane"
+        ],
+        "source": "P8_bidirectional_symmetry_points_shared_path"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2026-05-07 04:41:12",
+      "alarm_ip_interface": "200GHL1/1/5",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.4,
+          "1": 7.4,
+          "2": 7.4,
+          "3": 7.14
+        },
+        "L2": {
+          "0": 7.35,
+          "1": 7.38,
+          "2": 7.35,
+          "3": 7.37
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 0.85,
+          "1": 1.13,
+          "2": 1.3,
+          "3": 1.21
+        },
+        "L2": {
+          "0": 0.63,
+          "1": 0.64,
+          "2": 0.62,
+          "3": 0.63
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 1.36,
+          "1": 1.34,
+          "2": 1.39,
+          "3": 1.25
+        },
+        "L2": {
+          "0": 1.26,
+          "1": 0.67,
+          "2": 1.29,
+          "3": 0.72
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 0.41,
+          "1": -0.46,
+          "2": -0.01,
+          "3": -0.49
+        },
+        "L2-L1": {
+          "0": 0.73,
+          "1": 0.7,
+          "2": 0.77,
+          "3": 0.62
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 24.09,
+          "1": 23.67,
+          "2": 0,
+          "3": 23.48
+        },
+        "L2": {
+          "0": 23.79,
+          "1": 24.85,
+          "2": 24.54,
+          "3": 24.41
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": 25.71,
+          "1": 25.51,
+          "2": 25.3,
+          "3": 25.51
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 660825,
+          "1": 746647,
+          "2": 173400,
+          "3": 709243
+        },
+        "L2": {
+          "0": 708176,
+          "1": 739848,
+          "2": 719464,
+          "3": 699181
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 56.32,
+        "L2": 54.98
+      },
+      "Voltage": {
+        "L1": 3.2,
+        "L2": 3.32
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_575f055672af011d",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "topology_level:L1:txpower_mean:high_tail",
+      "topology_level:L2:rxpower_mean:high_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L1"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": "L2",
+    "pilot_gate": false,
+    "confidence": 0.643916,
+    "confidence_lower_bound": 0.307218,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.44457766
+    },
+    "compliance_penalties": [],
+    "llm_output_valid": true,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L2 的接收光功率均值处于高尾，可能表明对端发送链路异常。",
+        "tokens": [
+          "level:L2:rxpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 2 步：L2 的发送光功率均值处于低尾，可能表明对端发送链路异常。",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 3 步：L1 和 L2 的 SerDes SNR 均有效，排除了本端和对端的电口异常。",
+        "tokens": [
+          "serdes:L1:valid",
+          "serdes:L2:valid"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 4 步：由于 L2 的发送光功率均值低，根据 P5，排除光纤问题。",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "第 5 步：L2 的接收光功率高尾和发送光功率低尾同时存在，可能表明 L2 的发送链路异常。",
+        "tokens": [
+          "level:L2:rxpower_mean:high_tail",
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "llm"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-05-09 17:03:00",
+      "alarm_ip_interface": "400GHL1/6/6:1",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.29,
+          "1": 7.29,
+          "2": 7.29,
+          "3": 7.29
+        },
+        "L2": {
+          "0": 7.72,
+          "1": 7.72,
+          "2": 7.72,
+          "3": 7.72
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 1.04,
+          "1": 1.11,
+          "2": 1.15,
+          "3": 1.16
+        },
+        "L2": {
+          "0": -0.16,
+          "1": -0.22,
+          "2": 0.06,
+          "3": 0.46
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 1.27,
+          "1": 1.57,
+          "2": 1.48,
+          "3": 1.32
+        },
+        "L2": {
+          "0": 2.15,
+          "1": 1.98,
+          "2": 1.96,
+          "3": 2.1
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 1.11,
+          "1": 0.87,
+          "2": 0.81,
+          "3": 0.94
+        },
+        "L2-L1": {
+          "0": 1.43,
+          "1": 1.79,
+          "2": 1.42,
+          "3": 0.86
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 26.3,
+          "1": 25.96,
+          "2": 25.64,
+          "3": 25.34
+        },
+        "L2": {
+          "0": 25.34,
+          "1": 25.64,
+          "2": 26.31,
+          "3": 26.31
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 675771,
+          "1": 722188,
+          "2": 274355,
+          "3": 645405
+        },
+        "L2": {
+          "0": 662834,
+          "1": 691425,
+          "2": 656927,
+          "3": 677648
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 48.49,
+        "L2": 55.27
+      },
+      "Voltage": {
+        "L1": 3.25,
+        "L2": 3.38
+      },
+      "Lane number": {
+        "L1": 4,
+        "L2": 4
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_a4318ce5ac84fd02",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:media_snr:all_lanes",
+      "drop_ratio:L2:serdes_snr:majority_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "topology_level:L2:rxpower_mean:low_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.697668,
+    "confidence_lower_bound": 0.325903,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.71334073
+    },
+    "compliance_penalties": [],
+    "llm_output_valid": true,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧发送光功率处于断光哨兵（<= -39 dBm）",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 侧接收光功率异常",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 3 步：L2 侧发送光功率正常",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "P4_tx_has_light_or_no_light"
+      },
+      {
+        "statement": "仲裁第 4 步：L2 侧接收链路存在异常",
+        "tokens": [
+          "drop:L2:media_snr:all_lanes",
+          "drop:L2:serdes_snr:partial_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-05-18 10:37:11",
+      "alarm_ip_interface": "200GHL1/1/24",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 137528,
+          "1": 0,
+          "2": 156836,
+          "3": 0
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 47.89,
+        "L2": 30.13
+      },
+      "Voltage": {
+        "L1": 3.24,
+        "L2": 3.37
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_c1608e8fa94d96ff",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.434166,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.74582947
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "P10_receive_symptom_points_to_far_transmit_chain",
+        "kind": "constraint_violation",
+        "message": "该约束不允许 effect=neutral；允许值为 support",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      },
+      {
+        "constraint_id": "P10_receive_symptom_points_to_far_transmit_chain",
+        "kind": "constraint_violation",
+        "message": "引用的证据 token 家族与该约束的适用范围不匹配",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧发送光功率处于断光哨兵（<= -39 dBm）",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 侧接收异常，支持 L2 侧发送链路问题",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 3 步：L2 侧发送链路正常，但接收链路无异常",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail",
+          "serdes:L2:valid"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2026-05-05 23:37:58",
+      "alarm_ip_interface": "200GHL1/1/9",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 6.82,
+          "1": 6.82,
+          "2": 6.82,
+          "3": 6.82
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0.36,
+          "1": 0.38,
+          "2": 0.18,
+          "3": 0.54
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 1.39,
+          "1": 1.34,
+          "2": 1.39,
+          "3": 1.35
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 25.64,
+          "1": 25.96,
+          "2": 25.96,
+          "3": 25.96
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 749606,
+          "1": 673838,
+          "2": 674722,
+          "3": 754014
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 43.72,
+        "L2": 51.21
+      },
+      "Voltage": {
+        "L1": 3.24,
+        "L2": 3.3
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 4
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_c5a6dc5aa9a48b79",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:media_snr:minority_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "status:L2:RxLOL",
+      "topology_level:L2:media_snr_min:high_tail",
+      "topology_level:L2:txpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.729464,
+    "confidence_lower_bound": 0.025679,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.87231854
+    },
+    "compliance_penalties": [],
+    "llm_output_valid": true,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧发送光功率处于断光哨兵（<= -39 dBm）",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 侧接收光功率异常，支持 L2 侧发送链路问题",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 3 步：L2 侧 media_snr 存在单 lane 异常，支持 L2 侧问题",
+        "tokens": [
+          "drop:L2:media_snr:single_lane",
+          "imbalance:L2:serdes_snr"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 4 步：L2 侧发送链路正常，排除 L2 侧发送问题",
+        "tokens": [
+          "level:L2:txpower_mean:high_tail"
+        ],
+        "source": "P4_tx_has_light_or_no_light"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2026-05-04 02:40:17",
+      "alarm_ip_interface": "200GHL1/2/33",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 7.72,
+          "1": 7.72,
+          "2": 7.72,
+          "3": 7.72
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 1.04,
+          "1": 1.18,
+          "2": 1.42,
+          "3": 1.32
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0.28,
+          "1": 0.36,
+          "2": 0.63,
+          "3": 0.59
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 26.31,
+          "1": 26.69,
+          "2": 25.64,
+          "3": 0
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 728037,
+          "1": 686333,
+          "2": 667583,
+          "3": 152128
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Abnormal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 53.34,
+        "L2": 53.11
+      },
+      "Voltage": {
+        "L1": 3.25,
+        "L2": 3.31
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_c6d3367c33ca240e",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.43799,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.76495042
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "P10_receive_symptom_points_to_far_transmit_chain",
+        "kind": "constraint_violation",
+        "message": "引用的证据 token 家族与该约束的适用范围不匹配",
+        "physical_compliance_cap": 0.0,
+        "step_index": 3
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧发送光功率处于断光哨兵（<= -39 dBm）",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 侧接收光功率异常",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 3 步：L1 侧 media_snr 异常",
+        "tokens": [
+          "drop:L1:media_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 4 步：L1 侧 serdes_snr 异常",
+        "tokens": [
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-05-15 10:16:00",
+      "alarm_ip_interface": "200GHL1/2/41",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 7.29,
+          "1": 7.29,
+          "2": 7.29,
+          "3": 7.29
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 1.03,
+          "1": 0.81,
+          "2": 0.83,
+          "3": 0.74
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 1.52,
+          "1": 0.7,
+          "2": 0.05,
+          "3": 0.7
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 26.3,
+          "1": 25.34,
+          "2": 25.64,
+          "3": 26.3
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 623370,
+          "1": 722776,
+          "2": 691864,
+          "3": 664232
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 51.79,
+        "L2": 46.15
+      },
+      "Voltage": {
+        "L1": 3.24,
+        "L2": 3.27
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_d316869a65efe208",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:media_snr:all_lanes",
+      "drop_ratio:L2:serdes_snr:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "topology_level:L2:rxpower_mean:low_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L1",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": true,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": "L1",
+    "pilot_gate": false,
+    "confidence": 0.604116,
+    "confidence_lower_bound": 0.307218,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.3,
+      "history_similarity": 0.69557773
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "verdict_step_mismatch",
+        "message": "verdict=L1 与推理链汇总 L2 不一致，已按推理链改写结论",
+        "physical_compliance_cap": 1.0,
+        "step_index": null
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1 侧存在发送光功率处于断光哨兵（<= -39 dBm）的 lane，光纤无法解释一束从未被发出的光，故排除介质根因",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "第 2 步：L1 侧接收光功率异常，指向对端发送链路问题",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:media_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 3 步：L2 侧发送光功率正常，但接收链路存在异常",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail",
+          "drop:L2:media_snr:all_lanes",
+          "drop:L2:serdes_snr:all_lanes"
+        ],
+        "source": "P13_local_signal_metrics_point_local"
+      },
+      {
+        "statement": "第 4 步：两端异常优先级相同，且定位结果互相冲突，考虑光纤问题",
+        "tokens": [
+          "lane:L1_to_L2:bidirectional_same_lane",
+          "lane:L2_to_L1:bidirectional_same_lane"
+        ],
+        "source": "P8_bidirectional_symmetry_points_shared_path"
+      },
+      {
+        "statement": "第 5 步：由于 L1 侧发送链路异常，且无法确定光纤问题，最终归因于 L1",
+        "tokens": [
+          "drop:L1:txpower:all_lanes",
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain|P13_local_signal_metrics_point_local"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-05-18 10:39:00",
+      "alarm_ip_interface": "400GHL1/5/3:2",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 47.97,
+        "L2": 30.13
+      },
+      "Voltage": {
+        "L1": 3.24,
+        "L2": 3.37
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理—结论冲突：模型原结论与步骤目标不一致；两种自动改写在本批各纠正8条、各破坏8条，必须转人工而非自动选边。"
+  },
+  {
+    "case_id": "case_de8351ca5d499f61",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.43799,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.76495042
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "P10_receive_symptom_points_to_far_transmit_chain",
+        "kind": "constraint_violation",
+        "message": "引用的证据 token 家族与该约束的适用范围不匹配",
+        "physical_compliance_cap": 0.0,
+        "step_index": 3
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧发送光功率处于断光哨兵（<= -39 dBm）",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 侧接收光功率异常",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 3 步：L1 侧 media_snr 异常",
+        "tokens": [
+          "drop:L1:media_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 4 步：L1 侧 serdes_snr 异常",
+        "tokens": [
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-05-15 10:15:00",
+      "alarm_ip_interface": "200GHL1/2/41",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 7.29,
+          "1": 7.29,
+          "2": 7.29,
+          "3": 7.29
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 1.03,
+          "1": 0.81,
+          "2": 0.83,
+          "3": 0.74
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 1.52,
+          "1": 0.7,
+          "2": 0.05,
+          "3": 0.7
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 25.96,
+          "1": 25.34,
+          "2": 25.64,
+          "3": 25.96
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 623370,
+          "1": 744400,
+          "2": 631203,
+          "3": 700058
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 51.82,
+        "L2": 46.43
+      },
+      "Voltage": {
+        "L1": 3.24,
+        "L2": 3.26
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_4337ad3cc4d9fdf1",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:serdes_snr",
+    "feature_families": [
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:minority_lanes",
+      "status:L1:RxLOL",
+      "topology_level:L1:txpower_mean:low_tail",
+      "topology_level:L2:rxpower_mean:high_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "local_serdes_advisory",
+      "reason": "SerDes异常保留本端候选，但缺少host或状态复核时不终裁",
+      "evidence": [
+        "serdes_snr:L1"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L1",
+    "numeric_tree_candidate": "L1",
+    "pilot_gate": false,
+    "confidence": 0.413638,
+    "confidence_lower_bound": 0.410403,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.6431878
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "输出不是符合 schema 的 JSON，无法逐步校验",
+        "physical_compliance_cap": 0.0,
+        "step_index": null
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：L1.media_snr 在单个 lane 上异常，指向 L1 的接收链路问题。",
+        "tokens": [
+          "drop:L1:media_snr:single_lane"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 2 步：L1.rxpower_mean 低尾，可能表明接收功率不足。",
+        "tokens": [
+          "level:L1:rxpower_mean:low_tail"
+        ],
+        "source": "P6_rx_has_continuous_degradation"
+      },
+      {
+        "statement": "第 3 步：L2.txpower_mean 低尾，可能表明发送功率不足。",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "P4_tx_has_light_or_no_light"
+      },
+      {
+        "statement": "第 4 步：L1 的 RxLOL 状态异常，表明接收链路存在问题。",
+        "tokens": [
+          "status:L1:RxLOL"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "第 5 步：L2 的发送功率低，可能影响接收端的信号质量。",
+        "tokens": [
+          "level:L2:txpower_mean:low_tail"
+        ],
+        "source": "P4_tx_has_light_or_no_light"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2026-06-05 00:42:18",
+      "alarm_ip_interface": "200GHL1/2/44",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 7.4,
+          "1": 7.4,
+          "2": 7.4,
+          "3": 7.4
+        },
+        "L2": {
+          "0": 6.77,
+          "1": 6.77,
+          "2": 6.77,
+          "3": 6.77
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -0.58,
+          "1": 0.18,
+          "2": 0.5,
+          "3": 0.77
+        },
+        "L2": {
+          "0": 0.05,
+          "1": 0.55,
+          "2": 0.89,
+          "3": 0.76
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 0.89,
+          "1": 1.48,
+          "2": 1.42,
+          "3": 1.38
+        },
+        "L2": {
+          "0": 1.69,
+          "1": 1.77,
+          "2": 1.43,
+          "3": 1.64
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 2.27,
+          "1": 1.59,
+          "2": 0.93,
+          "3": 0.87
+        },
+        "L2-L1": {
+          "0": 0.84,
+          "1": 0.93,
+          "2": 0.53,
+          "3": 0.62
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 25.34,
+          "1": 25.34,
+          "2": 25.64,
+          "3": 0
+        },
+        "L2": {
+          "0": 26.68,
+          "1": 24.55,
+          "2": 25.96,
+          "3": 25.34
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 683811,
+          "1": 740298,
+          "2": 634978,
+          "3": 95508
+        },
+        "L2": {
+          "0": 630720,
+          "1": 743401,
+          "2": 637568,
+          "3": 728843
+        }
+      },
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 56.32,
+        "L2": 48.09
+      },
+      "Voltage": {
+        "L1": 3.2,
+        "L2": 3.33
+      },
+      "Lane number": {
+        "L1": 2,
+        "L2": 2
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_45eb513a4b715340",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:media_snr:minority_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "status:L2:RxLOL",
+      "status:L2:RxLOS",
+      "topology_level:L2:rxpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.541909,
+    "confidence_lower_bound": 0.325903,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.75,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.75,
+      "history_similarity": 0.83454516
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "fabricated_evidence",
+        "message": "引用了本 case 不存在的证据：drop:L2:serdes_snr:single_lane。只能引用给定证据清单里的 token",
+        "physical_compliance_cap": 0.0,
+        "step_index": 2
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": null,
+    "correction_reason": "LLM终裁与独立物理候选冲突，两者均不能单独覆盖另一方，转人工。",
+    "llm_steps": [
+      {
+        "statement": "仲裁第 1 步：L1 侧发送光功率处于断光哨兵（<= -39 dBm）的 lane，排除光纤根因",
+        "tokens": [
+          "drop:L1:txpower:all_lanes"
+        ],
+        "source": "P5_tx_down_excludes_medium"
+      },
+      {
+        "statement": "仲裁第 2 步：L1 侧接收异常，支持 L2 侧发送链路问题",
+        "tokens": [
+          "drop:L1:rxpower:all_lanes",
+          "drop:L1:media_snr:all_lanes",
+          "drop:L1:serdes_snr:all_lanes"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      },
+      {
+        "statement": "仲裁第 3 步：L2 侧存在 media_snr 和 serdes_snr 异常，支持 L2 侧问题",
+        "tokens": [
+          "drop:L2:media_snr:single_lane",
+          "drop:L2:serdes_snr:single_lane"
+        ],
+        "source": "P10_receive_symptom_points_to_far_transmit_chain"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "频繁升降lane",
+      "alarm_time": "2026-06-18 20:19:08",
+      "alarm_ip_interface": "200GHL1/2/2",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 7.32,
+          "1": 7.34,
+          "2": 7.34,
+          "3": 7.35
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0.66,
+          "1": 0.66,
+          "2": 0.67,
+          "3": 0.67
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0.98,
+          "1": 0.69,
+          "2": 0.72,
+          "3": -6.32
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 25.57,
+          "1": 26.18,
+          "2": 25.68,
+          "3": 0
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": 25.19,
+          "1": 25.81,
+          "2": 25.81,
+          "3": 25.81
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 696143,
+          "1": 757848,
+          "2": 821384,
+          "3": 1
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Abnormal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Abnormal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 44.21,
+        "L2": 52.96
+      },
+      "Voltage": {
+        "L1": 3.26,
+        "L2": 3.3
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": false,
+    "corrected_correct": null,
+    "label_changed": false,
+    "old_wrong_corrected_right": false,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "推理中的独立物理候选与真实标签一致，而旧LLM最终标签错误；因候选与LLM冲突，修复后取消final并进入人工复核。"
+  },
+  {
+    "case_id": "case_a8ad9737cec3891e",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:media_snr:all_lanes",
+      "drop_ratio:L2:serdes_snr:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "status:L2:RxLOS",
+      "topology_level:L2:rxpower_mean:low_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.0,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.0,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.0,
+      "history_similarity": 0.0
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "3 次生成均未产出可校验的结构化输出",
+        "physical_compliance_cap": 0.0,
+        "step_index": null
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-06-25 22:24:00",
+      "alarm_ip_interface": "400GHL1/1/2:2",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Abnormal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 52.09,
+        "L2": 24.99
+      },
+      "Voltage": {
+        "L1": 3.23,
+        "L2": 3.42
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_bec51c1fedf09dea",
+    "source_dataset": "all_data",
+    "topology_id": "400g-200g-logical4",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:media_snr:all_lanes",
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:serdes_snr:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:media_snr:all_lanes",
+      "drop_ratio:L2:serdes_snr:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_ok_rx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+      "status:L1:RxLOL",
+      "status:L1:RxLOS",
+      "status:L2:RxLOS",
+      "topology_level:L2:rxpower_mean:low_tail",
+      "topology_level:L2:txpower_mean:low_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L2.host_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.0,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.0,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.0,
+      "history_similarity": 0.0
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "3 次生成均未产出可校验的结构化输出",
+        "physical_compliance_cap": 0.0,
+        "step_index": null
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2026-06-25 22:30:00",
+      "alarm_ip_interface": "400GHL1/1/2:2",
+      "link_location": "超平面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null
+        }
+      },
+      "serdes_snr": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        }
+      },
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Abnormal"
+      },
+      "RxLOL": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 52.13,
+        "L2": 24.96
+      },
+      "Voltage": {
+        "L1": 3.23,
+        "L2": 3.42
+      },
+      "Lane number": {
+        "L1": 0,
+        "L2": 0
+      }
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_df95e042b5568432",
+    "source_dataset": "rule1_channel_not_4",
+    "topology_id": "400g-400g-logical8",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:single:txpower",
+    "feature_families": [
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "topology_level:L1:media_snr_min:high_tail",
+      "topology_level:L1:rxpower_mean:high_tail",
+      "topology_level:L1:txpower_mean:high_tail",
+      "topology_level:L2:rxpower_mean:high_tail",
+      "topology_level:L2:txpower_mean:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L1.serdes_snr",
+      "L2.host_snr",
+      "L2.serdes_snr"
+    ],
+    "remote_branch": "N5b",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": "L1",
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "advisory",
+      "terminal": false,
+      "rule": "legacy_advisory",
+      "reason": "旧专家结论仅作为候选，等待独立物理或训练校准证据",
+      "evidence": [],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": "L1"
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L2",
+    "numeric_tree_candidate": null,
+    "pilot_gate": false,
+    "confidence": 0.0,
+    "confidence_lower_bound": 0.283437,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.0,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.0,
+      "history_similarity": 0.0
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "3 次生成均未产出可校验的结构化输出",
+        "physical_compliance_cap": 0.0,
+        "step_index": null
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2025-10-03 12:11:38",
+      "alarm_ip_interface": "2409:27ff:1013:0000:000f:0000:0000:0008--400GE1/0/21",
+      "link_location": "参数面",
+      "bias": {
+        "L1": {
+          "0": 7.62,
+          "1": 7.61,
+          "2": 7.62,
+          "3": 7.62,
+          "4": 7.62,
+          "5": 7.62,
+          "6": 7.62,
+          "7": 7.61
+        },
+        "L2": {
+          "0": 7.24,
+          "1": 7.24,
+          "2": 7.24,
+          "3": 7.24,
+          "4": 7.24,
+          "5": 6.98,
+          "6": 7.24,
+          "7": 7.24
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": 1.12,
+          "1": 1.26,
+          "2": 1.08,
+          "3": 0.77,
+          "4": 2.08,
+          "5": 1.78,
+          "6": 1.49,
+          "7": 1.5
+        },
+        "L2": {
+          "0": 1.2,
+          "1": 1.18,
+          "2": 1.2,
+          "3": 1.32,
+          "4": 1.27,
+          "5": 1.28,
+          "6": 1.29,
+          "7": 1.19
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": 2.09,
+          "1": 1.64,
+          "2": 2.15,
+          "3": 2.15,
+          "4": 1.6,
+          "5": 1.7,
+          "6": 1.65,
+          "7": 1.73
+        },
+        "L2": {
+          "0": 1.86,
+          "1": 2.12,
+          "2": 1.94,
+          "3": 1.84,
+          "4": 1.93,
+          "5": 2.53,
+          "6": 2.29,
+          "7": 1.97
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": 0.74,
+          "1": 0.86,
+          "2": 0.86,
+          "3": 1.07,
+          "4": -0.15,
+          "5": 0.75,
+          "6": 0.8,
+          "7": 0.47
+        },
+        "L2-L1": {
+          "0": 0.89,
+          "1": 0.46,
+          "2": 0.95,
+          "3": 0.83,
+          "4": 0.33,
+          "5": 0.42,
+          "6": 0.36,
+          "7": 0.54
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 25.96,
+          "1": 25.96,
+          "2": 25.96,
+          "3": 25.64,
+          "4": 26.31,
+          "5": 26.31,
+          "6": 25.64,
+          "7": 25.96
+        },
+        "L2": {
+          "0": 25.64,
+          "1": 26.3,
+          "2": 25.34,
+          "3": 25.64,
+          "4": 25.64,
+          "5": 26.3,
+          "6": 26.3,
+          "7": 26.3
+        }
+      },
+      "host_snr": {
+        "L1": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null,
+          "4": null,
+          "5": null,
+          "6": null,
+          "7": null
+        },
+        "L2": {
+          "0": null,
+          "1": null,
+          "2": null,
+          "3": null,
+          "4": null,
+          "5": null,
+          "6": null,
+          "7": null
+        }
+      },
+      "serdes_snr": null,
+      "RxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "Temperature": {
+        "L1": 49.12,
+        "L2": 43.78
+      },
+      "Voltage": {
+        "L1": 3.25,
+        "L2": 3.22
+      },
+      "Lane number": null
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  },
+  {
+    "case_id": "case_9ae85842e4b45929",
+    "source_dataset": "rule1_channel_not_4",
+    "topology_id": "400g-400g-logical8",
+    "telemetry_status": "partial_telemetry",
+    "v5_review_category": "decision_graph_gap",
+    "expert_group": "expert:port_status_gate",
+    "feature_families": [
+      "paired_lane_state",
+      "signal_drop_ratio",
+      "status_fault",
+      "topology_level_tail"
+    ],
+    "feature_tokens": [
+      "drop_ratio:L1:rxpower:all_lanes",
+      "drop_ratio:L1:txpower:all_lanes",
+      "drop_ratio:L2:txpower:all_lanes",
+      "lane:L1_to_L2:bidirectional_same_lane",
+      "lane:L1_to_L2:tx_down",
+      "lane:L2_to_L1:bidirectional_same_lane",
+      "lane:L2_to_L1:tx_down",
+      "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+      "lane_scope:L1_to_L2:tx_down:all_lanes",
+      "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+      "lane_scope:L2_to_L1:tx_down:all_lanes",
+      "status:L1:RxLOS",
+      "status:L2:TxLOL",
+      "status:L2:TxLOS",
+      "topology_level:L2:media_snr_min:high_tail"
+    ],
+    "missing_fields": [
+      "L1.host_snr",
+      "L1.serdes_snr",
+      "L2.host_snr",
+      "L2.serdes_snr"
+    ],
+    "remote_branch": "N5c",
+    "remote_action": "request_evidence",
+    "llm_terminal_verdict": null,
+    "llm_proposed_verdict": "L2",
+    "expert_candidate": null,
+    "causal_expert": {
+      "version": "filtered-rule-expert-causal-v2",
+      "verdict": "L1",
+      "strength": "moderate",
+      "terminal": false,
+      "rule": "confirmed_tx_fault",
+      "reason": "L1发送lane触底，缺少发送状态复核",
+      "evidence": [
+        "lane:L1_to_L2:tx_down"
+      ],
+      "candidates": [
+        "L1"
+      ],
+      "original_verdict": null
+    },
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "reasoning_verdict_conflict": false,
+    "top_history_candidate": "L1",
+    "numeric_tree_candidate": "L1",
+    "pilot_gate": false,
+    "confidence": 0.447346,
+    "confidence_lower_bound": 0.410403,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.8,
+      "physical_compliance": 0.0,
+      "reasoning_completeness": 0.9,
+      "history_similarity": 0.1367294
+    },
+    "compliance_penalties": [
+      {
+        "constraint_id": "",
+        "kind": "unsupported_step",
+        "message": "输出不是符合 schema 的 JSON，无法逐步校验",
+        "physical_compliance_cap": 0.0,
+        "step_index": null
+      }
+    ],
+    "llm_output_valid": false,
+    "corrected_action": "human_review",
+    "corrected_verdict": "L1",
+    "correction_reason": "旧LLM输出无效；保留独立物理候选供人工复核，不自动终裁。",
+    "llm_steps": [
+      {
+        "statement": "第 1 步：当前 case 的 available_evidence 表明 L1 本端接收类异常，接收类异常默认指向对端发送链。",
+        "tokens": [
+          "available_evidence_token_1",
+          ", available_evidence 中的 token 或物理约束 ID"
+        ],
+        "source": "P1"
+      }
+    ],
+    "raw_telemetry": {
+      "alarm_name": "接口CRC",
+      "alarm_time": "2025-11-20 03:14:00",
+      "alarm_ip_interface": "2409:27ff:1013:0000:000f:0000:0000:0005--400GE16/0/21",
+      "link_location": "参数面",
+      "bias": {
+        "L1": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0
+        },
+        "L2": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0
+        }
+      },
+      "txpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40,
+          "4": -40,
+          "5": -40,
+          "6": -40,
+          "7": -40
+        },
+        "L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40,
+          "4": -40,
+          "5": -40,
+          "6": -40,
+          "7": -40
+        }
+      },
+      "rxpower": {
+        "L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40,
+          "4": -40,
+          "5": -40,
+          "6": -40,
+          "7": -40
+        },
+        "L2": {
+          "0": 1.41,
+          "1": 1.36,
+          "2": 1.4,
+          "3": 1.46,
+          "4": 1.65,
+          "5": 1.82,
+          "6": 1.74,
+          "7": 1.72
+        }
+      },
+      "transmission": {
+        "L1-L2": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40,
+          "4": -40,
+          "5": -40,
+          "6": -40,
+          "7": -40
+        },
+        "L2-L1": {
+          "0": -40,
+          "1": -40,
+          "2": -40,
+          "3": -40,
+          "4": -40,
+          "5": -40,
+          "6": -40,
+          "7": -40
+        }
+      },
+      "media_snr": {
+        "L1": {
+          "0": 26.31,
+          "1": 26.31,
+          "2": 26.31,
+          "3": 25.34,
+          "4": 26.31,
+          "5": 26.31,
+          "6": 25.64,
+          "7": 25.64
+        },
+        "L2": {
+          "0": 26.3,
+          "1": 26.68,
+          "2": 26.3,
+          "3": 26.3,
+          "4": 26.3,
+          "5": 26.3,
+          "6": 25.64,
+          "7": 25.96
+        }
+      },
+      "host_snr": null,
+      "serdes_snr": null,
+      "RxLOS": {
+        "L1": "Abnormal",
+        "L2": "Normal"
+      },
+      "RxLOL": {
+        "L1": "Normal",
+        "L2": "Normal"
+      },
+      "TxLOS": {
+        "L1": "Normal",
+        "L2": "Abnormal"
+      },
+      "TxLOL": {
+        "L1": "Normal",
+        "L2": "Abnormal"
+      },
+      "Temperature": {
+        "L1": 50.19,
+        "L2": 39.28
+      },
+      "Voltage": {
+        "L1": 3.24,
+        "L2": 3.33
+      },
+      "Lane number": null
+    },
+    "acquisition_recommendations": [
+      "补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ],
+    "actual": "L1",
+    "forced_correct": false,
+    "terminal_correct": null,
+    "corrected_correct": true,
+    "label_changed": true,
+    "old_wrong_corrected_right": true,
+    "old_right_corrected_wrong": false,
+    "label_aware_assessment": "旧终裁错误，新因果候选与真实标签一致；该候选仍需训练校准决定能否自动放行。"
+  }
+]

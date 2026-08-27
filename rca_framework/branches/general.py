@@ -463,8 +463,14 @@ def build_request(
     return DiagnosisRequest(
         case_id=result.query_case_id,
         evidence_tokens=result.query_tokens,
-        missing_fields=pack.missing_fields,
-        telemetry_status=pack.telemetry_status,
+        missing_fields=(
+            pack.diagnostic_missing_fields
+            if pack.source_dataset in SOURCE_TOPOLOGIES else pack.missing_fields
+        ),
+        telemetry_status=(
+            pack.diagnostic_telemetry_status
+            if pack.source_dataset in SOURCE_TOPOLOGIES else pack.telemetry_status
+        ),
         candidate_root_causes=tuple(label for label in ROOT_CAUSES if label not in excluded),
         exclusions=exclusions,
         constraint_ids=tuple(item.constraint_id for item in relevant_constraints(result.query_tokens, library)),

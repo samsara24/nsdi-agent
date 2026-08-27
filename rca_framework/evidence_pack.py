@@ -56,6 +56,7 @@ SCALAR_FIELDS: Tuple[str, ...] = ("Temperature", "Voltage")
 
 TELEMETRY_STATUSES: Tuple[str, ...] = ("no_telemetry", "partial_telemetry", "full_telemetry")
 FIELD_STATES: Tuple[str, ...] = ("observed", "missing", "not_applicable", "invalid")
+OPTIONAL_ENHANCEMENT_METRICS: Tuple[str, ...] = ("host_snr",)
 
 
 def _lane_map(case: Dict[str, Any], field_name: str, side: str) -> Dict[str, Optional[float]]:
@@ -205,6 +206,26 @@ class EvidencePack:
         if not self.observed_fields:
             return "no_telemetry"
         return "full_telemetry" if len(self.observed_fields) >= self.expected_field_count else "partial_telemetry"
+
+    @property
+    def diagnostic_missing_fields(self) -> Tuple[str, ...]:
+        """Return only missing fields that can materially block diagnosis.
+
+        ``host_snr`` is sparse by design in the active data.  When observed it
+        can corroborate a local electrical-chain hypothesis, but its absence is
+        not negative evidence and must not trigger evidence requests.
+        """
+        suffixes = tuple(f".{metric}" for metric in OPTIONAL_ENHANCEMENT_METRICS)
+        return tuple(name for name in self.missing_fields if not name.endswith(suffixes))
+
+    @property
+    def diagnostic_telemetry_status(self) -> str:
+        suffixes = tuple(f".{metric}" for metric in OPTIONAL_ENHANCEMENT_METRICS)
+        expected = max(0, self.expected_field_count - len(SIDES) * len(OPTIONAL_ENHANCEMENT_METRICS))
+        observed = sum(not name.endswith(suffixes) for name in self.observed_fields)
+        if observed <= 0:
+            return "no_telemetry"
+        return "full_telemetry" if observed >= expected else "partial_telemetry"
 
     def reading(self, side: str, metric: str) -> MetricReading:
         for item in self.readings:

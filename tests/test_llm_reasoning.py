@@ -266,6 +266,21 @@ def test_filtered_rule_prompt_uses_general_optional_reasoning_contract(n5c):
     assert "historical_evidence_chains" in prompt
 
 
+def test_filtered_rule_prompt_treats_host_snr_as_optional_enhancement(n5c):
+    from dataclasses import replace
+
+    request = replace(
+        n5c["request"],
+        missing_fields=("L1.host_snr", "L2.host_snr"),
+        topology_context={"contract_version": "filtered-rule-topology-v1"},
+    )
+    prompt = build_prompt(request)
+    assert "host_snr 是可选增强证据" in prompt
+    assert "缺失时不扣分、不要求补采" in prompt
+    assert "只有对端 TxLOS/TxLOL" in prompt
+    assert '"missing_fields": []' in prompt
+
+
 def test_prompt_exposes_checker_effect_target_and_token_contracts(n5c):
     prompt = build_prompt(n5c["request"])
     assert "结构化引用契约" in prompt
