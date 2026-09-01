@@ -1,0 +1,272 @@
+{
+  "schema_version": "filtered-rule-dual-test-run-manifest-v1",
+  "created_at_utc": "2026-08-23T21:01:12.958872+00:00",
+  "python_version": "3.11.11",
+  "git_revision": "3343b064f20ee1b75076b139884caa9cbb9397b2",
+  "scope": {
+    "self_evolution": false,
+    "feedback_update": false,
+    "flow": "one temporal train -> persisted knowledge reload -> two independent source tests",
+    "generation": "route once -> one LLM generation -> N6 confidence gate"
+  },
+  "data": {
+    "data_dir": "/home/chenziang/nsdi-agent-clean/datasets/filtered_rule_temporal_2025_06_09_v1",
+    "manifest_schema": "filtered-rule-temporal-split-v1",
+    "manifest_hash": "5d7b2b0aa2d19769138fe13f82a19cd498088ec6ea36c0090124798ceb3fe45e",
+    "train_months": [
+      "2025-06",
+      "2025-07",
+      "2025-08",
+      "2025-09"
+    ],
+    "train_size": 124,
+    "test_sizes": {
+      "test_all_data": 417,
+      "test_rule1_channel_not_4": 67
+    },
+    "topology_contract": "filtered-rule-topology-v1"
+  },
+  "knowledge": {
+    "schema_version": "offline-knowledge-bundle-v1",
+    "path": "/home/chenziang/nsdi-agent-clean/artifacts/filtered_rule_temporal_20260823T122701Z/run/knowledge/knowledge_bundle.json",
+    "content_hash": "6f024f0f5dfcf3ad",
+    "evidence_graph_version": "evidence-graph-v1:124:c44c5ca27ce1b801",
+    "feature_profile": "filtered_rule_v1",
+    "feature_dictionary_version": "filtered-rule-feature-dictionary-v1",
+    "feature_dictionary_hash": "f399d9758b670f8d",
+    "learned_sop_version": "numeric-decision-tree-v1",
+    "learned_sop_hash": "2e84eb36c2257ea7"
+  },
+  "versions": {
+    "topology_contract": "filtered-rule-topology-v1",
+    "physics_library": "physics-constraints-v2",
+    "physics_library_hash": "3974c17d42beae36",
+    "measurement_contract_library": "measurement-contracts-v1",
+    "measurement_contract_library_hash": "97793b8fa84f682e",
+    "expert_sop": "expert-sop-playbook-v2",
+    "expert_sop_hash": "55da6164d312bdf7",
+    "prompt_template": "filtered-rule-general-structured-retry-v4",
+    "prompt_template_hash": "2e4c93e32ac575f8",
+    "decision_policy": "decision-policy-v3-forced-multidim"
+  },
+  "data_quality": {
+    "train": {
+      "case_count": 124,
+      "label_distribution": {
+        "L1": 50,
+        "L2": 63,
+        "fiber": 11
+      },
+      "missing_alarm_ip_interface": 54,
+      "missing_lane_number": 64,
+      "host_snr_present_cases": 90,
+      "l1_metric_width_over_4_cases": 35,
+      "l2_metric_width_over_4_cases": 36,
+      "telemetry_status": {
+        "full_telemetry": 6,
+        "partial_telemetry": 118
+      },
+      "optical_blackout_cases": 0,
+      "empty_feature_vector_cases": 0
+    },
+    "test_all_data": {
+      "quality": {
+        "case_count": 417,
+        "label_distribution": {
+          "L1": 144,
+          "L2": 258,
+          "fiber": 15
+        },
+        "missing_alarm_ip_interface": 0,
+        "missing_lane_number": 14,
+        "host_snr_present_cases": 355,
+        "l1_metric_width_over_4_cases": 0,
+        "l2_metric_width_over_4_cases": 0,
+        "telemetry_status": {
+          "full_telemetry": 8,
+          "partial_telemetry": 409
+        },
+        "optical_blackout_cases": 0,
+        "empty_feature_vector_cases": 0
+      },
+      "topology_retrieval": {
+        "case_count": 417,
+        "cross_topology_fallback_cases": 0,
+        "compatible_top_candidate_cases": 417,
+        "top_candidate_source_distribution": {
+          "all_data": 417
+        }
+      }
+    },
+    "test_rule1_channel_not_4": {
+      "quality": {
+        "case_count": 67,
+        "label_distribution": {
+          "L1": 37,
+          "L2": 29,
+          "fiber": 1
+        },
+        "missing_alarm_ip_interface": 0,
+        "missing_lane_number": 67,
+        "host_snr_present_cases": 38,
+        "l1_metric_width_over_4_cases": 67,
+        "l2_metric_width_over_4_cases": 67,
+        "telemetry_status": {
+          "partial_telemetry": 67
+        },
+        "optical_blackout_cases": 3,
+        "empty_feature_vector_cases": 0
+      },
+      "topology_retrieval": {
+        "case_count": 67,
+        "cross_topology_fallback_cases": 0,
+        "compatible_top_candidate_cases": 67,
+        "top_candidate_source_distribution": {
+          "rule1_channel_not_4": 67
+        }
+      }
+    }
+  },
+  "retrieval": {
+    "top_k": 0,
+    "policy": {
+      "name": "filtered-rule-three-channel-v2",
+      "description": "活动数据双相似度三通道路由：S_feature=S_graph=1.0 进 N5a；两者均 >=0.70 进 N5b；其余（包括零特征和量测 blackout）进 N5c。N6 只在单次推理后执行置信度降级，不作为推理前的第四通道。",
+      "exact_similarity": 1.0,
+      "partial_similarity": 0.7,
+      "partial_requires_full_coverage": false,
+      "abstain_on_empty_evidence": false,
+      "abstain_on_optical_blackout": false,
+      "use_dual_similarity": true,
+      "graph_partial_similarity": 0.7
+    },
+    "match_algorithm_version": "explainable-feature-semantic-graph-jaccard-v1",
+    "same_topology_preferred": true
+  },
+  "decision": {
+    "version": "decision-policy-v3-forced-multidim",
+    "final_lower_bound": 0.5,
+    "minimum_support": 10,
+    "candidate_order": [
+      "branch"
+    ],
+    "target_selective_risk": null,
+    "fitted_on": "",
+    "non_identifiable_labels": [],
+    "non_identifiable_evidence": {},
+    "per_label_lower_bound": {}
+  },
+  "personal_alignment_gate": {
+    "schema_version": "personal-rca-loop-gate-v1",
+    "authority": "docs/个人整体思路.md",
+    "main_path": "evidence graph match -> N5a historical chain reuse / N5b physics key-evidence LLM arbitration / N5c expert SOP constrained LLM -> M9 degradation",
+    "candidate_order": [
+      "branch"
+    ],
+    "candidate_order_ok": true,
+    "expert_and_sop_are_advisory": true,
+    "expert_sop_version": "expert-sop-playbook-v2",
+    "expert_sop_hash": "55da6164d312bdf7",
+    "n8_feedback_update": false,
+    "forbidden_loop_target": "forced three-class accuracy or lift alone without confidence calibration"
+  },
+  "llm": {
+    "backend": "vllm",
+    "model_path": "/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B",
+    "tensor_parallel_size": 4,
+    "dtype": "bfloat16",
+    "max_new_tokens": 16384,
+    "max_model_len": 32768,
+    "gpu_memory_utilization": 0.85,
+    "max_attempts": 3,
+    "single_pass": false,
+    "retry_failed_cases_only": true,
+    "structured_output": "json_schema",
+    "guided_json": true,
+    "seed": 42
+  },
+  "label_leakage": false,
+  "leakage_policy": "test labels are used only after inference for metrics and reports",
+  "gpu": {
+    "before": {
+      "available": true,
+      "cuda_visible_devices": "0,4,5,6",
+      "gpus": [
+        {
+          "index": 0,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-a653a161-ee84-619b-3631-1fed7e462fe1",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 138,
+          "memory_free_mb": 48402
+        },
+        {
+          "index": 4,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-746b9287-e1ed-4544-a911-c6ed5e62e934",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 1,
+          "memory_free_mb": 48539
+        },
+        {
+          "index": 5,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-81dff38c-1a05-713e-a591-90cc85aced35",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 1,
+          "memory_free_mb": 48539
+        },
+        {
+          "index": 6,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-65b0ebf4-6c61-51a2-6598-a4d81db4b4d7",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 1,
+          "memory_free_mb": 48539
+        }
+      ],
+      "error": ""
+    },
+    "after": {
+      "available": true,
+      "cuda_visible_devices": "0,4,5,6",
+      "gpus": [
+        {
+          "index": 0,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-a653a161-ee84-619b-3631-1fed7e462fe1",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 42052,
+          "memory_free_mb": 6489
+        },
+        {
+          "index": 4,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-746b9287-e1ed-4544-a911-c6ed5e62e934",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 41918,
+          "memory_free_mb": 6623
+        },
+        {
+          "index": 5,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-81dff38c-1a05-713e-a591-90cc85aced35",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 41918,
+          "memory_free_mb": 6623
+        },
+        {
+          "index": 6,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-65b0ebf4-6c61-51a2-6598-a4d81db4b4d7",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 41918,
+          "memory_free_mb": 6623
+        }
+      ],
+      "error": ""
+    },
+    "memory_released": false,
+    "backend_close_called": true
+  }
+}

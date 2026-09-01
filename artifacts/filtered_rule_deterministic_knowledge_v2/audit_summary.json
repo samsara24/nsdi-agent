@@ -1,0 +1,42 @@
+{
+  "evidence_graph_case_count": 124,
+  "evidence_graph_diagnosis_count": 124,
+  "evidence_graph_version": "evidence-graph-v1:124:b60df2407a47cbde",
+  "feature_dictionary_hash": "7764aa3a23d2ac2e",
+  "feature_dictionary_version": "filtered-rule-feature-dictionary-v2",
+  "feature_model_version": "filtered-rule-feature-model-v2",
+  "knowledge_build_mode": "deterministic-train-only-v1",
+  "knowledge_bundle_hash": "565a61e23207d798",
+  "knowledge_bundle_path": "artifacts/filtered_rule_deterministic_knowledge_v2/knowledge_bundle.json",
+  "label_distribution": {
+    "L1": 50,
+    "L2": 63,
+    "fiber": 11
+  },
+  "label_leakage": false,
+  "learned_sop_hash": "2e84eb36c2257ea7",
+  "learned_sop_version": "numeric-decision-tree-v1",
+  "llm_calibrations": 0,
+  "llm_calls": 0,
+  "llm_traces": 0,
+  "n8_frozen": true,
+  "routing_distribution": {
+    "N5a": 9,
+    "N5b": 36,
+    "N5c": 79
+  },
+  "schema_version": "filtered-rule-deterministic-knowledge-audit-v1",
+  "signature_summary": {
+    "empty_signature_case_count": 0,
+    "mixed_signature_case_count": 7,
+    "mixed_signature_count": 3,
+    "pure_signature_count": 114,
+    "signature_count": 117
+  },
+  "source_distribution": {
+    "all_data": 88,
+    "rule1_channel_not_4": 36
+  },
+  "token_count": 64,
+  "train_case_count": 124
+}

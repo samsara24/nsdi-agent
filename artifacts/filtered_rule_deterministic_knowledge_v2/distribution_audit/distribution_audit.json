@@ -1,0 +1,584 @@
+{
+  "evidence_graph_version": "evidence-graph-v1:124:b60df2407a47cbde",
+  "knowledge_bundle_hash": "565a61e23207d798",
+  "label_usage": "labels read only after features, matches and routes are frozen; metrics only",
+  "llm_calls": 0,
+  "manifest_hash": "5d7b2b0aa2d19769138fe13f82a19cd498088ec6ea36c0090124798ceb3fe45e",
+  "schema_version": "filtered-rule-distribution-audit-v1",
+  "splits": {
+    "test_all_data": {
+      "case_count": 417,
+      "cross_topology_fallback_count": 0,
+      "exact_dual_match_count": 33,
+      "feature_similarity": {
+        "max": 1.0,
+        "mean": 0.66415,
+        "median": 0.663694,
+        "min": 0.195292,
+        "p25": 0.508772,
+        "p75": 0.755336
+      },
+      "feature_token_count": 68,
+      "graph_similarity": {
+        "max": 1.0,
+        "mean": 0.7119,
+        "median": 0.720523,
+        "min": 0.277933,
+        "p25": 0.598898,
+        "p75": 0.802192
+      },
+      "label_distribution_evaluation_only": {
+        "L1": 144,
+        "L2": 258,
+        "fiber": 15
+      },
+      "routing_distribution": {
+        "N5a": 33,
+        "N5b": 133,
+        "N5c": 251
+      },
+      "source_conditioned_train_label_distribution": {
+        "L1": 38,
+        "L2": 42,
+        "fiber": 8
+      },
+      "source_conditioned_train_reference_count": 88,
+      "source_distribution": {
+        "all_data": 417
+      },
+      "split": "test_all_data",
+      "telemetry_status_distribution": {
+        "full_telemetry": 8,
+        "partial_telemetry": 409
+      },
+      "token_count_per_case": {
+        "max": 19.0,
+        "mean": 5.870504,
+        "median": 4.0,
+        "min": 1.0,
+        "p25": 3.0,
+        "p75": 8.0
+      },
+      "top1_history_label_accuracy_evaluation_only": 0.517986,
+      "top1_history_missing_count": 0,
+      "top_token_drift": [
+        {
+          "absolute_rate_gap": 0.244005,
+          "js_divergence": 0.04661,
+          "test_rate": 0.494005,
+          "token": "topology_level:L2:rxpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.161271,
+          "js_divergence": 0.034503,
+          "test_rate": 0.088729,
+          "token": "topology_level:L2:media_snr_min:low_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.148654,
+          "js_divergence": 0.026815,
+          "test_rate": 0.11271,
+          "token": "drop_ratio:L2:media_snr:minority_lanes",
+          "train_rate": 0.261364
+        },
+        {
+          "absolute_rate_gap": 0.067555,
+          "js_divergence": 0.020994,
+          "test_rate": 0.01199,
+          "token": "drop_ratio:L2:serdes_snr:minority_lanes",
+          "train_rate": 0.079545
+        },
+        {
+          "absolute_rate_gap": 0.065375,
+          "js_divergence": 0.020425,
+          "test_rate": 0.076739,
+          "token": "drop_ratio:L1:media_snr:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.060579,
+          "js_divergence": 0.018403,
+          "test_rate": 0.071942,
+          "token": "drop_ratio:L1:rxpower:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.060579,
+          "js_divergence": 0.018403,
+          "test_rate": 0.071942,
+          "token": "lane:L1_to_L2:bidirectional_same_lane",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.060579,
+          "js_divergence": 0.018403,
+          "test_rate": 0.071942,
+          "token": "lane:L2_to_L1:bidirectional_same_lane",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.060579,
+          "js_divergence": 0.018403,
+          "test_rate": 0.071942,
+          "token": "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.060579,
+          "js_divergence": 0.018403,
+          "test_rate": 0.071942,
+          "token": "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.058181,
+          "js_divergence": 0.017408,
+          "test_rate": 0.069544,
+          "token": "drop_ratio:L1:txpower:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.058181,
+          "js_divergence": 0.017408,
+          "test_rate": 0.069544,
+          "token": "lane_scope:L1_to_L2:tx_down:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.143285,
+          "js_divergence": 0.017076,
+          "test_rate": 0.393285,
+          "token": "topology_level:L2:txpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.118106,
+          "js_divergence": 0.016504,
+          "test_rate": 0.131894,
+          "token": "topology_level:L1:media_snr_min:low_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.115707,
+          "js_divergence": 0.015754,
+          "test_rate": 0.134293,
+          "token": "topology_level:L1:rxpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.048588,
+          "js_divergence": 0.013537,
+          "test_rate": 0.059952,
+          "token": "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.023981,
+          "js_divergence": 0.012095,
+          "test_rate": 0.023981,
+          "token": "drop_ratio:L2:media_snr:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.069844,
+          "js_divergence": 0.010994,
+          "test_rate": 0.055156,
+          "token": "drop_ratio:L2:rxpower:minority_lanes",
+          "train_rate": 0.125
+        },
+        {
+          "absolute_rate_gap": 0.049215,
+          "js_divergence": 0.010155,
+          "test_rate": 0.071942,
+          "token": "lane:L1_to_L2:tx_down",
+          "train_rate": 0.022727
+        },
+        {
+          "absolute_rate_gap": 0.088811,
+          "js_divergence": 0.010106,
+          "test_rate": 0.127098,
+          "token": "drop_ratio:L1:rxpower:minority_lanes",
+          "train_rate": 0.215909
+        },
+        {
+          "absolute_rate_gap": 0.019185,
+          "js_divergence": 0.009659,
+          "test_rate": 0.019185,
+          "token": "drop_ratio:L2:serdes_snr:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.099956,
+          "js_divergence": 0.009222,
+          "test_rate": 0.218225,
+          "token": "drop_ratio:L1:media_snr:minority_lanes",
+          "train_rate": 0.318182
+        },
+        {
+          "absolute_rate_gap": 0.016787,
+          "js_divergence": 0.008445,
+          "test_rate": 0.016787,
+          "token": "drop_ratio:L2:txpower:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.016787,
+          "js_divergence": 0.008445,
+          "test_rate": 0.016787,
+          "token": "lane_scope:L2_to_L1:tx_down:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.079845,
+          "js_divergence": 0.008431,
+          "test_rate": 0.1247,
+          "token": "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+          "train_rate": 0.204545
+        },
+        {
+          "absolute_rate_gap": 0.051913,
+          "js_divergence": 0.007023,
+          "test_rate": 0.05036,
+          "token": "lane_scope:L1_to_L2:tx_ok_rx_down:single_lane",
+          "train_rate": 0.102273
+        },
+        {
+          "absolute_rate_gap": 0.088129,
+          "js_divergence": 0.006766,
+          "test_rate": 0.338129,
+          "token": "topology_level:L1:txpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.07494,
+          "js_divergence": 0.006077,
+          "test_rate": 0.17506,
+          "token": "topology_level:L2:rxpower_mean:low_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.027006,
+          "js_divergence": 0.005721,
+          "test_rate": 0.038369,
+          "token": "drop_ratio:L1:serdes_snr:all_lanes",
+          "train_rate": 0.011364
+        },
+        {
+          "absolute_rate_gap": 0.072542,
+          "js_divergence": 0.005669,
+          "test_rate": 0.177458,
+          "token": "topology_level:L1:txpower_mean:low_tail",
+          "train_rate": 0.25
+        }
+      ],
+      "unseen_train_token_count": 10,
+      "unseen_train_tokens": [
+        "drop_ratio:L2:host_snr:minority_lanes",
+        "drop_ratio:L2:media_snr:all_lanes",
+        "drop_ratio:L2:rxpower:all_lanes",
+        "drop_ratio:L2:serdes_snr:all_lanes",
+        "drop_ratio:L2:serdes_snr:majority_lanes",
+        "drop_ratio:L2:txpower:all_lanes",
+        "drop_ratio:L2:txpower:majority_lanes",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:all_lanes",
+        "lane_scope:L2_to_L1:tx_down:all_lanes",
+        "lane_scope:L2_to_L1:tx_down:partial_lanes"
+      ],
+      "zero_dual_overlap_case_ids": [],
+      "zero_dual_overlap_count": 0
+    },
+    "test_rule1_channel_not_4": {
+      "case_count": 67,
+      "cross_topology_fallback_count": 0,
+      "exact_dual_match_count": 3,
+      "feature_similarity": {
+        "max": 1.0,
+        "mean": 0.522605,
+        "median": 0.5,
+        "min": 0.084412,
+        "p25": 0.401608,
+        "p75": 0.66656
+      },
+      "feature_token_count": 46,
+      "graph_similarity": {
+        "max": 1.0,
+        "mean": 0.585482,
+        "median": 0.63518,
+        "min": 0.168764,
+        "p25": 0.431892,
+        "p75": 0.720944
+      },
+      "label_distribution_evaluation_only": {
+        "L1": 37,
+        "L2": 29,
+        "fiber": 1
+      },
+      "routing_distribution": {
+        "N5a": 3,
+        "N5b": 8,
+        "N5c": 56
+      },
+      "source_conditioned_train_label_distribution": {
+        "L1": 12,
+        "L2": 21,
+        "fiber": 3
+      },
+      "source_conditioned_train_reference_count": 36,
+      "source_distribution": {
+        "rule1_channel_not_4": 67
+      },
+      "split": "test_rule1_channel_not_4",
+      "telemetry_status_distribution": {
+        "partial_telemetry": 67
+      },
+      "token_count_per_case": {
+        "max": 20.0,
+        "mean": 5.80597,
+        "median": 4.0,
+        "min": 2.0,
+        "p25": 3.0,
+        "p75": 6.0
+      },
+      "top1_history_label_accuracy_evaluation_only": 0.462687,
+      "top1_history_missing_count": 0,
+      "top_token_drift": [
+        {
+          "absolute_rate_gap": 0.305556,
+          "js_divergence": 0.17276,
+          "test_rate": 0.0,
+          "token": "drop_ratio:L2:serdes_snr:minority_lanes",
+          "train_rate": 0.305556
+        },
+        {
+          "absolute_rate_gap": 0.391791,
+          "js_divergence": 0.115305,
+          "test_rate": 0.641791,
+          "token": "topology_level:L1:txpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.273632,
+          "js_divergence": 0.092631,
+          "test_rate": 0.059701,
+          "token": "drop_ratio:L2:media_snr:minority_lanes",
+          "train_rate": 0.333333
+        },
+        {
+          "absolute_rate_gap": 0.138889,
+          "js_divergence": 0.073186,
+          "test_rate": 0.0,
+          "token": "drop_ratio:L1:serdes_snr:minority_lanes",
+          "train_rate": 0.138889
+        },
+        {
+          "absolute_rate_gap": 0.138889,
+          "js_divergence": 0.073186,
+          "test_rate": 0.0,
+          "token": "drop_ratio:L2:host_snr:minority_lanes",
+          "train_rate": 0.138889
+        },
+        {
+          "absolute_rate_gap": 0.104478,
+          "js_divergence": 0.054317,
+          "test_rate": 0.104478,
+          "token": "lane:L1_to_L2:bidirectional_same_lane",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.104478,
+          "js_divergence": 0.054317,
+          "test_rate": 0.104478,
+          "token": "lane:L2_to_L1:bidirectional_same_lane",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.104478,
+          "js_divergence": 0.054317,
+          "test_rate": 0.104478,
+          "token": "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.104478,
+          "js_divergence": 0.054317,
+          "test_rate": 0.104478,
+          "token": "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.257463,
+          "js_divergence": 0.051582,
+          "test_rate": 0.507463,
+          "token": "topology_level:L1:rxpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.257463,
+          "js_divergence": 0.051582,
+          "test_rate": 0.507463,
+          "token": "topology_level:L2:rxpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.089552,
+          "js_divergence": 0.046291,
+          "test_rate": 0.089552,
+          "token": "drop_ratio:L1:rxpower:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.089552,
+          "js_divergence": 0.046291,
+          "test_rate": 0.089552,
+          "token": "drop_ratio:L1:txpower:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.089552,
+          "js_divergence": 0.046291,
+          "test_rate": 0.089552,
+          "token": "drop_ratio:L2:media_snr:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.089552,
+          "js_divergence": 0.046291,
+          "test_rate": 0.089552,
+          "token": "drop_ratio:L2:rxpower:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.089552,
+          "js_divergence": 0.046291,
+          "test_rate": 0.089552,
+          "token": "lane:L1_to_L2:tx_down",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.089552,
+          "js_divergence": 0.046291,
+          "test_rate": 0.089552,
+          "token": "lane_scope:L1_to_L2:tx_down:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.175373,
+          "js_divergence": 0.042698,
+          "test_rate": 0.074627,
+          "token": "topology_level:L2:rxpower_mean:low_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.136816,
+          "js_divergence": 0.041619,
+          "test_rate": 0.029851,
+          "token": "drop_ratio:L1:media_snr:minority_lanes",
+          "train_rate": 0.166667
+        },
+        {
+          "absolute_rate_gap": 0.074627,
+          "js_divergence": 0.038357,
+          "test_rate": 0.074627,
+          "token": "drop_ratio:L1:media_snr:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.074627,
+          "js_divergence": 0.038357,
+          "test_rate": 0.074627,
+          "token": "drop_ratio:L2:txpower:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.074627,
+          "js_divergence": 0.038357,
+          "test_rate": 0.074627,
+          "token": "lane_scope:L2_to_L1:tx_down:all_lanes",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.074627,
+          "js_divergence": 0.038357,
+          "test_rate": 0.074627,
+          "token": "status:L2:TxLOL",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.074627,
+          "js_divergence": 0.038357,
+          "test_rate": 0.074627,
+          "token": "status:L2:TxLOS",
+          "train_rate": 0.0
+        },
+        {
+          "absolute_rate_gap": 0.212687,
+          "js_divergence": 0.035977,
+          "test_rate": 0.462687,
+          "token": "topology_level:L2:txpower_mean:high_tail",
+          "train_rate": 0.25
+        },
+        {
+          "absolute_rate_gap": 0.172471,
+          "js_divergence": 0.034817,
+          "test_rate": 0.283582,
+          "token": "topology_level:L1:media_snr_min:high_tail",
+          "train_rate": 0.111111
+        },
+        {
+          "absolute_rate_gap": 0.055556,
+          "js_divergence": 0.02835,
+          "test_rate": 0.0,
+          "token": "drop_ratio:L1:rxpower:minority_lanes",
+          "train_rate": 0.055556
+        },
+        {
+          "absolute_rate_gap": 0.055556,
+          "js_divergence": 0.02835,
+          "test_rate": 0.0,
+          "token": "drop_ratio:L2:host_snr:majority_lanes",
+          "train_rate": 0.055556
+        },
+        {
+          "absolute_rate_gap": 0.055556,
+          "js_divergence": 0.02835,
+          "test_rate": 0.0,
+          "token": "lane_scope:L2_to_L1:tx_ok_rx_down:single_lane",
+          "train_rate": 0.055556
+        },
+        {
+          "absolute_rate_gap": 0.145522,
+          "js_divergence": 0.026845,
+          "test_rate": 0.104478,
+          "token": "topology_level:L2:media_snr_min:low_tail",
+          "train_rate": 0.25
+        }
+      ],
+      "unseen_train_token_count": 19,
+      "unseen_train_tokens": [
+        "drop_ratio:L1:media_snr:all_lanes",
+        "drop_ratio:L1:rxpower:all_lanes",
+        "drop_ratio:L1:txpower:all_lanes",
+        "drop_ratio:L2:media_snr:all_lanes",
+        "drop_ratio:L2:media_snr:majority_lanes",
+        "drop_ratio:L2:rxpower:all_lanes",
+        "drop_ratio:L2:txpower:all_lanes",
+        "lane:L1_to_L2:bidirectional_same_lane",
+        "lane:L1_to_L2:tx_down",
+        "lane:L2_to_L1:bidirectional_same_lane",
+        "lane_scope:L1_to_L2:bidirectional_same_lane:all_lanes",
+        "lane_scope:L1_to_L2:tx_down:all_lanes",
+        "lane_scope:L1_to_L2:tx_ok_rx_down:all_lanes",
+        "lane_scope:L2_to_L1:bidirectional_same_lane:all_lanes",
+        "lane_scope:L2_to_L1:single_lane_outlier:partial_lanes",
+        "lane_scope:L2_to_L1:tx_down:all_lanes",
+        "lane_scope:L2_to_L1:tx_ok_rx_down:all_lanes",
+        "status:L2:TxLOL",
+        "status:L2:TxLOS"
+      ],
+      "zero_dual_overlap_case_ids": [],
+      "zero_dual_overlap_count": 0
+    }
+  }
+}

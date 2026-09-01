@@ -1,0 +1,103 @@
+{
+  "conclusion": "当前训练知识融合未达到80%-90%，且两个split均低于冷启动；测试标签不得用于回调同轮权重，下一版必须只用train LOO重新设计门禁。",
+  "policy_version": "codex-blind-physical-plus-train-knowledge-v1",
+  "prediction_label_access": false,
+  "schema_version": "blind-case-review-summary-v1",
+  "splits": {
+    "test_all_data": {
+      "category_counts": {
+        "both_correct": 199,
+        "knowledge_improved": 46,
+        "knowledge_interference": 77,
+        "label_suspect": 1,
+        "model_or_knowledge_error": 94
+      },
+      "cold_start": {
+        "accuracy": 0.661871,
+        "confusion": {
+          "L1": {
+            "L1": 86,
+            "L2": 58
+          },
+          "L2": {
+            "L1": 68,
+            "L2": 190
+          },
+          "fiber": {
+            "L1": 6,
+            "L2": 9
+          }
+        },
+        "correct": 276,
+        "total": 417
+      },
+      "knowledge_enriched": {
+        "accuracy": 0.58753,
+        "confusion": {
+          "L1": {
+            "L1": 69,
+            "L2": 75
+          },
+          "L2": {
+            "L1": 82,
+            "L2": 176
+          },
+          "fiber": {
+            "L1": 6,
+            "L2": 9
+          }
+        },
+        "correct": 245,
+        "total": 417
+      },
+      "label_suspect_count": 1
+    },
+    "test_rule1_channel_not_4": {
+      "category_counts": {
+        "both_correct": 31,
+        "knowledge_improved": 3,
+        "knowledge_interference": 12,
+        "label_suspect": 1,
+        "model_or_knowledge_error": 20
+      },
+      "cold_start": {
+        "accuracy": 0.641791,
+        "confusion": {
+          "L1": {
+            "L1": 30,
+            "L2": 6,
+            "fiber": 1
+          },
+          "L2": {
+            "L1": 16,
+            "L2": 13
+          },
+          "fiber": {
+            "L2": 1
+          }
+        },
+        "correct": 43,
+        "total": 67
+      },
+      "knowledge_enriched": {
+        "accuracy": 0.507463,
+        "confusion": {
+          "L1": {
+            "L1": 19,
+            "L2": 18
+          },
+          "L2": {
+            "L1": 14,
+            "L2": 15
+          },
+          "fiber": {
+            "L2": 1
+          }
+        },
+        "correct": 34,
+        "total": 67
+      },
+      "label_suspect_count": 1
+    }
+  }
+}

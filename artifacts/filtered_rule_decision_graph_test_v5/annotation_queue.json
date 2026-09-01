@@ -1,0 +1,27 @@
+{
+  "annotations": {},
+  "cases": [
+    {
+      "case_id": "case_5f9fb799fec41356",
+      "current_label": "fiber",
+      "evidence": [
+        {
+          "evidence": [
+            "lane:L2_to_L1:tx_down",
+            "status:L2:TxLOS/TxLOL"
+          ],
+          "reason": "L2发送触底，支持发送端根因",
+          "source": "physical_tx_down",
+          "strength": "strong",
+          "verdict": "L2"
+        }
+      ],
+      "proposed_label": "L2",
+      "reason": "发送端触底并有状态证据支持唯一端点，但与未审核标签冲突；应进入人工标注复核，不自动改标。 真实标签为fiber；盲测输出为L2。专家路径=expert:txpower_lane_down，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=1。",
+      "split": "test/all_data",
+      "status": "pending_human_review"
+    }
+  ],
+  "schema_version": "filtered-rule-loop-label-review-v1",
+  "source": "/Users/ziangchen/Downloads/nsdi-agent/artifacts/filtered_rule_decision_graph_test_v5/label_suspects.json"
+}

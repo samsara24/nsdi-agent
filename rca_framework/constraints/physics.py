@@ -14,7 +14,7 @@ from dataclasses import asdict, dataclass
 from typing import Any, Dict, Iterable, Sequence, Tuple
 
 
-PHYSICS_LIBRARY_VERSION = "physics-constraints-v2"
+PHYSICS_LIBRARY_VERSION = "physics-constraints-v3-causal-direction"
 PHYSICS_PROVENANCES: Tuple[str, ...] = ("device_spec", "derived")
 PHYSICS_EFFECTS: Tuple[str, ...] = ("support", "exclude", "neutral")
 PHYSICS_TARGETS: Tuple[str, ...] = ("L1", "L2", "fiber", "")
@@ -220,9 +220,9 @@ PHYSICAL_CONSTRAINTS: Tuple[PhysicalConstraint, ...] = (
         provenance="derived",
         diagnostic_use="解释 rxpower、media_snr、RxLOS/RxLOL 时先把症状侧翻译成候选根因侧。",
         prompt_text=(
-            "接收侧异常度量的是对端发来的光，不能归为本端发送器。"
-            "默认把 target 写成对端：L1 侧接收异常支持 L2，L2 侧接收异常支持 L1。"
-            "只有当同一 lane 双向同时异常（P8）时，才允许把 target 改写为 fiber。"
+            "接收侧异常度量的是对端发出并经过介质到达本端的光，因此只能把故障范围约束在"
+            "对端发送链、链路介质和本端接收链三者内；单独使用本约束时写 neutral/空target。"
+            "只有另有对端Tx故障、本端接收链佐证或P8双向介质证据时，才可支持唯一标签。"
         ),
         source_constraint_ids=(
             "C16_receive_symptom_constrains_far_transmit_chain",
@@ -249,8 +249,8 @@ PHYSICAL_CONSTRAINTS: Tuple[PhysicalConstraint, ...] = (
             "expert:L1:media_snr:",
             "expert:L2:media_snr:",
         ),
-        allowed_effects=("support",),
-        allowed_targets=("L1", "L2", "fiber"),
+        allowed_effects=("neutral",),
+        allowed_targets=("",),
     ),
     PhysicalConstraint(
         constraint_id="P11_single_lane_does_not_exclude_fiber",
@@ -284,8 +284,9 @@ PHYSICAL_CONSTRAINTS: Tuple[PhysicalConstraint, ...] = (
         provenance="derived",
         diagnostic_use="解释发送、电口、SerDes 类异常时指向本端；可靠性由规则组统计决定。",
         prompt_text=(
-            "发送光功率、主机侧信噪比和 SerDes 异常度量本端自己产生的信号，"
-            "target 写成异常所在端本身：L1 侧本地链路异常支持 L1，L2 侧本地链路异常支持 L2。"
+            "发送光功率和SerDes异常度量本端产生或处理的信号，可支持异常所在端。"
+            "host_snr只有在实际观测到有效异常时才作为同方向增强证据；缺失不扣分、不要求补采，"
+            "且host_snr不得单独支撑最终标签。"
         ),
         source_constraint_ids=(
             "C25_expert_local_chain_anomaly_on_l1_supports_l1",

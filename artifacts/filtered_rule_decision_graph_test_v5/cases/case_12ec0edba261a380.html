@@ -1,0 +1,439 @@
+<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><title>case_12ec0edba261a380</title><style>body{max-width:1180px;margin:auto;padding:25px;font:14px/1.6 system-ui;background:#f5f7fb;color:#172033}header,section{background:white;border:1px solid #d8deea;border-radius:10px;padding:16px;margin-bottom:14px}h1,h2{margin-top:0}.result{border-left:6px solid #b54708}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#101828;color:#e6edf8;padding:12px;border-radius:7px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.grid{grid-template-columns:1fr}}</style></head><body><header class='result'><h1>case_12ec0edba261a380</h1><p><b>预测：</b>证据不足　<b>真实：</b>L2　<b>复盘：</b>decision_graph_gap</p><p>已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L2；盲测输出为证据不足。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=0。</p></header><section><h2>盲推理步骤</h2><ol><li>量测质量：partial_telemetry，缺失字段2个</li><li>可解释特征：9个，paired_lane_state, signal_drop_ratio, status_fault, topology_level_tail</li><li>专家路径：expert:multi_metric；总体支持43，拓扑支持36，拓扑Wilson下界0.396</li><li>接收症状因果上下文：not_applicable；统计门未通过，因果门通过</li><li>物理/历史候选：0个；最终证据不足</li></ol></section><div class='grid'><section><h2>可解释特征</h2><pre>{
+  &quot;case_id&quot;: &quot;case_12ec0edba261a380&quot;,
+  &quot;tokens&quot;: [
+    &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+    &quot;drop_ratio:L1:rxpower:minority_lanes&quot;,
+    &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+    &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+    &quot;status:L1:RxLOL&quot;,
+    &quot;status:L1:RxLOS&quot;,
+    &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+    &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+    &quot;topology_level:L2:txpower_mean:high_tail&quot;
+  ],
+  &quot;by_family&quot;: {
+    &quot;paired_lane_state&quot;: [
+      &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;
+    ],
+    &quot;signal_drop_ratio&quot;: [
+      &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;drop_ratio:L1:rxpower:minority_lanes&quot;
+    ],
+    &quot;status_fault&quot;: [
+      &quot;status:L1:RxLOL&quot;,
+      &quot;status:L1:RxLOS&quot;
+    ],
+    &quot;topology_level_tail&quot;: [
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ]
+  },
+  &quot;dictionary_version&quot;: &quot;filtered-rule-feature-dictionary-v2&quot;,
+  &quot;dictionary_hash&quot;: &quot;7764aa3a23d2ac2e&quot;,
+  &quot;telemetry_status&quot;: &quot;partial_telemetry&quot;,
+  &quot;missing_fields&quot;: [
+    &quot;L1.host_snr&quot;,
+    &quot;L2.host_snr&quot;
+  ],
+  &quot;conflicts&quot;: [],
+  &quot;optical_blackout&quot;: false,
+  &quot;source_dataset&quot;: &quot;all_data&quot;,
+  &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+  &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;
+}</pre></section><section><h2>排障决策与候选</h2><pre>{
+  &quot;expert&quot;: {
+    &quot;version&quot;: &quot;expert-rules-v1&quot;,
+    &quot;verdict&quot;: &quot;L2&quot;,
+    &quot;group&quot;: &quot;expert:multi_metric&quot;,
+    &quot;priority&quot;: &quot;1&quot;,
+    &quot;reason&quot;: &quot;L1 侧命中 multi_metric（priority 1），指向 L2&quot;,
+    &quot;alarm_side_resolved&quot;: true,
+    &quot;sides&quot;: [
+      {
+        &quot;side&quot;: &quot;L1&quot;,
+        &quot;rule&quot;: &quot;multi_metric&quot;,
+        &quot;priority&quot;: &quot;1&quot;,
+        &quot;location&quot;: &quot;L2&quot;,
+        &quot;anomalies&quot;: {
+          &quot;media_snr&quot;: &quot;lane_down&quot;,
+          &quot;rxpower&quot;: &quot;lane_down&quot;,
+          &quot;serdes_snr&quot;: &quot;low_value&quot;
+        }
+      }
+    ]
+  },
+  &quot;global_rule_stats&quot;: {
+    &quot;accuracy&quot;: 0.5348837209302325,
+    &quot;correct&quot;: 23,
+    &quot;group&quot;: &quot;expert:multi_metric&quot;,
+    &quot;support&quot;: 43,
+    &quot;truth_distribution&quot;: {
+      &quot;L1&quot;: 16,
+      &quot;L2&quot;: 20,
+      &quot;fiber&quot;: 7
+    },
+    &quot;wilson_lower_bound&quot;: 0.389154
+  },
+  &quot;topology_rule_stats&quot;: {
+    &quot;accuracy&quot;: 0.5555555555555556,
+    &quot;correct&quot;: 20,
+    &quot;group&quot;: &quot;expert:multi_metric&quot;,
+    &quot;support&quot;: 36,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;truth_distribution&quot;: {
+      &quot;L1&quot;: 14,
+      &quot;L2&quot;: 15,
+      &quot;fiber&quot;: 7
+    },
+    &quot;wilson_lower_bound&quot;: 0.395808
+  },
+  &quot;receive_causal_context&quot;: &quot;not_applicable&quot;,
+  &quot;statistical_gate&quot;: false,
+  &quot;causal_gate&quot;: true,
+  &quot;votes&quot;: [],
+  &quot;learned_positive_path&quot;: null,
+  &quot;media_topology_positive_path&quot;: false,
+  &quot;reason&quot;: &quot;未检出可终裁异常路径&quot;
+}</pre></section></div><div class='grid'><section><h2>训练历史候选</h2><pre>[
+  {
+    &quot;case_id&quot;: &quot;case_8f86a9054091498b&quot;,
+    &quot;label&quot;: &quot;L1&quot;,
+    &quot;similarity&quot;: 0.7456731,
+    &quot;shared_evidence&quot;: [
+      &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;status:L1:RxLOL&quot;,
+      &quot;status:L1:RxLOS&quot;,
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.81，证据覆盖率 80%）&quot;,
+      &quot;本 case 有 2 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.81，证据覆盖率 80%）&quot;,
+      &quot;本 case 有 2 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.7456731,
+    &quot;graph_similarity&quot;: 0.78144271,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:drop_ratio|segment_1|path:drop_ratio:L1&quot;,
+      &quot;family:lane_scope|segment_1|path:lane_scope:L2_to_L1&quot;,
+      &quot;family:lane|segment_1|path:lane:L2_to_L1&quot;,
+      &quot;family:status|segment_1|path:status:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:drop_ratio:L1:media_snr|segment_3|path:drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1:rxpower|segment_3|path:drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:media_snr&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:rxpower&quot;,
+      &quot;path:lane:L2_to_L1|segment_2|path:lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:lane_scope:L2_to_L1:tx_ok_rx_down|segment_3|path:lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;path:lane_scope:L2_to_L1|segment_2|path:lane_scope:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOL&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOS&quot;,
+      &quot;path:topology_level:L1:media_snr_min|segment_3|path:topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:media_snr_min&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L1:rxpower_mean|segment_3|path:topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:rxpower_mean&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;
+    ],
+    &quot;extra_graph_edges&quot;: [
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_1005baccaaaebb92&quot;,
+    &quot;label&quot;: &quot;L1&quot;,
+    &quot;similarity&quot;: 0.71545411,
+    &quot;shared_evidence&quot;: [
+      &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;status:L1:RxLOL&quot;,
+      &quot;status:L1:RxLOS&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L1:rxpower_mean:high_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.90，证据覆盖率 100%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.90，证据覆盖率 100%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.71545411,
+    &quot;graph_similarity&quot;: 0.75909165,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:drop_ratio|segment_1|path:drop_ratio:L1&quot;,
+      &quot;family:lane_scope|segment_1|path:lane_scope:L2_to_L1&quot;,
+      &quot;family:lane|segment_1|path:lane:L2_to_L1&quot;,
+      &quot;family:status|segment_1|path:status:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:drop_ratio:L1:media_snr|segment_3|path:drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1:rxpower|segment_3|path:drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:media_snr&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:rxpower&quot;,
+      &quot;path:lane:L2_to_L1|segment_2|path:lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:lane_scope:L2_to_L1:tx_ok_rx_down|segment_3|path:lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;path:lane_scope:L2_to_L1|segment_2|path:lane_scope:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOL&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOS&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L1:rxpower_mean|segment_3|path:topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:rxpower_mean&quot;
+    ],
+    &quot;extra_graph_edges&quot;: [
+      &quot;path:topology_level:L1:media_snr_min|segment_3|path:topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:media_snr_min&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_f9e1b96903367e51&quot;,
+    &quot;label&quot;: &quot;L2&quot;,
+    &quot;similarity&quot;: 0.71270344,
+    &quot;shared_evidence&quot;: [
+      &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;status:L1:RxLOL&quot;,
+      &quot;status:L1:RxLOS&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L2:media_snr_min:high_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.79，证据覆盖率 88%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;,
+      &quot;本 case 有 1 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;,
+      &quot;本 case 有 1 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.71270344,
+    &quot;graph_similarity&quot;: 0.73296317,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:drop_ratio|segment_1|path:drop_ratio:L1&quot;,
+      &quot;family:lane_scope|segment_1|path:lane_scope:L2_to_L1&quot;,
+      &quot;family:lane|segment_1|path:lane:L2_to_L1&quot;,
+      &quot;family:status|segment_1|path:status:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:drop_ratio:L1:media_snr|segment_3|path:drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1:rxpower|segment_3|path:drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:media_snr&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:rxpower&quot;,
+      &quot;path:lane:L2_to_L1|segment_2|path:lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:lane_scope:L2_to_L1:tx_ok_rx_down|segment_3|path:lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;path:lane_scope:L2_to_L1|segment_2|path:lane_scope:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOL&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOS&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L2:media_snr_min|segment_3|path:topology_level:L2:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:media_snr_min&quot;
+    ],
+    &quot;extra_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;path:topology_level:L1:media_snr_min|segment_3|path:topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:media_snr_min&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_3e1ce56bb15ce77e&quot;,
+    &quot;label&quot;: &quot;L2&quot;,
+    &quot;similarity&quot;: 0.6864065,
+    &quot;shared_evidence&quot;: [
+      &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;status:L1:RxLOL&quot;,
+      &quot;status:L1:RxLOS&quot;
+    ],
+    &quot;missing_evidence&quot;: [],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.87，证据覆盖率 100%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.6864065,
+    &quot;graph_similarity&quot;: 0.6876461,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:drop_ratio|segment_1|path:drop_ratio:L1&quot;,
+      &quot;family:lane_scope|segment_1|path:lane_scope:L2_to_L1&quot;,
+      &quot;family:lane|segment_1|path:lane:L2_to_L1&quot;,
+      &quot;family:status|segment_1|path:status:L1&quot;,
+      &quot;path:drop_ratio:L1:media_snr|segment_3|path:drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1:rxpower|segment_3|path:drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:media_snr&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:rxpower&quot;,
+      &quot;path:lane:L2_to_L1|segment_2|path:lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:lane_scope:L2_to_L1:tx_ok_rx_down|segment_3|path:lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;path:lane_scope:L2_to_L1|segment_2|path:lane_scope:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOL&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOS&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [],
+    &quot;extra_graph_edges&quot;: [
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:topology_level:L1:media_snr_min|segment_3|path:topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:media_snr_min&quot;,
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ]
+  },
+  {
+    &quot;case_id&quot;: &quot;case_c7d22292337626d1&quot;,
+    &quot;label&quot;: &quot;L1&quot;,
+    &quot;similarity&quot;: 0.68516739,
+    &quot;shared_evidence&quot;: [
+      &quot;drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;status:L1:RxLOL&quot;,
+      &quot;status:L1:RxLOS&quot;,
+      &quot;topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;topology_level:L2:txpower_mean:high_tail&quot;
+    ],
+    &quot;missing_evidence&quot;: [
+      &quot;topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;topology_level:L2:media_snr_min:high_tail&quot;
+    ],
+    &quot;extra_evidence&quot;: [
+      &quot;topology_level:L2:rxpower_mean:high_tail&quot;
+    ],
+    &quot;conflicting_evidence&quot;: [],
+    &quot;evidence_chain_summary&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.76，证据覆盖率 82%）&quot;,
+      &quot;历史 case 具备但本 case 未观测到的证据共 1 条，建议补采&quot;,
+      &quot;本 case 有 2 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;missing_chain_steps&quot;: [
+      &quot;与 1 条历史 case 部分匹配（相似度 0.76，证据覆盖率 82%）&quot;,
+      &quot;本 case 有 2 条历史 case 不具备的证据，可能比历史更严重或场景不同&quot;
+    ],
+    &quot;source_dataset&quot;: &quot;all_data&quot;,
+    &quot;topology_id&quot;: &quot;400g-200g-logical4&quot;,
+    &quot;lane_profile&quot;: &quot;400g-200g-logical4:optical-4x4:serdes-4x4&quot;,
+    &quot;topology_compatible&quot;: true,
+    &quot;feature_similarity&quot;: 0.68516739,
+    &quot;graph_similarity&quot;: 0.72698514,
+    &quot;shared_graph_edges&quot;: [
+      &quot;family:drop_ratio|segment_1|path:drop_ratio:L1&quot;,
+      &quot;family:lane_scope|segment_1|path:lane_scope:L2_to_L1&quot;,
+      &quot;family:lane|segment_1|path:lane:L2_to_L1&quot;,
+      &quot;family:status|segment_1|path:status:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L1&quot;,
+      &quot;family:topology_level|segment_1|path:topology_level:L2&quot;,
+      &quot;path:drop_ratio:L1:media_snr|segment_3|path:drop_ratio:L1:media_snr:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1:rxpower|segment_3|path:drop_ratio:L1:rxpower:minority_lanes&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:media_snr&quot;,
+      &quot;path:drop_ratio:L1|segment_2|path:drop_ratio:L1:rxpower&quot;,
+      &quot;path:lane:L2_to_L1|segment_2|path:lane:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:lane_scope:L2_to_L1:tx_ok_rx_down|segment_3|path:lane_scope:L2_to_L1:tx_ok_rx_down:single_lane&quot;,
+      &quot;path:lane_scope:L2_to_L1|segment_2|path:lane_scope:L2_to_L1:tx_ok_rx_down&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOL&quot;,
+      &quot;path:status:L1|segment_2|path:status:L1:RxLOS&quot;,
+      &quot;path:topology_level:L1:media_snr_min|segment_3|path:topology_level:L1:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:media_snr_min&quot;,
+      &quot;path:topology_level:L2:txpower_mean|segment_3|path:topology_level:L2:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:txpower_mean&quot;
+    ],
+    &quot;missing_graph_edges&quot;: [
+      &quot;path:topology_level:L1:rxpower_mean|segment_3|path:topology_level:L1:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1:txpower_mean|segment_3|path:topology_level:L1:txpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:rxpower_mean&quot;,
+      &quot;path:topology_level:L1|segment_2|path:topology_level:L1:txpower_mean&quot;,
+      &quot;path:topology_level:L2:media_snr_min|segment_3|path:topology_level:L2:media_snr_min:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:media_snr_min&quot;
+    ],
+    &quot;extra_graph_edges&quot;: [
+      &quot;path:topology_level:L2:rxpower_mean|segment_3|path:topology_level:L2:rxpower_mean:high_tail&quot;,
+      &quot;path:topology_level:L2|segment_2|path:topology_level:L2:rxpower_mean&quot;
+    ]
+  }
+]</pre></section><section><h2>补采建议</h2><pre>[
+  &quot;补采media/SerDes/host侧SNR，确认异常位于光路、模块介质侧还是设备数字侧。&quot;,
+  &quot;补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。&quot;
+]</pre></section></div><section><h2>真实标签揭示后的复盘</h2><pre>{
+  &quot;actual&quot;: &quot;L2&quot;,
+  &quot;original_label&quot;: &quot;l2&quot;,
+  &quot;label_status&quot;: &quot;unreviewed&quot;,
+  &quot;category&quot;: &quot;decision_graph_gap&quot;,
+  &quot;analysis&quot;: &quot;已有异常或候选，但没有路径通过可靠性/因果门禁；决策图覆盖不足。 真实标签为L2；盲测输出为证据不足。专家路径=expert:multi_metric，拓扑=400g-200g-logical4，接收症状因果上下文=not_applicable，物理/历史候选数=0。&quot;
+}</pre></section></body></html>

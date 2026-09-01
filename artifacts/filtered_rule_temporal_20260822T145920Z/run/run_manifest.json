@@ -1,0 +1,232 @@
+{
+  "schema_version": "filtered-rule-dual-test-run-manifest-v1",
+  "created_at_utc": "2026-08-22T17:04:48.544193+00:00",
+  "python_version": "3.11.11",
+  "git_revision": "35f414d6d081c818f841ffb5e16521888f9a332e",
+  "scope": {
+    "self_evolution": false,
+    "feedback_update": false,
+    "flow": "one temporal train -> persisted knowledge reload -> two independent source tests"
+  },
+  "data": {
+    "data_dir": "/home/chenziang/nsdi-agent-clean/datasets/filtered_rule_temporal_2025_06_09_v1",
+    "manifest_schema": "filtered-rule-temporal-split-v1",
+    "manifest_hash": "5d7b2b0aa2d19769138fe13f82a19cd498088ec6ea36c0090124798ceb3fe45e",
+    "train_months": [
+      "2025-06",
+      "2025-07",
+      "2025-08",
+      "2025-09"
+    ],
+    "train_size": 124,
+    "test_sizes": {
+      "test_all_data": 417,
+      "test_rule1_channel_not_4": 67
+    },
+    "topology_contract": "filtered-rule-topology-v1"
+  },
+  "knowledge": {
+    "schema_version": "offline-knowledge-bundle-v1",
+    "path": "/home/chenziang/nsdi-agent-clean/artifacts/filtered_rule_temporal_20260822T145920Z/run/knowledge/knowledge_bundle.json",
+    "content_hash": "ac9ec95447090ec9",
+    "evidence_graph_version": "evidence-graph-v1:124:3275a44e0459ad0e",
+    "feature_profile": "filtered_rule_v1",
+    "feature_dictionary_version": "filtered-rule-feature-dictionary-v1",
+    "feature_dictionary_hash": "f399d9758b670f8d",
+    "learned_sop_version": "numeric-decision-tree-v1",
+    "learned_sop_hash": "2e84eb36c2257ea7"
+  },
+  "versions": {
+    "topology_contract": "filtered-rule-topology-v1",
+    "physics_library": "physics-constraints-v2",
+    "physics_library_hash": "3974c17d42beae36",
+    "measurement_contract_library": "measurement-contracts-v1",
+    "measurement_contract_library_hash": "97793b8fa84f682e",
+    "expert_sop": "expert-sop-playbook-v2",
+    "expert_sop_hash": "55da6164d312bdf7",
+    "prompt_template": "filtered-rule-local-remote-v1",
+    "prompt_template_hash": "3a629de49c475627",
+    "decision_policy": "decision-policy-v3-forced-multidim"
+  },
+  "data_quality": {
+    "train": {
+      "case_count": 124,
+      "label_distribution": {
+        "L1": 50,
+        "L2": 63,
+        "fiber": 11
+      },
+      "missing_alarm_ip_interface": 54,
+      "missing_lane_number": 64,
+      "host_snr_present_cases": 90,
+      "l1_metric_width_over_4_cases": 35,
+      "l2_metric_width_over_4_cases": 36,
+      "telemetry_status": {
+        "full_telemetry": 6,
+        "partial_telemetry": 118
+      },
+      "optical_blackout_cases": 0,
+      "empty_feature_vector_cases": 0
+    },
+    "test_all_data": {
+      "quality": {
+        "case_count": 417,
+        "label_distribution": {
+          "L1": 144,
+          "L2": 258,
+          "fiber": 15
+        },
+        "missing_alarm_ip_interface": 0,
+        "missing_lane_number": 14,
+        "host_snr_present_cases": 355,
+        "l1_metric_width_over_4_cases": 0,
+        "l2_metric_width_over_4_cases": 0,
+        "telemetry_status": {
+          "full_telemetry": 8,
+          "partial_telemetry": 409
+        },
+        "optical_blackout_cases": 0,
+        "empty_feature_vector_cases": 0
+      },
+      "topology_retrieval": {
+        "case_count": 417,
+        "cross_topology_fallback_cases": 0,
+        "compatible_top_candidate_cases": 417,
+        "top_candidate_source_distribution": {
+          "all_data": 417
+        }
+      }
+    },
+    "test_rule1_channel_not_4": {
+      "quality": {
+        "case_count": 67,
+        "label_distribution": {
+          "L1": 37,
+          "L2": 29,
+          "fiber": 1
+        },
+        "missing_alarm_ip_interface": 0,
+        "missing_lane_number": 67,
+        "host_snr_present_cases": 38,
+        "l1_metric_width_over_4_cases": 67,
+        "l2_metric_width_over_4_cases": 67,
+        "telemetry_status": {
+          "partial_telemetry": 67
+        },
+        "optical_blackout_cases": 3,
+        "empty_feature_vector_cases": 0
+      },
+      "topology_retrieval": {
+        "case_count": 67,
+        "cross_topology_fallback_cases": 0,
+        "compatible_top_candidate_cases": 67,
+        "top_candidate_source_distribution": {
+          "rule1_channel_not_4": 67
+        }
+      }
+    }
+  },
+  "retrieval": {
+    "top_k": 0,
+    "policy": {
+      "name": "coverage-v2",
+      "description": "T4 标定规则：sim=1.0 进 N5a；证据全覆盖（历史见过我的全部证据）进 N5b；零证据与全链路遥测失效直接进 N6；其余进 N5c。不使用 0.7 这条无数据支持的线。",
+      "exact_similarity": 1.0,
+      "partial_similarity": null,
+      "partial_requires_full_coverage": true,
+      "abstain_on_empty_evidence": true,
+      "abstain_on_optical_blackout": true
+    },
+    "same_topology_preferred": true
+  },
+  "decision": {
+    "version": "decision-policy-v3-forced-multidim",
+    "final_lower_bound": 0.5,
+    "minimum_support": 10,
+    "candidate_order": [
+      "branch"
+    ],
+    "target_selective_risk": null,
+    "fitted_on": "",
+    "non_identifiable_labels": [],
+    "non_identifiable_evidence": {},
+    "per_label_lower_bound": {}
+  },
+  "personal_alignment_gate": {
+    "schema_version": "personal-rca-loop-gate-v1",
+    "authority": "docs/个人整体思路.md",
+    "main_path": "evidence graph match -> N5a historical chain reuse / N5b physics key-evidence LLM arbitration / N5c expert SOP constrained LLM -> M9 degradation",
+    "candidate_order": [
+      "branch"
+    ],
+    "candidate_order_ok": true,
+    "expert_and_sop_are_advisory": true,
+    "expert_sop_version": "expert-sop-playbook-v2",
+    "expert_sop_hash": "55da6164d312bdf7",
+    "n8_feedback_update": false,
+    "forbidden_loop_target": "forced three-class accuracy or lift alone without confidence calibration"
+  },
+  "llm": {
+    "backend": "vllm",
+    "model_path": "/home/chenziang/pretrained_models/DeepSeek-R1-Distill-Qwen-32B",
+    "tensor_parallel_size": 2,
+    "dtype": "bfloat16",
+    "max_new_tokens": 2048,
+    "max_model_len": 16384,
+    "gpu_memory_utilization": 0.85,
+    "max_attempts": 3,
+    "seed": 42
+  },
+  "label_leakage": false,
+  "leakage_policy": "test labels are used only after inference for metrics and reports",
+  "gpu": {
+    "before": {
+      "available": true,
+      "cuda_visible_devices": "0,4",
+      "gpus": [
+        {
+          "index": 0,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-a653a161-ee84-619b-3631-1fed7e462fe1",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 138,
+          "memory_free_mb": 48402
+        },
+        {
+          "index": 4,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-746b9287-e1ed-4544-a911-c6ed5e62e934",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 1,
+          "memory_free_mb": 48539
+        }
+      ],
+      "error": ""
+    },
+    "after": {
+      "available": true,
+      "cuda_visible_devices": "0,4",
+      "gpus": [
+        {
+          "index": 0,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-a653a161-ee84-619b-3631-1fed7e462fe1",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 42072,
+          "memory_free_mb": 6469
+        },
+        {
+          "index": 4,
+          "name": "NVIDIA RTX A6000",
+          "uuid": "GPU-746b9287-e1ed-4544-a911-c6ed5e62e934",
+          "memory_total_mb": 49140,
+          "memory_used_mb": 41938,
+          "memory_free_mb": 6603
+        }
+      ],
+      "error": ""
+    },
+    "memory_released": false,
+    "backend_close_called": true
+  }
+}

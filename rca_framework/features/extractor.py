@@ -41,6 +41,7 @@ from .dictionary import FEATURE_DICTIONARY, TAIL_QUANTILES, FeatureDictionary
 
 
 FEATURE_MODEL_VERSION = "feature-model-v1"
+FILTERED_RULE_FEATURE_MODEL_V2_VERSION = "filtered-rule-feature-model-v2"
 
 #: 参与分位数分档与两端对称性比较的连续统计量。
 #: key 是统计量名，value 是 (metric, 聚合方式)。聚合只用健康 lane。
@@ -67,6 +68,29 @@ def side_statistic(case: Dict[str, Any], side: str, statistic: str) -> Optional[
     return mean(values) if aggregation == "mean" else min(values)
 
 
+def topology_side_statistic(case: Dict[str, Any], side: str, statistic: str) -> Optional[float]:
+    """Width-stable statistic used by filtered-rule v2.
+
+    Optical powers retain their lane mean.  Media SNR uses the lower quartile
+    instead of the minimum, whose expected value decreases merely because an
+    8-lane port has more observations than a 4-lane port.
+    """
+    metric, _ = LEVEL_STATISTICS[statistic]
+    values = metric_values(case, metric, side, healthy_only=True)
+    if not values:
+        return None
+    return percentile(values, 0.25) if metric == "media_snr" else mean(values)
+
+
+def _topology_level_key(case: Dict[str, Any], side: str, statistic: str) -> str:
+    contract = case.get("_dataset_contract")
+    contract = contract if isinstance(contract, dict) else {}
+    topology_id = str(contract.get("topology_id") or "unknown-topology")
+    metric, _ = LEVEL_STATISTICS[statistic]
+    width = len(lane_values(case, metric, side))
+    return f"{topology_id}:{side}:{statistic}:width{width or 0}"
+
+
 @dataclass
 class FeatureModel:
     """特征字典 v1 中所有数据驱动边界的拟合结果。"""
@@ -77,9 +101,10 @@ class FeatureModel:
     fitted_case_count: int
     level_edges: Dict[str, Tuple[Optional[float], Optional[float]]] = field(default_factory=dict)
     asymmetry_edges: Dict[str, Optional[float]] = field(default_factory=dict)
+    topology_level_edges: Dict[str, Tuple[Optional[float], Optional[float]]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        value = {
             "version": self.version,
             "dictionary_version": self.dictionary_version,
             "dictionary_hash": self.dictionary_hash,
@@ -88,6 +113,13 @@ class FeatureModel:
             "level_edges": {key: list(value) for key, value in sorted(self.level_edges.items())},
             "asymmetry_edges": dict(sorted(self.asymmetry_edges.items())),
         }
+        # Preserve frozen v1 serialization and graph hashes.  The new field is
+        # emitted only by profiles that actually fit topology/width boundaries.
+        if self.topology_level_edges:
+            value["topology_level_edges"] = {
+                key: list(edge) for key, edge in sorted(self.topology_level_edges.items())
+            }
+        return value
 
     @classmethod
     def from_dict(cls, value: Dict[str, Any]) -> "FeatureModel":
@@ -98,6 +130,9 @@ class FeatureModel:
             fitted_case_count=int(value["fitted_case_count"]),
             level_edges={key: tuple(item) for key, item in value.get("level_edges", {}).items()},
             asymmetry_edges=dict(value.get("asymmetry_edges", {})),
+            topology_level_edges={
+                key: tuple(item) for key, item in value.get("topology_level_edges", {}).items()
+            },
         )
 
 
@@ -115,6 +150,7 @@ def fit_feature_model(
     cases = [pack.telemetry for pack in packs]
     level_edges: Dict[str, Tuple[Optional[float], Optional[float]]] = {}
     asymmetry_edges: Dict[str, Optional[float]] = {}
+    topology_values: Dict[str, List[float]] = {}
 
     for statistic in sorted(LEVEL_STATISTICS):
         for side in SIDES:
@@ -141,13 +177,36 @@ def fit_feature_model(
         edge = percentile(gaps, high_q) if len(gaps) >= 4 else None
         asymmetry_edges[statistic] = round(edge, 8) if edge is not None else None
 
+    if "topology_level_tail" in dictionary.family_names():
+        for case in cases:
+            for statistic in sorted(LEVEL_STATISTICS):
+                for side in SIDES:
+                    value = topology_side_statistic(case, side, statistic)
+                    if value is None:
+                        continue
+                    topology_values.setdefault(_topology_level_key(case, side, statistic), []).append(value)
+    topology_level_edges: Dict[str, Tuple[Optional[float], Optional[float]]] = {}
+    for key, values in sorted(topology_values.items()):
+        if len(values) < 4:
+            topology_level_edges[key] = (None, None)
+        else:
+            topology_level_edges[key] = (
+                round(percentile(values, low_q), 8),
+                round(percentile(values, high_q), 8),
+            )
+
     return FeatureModel(
-        version=FEATURE_MODEL_VERSION,
+        version=(
+            FILTERED_RULE_FEATURE_MODEL_V2_VERSION
+            if dictionary.version == "filtered-rule-feature-dictionary-v2"
+            else FEATURE_MODEL_VERSION
+        ),
         dictionary_version=dictionary.version,
         dictionary_hash=dictionary.content_hash(),
         fitted_case_count=len(packs),
         level_edges=level_edges,
         asymmetry_edges=asymmetry_edges,
+        topology_level_edges=topology_level_edges,
     )
 
 
@@ -171,6 +230,24 @@ def _signal_drop(case: Dict[str, Any], thresholds: ThresholdModel, model: Option
             else:
                 bucket = "partial_lanes"
             tokens.append(f"drop:{side}:{metric}:{bucket}")
+    return tokens
+
+
+def _signal_drop_ratio(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
+    """Permutation-invariant and width-normalized signal-loss scope."""
+    del thresholds, model
+    tokens: List[str] = []
+    for side in SIDES:
+        for metric in sorted(METRIC_ALIASES):
+            values = [value for value in lane_values(case, metric, side).values() if value is not None]
+            if not values:
+                continue
+            down_count = sum(value <= DOWN_THRESHOLDS[metric] for value in values)
+            if not down_count:
+                continue
+            ratio = down_count / len(values)
+            scope = "all_lanes" if ratio == 1.0 else "minority_lanes" if ratio <= 0.25 else "majority_lanes"
+            tokens.append(f"drop_ratio:{side}:{metric}:{scope}")
     return tokens
 
 
@@ -221,6 +298,33 @@ def _lane_direction(case: Dict[str, Any], thresholds: ThresholdModel, model: Opt
     return tokens
 
 
+def _paired_lane_state(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
+    """Logical same-index optical evidence without absolute-link-loss inference."""
+    del model
+    tokens: List[str] = []
+    list_fields = {
+        "tx_ok_rx_down": "tx_ok_rx_down_lanes",
+        "tx_down": "tx_down_lanes",
+        "bidirectional_same_lane": "bidirectional_down_lanes",
+        "single_lane_outlier": "single_lane_outlier_lanes",
+    }
+    for source, target in (("L1", "L2"), ("L2", "L1")):
+        report = lane_directional_loss(case, source, target, thresholds)
+        direction = str(report["direction"])
+        if report["lane_count_mismatch"]:
+            tokens.append(f"lane:{direction}:width_mismatch")
+            continue
+        total = int(report["lane_count"])
+        for signature, field_name in list_fields.items():
+            lanes = tuple(report[field_name])
+            if not lanes:
+                continue
+            tokens.append(f"lane:{direction}:{signature}")
+            scope = "all_lanes" if total and len(lanes) == total else "single_lane" if len(lanes) == 1 else "partial_lanes"
+            tokens.append(f"lane_scope:{direction}:{signature}:{scope}")
+    return tokens
+
+
 def _level_tail(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
     if model is None:
         return []
@@ -235,6 +339,26 @@ def _level_tail(case: Dict[str, Any], thresholds: ThresholdModel, model: Optiona
                 tokens.append(f"level:{side}:{statistic}:low_tail")
             elif value > high:
                 tokens.append(f"level:{side}:{statistic}:high_tail")
+    return tokens
+
+
+def _topology_level_tail(case: Dict[str, Any], thresholds: ThresholdModel, model: Optional[FeatureModel]) -> List[str]:
+    del thresholds
+    if model is None:
+        return []
+    tokens: List[str] = []
+    for statistic in sorted(LEVEL_STATISTICS):
+        for side in SIDES:
+            value = topology_side_statistic(case, side, statistic)
+            low, high = model.topology_level_edges.get(
+                _topology_level_key(case, side, statistic), (None, None)
+            )
+            if value is None or low is None or high is None:
+                continue
+            if value < low:
+                tokens.append(f"topology_level:{side}:{statistic}:low_tail")
+            elif value > high:
+                tokens.append(f"topology_level:{side}:{statistic}:high_tail")
     return tokens
 
 
@@ -351,11 +475,14 @@ def _expert_pattern(case: Dict[str, Any], thresholds: ThresholdModel, model: Opt
 
 FAMILY_EXTRACTORS: Dict[str, Callable[[Dict[str, Any], ThresholdModel, Optional[FeatureModel]], List[str]]] = {
     "signal_drop": _signal_drop,
+    "signal_drop_ratio": _signal_drop_ratio,
     "status_fault": _status_fault,
     "fence_outlier": _fence_outlier,
     "lane_imbalance": _lane_imbalance,
     "lane_direction": _lane_direction,
+    "paired_lane_state": _paired_lane_state,
     "level_tail": _level_tail,
+    "topology_level_tail": _topology_level_tail,
     "side_asymmetry": _side_asymmetry,
     "port_width": _port_width,
     "alarm_kind": _alarm_kind,
@@ -404,6 +531,9 @@ class CaseFeatures:
     conflicts: Tuple[Tuple[str, ...], ...] = ()
     #: 约束 C15：本 case 的 token 全部来自一条失效的采集通道，看似证据充分实则无效。
     optical_blackout: bool = False
+    source_dataset: str = ""
+    topology_id: str = ""
+    lane_profile: str = ""
 
     @property
     def signature(self) -> str:
@@ -429,6 +559,9 @@ class CaseFeatures:
             "missing_fields": list(self.missing_fields),
             "conflicts": [list(item) for item in self.conflicts],
             "optical_blackout": self.optical_blackout,
+            "source_dataset": self.source_dataset,
+            "topology_id": self.topology_id,
+            "lane_profile": self.lane_profile,
         }
 
     @classmethod
@@ -450,6 +583,9 @@ class CaseFeatures:
                 for conflict in value.get("conflicts", ())
             ),
             optical_blackout=bool(value.get("optical_blackout", False)),
+            source_dataset=str(value.get("source_dataset", "")),
+            topology_id=str(value.get("topology_id", "")),
+            lane_profile=str(value.get("lane_profile", "")),
         )
 
 
@@ -482,6 +618,9 @@ def extract_features(
         missing_fields=pack.missing_fields,
         conflicts=tuple(detect_token_conflicts(ordered)),
         optical_blackout=pack.optical_blackout,
+        source_dataset=pack.source_dataset,
+        topology_id=pack.topology_id,
+        lane_profile=pack.lane_profile,
     )
 
 

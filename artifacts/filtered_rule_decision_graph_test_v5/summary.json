@@ -1,0 +1,72 @@
+{
+  "case_count": 484,
+  "correct_at_coverage": 57,
+  "coverage": 0.14669421487603307,
+  "covered": 71,
+  "freeze": {
+    "case_count": 484,
+    "decision_graph_hash": "ad0a981160feb999c14accd33f41b588c09db56d93ac53614987b8e5ff32133d",
+    "knowledge_bundle_hash": "565a61e23207d798",
+    "labels_visible_during_prediction": false,
+    "n8_frozen": true,
+    "prediction_sha256": "4b87a38baccb87a1643a57720e93a2afdb301433919218b83e31deb9dc6cea40",
+    "prior_iteration_used_for": "rxpower multi-neighbor and SerDes advisory gates from prior loop; coverage restored only by train topology-calibrated media path",
+    "prior_test_informed_iteration": true,
+    "schema_version": "decision-graph-blind-freeze-v5"
+  },
+  "insufficient": 413,
+  "learned_path_metrics": {
+    "expert:multi_metric": {
+      "matched_candidates": 27,
+      "terminal_correct": 20,
+      "terminal_outputs": 27,
+      "terminal_votes": 27
+    },
+    "expert:single:media_snr": {
+      "matched_candidates": 17,
+      "terminal_correct": 16,
+      "terminal_outputs": 17,
+      "terminal_votes": 17
+    },
+    "expert:single:serdes_snr": {
+      "matched_candidates": 8,
+      "terminal_correct": 0,
+      "terminal_outputs": 0,
+      "terminal_votes": 0
+    }
+  },
+  "media_topology_path": {
+    "accuracy": 0.84375,
+    "correct": 27,
+    "covered": 32
+  },
+  "review_categories": {
+    "correct": 57,
+    "decision_graph_error": 4,
+    "decision_graph_gap": 263,
+    "feature_problem": 5,
+    "label_suspect": 1,
+    "missing_evidence": 150,
+    "overfitting": 4
+  },
+  "schema_version": "decision-graph-loop-summary-v5",
+  "selective_accuracy": 0.8028169014084507,
+  "split_metrics": {
+    "test/all_data": {
+      "case_count": 417,
+      "correct_at_coverage": 50,
+      "coverage": 0.1510791366906475,
+      "covered": 63,
+      "insufficient": 354,
+      "selective_accuracy": 0.7936507936507936
+    },
+    "test/rule1_channel_not_4": {
+      "case_count": 67,
+      "correct_at_coverage": 7,
+      "coverage": 0.11940298507462686,
+      "covered": 8,
+      "insufficient": 59,
+      "selective_accuracy": 0.875
+    }
+  }
+}

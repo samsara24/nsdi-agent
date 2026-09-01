@@ -1,0 +1,167 @@
+{
+  "schema_version": "filtered-rule-uncovered-llm-feasibility-v2",
+  "evaluation_design": {
+    "prediction_source": "artifacts/filtered_rule_temporal_20260823T122701Z/run",
+    "uncovered_definition_source": "artifacts/filtered_rule_decision_graph_test_v5/case_analysis.json",
+    "label_visible_during_prediction": false,
+    "retrospective_test_informed": true,
+    "policy_mutated": true
+  },
+  "subgroups": {
+    "强制预测全部未覆盖样本": {
+      "count": 413,
+      "correct": 225,
+      "accuracy": 0.5447941888619855,
+      "wilson_95": [
+        0.4965726743079701,
+        0.5921900595458488
+      ]
+    },
+    "旧 LLM 门禁实际放行": {
+      "count": 216,
+      "correct": 119,
+      "accuracy": 0.5509259259259259,
+      "wilson_95": [
+        0.48427834290038285,
+        0.6157937089769688
+      ]
+    },
+    "可推理 gap": {
+      "count": 263,
+      "correct": 146,
+      "accuracy": 0.5551330798479087,
+      "wilson_95": [
+        0.4947070770396018,
+        0.6139716297287581
+      ]
+    },
+    "不可辨识 missing/no-anomaly": {
+      "count": 150,
+      "correct": 79,
+      "accuracy": 0.5266666666666666,
+      "wilson_95": [
+        0.4470991159595076,
+        0.6049024232860539
+      ]
+    },
+    "logical8 未覆盖样本": {
+      "count": 59,
+      "correct": 25,
+      "accuracy": 0.423728813559322,
+      "wilson_95": [
+        0.3061253228310244,
+        0.5506574452716337
+      ]
+    },
+    "探索门：final ∩ N5c ∩ 物理候选一致": {
+      "count": 29,
+      "correct": 24,
+      "accuracy": 0.8275862068965517,
+      "wilson_95": [
+        0.6545119942718488,
+        0.9240225472852007
+      ]
+    },
+    "修复后全部候选（含人工复核）": {
+      "count": 128,
+      "correct": 80,
+      "accuracy": 0.625,
+      "wilson_95": [
+        0.5386384433955553,
+        0.7040770576299176
+      ]
+    },
+    "修复后自动终裁": {
+      "count": 68,
+      "correct": 39,
+      "accuracy": 0.5735294117647058,
+      "wilson_95": [
+        0.455165693769645,
+        0.6840294243791712
+      ]
+    }
+  },
+  "combined_operating_points": {
+    "v5": {
+      "covered": 71,
+      "correct": 57,
+      "coverage": 0.14669421487603307,
+      "precision": 0.8028169014084507
+    },
+    "v5_plus_old_llm_terminal": {
+      "covered": 287,
+      "correct": 176,
+      "coverage": 0.5929752066115702,
+      "precision": 0.6132404181184669
+    },
+    "v5_plus_exploratory_pilot_gate": {
+      "covered": 100,
+      "correct": 81,
+      "coverage": 0.2066115702479339,
+      "precision": 0.81
+    },
+    "v5_plus_repaired_llm_terminal": {
+      "covered": 139,
+      "correct": 96,
+      "coverage": 0.2871900826446281,
+      "precision": 0.6906474820143885
+    },
+    "forced_full_coverage": {
+      "covered": 484,
+      "correct": 282,
+      "coverage": 1.0,
+      "precision": 0.5826446280991735
+    }
+  },
+  "truth_distribution": {
+    "L1": 161,
+    "L2": 238,
+    "fiber": 14
+  },
+  "forced_prediction_distribution": {
+    "L1": 146,
+    "L2": 264,
+    "fiber": 3
+  },
+  "penalties": {
+    "verdict_step_mismatch": 16,
+    "fabricated_evidence": 91,
+    "unsupported_step": 138,
+    "constraint_violation": 271,
+    "measurement_veto": 45,
+    "fabricated_constraint": 21
+  },
+  "training_causal_calibration": {
+    "aligned_receive_chain": {
+      "support": 18,
+      "local_truth": 5,
+      "opposite_truth": 10,
+      "fiber_truth": 3,
+      "local_accuracy": 0.2777777777777778,
+      "opposite_accuracy": 0.5555555555555556,
+      "conclusion": "mixed labels; non-terminal"
+    }
+  },
+  "correction_audit": {
+    "label_changed": 20,
+    "old_wrong_corrected_right": 13,
+    "old_right_corrected_wrong": 7,
+    "invalid_llm_downgraded": 80,
+    "reasoning_verdict_conflicts": 16,
+    "reasoning_candidate_matches_truth": 21,
+    "corrected_actions": {
+      "human_review": 243,
+      "final": 68,
+      "request_evidence": 102
+    },
+    "causal_rules": {
+      "local_serdes_advisory": 59,
+      "receive_symptom_without_causal_support": 85,
+      "aligned_receive_chain_ambiguous": 70,
+      "local_receive_chain_with_host_fault": 1,
+      "legacy_advisory": 155,
+      "confirmed_tx_fault": 40,
+      "tx_ok_rx_down_unresolved": 3
+    }
+  }
+}

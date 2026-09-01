@@ -1,0 +1,405 @@
+{
+  "evidence_graph_case_count": 124,
+  "evidence_graph_diagnosis_count": 124,
+  "expert_calibration": {
+    "groups": {
+      "expert:both_anomaly": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1,
+        "wilson_lower_bound": 0.206543
+      },
+      "expert:multi_metric": {
+        "accuracy": 0.534884,
+        "correct": 23,
+        "total": 43,
+        "wilson_lower_bound": 0.389154
+      },
+      "expert:no_anomaly": {
+        "accuracy": 0.5,
+        "correct": 6,
+        "total": 12,
+        "wilson_lower_bound": 0.253778
+      },
+      "expert:port_status_gate": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1,
+        "wilson_lower_bound": 0.0
+      },
+      "expert:single:host_snr": {
+        "accuracy": 0.857143,
+        "correct": 6,
+        "total": 7,
+        "wilson_lower_bound": 0.486865
+      },
+      "expert:single:media_snr": {
+        "accuracy": 0.833333,
+        "correct": 10,
+        "total": 12,
+        "wilson_lower_bound": 0.551964
+      },
+      "expert:single:rxpower": {
+        "accuracy": 0.9,
+        "correct": 9,
+        "total": 10,
+        "wilson_lower_bound": 0.595844
+      },
+      "expert:single:serdes_snr": {
+        "accuracy": 0.571429,
+        "correct": 20,
+        "total": 35,
+        "wilson_lower_bound": 0.408571
+      },
+      "expert:txpower_lane_down": {
+        "accuracy": 0.666667,
+        "correct": 2,
+        "total": 3,
+        "wilson_lower_bound": 0.207655
+      }
+    },
+    "source": "manifest-train",
+    "version": "expert-rules-v1"
+  },
+  "graph_purity": {
+    "case_count": 124,
+    "empty_signature_case_count": 0,
+    "mixed_label_case_count": 2,
+    "mixed_label_case_ratio": 0.016129,
+    "mixed_label_group_count": 1,
+    "signature_group_count": 118,
+    "singleton_group_count": 112
+  },
+  "graph_version": "evidence-graph-v1:124:affc399cf8706073",
+  "historical_vector_count": 124,
+  "policies": {
+    "filtered-rule-three-channel-v2": {
+      "answered_count": 124,
+      "branch_calibration": {
+        "groups": {
+          "N5a_pure": {
+            "accuracy": 1.0,
+            "correct": 10,
+            "total": 10,
+            "wilson_lower_bound": 0.72246
+          },
+          "N5b_critical_gap": {
+            "accuracy": 0.5,
+            "correct": 12,
+            "total": 24,
+            "wilson_lower_bound": 0.314271
+          },
+          "N5b_minor_gap": {
+            "accuracy": 0.666667,
+            "correct": 12,
+            "total": 18,
+            "wilson_lower_bound": 0.437491
+          },
+          "N5c_no_exclusion": {
+            "accuracy": 0.0,
+            "correct": 0,
+            "total": 68,
+            "wilson_lower_bound": 0.0
+          },
+          "N5c_with_exclusion": {
+            "accuracy": 0.0,
+            "correct": 0,
+            "total": 4,
+            "wilson_lower_bound": 0.0
+          }
+        },
+        "source": "manifest-train-loo:filtered-rule-three-channel-v2"
+      },
+      "case_count": 124,
+      "decision_policy": {
+        "candidate_order": [
+          "branch"
+        ],
+        "final_lower_bound": 0.666646,
+        "fitted_on": "manifest-train-loo:filtered-rule-three-channel-v2: 目标选择性风险 <= 15.00%，取到最大覆盖率的阈值 0.6666（训练留一法覆盖率 16.94%，实测风险 4.76%，支持数下限 10）",
+        "minimum_support": 10,
+        "non_identifiable_evidence": {},
+        "non_identifiable_labels": [],
+        "per_label_lower_bound": {},
+        "target_selective_risk": 0.15,
+        "version": "decision-policy-v3-forced-multidim"
+      },
+      "decision_policy_fit": {
+        "candidate_order": [
+          "branch"
+        ],
+        "chosen_lower_bound": 0.666646,
+        "curve": [
+          {
+            "answered": 116,
+            "balanced_recall": 0.501174,
+            "by_source": {
+              "branch": {
+                "answered": 116,
+                "correct": 73
+              }
+            },
+            "correct": 73,
+            "coverage": 0.935484,
+            "final_lower_bound": 0.0,
+            "precision_when_answered": 0.62931,
+            "selective_risk": 0.37069
+          },
+          {
+            "answered": 116,
+            "balanced_recall": 0.501174,
+            "by_source": {
+              "branch": {
+                "answered": 116,
+                "correct": 73
+              }
+            },
+            "correct": 73,
+            "coverage": 0.935484,
+            "final_lower_bound": 0.314271,
+            "precision_when_answered": 0.62931,
+            "selective_risk": 0.37069
+          },
+          {
+            "answered": 92,
+            "balanced_recall": 0.40304,
+            "by_source": {
+              "branch": {
+                "answered": 92,
+                "correct": 61
+              }
+            },
+            "correct": 61,
+            "coverage": 0.741935,
+            "final_lower_bound": 0.315666,
+            "precision_when_answered": 0.663043,
+            "selective_risk": 0.336957
+          },
+          {
+            "answered": 70,
+            "balanced_recall": 0.32304,
+            "by_source": {
+              "branch": {
+                "answered": 70,
+                "correct": 49
+              }
+            },
+            "correct": 49,
+            "coverage": 0.564516,
+            "final_lower_bound": 0.422472,
+            "precision_when_answered": 0.7,
+            "selective_risk": 0.3
+          },
+          {
+            "answered": 39,
+            "balanced_recall": 0.233093,
+            "by_source": {
+              "branch": {
+                "answered": 39,
+                "correct": 32
+              }
+            },
+            "correct": 32,
+            "coverage": 0.314516,
+            "final_lower_bound": 0.437491,
+            "precision_when_answered": 0.820513,
+            "selective_risk": 0.179487
+          },
+          {
+            "answered": 21,
+            "balanced_recall": 0.161347,
+            "by_source": {
+              "branch": {
+                "answered": 21,
+                "correct": 20
+              }
+            },
+            "correct": 20,
+            "coverage": 0.169355,
+            "final_lower_bound": 0.666646,
+            "precision_when_answered": 0.952381,
+            "selective_risk": 0.047619
+          },
+          {
+            "answered": 10,
+            "balanced_recall": 0.108437,
+            "by_source": {
+              "branch": {
+                "answered": 10,
+                "correct": 10
+              }
+            },
+            "correct": 10,
+            "coverage": 0.080645,
+            "final_lower_bound": 0.72246,
+            "precision_when_answered": 1.0,
+            "selective_risk": 0.0
+          }
+        ],
+        "feasible": true,
+        "minimum_coverage": 0.0,
+        "minimum_support": 10,
+        "non_identifiable_labels": [],
+        "source": "manifest-train-loo:filtered-rule-three-channel-v2",
+        "target_selective_risk": 0.15
+      },
+      "llm_accepted_count": 0,
+      "llm_calibration": null,
+      "llm_trace_count": 0,
+      "oof_expert_answered": 124,
+      "oof_expert_correct": 77,
+      "oof_sop_answered": 124,
+      "oof_sop_correct": 55,
+      "prediction_matches_training_label": 80
+    }
+  },
+  "schema_version": "training-knowledge-summary-v1",
+  "sop": {
+    "content_hash": "2e84eb36c2257ea7",
+    "dictionary_hash": "numeric",
+    "dictionary_version": "numeric",
+    "feature_schema": "numeric-decision-tree-features-v1",
+    "max_depth": 3,
+    "min_leaf_size": 5,
+    "root": {
+      "feature": "L2.rxpower.spread",
+      "gt": {
+        "feature": "L1.Temperature",
+        "gt": {
+          "label_counts": {
+            "L1": 7,
+            "L2": 0,
+            "fiber": 0
+          },
+          "node_id": "root.gt.gt",
+          "prediction": "L1",
+          "pruned_reason": "",
+          "samples": 7
+        },
+        "label_counts": {
+          "L1": 11,
+          "L2": 1,
+          "fiber": 0
+        },
+        "leq": {
+          "label_counts": {
+            "L1": 4,
+            "L2": 1,
+            "fiber": 0
+          },
+          "node_id": "root.gt.leq",
+          "prediction": "L1",
+          "pruned_reason": "",
+          "samples": 5
+        },
+        "node_id": "root.gt",
+        "prediction": "L1",
+        "pruned_reason": "",
+        "samples": 12,
+        "threshold": 46.53,
+        "threshold_source": "quantile"
+      },
+      "label_counts": {
+        "L1": 50,
+        "L2": 63,
+        "fiber": 11
+      },
+      "leq": {
+        "feature": "L2.serdes_snr.min",
+        "gt": {
+          "feature": "L1.txpower.spread",
+          "gt": {
+            "label_counts": {
+              "L1": 1,
+              "L2": 19,
+              "fiber": 2
+            },
+            "node_id": "root.leq.gt.gt",
+            "prediction": "L2",
+            "pruned_reason": "",
+            "samples": 22
+          },
+          "label_counts": {
+            "L1": 21,
+            "L2": 45,
+            "fiber": 2
+          },
+          "leq": {
+            "label_counts": {
+              "L1": 20,
+              "L2": 26,
+              "fiber": 0
+            },
+            "node_id": "root.leq.gt.leq",
+            "prediction": "L2",
+            "pruned_reason": "",
+            "samples": 46
+          },
+          "node_id": "root.leq.gt",
+          "prediction": "L2",
+          "pruned_reason": "",
+          "samples": 68,
+          "threshold": 0.5499999999999999,
+          "threshold_source": "quantile"
+        },
+        "label_counts": {
+          "L1": 39,
+          "L2": 62,
+          "fiber": 11
+        },
+        "leq": {
+          "feature": "L2.rxpower.mean",
+          "gt": {
+            "label_counts": {
+              "L1": 0,
+              "L2": 5,
+              "fiber": 0
+            },
+            "node_id": "root.leq.leq.gt",
+            "prediction": "L2",
+            "pruned_reason": "",
+            "samples": 5
+          },
+          "label_counts": {
+            "L1": 18,
+            "L2": 17,
+            "fiber": 9
+          },
+          "leq": {
+            "label_counts": {
+              "L1": 18,
+              "L2": 12,
+              "fiber": 9
+            },
+            "node_id": "root.leq.leq.leq",
+            "prediction": "L1",
+            "pruned_reason": "",
+            "samples": 39
+          },
+          "node_id": "root.leq.leq",
+          "prediction": "L1",
+          "pruned_reason": "",
+          "samples": 44,
+          "threshold": 2.068125,
+          "threshold_source": "quantile"
+        },
+        "node_id": "root.leq",
+        "prediction": "L2",
+        "pruned_reason": "",
+        "samples": 112,
+        "threshold": 635733.0,
+        "threshold_source": "quantile"
+      },
+      "node_id": "root",
+      "prediction": "L2",
+      "pruned_reason": "",
+      "samples": 124,
+      "threshold": 1.4749999999999999,
+      "threshold_source": "quantile"
+    },
+    "source": "filtered_rule_temporal_2025_06_09_v1:manifest-train",
+    "training_case_count": 124,
+    "version": "numeric-decision-tree-v1"
+  },
+  "train_case_count": 124
+}

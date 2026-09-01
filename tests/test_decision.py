@@ -81,6 +81,36 @@ def test_uncalibrated_llm_confidence_is_not_treated_as_reliability():
     assert decide(calibrated).action == "final"
 
 
+def test_fatal_llm_fallback_cannot_regain_final_status_from_scalar_confidence():
+    invalid = outcome(
+        branch="N5b",
+        confidence=0.99,
+        confidence_lower_bound=0.6,
+        calibration_group="llm:N5b:[0.9,1.0]",
+        calibration_support=20,
+        confidence_breakdown={"physical_compliance": 0.0, "evidence_completeness": 0.8},
+        fallback_source="last_parsed_after_fatal",
+        compliance_penalties=({"kind": "fabricated_evidence", "physical_compliance_cap": 0.0},),
+    )
+    decision = decide(invalid)
+    assert decision.action == "human_review"
+    assert decision.verdict is None
+    assert decision.proposed_verdict == "L1"
+
+
+def test_llm_verdict_step_mismatch_requires_review_even_after_reconciliation():
+    conflicted = outcome(
+        branch="N5c",
+        confidence=0.9,
+        confidence_lower_bound=0.6,
+        calibration_group="llm:N5c:[0.9,1.0]",
+        calibration_support=20,
+        confidence_breakdown={"physical_compliance": 0.9},
+        compliance_penalties=({"kind": "verdict_step_mismatch", "physical_compliance_cap": 1.0},),
+    )
+    assert decide(conflicted).action == "human_review"
+
+
 def test_llm_calibration_uses_independent_correctness_frequency():
     outcomes = [
         outcome(case_id=f"case_{index}", branch="N5c", verdict="L1")
@@ -96,4 +126,3 @@ def test_llm_calibration_uses_independent_correctness_frequency():
     assert calibrated.calibration_support == 20
     assert calibrated.calibration_group.startswith("llm:N5c:")
     assert decide(calibrated).action == "final"
-

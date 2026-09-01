@@ -34,7 +34,10 @@ def calibration_group_of(
     if decision.branch == "N5a":
         return exact.calibration_group(result)
     if decision.branch == "N5b":
-        return partial.calibration_group(result)
+        return partial.calibration_group(
+            result,
+            use_dual_similarity=decision.policy_name == "filtered-rule-three-channel-v2",
+        )
     if decision.branch == "N5c":
         return general.calibration_group(pack, general.deterministic_exclusions(pack))
     return "N6_abstain"
@@ -56,7 +59,12 @@ def provisional_verdict(
         excluded = {item.root_cause for item in general.deterministic_exclusions(pack)}
         remaining = [label for label in ("L1", "L2", "fiber") if label not in excluded]
         return remaining[0] if len(remaining) == 1 else None
-    return majority_label([item.label for item in result.top_candidates if item.label is not None])
+    candidates = (
+        result.dual_top_candidates
+        if decision.policy_name == "filtered-rule-three-channel-v2" and result.dual_top_candidates
+        else result.top_candidates
+    )
+    return majority_label([item.label for item in candidates if item.label is not None])
 
 
 def fit_calibration(
@@ -148,7 +156,13 @@ def handle(
     if decision.branch == "N5a":
         return decision, exact.handle(result, decision, calibration, trace=trace)
     if decision.branch == "N5b":
-        return decision, partial.handle(result, decision, calibration, trace=trace)
+        return decision, partial.handle(
+            result,
+            decision,
+            calibration,
+            trace=trace,
+            use_dual_similarity=policy.use_dual_similarity,
+        )
     if decision.branch == "N5c":
         return decision, general.handle(
             result,

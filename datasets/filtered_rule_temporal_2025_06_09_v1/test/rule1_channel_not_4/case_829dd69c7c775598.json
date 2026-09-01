@@ -1,0 +1,278 @@
+{
+  "alarm_ip_interface": "26.18.98.13--400GE5/0/19",
+  "alarm_time": "2025-10-18 11:22:27",
+  "region": "cn-southwest-2",
+  "alarm_name": "接口CRC",
+  "label": "L2",
+  "bias": {
+    "L1": {
+      "0": 8.09,
+      "1": 8.09,
+      "2": 8.09,
+      "3": 8.09,
+      "4": 8.09,
+      "5": 8.09,
+      "6": 8.09,
+      "7": 8.09
+    },
+    "L2": {
+      "0": 8.14,
+      "1": 8.14,
+      "2": 8.14,
+      "3": 8.14,
+      "4": 8.14,
+      "5": 8.14,
+      "6": 8.14,
+      "7": 8.14
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 1.64,
+      "1": 1.46,
+      "2": 1.85,
+      "3": 1.95,
+      "4": 1.66,
+      "5": 1.59,
+      "6": 2.25,
+      "7": 1.81
+    },
+    "L2": {
+      "0": 1.38,
+      "1": 0.82,
+      "2": 1.18,
+      "3": 1.33,
+      "4": 1.13,
+      "5": 1.1,
+      "6": 1.31,
+      "7": 1.96
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 1.06,
+      "1": 0.9,
+      "2": 1.06,
+      "3": 1,
+      "4": 0.91,
+      "5": 0.76,
+      "6": 0.89,
+      "7": 0.89
+    },
+    "L2": {
+      "0": 1.62,
+      "1": 1.61,
+      "2": 1.64,
+      "3": 1.69,
+      "4": 1.76,
+      "5": 1.62,
+      "6": 1.63,
+      "7": 1.46
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": 0.32,
+      "1": -0.08,
+      "2": 0.12,
+      "3": 0.33,
+      "4": 0.22,
+      "5": 0.34,
+      "6": 0.42,
+      "7": 1.07
+    },
+    "L2-L1": {
+      "0": 0.02,
+      "1": -0.15,
+      "2": 0.21,
+      "3": 0.26,
+      "4": -0.1,
+      "5": -0.03,
+      "6": 0.62,
+      "7": 0.35
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 23.88,
+      "1": 23.3,
+      "2": 22.95,
+      "3": 23.48,
+      "4": 22.62,
+      "5": 24.09,
+      "6": 23.12,
+      "7": 23.3
+    },
+    "L2": {
+      "0": 24.31,
+      "1": 23.67,
+      "2": 23.67,
+      "3": 23.67,
+      "4": 23.12,
+      "5": 23.67,
+      "6": 23.67,
+      "7": 23.3
+    }
+  },
+  "host_snr": {
+    "L1": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null
+    },
+    "L2": {
+      "0": null,
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null,
+      "5": null,
+      "6": null,
+      "7": null
+    }
+  },
+  "serdes_snr": null,
+  "link_location": "参数面",
+  "link_side_ip_interface_map": {
+    "L1": "26.18.98.13--400GE5/0/19",
+    "L2": "26.18.98.170--400GE1/1/2"
+  },
+  "vendor": {
+    "L1": "其他",
+    "L2": "其他"
+  },
+  "vendor_sn": {
+    "L1": "INNAP1190004",
+    "L2": "INNAV1190504"
+  },
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "Temperature": {
+    "L1": 52.45,
+    "L2": 54.34
+  },
+  "Voltage": {
+    "L1": 3.35,
+    "L2": 3.3
+  },
+  "Lane number": null,
+  "syslog": {
+    "L1": [
+      {
+        "time": "2025 11:10:10",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:10:10",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:10:12",
+        "reason": "Interface physical link is up"
+      },
+      {
+        "time": "2025 11:10:13",
+        "reason": "Interface physical link is up"
+      },
+      {
+        "time": "2025 11:16:48",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:16:48",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:16:49",
+        "reason": "Interface physical link is up"
+      },
+      {
+        "time": "2025 11:16:50",
+        "reason": "Interface physical link is up"
+      },
+      {
+        "time": "2025 11:21:52",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:21:52",
+        "reason": "Interface physical link is up"
+      },
+      {
+        "time": "2025 11:21:52",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:21:53",
+        "reason": "Interface physical link is up"
+      },
+      {
+        "time": "2025 11:22:25",
+        "reason": "Interface physical link is down"
+      },
+      {
+        "time": "2025 11:22:25",
+        "reason": "Interface physical link is down"
+      }
+    ],
+    "L2": null
+  },
+  "case_id": "case_829dd69c7c775598",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "remote/2063.json",
+    "source_sha256": "b9fe704377d8218a0b9b5c74d9dab1500adab8fbe798434310d3157597046535",
+    "split": "test/rule1_channel_not_4",
+    "parsed_month": "2025-10",
+    "original_alarm_time": "2025-10-18 11:22:27",
+    "original_label": "l4",
+    "source_adjusted_label": "l4",
+    "unified_label": "L2",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        8
+      ],
+      "l4": [
+        8
+      ]
+    }
+  }
+}

@@ -16,11 +16,17 @@ legacy 只返回相似度和重叠 token，这回答不了 N5b 的核心问题�
 
 from __future__ import annotations
 
+import math
+from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Set, Tuple
 
 from ..features.extractor import MUTUALLY_EXCLUSIVE_PREFIXES, CaseFeatures
 from .store import CaseDiagnosis, EvidenceGraph, GraphCase
+from ..topology import topology_compatible
+
+
+MATCH_ALGORITHM_VERSION = "explainable-feature-semantic-graph-jaccard-v1"
 
 
 @dataclass(frozen=True)
@@ -36,6 +42,15 @@ class Candidate:
     evidence_chain_summary: Tuple[str, ...] = ()
     missing_chain_steps: Tuple[str, ...] = ()
     label: Optional[str] = None
+    source_dataset: str = ""
+    topology_id: str = ""
+    lane_profile: str = ""
+    topology_compatible: bool = True
+    feature_similarity: float = 0.0
+    graph_similarity: float = 0.0
+    shared_graph_edges: Tuple[str, ...] = ()
+    missing_graph_edges: Tuple[str, ...] = ()
+    extra_graph_edges: Tuple[str, ...] = ()
 
     @property
     def has_conflict(self) -> bool:
@@ -52,6 +67,15 @@ class Candidate:
             "conflicting_evidence": [list(pair) for pair in self.conflicting_evidence],
             "evidence_chain_summary": list(self.evidence_chain_summary),
             "missing_chain_steps": list(self.missing_chain_steps),
+            "source_dataset": self.source_dataset,
+            "topology_id": self.topology_id,
+            "lane_profile": self.lane_profile,
+            "topology_compatible": self.topology_compatible,
+            "feature_similarity": self.feature_similarity,
+            "graph_similarity": self.graph_similarity,
+            "shared_graph_edges": list(self.shared_graph_edges),
+            "missing_graph_edges": list(self.missing_graph_edges),
+            "extra_graph_edges": list(self.extra_graph_edges),
         }
 
 
@@ -65,10 +89,52 @@ class MatchResult:
     candidates: Tuple[Candidate, ...] = ()
     graph_version: str = ""
     query_optical_blackout: bool = False
+    query_source_dataset: str = ""
+    query_topology_id: str = ""
+    query_lane_profile: str = ""
+    query_graph_edges: Tuple[str, ...] = ()
+
+    @property
+    def retrieval_candidates(self) -> Tuple[Candidate, ...]:
+        """Prefer same-topology history; use cross-topology history only as a fallback."""
+        compatible = tuple(
+            item for item in self.candidates
+            if item.topology_compatible and item.similarity > 0.0
+        )
+        return compatible or self.candidates
 
     @property
     def max_similarity(self) -> float:
-        return max((item.similarity for item in self.candidates), default=0.0)
+        return max((item.similarity for item in self.retrieval_candidates), default=0.0)
+
+    @property
+    def max_feature_similarity(self) -> float:
+        return max((item.feature_similarity for item in self.retrieval_candidates), default=0.0)
+
+    @property
+    def max_graph_similarity(self) -> float:
+        return max((item.graph_similarity for item in self.retrieval_candidates), default=0.0)
+
+    @property
+    def dual_top_candidates(self) -> Tuple[Candidate, ...]:
+        """Top candidates ranked by the weaker of feature and graph similarity."""
+        rows = self.retrieval_candidates
+        if not rows:
+            return ()
+        best = max(
+            (min(item.feature_similarity, item.graph_similarity),
+             item.feature_similarity + item.graph_similarity)
+            for item in rows
+        )
+        if best[0] <= 0.0:
+            return ()
+        return tuple(
+            item for item in rows
+            if (
+                min(item.feature_similarity, item.graph_similarity),
+                item.feature_similarity + item.graph_similarity,
+            ) == best
+        )
 
     @property
     def top_candidates(self) -> Tuple[Candidate, ...]:
@@ -76,7 +142,11 @@ class MatchResult:
         best = self.max_similarity
         if best <= 0.0:
             return ()
-        return tuple(item for item in self.candidates if item.similarity == best)
+        return tuple(item for item in self.retrieval_candidates if item.similarity == best)
+
+    @property
+    def uses_cross_topology_fallback(self) -> bool:
+        return bool(self.top_candidates) and not any(item.topology_compatible for item in self.top_candidates)
 
     @property
     def evidence_coverage(self) -> float:
@@ -122,8 +192,16 @@ class MatchResult:
             "query_tokens": list(self.query_tokens),
             "query_telemetry_status": self.query_telemetry_status,
             "query_optical_blackout": self.query_optical_blackout,
+            "query_source_dataset": self.query_source_dataset,
+            "query_topology_id": self.query_topology_id,
+            "query_lane_profile": self.query_lane_profile,
+            "query_graph_edges": list(self.query_graph_edges),
+            "uses_cross_topology_fallback": self.uses_cross_topology_fallback,
             "graph_version": self.graph_version,
+            "match_algorithm_version": MATCH_ALGORITHM_VERSION,
             "max_similarity": self.max_similarity,
+            "max_feature_similarity": self.max_feature_similarity,
+            "max_graph_similarity": self.max_graph_similarity,
             "evidence_coverage": self.evidence_coverage,
             "tie_count": len(self.top_candidates),
             "missing_evidence": list(self.missing_evidence),
@@ -141,6 +219,35 @@ def weighted_jaccard(query: Set[str], candidate: Set[str], idf: Mapping[str, flo
     numerator = sum(idf.get(token, 1.0) for token in sorted(overlap))
     denominator = sum(idf.get(token, 1.0) for token in sorted(union))
     return round(numerator / denominator, 8) if denominator else 0.0
+
+
+def explainable_graph_edges(tokens: Sequence[str]) -> Tuple[str, ...]:
+    """Project explainable tokens into a label-free semantic-prefix graph.
+
+    Feature similarity compares complete token identities. Graph similarity compares
+    the reusable relations inside those tokens (family -> side/direction -> metric ->
+    state), so two cases can share a physical path without having identical leaves.
+    """
+    edges: Set[str] = set()
+    for token in sorted(set(tokens)):
+        parts = tuple(part for part in token.split(":") if part)
+        if not parts:
+            continue
+        parent = f"family:{parts[0]}"
+        for depth, component in enumerate(parts[1:], 1):
+            child = f"path:{':'.join(parts[: depth + 1])}"
+            edges.add(f"{parent}|segment_{depth}|{child}")
+            parent = child
+    return tuple(sorted(edges))
+
+
+def _graph_idf(rows: Sequence[Sequence[str]]) -> Dict[str, float]:
+    sets = [set(row) for row in rows]
+    frequency = Counter(edge for row in sets for edge in row)
+    return {
+        edge: math.log((1 + len(sets)) / (1 + count)) + 1.0
+        for edge, count in frequency.items()
+    }
 
 
 def find_conflicts(query: Set[str], candidate: Set[str]) -> Tuple[Tuple[str, str], ...]:
@@ -174,7 +281,14 @@ def match(
     `exclude_case_ids` 用于留一法评估：把 query 自身排除，否则相似度恒为 1.0。
     """
     query = set(features.tokens)
+    query_graph = set(explainable_graph_edges(features.tokens))
     excluded = set(exclude_case_ids)
+    graph_edges_by_case = {
+        case.case_id: explainable_graph_edges(case.tokens)
+        for case in graph.cases
+        if case.case_id not in excluded
+    }
+    graph_idf = _graph_idf(tuple(graph_edges_by_case.values()))
     rows: List[Candidate] = []
     for case in graph.cases:
         if case.case_id in excluded:
@@ -184,19 +298,32 @@ def match(
                 case,
                 query,
                 graph.idf,
+                query_graph=query_graph,
+                candidate_graph=set(graph_edges_by_case.get(case.case_id, ())),
+                graph_idf=graph_idf,
                 diagnosis=graph.diagnosis_for(case.case_id),
                 hide_labels=hide_labels,
+                query_topology_id=features.topology_id,
             )
         )
 
     rows.sort(key=lambda item: (-item.similarity, item.case_id))
+    # Apply topology preference before Top-K truncation.  Otherwise a small K
+    # could discard all compatible history merely because an incompatible case
+    # has a slightly larger generic-token overlap.
+    compatible = [item for item in rows if item.topology_compatible and item.similarity > 0.0]
+    selected = compatible if compatible else rows
     return MatchResult(
         query_case_id=features.case_id,
         query_tokens=features.tokens,
         query_telemetry_status=features.telemetry_status,
-        candidates=tuple(rows[:top_k]) if top_k > 0 else tuple(rows),
+        candidates=tuple(selected[:top_k]) if top_k > 0 else tuple(selected),
         graph_version=graph.version,
         query_optical_blackout=features.optical_blackout,
+        query_source_dataset=features.source_dataset,
+        query_topology_id=features.topology_id,
+        query_lane_profile=features.lane_profile,
+        query_graph_edges=tuple(sorted(query_graph)),
     )
 
 
@@ -226,21 +353,36 @@ def _build_candidate(
     query: Set[str],
     idf: Mapping[str, float],
     *,
+    query_graph: Set[str],
+    candidate_graph: Set[str],
+    graph_idf: Mapping[str, float],
     diagnosis: Optional[CaseDiagnosis] = None,
     hide_labels: bool,
+    query_topology_id: str = "",
 ) -> Candidate:
     candidate_tokens = set(case.tokens)
     chain_summary, missing_steps = _diagnosis_chain_summary(diagnosis, query)
+    feature_similarity = weighted_jaccard(query, candidate_tokens, idf)
+    graph_similarity = weighted_jaccard(query_graph, candidate_graph, graph_idf)
     return Candidate(
         case_id=case.case_id,
         label=None if hide_labels else case.label,
-        similarity=weighted_jaccard(query, candidate_tokens, idf),
+        similarity=feature_similarity,
         shared_evidence=tuple(sorted(query & candidate_tokens)),
         missing_evidence=tuple(sorted(candidate_tokens - query)),
         extra_evidence=tuple(sorted(query - candidate_tokens)),
         conflicting_evidence=find_conflicts(query, candidate_tokens),
         evidence_chain_summary=chain_summary,
         missing_chain_steps=missing_steps,
+        source_dataset=case.source_dataset,
+        topology_id=case.topology_id,
+        lane_profile=case.lane_profile,
+        topology_compatible=topology_compatible(query_topology_id, case.topology_id),
+        feature_similarity=feature_similarity,
+        graph_similarity=graph_similarity,
+        shared_graph_edges=tuple(sorted(query_graph & candidate_graph)),
+        missing_graph_edges=tuple(sorted(candidate_graph - query_graph)),
+        extra_graph_edges=tuple(sorted(query_graph - candidate_graph)),
     )
 
 

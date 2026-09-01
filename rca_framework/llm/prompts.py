@@ -20,10 +20,12 @@ import inspect
 from typing import Any, Dict, Optional, Sequence
 
 from ..constraints.library import CONSTRAINT_LIBRARY, ConstraintLibrary, render_prompt_block
+from ..constraints.measurement import MEASUREMENT_CONTRACT_LIBRARY
+from ..constraints.physics import PHYSICS_LIBRARY
 from ..sop.expert_sop import EXPERT_SOP_VERSION, render_expert_sop_prompt_block
 from ..types import ROOT_CAUSES
 from .confidence_rubric import CONFIDENCE_RUBRIC
-from .prompt_templates.diagnose import DIAGNOSE_PROMPT_VERSION, build_diagnose_prompt
+from .prompt_templates.diagnose import build_diagnose_prompt, diagnose_prompt_version_for
 
 
 #: v2 改写了弃权判据。v1 只说「证据不足就弃权」，真机实测（DeepSeek-R1-32B）
@@ -35,8 +37,12 @@ from .prompt_templates.diagnose import DIAGNOSE_PROMPT_VERSION, build_diagnose_p
 #: 这不是 prompt 措辞问题——v6 的约束清单里确实写了 C16，但它混在 20 多条约束中间，
 #: 模型要先自己意识到「该用方向类约束」才会去读。v7 把方向表提到系统级硬规则，
 #: 让它在读证据之前就已经知道每一类观测指向哪一端。
-PROMPT_TEMPLATE_VERSION = "rca-dual-sop-multidim-v14-full-step-ids"
+LEGACY_PROMPT_TEMPLATE_VERSION = "rca-dual-sop-multidim-v14-full-step-ids"
+FILTERED_RULE_PROMPT_TEMPLATE_VERSION = "filtered-rule-general-structured-retry-v4"
+# Existing entrypoints import this name directly; keep it on the legacy contract.
+PROMPT_TEMPLATE_VERSION = LEGACY_PROMPT_TEMPLATE_VERSION
 SOP_VERSION = "expert-sop-n5c-v1+learned-sop-advisory-v2"
+FILTERED_RULE_TOPOLOGY_CONTRACT = "filtered-rule-topology-v1"
 
 ROOT_CAUSE_DEFINITIONS = {
     "L1": "400G 端口一侧的设备或端口根因",
@@ -192,8 +198,18 @@ def build_prompt(
     `retry_feedback` 是上一轮的约束校验失败原因。它必须被放在最前面且写明是
     「上一次回答的问题」，否则模型会把它当成新的证据。
     """
+    # Filtered-rule cases have explicit local/remote topology. Legacy N5c cases use
+    # the same pure-physics renderer with the original 400G/200G label semantics.
+    if _is_filtered_rule_request(request):
+        return build_diagnose_prompt(
+            request,
+            retry_feedback=retry_feedback,
+            profile="filtered_rule_v1",
+        )
     if getattr(request, "branch", "") == "N5c":
-        return build_diagnose_prompt(request, retry_feedback=retry_feedback)
+        return build_diagnose_prompt(request, retry_feedback=retry_feedback, profile="legacy")
+
+    # Legacy rendering remains active for existing organized/l2fixed entrypoints.
     already_excluded = [
         {"根因": item.root_cause, "依据约束": item.constraint_id, "原因": item.reason}
         for item in request.exclusions
@@ -220,21 +236,31 @@ def build_prompt(
     return "\n\n".join(sections)
 
 
-def prompt_template_hash() -> str:
+def _is_filtered_rule_request(request: Any) -> bool:
+    topology_context = getattr(request, "topology_context", {}) or {}
+    return topology_context.get("contract_version") == FILTERED_RULE_TOPOLOGY_CONTRACT
+
+
+def prompt_template_version_for(request: Any = None, *, profile: str = "") -> str:
+    if profile.startswith("filtered_rule_") or (request is not None and _is_filtered_rule_request(request)):
+        return FILTERED_RULE_PROMPT_TEMPLATE_VERSION
+    return LEGACY_PROMPT_TEMPLATE_VERSION
+
+
+def prompt_template_hash(profile: str = "legacy") -> str:
     """模板内容指纹；版本号忘记升级时，代码变化仍会让实验 manifest 改变。"""
-    payload = "\n".join(
-        (
-            PROMPT_TEMPLATE_VERSION,
-            DIAGNOSE_PROMPT_VERSION,
-            SOP_VERSION,
-            EXPERT_SOP_VERSION,
-            ATTRIBUTION_DIRECTION_RULE,
-            CONFIDENCE_RUBRIC,
-            SYSTEM_PREAMBLE,
-            OUTPUT_INSTRUCTION,
-            render_expert_sop_prompt_block(),
-            inspect.getsource(_evidence_section),
-            inspect.getsource(build_prompt),
-        )
-    )
+    prompt_version = prompt_template_version_for(profile=profile)
+    diagnose_version = diagnose_prompt_version_for(profile)
+    payload = "\n".join((
+        prompt_version,
+        diagnose_version,
+        SOP_VERSION,
+        EXPERT_SOP_VERSION,
+        PHYSICS_LIBRARY.content_hash(),
+        MEASUREMENT_CONTRACT_LIBRARY.content_hash(),
+        CONFIDENCE_RUBRIC,
+        render_expert_sop_prompt_block(),
+        inspect.getsource(build_diagnose_prompt),
+        inspect.getsource(build_prompt),
+    ))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]

@@ -1,0 +1,7 @@
+{
+  "schema_version": "filtered-rule-uncovered-llm-feasibility-manifest-v1",
+  "case_count": 413,
+  "summary_sha256": "d4fc6f99ff46e44b47db9b09da35022748ca8edd885da231ae917d5ed14b620e",
+  "case_reviews_sha256": "0f559e20f96c9d853fd0ad4a912bf600e4d6c1287dae05de6aac533caf4ba051",
+  "reasoning_label_mismatches_sha256": "6f1810c1a2af81ab0abfa8aa81a1b16ae2ff7c61cece726abfac4624027e6778"
+}

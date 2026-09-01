@@ -1,0 +1,96 @@
+{
+  "schema_version": "filtered-rule-temporal-quality-v1",
+  "confirmed_source_contract": {
+    "confirmed_at": "2026-08-22",
+    "all_data": {
+      "case_count": 505,
+      "label_distribution": {
+        "l1": 179,
+        "l2": 305,
+        "fiber": 21
+      }
+    },
+    "rule1_channel_not_4": {
+      "case_count": 103,
+      "label_distribution": {
+        "l3": 49,
+        "l4": 50,
+        "fiber": 4
+      }
+    },
+    "policy": "The source files and their observed label distributions are authoritative; screenshot counts are non-contractual reference only."
+  },
+  "source_count_difference_from_user_image": {
+    "all_data": {
+      "expected_from_image": {
+        "total": 507,
+        "2025-06": 3,
+        "2025-07": 2,
+        "2025-08": 34,
+        "2025-09": 50
+      },
+      "actual_files": {
+        "total": 505,
+        "2025-06": 3,
+        "2025-07": 2,
+        "2025-08": 33,
+        "2025-09": 50
+      },
+      "delta_actual_minus_image": {
+        "total": -2,
+        "2025-06": 0,
+        "2025-07": 0,
+        "2025-08": -1,
+        "2025-09": 0
+      }
+    },
+    "rule1_channel_not_4": {
+      "expected_from_image": {
+        "total": 109,
+        "2025-06": 5,
+        "2025-07": 14,
+        "2025-08": 14,
+        "2025-09": 5
+      },
+      "actual_files": {
+        "total": 103,
+        "2025-06": 5,
+        "2025-07": 14,
+        "2025-08": 12,
+        "2025-09": 5
+      },
+      "delta_actual_minus_image": {
+        "total": -6,
+        "2025-06": 0,
+        "2025-07": 0,
+        "2025-08": -2,
+        "2025-09": 0
+      }
+    }
+  },
+  "date_repairs": [
+    {
+      "case_id": "case_54af508a3a41d98b",
+      "source_dataset": "all_data",
+      "source_file": "local/alarm_82.json",
+      "original_alarm_time": "2025/9/2  10:43:02",
+      "parsed_month": "2025-09"
+    },
+    {
+      "case_id": "case_ad1821c431e2cce4",
+      "source_dataset": "rule1_channel_not_4",
+      "source_file": "local/alarm_83.json",
+      "original_alarm_time": "2025/9/3 9:27",
+      "parsed_month": "2025-09"
+    }
+  ],
+  "label_change_count": 27,
+  "expert_reviewed_match_count": 49,
+  "unmatched_expert_case_id_count": 17,
+  "notes": [
+    "The user confirmed that the source directories' 505/103 JSON files are complete; differing screenshot counts are non-contractual and do not indicate missing cases.",
+    "Lane number is absent in rule1_channel_not_4, so lane profiles are audited from measurement-array widths.",
+    "The user confirmed a shared endpoint-relative label space: l1/l3 map to L1 (local), l2/l4 map to L2 (remote), and fiber remains fiber.",
+    "Directory names and alarm-side fields are not used to infer labels; normalization uses only the source-specific endpoint aliases."
+  ]
+}

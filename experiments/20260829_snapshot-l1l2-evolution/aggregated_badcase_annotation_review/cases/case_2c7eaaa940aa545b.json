@@ -1,0 +1,887 @@
+{
+  "review_id": "aggregated_case_2c7eaaa940aa545b",
+  "case_id": "case_2c7eaaa940aa545b",
+  "pattern_id": "PAT-027",
+  "pattern_case_count": 1,
+  "pattern_member_case_ids": [
+    "case_2c7eaaa940aa545b"
+  ],
+  "month": "2025-11",
+  "source_dataset": "all_data",
+  "topology_id": "400g-200g-logical4",
+  "current_label": "L1",
+  "model_prediction": "L2",
+  "label_status": "unreviewed",
+  "failure_layer": "graph_arbitration_error",
+  "selected_by": "multiresolution_graph",
+  "explainable_features": {
+    "detail_tokens": [
+      "expert:L2:serdes_snr:low_value",
+      "expert:points_to:L2:L2",
+      "relative_lane:L2:serdes_snr:single_low"
+    ],
+    "semantic_parents": [
+      "cause:L2:local_digital",
+      "symptom:L2:lane_imbalance"
+    ],
+    "detail_explanations": [
+      {
+        "token": "expert:L2:serdes_snr:low_value",
+        "meaning": "L2侧 serdes_snr 按冻结专家阈值命中 low_value。"
+      },
+      {
+        "token": "expert:points_to:L2:L2",
+        "meaning": "冻结专家方向表根据L2侧观测产生指向L2的候选；不是最终答案。"
+      },
+      {
+        "token": "relative_lane:L2:serdes_snr:single_low",
+        "meaning": "L2侧 serdes_snr 在当前case内部出现 single_low 相对低值组。"
+      }
+    ],
+    "semantic_parent_explanations": [
+      {
+        "token": "cause:L2:local_digital",
+        "meaning": "语义父节点：L2侧候选原因归纳为 local_digital。"
+      },
+      {
+        "token": "symptom:L2:lane_imbalance",
+        "meaning": "语义父节点：L2侧观测症状归纳为 lane_imbalance。"
+      }
+    ],
+    "feature_count": 3,
+    "empty_physical_signature": false
+  },
+  "measurement_quality": {
+    "telemetry_status": "partial_telemetry",
+    "missing_fields": [
+      "L2.host_snr"
+    ]
+  },
+  "evidence_graph": {
+    "retrieval_and_vote": {
+      "verdict": "L2",
+      "confidence": 0.919898,
+      "purity": 0.919898,
+      "top_similarity": 1.0,
+      "neighbors": [
+        {
+          "case_id": "case_37546800aaedf1f3",
+          "label": "L2",
+          "similarity": 1.0,
+          "label_status": "unreviewed"
+        },
+        {
+          "case_id": "case_7a073de16c5e89f9",
+          "label": "L2",
+          "similarity": 1.0,
+          "label_status": "unreviewed"
+        },
+        {
+          "case_id": "case_f419aea400320110",
+          "label": "L2",
+          "similarity": 1.0,
+          "label_status": "unreviewed"
+        },
+        {
+          "case_id": "case_1be709e07a8c40d3",
+          "label": "L2",
+          "similarity": 0.712296,
+          "label_status": "unreviewed"
+        },
+        {
+          "case_id": "case_218bf334495bd030",
+          "label": "L2",
+          "similarity": 0.666191,
+          "label_status": "unreviewed"
+        },
+        {
+          "case_id": "case_31d25421936f1675",
+          "label": "L1",
+          "similarity": 0.613899,
+          "label_status": "unreviewed"
+        },
+        {
+          "case_id": "case_6931da3c6063d849",
+          "label": "L2",
+          "similarity": 0.613899,
+          "label_status": "unreviewed"
+        }
+      ]
+    },
+    "causal_subgraph": {
+      "tokens": [],
+      "paths": []
+    },
+    "neighbor_evidence_comparison": [
+      {
+        "case_id": "case_37546800aaedf1f3",
+        "label": "L2",
+        "similarity": 1.0,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap"
+        ]
+      },
+      {
+        "case_id": "case_7a073de16c5e89f9",
+        "label": "L2",
+        "similarity": 1.0,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap"
+        ]
+      },
+      {
+        "case_id": "case_f419aea400320110",
+        "label": "L2",
+        "similarity": 1.0,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap"
+        ]
+      },
+      {
+        "case_id": "case_1be709e07a8c40d3",
+        "label": "L2",
+        "similarity": 0.712296,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap",
+          "expert:L2:rxpower:lane_diff",
+          "symptom:L2:receive_loss"
+        ]
+      },
+      {
+        "case_id": "case_218bf334495bd030",
+        "label": "L2",
+        "similarity": 0.666191,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap",
+          "expert:L2:rxpower:low_value",
+          "symptom:L2:receive_loss"
+        ]
+      },
+      {
+        "case_id": "case_31d25421936f1675",
+        "label": "L1",
+        "similarity": 0.613899,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap",
+          "drop_ratio:L2:media_snr:minority_lanes",
+          "expert:L2:media_snr:lane_down",
+          "symptom:L2:receive_loss"
+        ]
+      },
+      {
+        "case_id": "case_6931da3c6063d849",
+        "label": "L2",
+        "similarity": 0.613899,
+        "source_dataset": "all_data",
+        "topology_id": "400g-200g-logical4",
+        "cross_source": false,
+        "shared_evidence": [
+          "cause:L2:local_digital",
+          "expert:L2:serdes_snr:low_value",
+          "relative_lane:L2:serdes_snr:single_low",
+          "symptom:L2:lane_imbalance"
+        ],
+        "case_only_evidence": [
+          "expert:points_to:L2:L2"
+        ],
+        "history_only_evidence": [
+          "alarm:lane_flap",
+          "drop_ratio:L2:media_snr:minority_lanes",
+          "expert:L2:media_snr:lane_down",
+          "symptom:L2:receive_loss"
+        ]
+      }
+    ]
+  },
+  "llm_analysis": {
+    "available": true,
+    "source_artifact": "artifacts/filtered_rule_full_test_analysis_v3/case_reviews.json",
+    "status": "历史冻结LLM分析记录；原样展示，不重新生成。",
+    "remote_branch": "N5c",
+    "remote_action": "final",
+    "llm_terminal_verdict": "L2",
+    "llm_proposed_verdict": "L2",
+    "llm_pre_reconcile_verdict": "L2",
+    "llm_step_aggregate_verdict": "L2",
+    "llm_output_valid": true,
+    "confidence": 0.621866,
+    "confidence_lower_bound": 0.307218,
+    "confidence_breakdown": {
+      "evidence_completeness": 0.45,
+      "physical_compliance": 0.9,
+      "reasoning_completeness": 0.45,
+      "history_similarity": 0.63432848
+    },
+    "steps": [
+      {
+        "statement": "第 1 步：L2 侧的 serdes_snr 不平衡",
+        "tokens": [
+          "imbalance:L2:serdes_snr"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 2 步：L2 侧的发送功率均值偏高",
+        "tokens": [
+          "level:L2:txpower_mean:high_tail"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 3 步：L1 侧的 serdes_snr 有效",
+        "tokens": [
+          "serdes:L1:valid"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 4 步：L2 侧的 serdes_snr 有效",
+        "tokens": [
+          "serdes:L2:valid"
+        ],
+        "source": "llm"
+      },
+      {
+        "statement": "第 5 步：存在部分遥测数据缺失",
+        "tokens": [
+          "telemetry:partial_telemetry"
+        ],
+        "source": "llm"
+      }
+    ],
+    "compliance_penalties": [],
+    "acquisition_recommendations": [
+      "补采关键的media/SerDes数据以区分光路与模块数字侧；若现场已有host_snr，可作为本端电口方向的增强证据。",
+      "补采可建立同编号跨端配对的lane级Tx/Rx数据，用于验证单向传播和影响比例。",
+      "补充端口管理/运行状态、最近倒换与插拔记录；缺测保持missing，不按正常值填充。"
+    ]
+  },
+  "direction_tables": {
+    "L1_to_L2": [
+      {
+        "lane": "0",
+        "sender_txpower": 0.73,
+        "receiver_rxpower": 1.45,
+        "receiver_media_snr": 25.64,
+        "receiver_serdes_snr": 750564,
+        "receiver_host_snr": null,
+        "transmission": 0.72
+      },
+      {
+        "lane": "1",
+        "sender_txpower": 0.71,
+        "receiver_rxpower": 0.99,
+        "receiver_media_snr": 25.34,
+        "receiver_serdes_snr": 819534,
+        "receiver_host_snr": null,
+        "transmission": 0.28
+      },
+      {
+        "lane": "2",
+        "sender_txpower": 0.72,
+        "receiver_rxpower": 1.08,
+        "receiver_media_snr": 25.34,
+        "receiver_serdes_snr": 712087,
+        "receiver_host_snr": null,
+        "transmission": 0.36
+      },
+      {
+        "lane": "3",
+        "sender_txpower": 0.72,
+        "receiver_rxpower": 0.94,
+        "receiver_media_snr": 25.34,
+        "receiver_serdes_snr": 440926,
+        "receiver_host_snr": null,
+        "transmission": 0.22
+      }
+    ],
+    "L2_to_L1": [
+      {
+        "lane": "0",
+        "sender_txpower": 1.84,
+        "receiver_rxpower": 0.96,
+        "receiver_media_snr": 26.36,
+        "receiver_serdes_snr": 736792,
+        "receiver_host_snr": 25.19,
+        "transmission": -0.88
+      },
+      {
+        "lane": "1",
+        "sender_txpower": 1.93,
+        "receiver_rxpower": 1.57,
+        "receiver_media_snr": 25.31,
+        "receiver_serdes_snr": 753361,
+        "receiver_host_snr": 24.59,
+        "transmission": -0.36
+      },
+      {
+        "lane": "2",
+        "sender_txpower": 1.85,
+        "receiver_rxpower": 1.05,
+        "receiver_media_snr": 25.89,
+        "receiver_serdes_snr": 702445,
+        "receiver_host_snr": 25.3,
+        "transmission": -0.8
+      },
+      {
+        "lane": "3",
+        "sender_txpower": 2.01,
+        "receiver_rxpower": 1.08,
+        "receiver_media_snr": 25.53,
+        "receiver_serdes_snr": 699890,
+        "receiver_host_snr": 23.75,
+        "transmission": -0.93
+      }
+    ]
+  },
+  "status_snapshot": {
+    "RxLOS": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "RxLOL": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "TxLOS": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "TxLOL": {
+      "L1": "Normal",
+      "L2": "Normal"
+    }
+  },
+  "case_metadata": {
+    "Temperature": {
+      "L1": 46.72,
+      "L2": 51.34
+    },
+    "Voltage": {
+      "L1": 3.23,
+      "L2": 3.32
+    },
+    "Lane number": {
+      "L1": 2,
+      "L2": 2
+    },
+    "vendor": {
+      "L1": "海思光模块",
+      "L2": "其他"
+    },
+    "vendor_sn": {
+      "L1": "035JUANMR7056082",
+      "L2": "VZWF8W008D4"
+    },
+    "alarm_name": "频繁升降lane",
+    "alarm_time": "2025-11-21 03:50:22",
+    "alarm_ip_interface": "2409:27ff:1012:0000:0036:0000:0000:0028--200GHL1/1/47",
+    "link_location": "超平面",
+    "syslog": null
+  },
+  "raw_field_rows": [
+    {
+      "field": "bias",
+      "endpoint": "L1",
+      "value": {
+        "0": 7.24,
+        "1": 7.23,
+        "2": 7.24,
+        "3": 7.24
+      }
+    },
+    {
+      "field": "bias",
+      "endpoint": "L2",
+      "value": {
+        "0": 7.72,
+        "1": 7.72,
+        "2": 7.72,
+        "3": 7.72
+      }
+    },
+    {
+      "field": "txpower",
+      "endpoint": "L1",
+      "value": {
+        "0": 0.73,
+        "1": 0.71,
+        "2": 0.72,
+        "3": 0.72
+      }
+    },
+    {
+      "field": "txpower",
+      "endpoint": "L2",
+      "value": {
+        "0": 1.84,
+        "1": 1.93,
+        "2": 1.85,
+        "3": 2.01
+      }
+    },
+    {
+      "field": "rxpower",
+      "endpoint": "L1",
+      "value": {
+        "0": 0.96,
+        "1": 1.57,
+        "2": 1.05,
+        "3": 1.08
+      }
+    },
+    {
+      "field": "rxpower",
+      "endpoint": "L2",
+      "value": {
+        "0": 1.45,
+        "1": 0.99,
+        "2": 1.08,
+        "3": 0.94
+      }
+    },
+    {
+      "field": "transmission",
+      "endpoint": "L1-L2",
+      "value": {
+        "0": 0.72,
+        "1": 0.28,
+        "2": 0.36,
+        "3": 0.22
+      }
+    },
+    {
+      "field": "transmission",
+      "endpoint": "L2-L1",
+      "value": {
+        "0": -0.88,
+        "1": -0.36,
+        "2": -0.8,
+        "3": -0.93
+      }
+    },
+    {
+      "field": "media_snr",
+      "endpoint": "L1",
+      "value": {
+        "0": 26.36,
+        "1": 25.31,
+        "2": 25.89,
+        "3": 25.53
+      }
+    },
+    {
+      "field": "media_snr",
+      "endpoint": "L2",
+      "value": {
+        "0": 25.64,
+        "1": 25.34,
+        "2": 25.34,
+        "3": 25.34
+      }
+    },
+    {
+      "field": "host_snr",
+      "endpoint": "L1",
+      "value": {
+        "0": 25.19,
+        "1": 24.59,
+        "2": 25.3,
+        "3": 23.75
+      }
+    },
+    {
+      "field": "host_snr",
+      "endpoint": "L2",
+      "value": null
+    },
+    {
+      "field": "serdes_snr",
+      "endpoint": "L1",
+      "value": {
+        "0": 736792,
+        "1": 753361,
+        "2": 702445,
+        "3": 699890
+      }
+    },
+    {
+      "field": "serdes_snr",
+      "endpoint": "L2",
+      "value": {
+        "0": 750564,
+        "1": 819534,
+        "2": 712087,
+        "3": 440926
+      }
+    },
+    {
+      "field": "RxLOS",
+      "endpoint": "L1",
+      "value": "Normal"
+    },
+    {
+      "field": "RxLOS",
+      "endpoint": "L2",
+      "value": "Normal"
+    },
+    {
+      "field": "RxLOL",
+      "endpoint": "L1",
+      "value": "Normal"
+    },
+    {
+      "field": "RxLOL",
+      "endpoint": "L2",
+      "value": "Normal"
+    },
+    {
+      "field": "TxLOS",
+      "endpoint": "L1",
+      "value": "Normal"
+    },
+    {
+      "field": "TxLOS",
+      "endpoint": "L2",
+      "value": "Normal"
+    },
+    {
+      "field": "TxLOL",
+      "endpoint": "L1",
+      "value": "Normal"
+    },
+    {
+      "field": "TxLOL",
+      "endpoint": "L2",
+      "value": "Normal"
+    },
+    {
+      "field": "Temperature",
+      "endpoint": "L1",
+      "value": 46.72
+    },
+    {
+      "field": "Temperature",
+      "endpoint": "L2",
+      "value": 51.34
+    },
+    {
+      "field": "Voltage",
+      "endpoint": "L1",
+      "value": 3.23
+    },
+    {
+      "field": "Voltage",
+      "endpoint": "L2",
+      "value": 3.32
+    },
+    {
+      "field": "Lane number",
+      "endpoint": "L1",
+      "value": 2
+    },
+    {
+      "field": "Lane number",
+      "endpoint": "L2",
+      "value": 2
+    },
+    {
+      "field": "vendor",
+      "endpoint": "L1",
+      "value": "海思光模块"
+    },
+    {
+      "field": "vendor",
+      "endpoint": "L2",
+      "value": "其他"
+    },
+    {
+      "field": "vendor_sn",
+      "endpoint": "L1",
+      "value": "035JUANMR7056082"
+    },
+    {
+      "field": "vendor_sn",
+      "endpoint": "L2",
+      "value": "VZWF8W008D4"
+    },
+    {
+      "field": "alarm_name",
+      "endpoint": "—",
+      "value": "频繁升降lane"
+    },
+    {
+      "field": "alarm_time",
+      "endpoint": "—",
+      "value": "2025-11-21 03:50:22"
+    },
+    {
+      "field": "alarm_ip_interface",
+      "endpoint": "—",
+      "value": "2409:27ff:1012:0000:0036:0000:0000:0028--200GHL1/1/47"
+    },
+    {
+      "field": "link_location",
+      "endpoint": "—",
+      "value": "超平面"
+    },
+    {
+      "field": "syslog",
+      "endpoint": "—",
+      "value": null
+    }
+  ],
+  "raw_case": {
+    "alarm_ip_interface": "2409:27ff:1012:0000:0036:0000:0000:0028--200GHL1/1/47",
+    "alarm_time": "2025-11-21 03:50:22",
+    "region": "cn-east-4",
+    "alarm_name": "频繁升降lane",
+    "label": "L1",
+    "bias": {
+      "L1": {
+        "0": 7.24,
+        "1": 7.23,
+        "2": 7.24,
+        "3": 7.24
+      },
+      "L2": {
+        "0": 7.72,
+        "1": 7.72,
+        "2": 7.72,
+        "3": 7.72
+      }
+    },
+    "rxpower": {
+      "L1": {
+        "0": 0.96,
+        "1": 1.57,
+        "2": 1.05,
+        "3": 1.08
+      },
+      "L2": {
+        "0": 1.45,
+        "1": 0.99,
+        "2": 1.08,
+        "3": 0.94
+      }
+    },
+    "txpower": {
+      "L1": {
+        "0": 0.73,
+        "1": 0.71,
+        "2": 0.72,
+        "3": 0.72
+      },
+      "L2": {
+        "0": 1.84,
+        "1": 1.93,
+        "2": 1.85,
+        "3": 2.01
+      }
+    },
+    "transmission": {
+      "L1-L2": {
+        "0": 0.72,
+        "1": 0.28,
+        "2": 0.36,
+        "3": 0.22
+      },
+      "L2-L1": {
+        "0": -0.88,
+        "1": -0.36,
+        "2": -0.8,
+        "3": -0.93
+      }
+    },
+    "media_snr": {
+      "L1": {
+        "0": 26.36,
+        "1": 25.31,
+        "2": 25.89,
+        "3": 25.53
+      },
+      "L2": {
+        "0": 25.64,
+        "1": 25.34,
+        "2": 25.34,
+        "3": 25.34
+      }
+    },
+    "host_snr": {
+      "L1": {
+        "0": 25.19,
+        "1": 24.59,
+        "2": 25.3,
+        "3": 23.75
+      },
+      "L2": null
+    },
+    "serdes_snr": {
+      "L1": {
+        "0": 736792,
+        "1": 753361,
+        "2": 702445,
+        "3": 699890
+      },
+      "L2": {
+        "0": 750564,
+        "1": 819534,
+        "2": 712087,
+        "3": 440926
+      }
+    },
+    "link_location": "超平面",
+    "link_side_ip_interface_map": {
+      "L1": "2409:27ff:1012:0000:0034:0000:0000:006d--400GHL1/5/5:1",
+      "L2": "2409:27ff:1012:0000:0036:0000:0000:0028--200GHL1/1/47"
+    },
+    "vendor": {
+      "L1": "海思光模块",
+      "L2": "其他"
+    },
+    "vendor_sn": {
+      "L1": "035JUANMR7056082",
+      "L2": "VZWF8W008D4"
+    },
+    "RxLOL": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "TxLOL": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "TxLOS": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "RxLOS": {
+      "L1": "Normal",
+      "L2": "Normal"
+    },
+    "Temperature": {
+      "L1": 46.72,
+      "L2": 51.34
+    },
+    "Voltage": {
+      "L1": 3.23,
+      "L2": 3.32
+    },
+    "Lane number": {
+      "L1": 2,
+      "L2": 2
+    },
+    "syslog": null,
+    "case_id": "case_2c7eaaa940aa545b",
+    "_dataset_contract": {
+      "schema_version": "filtered-rule-temporal-split-v1",
+      "source_dataset": "all_data",
+      "source_file": "remote/3103.json",
+      "source_sha256": "d22e2607ddb253fa6c822b677c0cfb22320a337b71c8266a442165c516dfd0fd",
+      "split": "test/all_data",
+      "parsed_month": "2025-11",
+      "original_alarm_time": "2025-11-21 03:50:22",
+      "original_label": "l1",
+      "source_adjusted_label": "l1",
+      "unified_label": "L1",
+      "endpoint_aliases": {
+        "l1": "L1",
+        "l2": "L2"
+      },
+      "topology_contract_version": "filtered-rule-topology-v1",
+      "topology_id": "400g-200g-logical4",
+      "endpoint_speeds": {
+        "L1": "400G",
+        "L2": "200G"
+      },
+      "lane_alignment": {
+        "same_index_optical_pairing": true,
+        "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+        "absolute_link_loss_allowed": false,
+        "serdes_to_optical_pairing_allowed": false
+      },
+      "label_status": "unreviewed",
+      "expert_reference_case_ids": [],
+      "measurement_lane_widths": {
+        "l1": [
+          4
+        ],
+        "l2": [
+          4
+        ]
+      }
+    }
+  }
+}

@@ -1,87 +1,123 @@
-# L1/L2 光链路 RCA v2
+# nsdi-agent 光链路证据图 RCA
 
-本仓库是 `nsdi/` 的 Skill 化 / Agent 化改造树；开发前先阅读 [AGENTS.md](AGENTS.md) 与 [Progress.md](Progress.md)，确认项目边界、冻结基线与当前重构进度。
+`nsdi-agent` 是一套面向光链路故障的可审计根因分析框架。系统从告警、两端光模块遥测和 lane 级测量构建证据包，通过历史证据图匹配、物理约束、专家 SOP 和 LLM 校验，输出根因、证据链、置信度以及补采或人工复核建议。
 
-项目已切换到新的双路 RCA 框架，正式三分类标签为：
+正式标签空间为：
 
-- `L1`：400G 端口或其设备侧根因
-- `L2`：200G 端口或其设备侧根因
-- `fiber`：L1 与 L2 之间的光纤/链路介质根因
+- `L1`：本端根因。
+- `L2`：对端根因。
+- `fiber`：两端之间的光纤或链路介质根因。
 
-新实现位于 `rca_framework/`。旧脚本、旧报告、`saved_methods/` 和 `outputs/` 已统一迁入 `before/`，作为历史探索保留，不再构成 v2 方法的一部分。
+L1/L2 表示本端/对端；速率和 lane 数由每条 case 的来源拓扑契约单独描述。
 
-## 当前产物
+## 项目文档
 
-```text
-data/                                      # 366 条原始数据，保持不变
-before/                                    # 旧探索代码、报告、outputs 和 saved_methods
-archive/legacy_exploration/                # 原始数据 SHA-256 清单与旧探索说明
-datasets/rca_v2/                           # 268 条脱敏、L1/L2 归一化数据
-rca_framework/                             # 新方法实现
-artifacts/rca_v2_baseline/                 # 前 200 训练、后 68 验证的可加载模型与结果
-docs/RCA_V2_ARCHITECTURE.md                # 架构、路径、规则和冲突策略
-docs/rca_v2_code_report/report.html        # 可独立打开的代码详解与实现审计报告
-tests/                                     # 框架不变量测试
-```
+- [AGENTS.md](AGENTS.md)：项目章程、活动数据契约、架构和开发规范。
+- [Progress.md](Progress.md)：当前交付状态、已验证事实和实施路线。
+- [Validation.md](Validation.md)：正式实验验收门禁。
+- [个人整体思路](docs/个人整体思路.md)：证据图 RCA 主链路设计依据。
 
-原始 366 条中，212 条为 local=200G/remote=400G，56 条为 local=400G/remote=200G，均进入 v2；98 条 400G–400G case 无法满足 L1=400G、L2=200G 定义，保留在原始数据及校验清单中，但不会被强行改写后混入训练。
+## 活动数据
+
+活动数据集位于：
+
+`datasets/filtered_rule_temporal_2025_06_09_v1/`
+
+| 划分 | 来源 | L1 | L2 | fiber | 合计 |
+| --- | --- | ---: | ---: | ---: | ---: |
+| train | 两个来源合并 | 50 | 63 | 11 | 124 |
+| test | `all_data` | 144 | 258 | 15 | 417 |
+| test | `rule1_channel_not_4` | 37 | 29 | 1 | 67 |
+
+训练集使用 2025-06 至 2025-09 的 case。其余月份作为测试，两个来源分别评估。
+
+来源标签统一为：
+
+- `all_data`: `l1/l2 -> L1/L2`
+- `rule1_channel_not_4`: `l3/l4 -> L1/L2`
+- `fiber -> fiber`
+
+每条 case 保留来源、原始标签、源文件哈希、lane 宽度和字段缺失状态。
+
+两类拓扑分别为：`all_data` 的本端 400G / 对端 200G、4×4 逻辑光学 lane；
+`rule1_channel_not_4` 的两端均为 400G、8×8 逻辑光学 lane。跨端同编号光学 lane
+是数据字段定义中的逻辑配对，可用于状态和相对异常证据；不用于计算绝对链路损耗，
+也不建立 SerDes lane 到光学 lane 的强制映射。
 
 ## 方法概览
 
-第一路 `KG + RAG + LLM` 以 L1/L2/fiber 根因为中心，只让异常行为形成图边。新 case 被投影为“case→异常名词→根因”路径，并检索训练集相似异常 case；LLM 只接收这些路径与检索证据。KG 同时从训练集按类别自动生成 `feature_profiles` 和 `feature_rules`：单特征要求类内覆盖率、全局精确率和 lift 同时达标；少数类（尤其 fiber）优先使用满足支持度和精确率的双特征组合，避免把少数类的普通异常误当成特有规则。推理时这些规则参与 KG 分数，并作为可审计证据输出。未启用大模型时，框架使用可审计的确定性路径推理。
-
-第二路 `KG + RCA` 从同一异常语义层独立学习三套符号规则。单异常和异常组合按置信度、lift、支持度及排他 margin 唯一归属某个根因，保证 L1/L2/fiber 规则前件不重合。
-
-两路一致时合并路径和规则补全解释；不一致时按校准置信度和加权证据决策，分差不足则给出暂定三分类结果并标记人工复核。
-
-## 快速运行
-
-```bash
-# 1. 从不覆盖原始 data/，生成新的脱敏数据。
-python -m rca_framework.cli prepare \
-  --input-dir data \
-  --output-dir datasets/rca_v2 \
-  --archive-manifest archive/legacy_exploration/source_data_manifest.json
-
-# 2. 训练并进行无测试标签泄漏的固定切分评估。
-python -m rca_framework.cli train-evaluate \
-  --data-dir datasets/rca_v2 \
-  --train-size 200 \
-  --output-dir artifacts/rca_v2_baseline \
-  --backend none
-
-# 3. 用冻结模型推理一个新增的 schema-v2 case。
-python -m rca_framework.cli infer \
-  --model artifacts/rca_v2_baseline/model \
-  --case datasets/rca_v2/case_000268.json \
-  --output artifacts/single_case_result.json
-
-# 生成的 KG 规则位于模型文件中，可直接检查每类特征和规则。
-jq '.feature_rules' artifacts/rca_v2_feature_kg_baseline_v3/model/knowledge_graph.json
-
-# 4. 验证关键不变量。
-pytest -q
+```mermaid
+flowchart LR
+    input["告警与遥测"] --> pack["EvidencePack"]
+    pack --> feature["可解释特征"]
+    feature --> graph["历史证据图 Top-N"]
+    graph --> route{"相似度与证据路由"}
+    route --> exact["完全匹配"]
+    route --> partial["部分匹配"]
+    route --> general["低匹配"]
+    constraints["物理约束"] --> partial
+    constraints --> general
+    sop["专家 SOP"] --> general
+    exact --> decision["置信度与降级"]
+    partial --> decision
+    general --> decision
+    decision --> result["根因与证据链"]
+    decision --> review["补采 / 人工复核"]
 ```
 
-启用真实 LLM 时，将 `--backend` 改为 `vllm` 或 `transformers`，同时传入 `--model-path`。中文框架说明见 [RCA_V2_FRAMEWORK_CN.md](docs/RCA_V2_FRAMEWORK_CN.md)，详细设计与冲突策略见 [RCA_V2_ARCHITECTURE.md](docs/RCA_V2_ARCHITECTURE.md)。
+核心原则：
 
-面向新同学的逐文件代码说明、完整运行命令、常见问题和交接讲解提纲见
-[PROJECT_HANDOVER_CN.md](docs/PROJECT_HANDOVER_CN.md)。
+- 证据图历史匹配是主干。
+- 测试标签在推理边界结构性隔离。
+- 物理约束和训练统计分层管理。
+- 缺测、拓扑和 lane 数差异显式建模。
+- 低置信度 case 允许降级，不强制三分类。
+- 测试结果不自动回灌训练知识。
 
-纯 PCIe 多卡机器如果在 vLLM custom all-reduce 初始化阶段停滞，可增加
-`--disable-custom-all-reduce`，并按机器环境设置 NCCL 通信参数。DeepSeek-R1-Distill-Qwen-32B
-的两卡实测命令与完整结果见
-[RCA_V2_DEEPSEEK32B_TEST_REPORT.md](docs/RCA_V2_DEEPSEEK32B_TEST_REPORT.md)。
+## 目录结构
 
-## 基线说明
+```text
+rca_framework/                 # RCA 主框架
+  evidence_pack.py             # 标签隔离与标准证据包
+  features/                    # 可解释特征字典与抽取
+  evidence_graph/              # 历史图、Top-N 匹配与路由
+  constraints/                 # 物理约束与可执行检查
+  branches/                    # 完全/部分/低匹配分支
+  llm/                         # Prompt、协议与推理后端
+scripts/                       # 数据准备与实验入口
+datasets/                      # 版本化数据契约
+tests/                         # 单元与回归测试
+experiments/                   # 正式实验归档
+```
 
-`artifacts/rca_v2_baseline/` 是框架连通性基线，LLM 后端为 `none`，并非最终模型效果：后 68 条 accuracy 为 38/68（55.88%），fiber recall 为 0。该结果明确暴露了少数类与分布偏移问题，后续应在冻结框架后单独进行训练划分、阈值、类平衡和真实 LLM 的实验设计，不能通过读取测试标签调参。
+## 当前运行入口
 
-旧方法的 63.24% 等结果仍保留在 [before/](before/) 中，仅作为探索对照，不与 v2 基线混称。
+检查活动数据完整性：
 
-## 真实 LLM 实测
+```bash
+python3 scripts/prepare_filtered_rule_temporal_split.py --check
+```
 
-2026-07-19 使用本地 `DeepSeek-R1-Distill-Qwen-32B`、两张 RTX A6000 和 vLLM
-完成了后 68 条的真实 LLM 评估。68/68 均为有效 `llm_path_reasoning` 输出，无 fallback；
-最终 accuracy 为 37/68（54.41%），fiber recall 仍为 0。该实验确认了 LLM 工程链路已跑通，
-但没有证明模型效果优于确定性基线，因此不能据此把当前方法描述为效果达标。
+运行代码回归：
+
+```bash
+python -m pytest -q
+```
+
+直接运行正式 GPU 实验（自动选择最多 4 张合法空闲 GPU）：
+
+```bash
+scripts/run_filtered_rule_temporal_gpu_experiment.sh
+```
+
+实验机从 `main` 同步、运行、提交结果并推回 `main`：
+
+```bash
+scripts/run_synced_filtered_rule_experiment.sh
+```
+
+正式入口不执行 CPU 模型 dry run。两个测试集使用同一个持久化只读知识包，分别生成指标、逐 case 结果和 HTML 报告。
+
+## 参考资产
+
+`organized_data`、`datasets/rca_v2_l2fixed` 及相关 artifacts 用于 legacy 回归和方法参考，不属于活动数据实验。不同数据契约的指标、阈值、IDF、SOP 和证据图不得混用。

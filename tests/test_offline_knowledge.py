@@ -41,6 +41,8 @@ def test_l2fixed_knowledge_bundle_roundtrip_and_test_read_only(offline_fixture, 
     assert len(test_cases) == len(test_packs) == len(test_features) == 107
     assert len(bundle.graph.case_diagnoses) == 161
     assert artifacts.summary["historical_vector_count"] == 161
+    assert not any(artifacts.traces.values())
+    assert not bundle.llm_calibrations
     assert bundle.sop.training_case_count == 161
     assert bundle.feature_profile == "v2"
     assert COVERAGE_POLICY.name in bundle.branch_calibrations

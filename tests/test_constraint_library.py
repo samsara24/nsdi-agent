@@ -218,6 +218,19 @@ def test_new_layers_have_expected_contracts():
     assert {item.kind for item in MEASUREMENT_CONTRACT_LIBRARY.contracts} == {"veto"}
 
 
+def test_receive_symptom_is_a_candidate_scope_not_a_terminal_direction():
+    p10 = PHYSICS_LIBRARY.get("P10_receive_symptom_points_to_far_transmit_chain")
+    assert p10.allowed_effects == ("neutral",)
+    assert p10.allowed_targets == ("",)
+    assert "对端发送链、链路介质和本端接收链" in p10.prompt_text
+
+
+def test_host_snr_is_optional_positive_only_evidence():
+    p13 = PHYSICS_LIBRARY.get("P13_local_signal_metrics_point_local")
+    assert "缺失不扣分、不要求补采" in p13.prompt_text
+    assert "不得单独支撑最终标签" in p13.prompt_text
+
+
 def test_v4_supplies_the_missing_device_side_support_constraints():
     """v3 里没有任何约束允许 support L1 / L2，这是 LLM 大量违规的结构性原因。
 

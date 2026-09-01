@@ -65,6 +65,7 @@ def test_pack_records_observed_and_missing_fields(cases):
     assert len(pack.observed_fields) + len(pack.missing_fields) == pack.expected_field_count
     # host_snr 在本数据集大面积缺失，见 Validation.md V9。
     assert "L1.host_snr" in pack.missing_fields
+    assert "L1.host_snr" not in pack.diagnostic_missing_fields
 
 
 def test_telemetry_status_separates_normal_from_absent():
@@ -80,6 +81,18 @@ def test_telemetry_status_separates_normal_from_absent():
     })
     assert partial.telemetry_status == "partial_telemetry"
     assert 0.0 < partial.coverage < 1.0
+
+
+def test_host_snr_is_optional_for_diagnostic_completeness():
+    case = {"case_id": "optional-host"}
+    for metric in ("bias", "txpower", "rxpower", "media_snr", "serdes_snr"):
+        case[metric] = {side: {"0": 1.0} for side in ("L1", "L2")}
+    for status in ("RxLOS", "RxLOL", "TxLOS", "TxLOL"):
+        case[status] = {"L1": "Normal", "L2": "Normal"}
+    pack = EvidencePack.from_case(case, source_dataset="all_data")
+    assert pack.telemetry_status == "partial_telemetry"
+    assert pack.diagnostic_telemetry_status == "full_telemetry"
+    assert pack.diagnostic_missing_fields == ()
 
 
 def test_readings_keep_down_sentinels_unfiltered():

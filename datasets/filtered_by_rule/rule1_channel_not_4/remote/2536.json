@@ -1,0 +1,331 @@
+{
+ "alarm_ip_interface": "2409:27ff:1011:0000:0011:0000:0000:0007--400GE5/0/2",
+ "alarm_time": "2025-10-27 13:47:06",
+ "region": "cn-east-4",
+ "alarm_name": "接口CRC",
+ "label": "l4",
+ "bias": {
+  "l3": {
+   "0": 0,
+   "1": 0,
+   "2": 0,
+   "3": 0,
+   "4": 0,
+   "5": 0,
+   "6": 0,
+   "7": 0
+  },
+  "l4": {
+   "0": 0,
+   "1": 0,
+   "2": 0,
+   "3": 0,
+   "4": 0,
+   "5": 0,
+   "6": 0,
+   "7": 0
+  }
+ },
+ "rxpower": {
+  "l3": {
+   "0": -40,
+   "1": -40,
+   "2": -40,
+   "3": -40,
+   "4": -40,
+   "5": -40,
+   "6": -40,
+   "7": -40
+  },
+  "l4": {
+   "0": -40,
+   "1": -40,
+   "2": -40,
+   "3": -40,
+   "4": -40,
+   "5": -40,
+   "6": -40,
+   "7": -40
+  }
+ },
+ "txpower": {
+  "l3": {
+   "0": -40,
+   "1": -40,
+   "2": -40,
+   "3": -40,
+   "4": -40,
+   "5": -40,
+   "6": -40,
+   "7": -40
+  },
+  "l4": {
+   "0": -40,
+   "1": -40,
+   "2": -40,
+   "3": -40,
+   "4": -40,
+   "5": -40,
+   "6": -40,
+   "7": -40
+  }
+ },
+ "transmission": {
+  "l3-l4": {
+   "0": -40,
+   "1": -40,
+   "2": -40,
+   "3": -40,
+   "4": -40,
+   "5": -40,
+   "6": -40,
+   "7": -40
+  },
+  "l4-l3": {
+   "0": -40,
+   "1": -40,
+   "2": -40,
+   "3": -40,
+   "4": -40,
+   "5": -40,
+   "6": -40,
+   "7": -40
+  }
+ },
+ "media_snr": {
+  "l3": {
+   "0": 0,
+   "1": 0,
+   "2": 0,
+   "3": 0,
+   "4": 0,
+   "5": 0,
+   "6": 0,
+   "7": 0
+  },
+  "l4": {
+   "0": 0,
+   "1": 0,
+   "2": 0,
+   "3": 0,
+   "4": 0,
+   "5": 0,
+   "6": 0,
+   "7": 0
+  }
+ },
+ "host_snr": {
+  "l3": {
+   "0": null,
+   "1": null,
+   "2": null,
+   "3": null,
+   "4": null,
+   "5": null,
+   "6": null,
+   "7": null
+  },
+  "l4": {
+   "0": null,
+   "1": null,
+   "2": null,
+   "3": null,
+   "4": null,
+   "5": null,
+   "6": null,
+   "7": null
+  }
+ },
+ "serdes_snr": null,
+ "link_location": "参数面",
+ "link_side_ip_interface_map": {
+  "l3": "2409:27ff:1011:0000:0011:0000:0000:0007--400GE5/0/2",
+  "l4": "2409:27ff:1011:0000:0011:0000:0000:0097--400GE1/1/4"
+ },
+ "vendor": {
+  "l3": "其他",
+  "l4": "其他"
+ },
+ "vendor_sn": {
+  "l3": "INOAJ2291562",
+  "l4": "VWAE4H004A5"
+ },
+ "RxLOL": {
+  "l3": "Abnormal",
+  "l4": "Abnormal"
+ },
+ "TxLOL": {
+  "l3": "Normal",
+  "l4": "Abnormal"
+ },
+ "TxLOS": {
+  "l3": "Normal",
+  "l4": "Abnormal"
+ },
+ "RxLOS": {
+  "l3": "Abnormal",
+  "l4": "Abnormal"
+ },
+ "Temperature": {
+  "l3": 40.5,
+  "l4": 45.0
+ },
+ "Voltage": {
+  "l3": 3.26,
+  "l4": 3.33
+ },
+ "Lane number": null,
+ "syslog": {
+  "l3": [
+   {
+    "time": "2025 13:36:37",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:36:38",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:38:45",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:38:46",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:38:56",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:38:57",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:40:16",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:40:16",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:40:24",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:40:25",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:40:52",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:40:52",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:40:57",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:40:58",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:42:20",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:42:20",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:42:41",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:42:42",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:43:20",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:43:21",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:43:30",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:43:30",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:44:05",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:44:05",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:44:15",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:44:15",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:44:49",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:44:49",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:45:03",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:45:04",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:45:33",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:45:33",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:45:39",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:45:40",
+    "reason": "Interface physical link is down"
+   },
+   {
+    "time": "2025 13:46:53",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:46:54",
+    "reason": "Interface physical link is up"
+   },
+   {
+    "time": "2025 13:47:05",
+    "reason": "Interface physical link is down"
+   }
+  ],
+  "l4": null
+ }
+}

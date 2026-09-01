@@ -1,0 +1,179 @@
+{
+  "alarm_ip_interface": null,
+  "alarm_time": "2025-08-11 14:29:58",
+  "region": "华北三",
+  "alarm_name": "频繁升降lane",
+  "label": "L1",
+  "bias": null,
+  "rxpower": {
+    "L1": {
+      "0": 1.553057,
+      "1": 1.512779,
+      "2": 1.283023,
+      "3": 1.382711,
+      "4": 1.605585,
+      "5": -13.798639,
+      "6": 1.48911,
+      "7": 1.656894
+    },
+    "L2": {
+      "0": 0.45675,
+      "1": -0.062552,
+      "2": 0.383817,
+      "3": 0.258791,
+      "4": 0.333031,
+      "5": 0.295867,
+      "6": 0.46339,
+      "7": 0.359898
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 1.422017,
+      "1": 0.991971,
+      "2": 1.362448,
+      "3": 1.202448,
+      "4": 1.171387,
+      "5": 1.331875,
+      "6": 1.393753,
+      "7": 1.070403
+    },
+    "L2": {
+      "0": 1.401937,
+      "1": 1.418572,
+      "2": 1.412616,
+      "3": 1.407908,
+      "4": 1.358003,
+      "5": 1.375123,
+      "6": 1.375123,
+      "7": 1.369107
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": -0.97,
+      "1": -1.05,
+      "2": -0.98,
+      "3": -0.94,
+      "4": -0.84,
+      "5": -1.04,
+      "6": -0.93,
+      "7": -0.71
+    },
+    "L2-L1": {
+      "0": 0.15,
+      "1": 0.09,
+      "2": -0.13,
+      "3": -0.03,
+      "4": 0.25,
+      "5": -15.17,
+      "6": 0.11,
+      "7": 0.29
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 25.06,
+      "1": 25.64,
+      "2": 24.8,
+      "3": 25.34,
+      "4": 25.64,
+      "5": 0.0,
+      "6": 25.34,
+      "7": 25.34
+    },
+    "L2": {
+      "0": 25.9,
+      "1": 24.98,
+      "2": 25.87,
+      "3": 25.63,
+      "4": 26.17,
+      "5": 25.11,
+      "6": 24.82,
+      "7": 25.4
+    }
+  },
+  "host_snr": {
+    "L1": null,
+    "L2": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 24.84,
+      "5": 25.19,
+      "6": 25.61,
+      "7": 24.96
+    }
+  },
+  "serdes_snr": {
+    "L1": {
+      "0": 682094,
+      "1": 0,
+      "2": 644555,
+      "3": 642236
+    },
+    "L2": {
+      "0": 806267,
+      "1": 736934,
+      "2": 751366,
+      "3": 700712
+    }
+  },
+  "link_location": "超平面",
+  "link_side_ip_interface_map": {
+    "L1": "l1-29.121.45.55--400GHL1/5/5:2",
+    "L2": "l2-29.121.43.103--200GHL1/2/36"
+  },
+  "vendor": null,
+  "vendor_sn": null,
+  "RxLOL": null,
+  "TxLOL": null,
+  "TxLOS": null,
+  "RxLOS": null,
+  "Temperature": null,
+  "Voltage": null,
+  "Lane number": null,
+  "syslog": null,
+  "case_id": "case_6712cc1a943b7ed4",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "local/alarm_10.json",
+    "source_sha256": "b988dc1562df73d703ab6eb9d72d12d92fe7bdf63019d883567234d09c564b78",
+    "split": "train",
+    "parsed_month": "2025-08",
+    "original_alarm_time": "2025-08-11 14:29:58",
+    "original_label": "l3",
+    "source_adjusted_label": "l3",
+    "unified_label": "L1",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        4,
+        8
+      ],
+      "l4": [
+        4,
+        8
+      ]
+    }
+  }
+}

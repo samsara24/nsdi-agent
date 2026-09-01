@@ -18,6 +18,8 @@ from .anomaly import ThresholdModel, fit_thresholds
 from .branches import fit_calibration, handle_many
 from .branches.base import BranchCalibration
 from .constraints.library import CONSTRAINT_LIBRARY
+from .constraints.measurement import MEASUREMENT_CONTRACT_LIBRARY
+from .constraints.physics import PHYSICS_LIBRARY
 from .decision_tree import (
     NumericDecisionTree,
     fit_numeric_decision_tree,
@@ -40,9 +42,16 @@ from .features.dictionary import dictionary_for
 from .features.extractor import CaseFeatures, FeatureModel, extract_features, fit_feature_model
 from .feedback import build_case_diagnosis
 from .sop import LearnedSOP, learn_sop
+from .topology import SOURCE_TOPOLOGIES
 
 
 KNOWLEDGE_BUNDLE_SCHEMA = "offline-knowledge-bundle-v1"
+
+
+def _active_constraint_version(pack: EvidencePack) -> str:
+    if pack.source_dataset in SOURCE_TOPOLOGIES:
+        return f"{PHYSICS_LIBRARY.version}+{MEASUREMENT_CONTRACT_LIBRARY.version}"
+    return CONSTRAINT_LIBRARY.version
 
 
 def _model_from_dict(value: Mapping[str, Any]) -> Any:
@@ -54,7 +63,7 @@ def _model_from_dict(value: Mapping[str, Any]) -> Any:
 
 @dataclass(frozen=True)
 class TrainingKnowledgeArtifacts:
-    """LLM-assisted train-only build logs; raw traces live outside the bundle."""
+    """Train-only build logs; optional LLM traces live outside the bundle."""
 
     summary: Mapping[str, Any] = field(default_factory=dict)
     traces: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
@@ -433,11 +442,13 @@ def fit_offline_knowledge(
     decision_non_identifiable_evidence: Optional[Mapping[str, Tuple[str, ...]]] = None,
     decision_class_conditional: bool = False,
 ) -> Tuple[OfflineKnowledgeBundle, TrainingKnowledgeArtifacts]:
-    """Fit and optionally LLM-enrich all train-only artifacts.
+    """Fit all train-only artifacts and optionally run an LLM calibration pass.
 
-    When a reasoner is supplied, every train case that enters an LLM-capable
-    branch is processed in leave-one-out mode. The validated SOP+LLM chain is
-    attached to the historical case as EvidenceGraph v2 diagnosis knowledge.
+    The default ``reasoner=None`` path is fully deterministic: feature statistics,
+    the evidence graph, learned SOP, branch calibration, decision thresholds and
+    historical diagnosis chains are all derived from the manifest train split.
+    Supplying a reasoner is reserved for explicit LLM-calibration ablations; it
+    must not be required by the formal filtered-rule knowledge build.
     """
     labels = labels_of(train_cases)
     dictionary = dictionary_for(feature_profile)
@@ -571,7 +582,7 @@ def fit_offline_knowledge(
                 outcome,
                 final_decision,
                 sop_version=sop.version,
-                constraint_library_version=CONSTRAINT_LIBRARY.version,
+                constraint_library_version=_active_constraint_version(pack),
                 confirmed_by="dataset:manifest-train",
                 confirmed_label=confirmed_label,
             )

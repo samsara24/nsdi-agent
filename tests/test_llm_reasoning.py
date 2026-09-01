@@ -26,7 +26,12 @@ from rca_framework.llm import (
     build_prompt,
     parse_response,
 )
-from rca_framework.llm.prompts import PROMPT_TEMPLATE_VERSION, prompt_template_hash
+from rca_framework.llm.prompts import (
+    FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
+    PROMPT_TEMPLATE_VERSION,
+    prompt_template_hash,
+    prompt_template_version_for,
+)
 from rca_framework.llm.protocol import DIAGNOSIS_OUTPUT_SCHEMA
 
 
@@ -223,8 +228,57 @@ def test_retry_feedback_is_labelled_as_a_past_mistake(n5c):
 
 def test_prompt_is_deterministic(n5c):
     assert build_prompt(n5c["request"]) == build_prompt(n5c["request"])
-    assert PROMPT_TEMPLATE_VERSION == "rca-forced-multidim-v12"
+    assert PROMPT_TEMPLATE_VERSION == "rca-dual-sop-multidim-v14-full-step-ids"
     assert len(prompt_template_hash()) == 16
+
+
+def test_filtered_rule_prompt_has_independent_topology_contract(n5c):
+    from dataclasses import replace
+
+    request = replace(
+        n5c["request"],
+        topology_context={
+            "contract_version": "filtered-rule-topology-v1",
+            "source_dataset": "rule1_channel_not_4",
+            "topology_id": "400g-400g-logical8",
+        },
+    )
+    prompt = build_prompt(request)
+    assert "当前 case 本端的设备或端口根因" in prompt
+    assert '"source_dataset": "rule1_channel_not_4"' in prompt
+    assert prompt_template_version_for(request) == FILTERED_RULE_PROMPT_TEMPLATE_VERSION
+    assert prompt_template_hash("filtered_rule_v1") != prompt_template_hash()
+
+
+def test_filtered_rule_prompt_uses_general_optional_reasoning_contract(n5c):
+    from dataclasses import replace
+
+    request = replace(
+        n5c["request"],
+        branch="N5b",
+        topology_context={"contract_version": "filtered-rule-topology-v1"},
+    )
+    prompt = build_prompt(request)
+    assert "不要求固定步骤数" in prompt
+    assert "sop_step_id 和 cited_predicates 都是可选字段" in prompt
+    assert "Q0_validate_measurements → P_apply_physical_boundaries" not in prompt
+    assert "current_physical_evidence_paths" in prompt
+    assert "historical_evidence_chains" in prompt
+
+
+def test_filtered_rule_prompt_treats_host_snr_as_optional_enhancement(n5c):
+    from dataclasses import replace
+
+    request = replace(
+        n5c["request"],
+        missing_fields=("L1.host_snr", "L2.host_snr"),
+        topology_context={"contract_version": "filtered-rule-topology-v1"},
+    )
+    prompt = build_prompt(request)
+    assert "host_snr 是可选增强证据" in prompt
+    assert "缺失时不扣分、不要求补采" in prompt
+    assert "只有对端 TxLOS/TxLOL" in prompt
+    assert '"missing_fields": []' in prompt
 
 
 def test_prompt_exposes_checker_effect_target_and_token_contracts(n5c):
@@ -306,6 +360,8 @@ def test_compliant_answer_is_accepted_on_the_first_try(n5c):
     assert trace.accepted.verdict == "L2"
     assert trace.attempt_count == 1
     assert not trace.rewrote
+    assert "上一次回答未通过" not in backend.prompts_seen[0][0]
+    assert "这是最后一轮" not in backend.prompts_seen[0][0]
 
 
 def test_violating_answer_triggers_a_rewrite_with_feedback(n5c):

@@ -679,6 +679,28 @@ def passes_gate(candidate: DecisionCandidate, policy: DecisionPolicy) -> bool:
     )
 
 
+def llm_outcome_is_eligible(outcome: BranchOutcome, candidate: DecisionCandidate) -> bool:
+    """Reject syntactically recoverable but physically invalid LLM fallbacks.
+
+    ``last_parsed_after_fatal`` deliberately preserves the last JSON object for
+    audit.  It is not an accepted diagnosis and must never regain terminal status
+    merely because its scalar confidence exceeds the decision threshold.
+    """
+    if not candidate.group.startswith(("llm:", "llm_raw:", "uncalibrated:")):
+        return True
+    if outcome.fallback_source:
+        return False
+    if any(item.get("kind") == "verdict_step_mismatch" for item in outcome.compliance_penalties):
+        return False
+    breakdown = outcome.confidence_breakdown or {}
+    if "physical_compliance" in breakdown and float(breakdown["physical_compliance"]) <= 0.0:
+        return False
+    return not any(
+        float(item.get("physical_compliance_cap", 1.0)) <= 0.0
+        for item in outcome.compliance_penalties
+    )
+
+
 def decide(
     outcome: BranchOutcome,
     policy: DecisionPolicy = DEFAULT_DECISION_POLICY,
@@ -699,6 +721,8 @@ def decide(
         policy=policy,
     )
     for candidate in candidates:
+        if not llm_outcome_is_eligible(outcome, candidate):
+            continue
         if not passes_gate(candidate, policy):
             continue
         origin = CANDIDATE_ORIGINS.get(candidate.source, candidate.source)
@@ -781,4 +805,3 @@ def decide_many(
         )
         for index, outcome in enumerate(outcomes)
     )
-

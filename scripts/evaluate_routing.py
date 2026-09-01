@@ -27,6 +27,8 @@ from rca_framework.anomaly import fit_thresholds  # noqa: E402
 from rca_framework.branches import fit_calibration, handle_many  # noqa: E402
 from rca_framework.branches.base import majority_label  # noqa: E402
 from rca_framework.constraints.library import CONSTRAINT_LIBRARY  # noqa: E402
+from rca_framework.constraints.measurement import MEASUREMENT_CONTRACT_LIBRARY  # noqa: E402
+from rca_framework.constraints.physics import PHYSICS_LIBRARY  # noqa: E402
 from rca_framework.data import cases_by_manifest_split, load_cases, load_split_manifest  # noqa: E402
 from rca_framework.decision import (  # noqa: E402
     CANDIDATE_SOURCES,
@@ -38,6 +40,7 @@ from rca_framework.decision import (  # noqa: E402
     decide_many,
     fit_decision_policy,
 )
+from rca_framework.decision_tree.features import numeric_features_from_pack  # noqa: E402
 from rca_framework.evidence_graph import (  # noqa: E402
     BOARD_POLICY,
     COVERAGE_POLICY,
@@ -47,6 +50,7 @@ from rca_framework.evidence_graph import (  # noqa: E402
 )
 from rca_framework.evidence_pack import build_packs, labels_of  # noqa: E402
 from rca_framework.expert import ExpertCalibration, diagnose_many  # noqa: E402
+from rca_framework.filtered_rule_expert import assess_filtered_rule_expert  # noqa: E402
 from rca_framework.feedback import build_case_diagnosis  # noqa: E402
 from rca_framework.knowledge import (  # noqa: E402
     _out_of_fold_sop_predictions,
@@ -67,6 +71,7 @@ from rca_framework.llm import (  # noqa: E402
     prompt_template_hash,
 )
 from rca_framework.types import ROOT_CAUSES  # noqa: E402
+from rca_framework.topology import SOURCE_TOPOLOGIES  # noqa: E402
 
 
 def branch_report(outcomes, decisions, actual: Sequence[str]) -> Dict[str, Any]:
@@ -293,6 +298,7 @@ def match_record(result) -> Dict[str, Any]:
     value = result.to_dict()
     value["retrieved_candidate_count"] = len(result.candidates)
     value["candidates"] = [item.to_dict() for item in result.top_candidates]
+    value["dual_candidates"] = [item.to_dict() for item in result.dual_top_candidates]
     return value
 
 
@@ -599,7 +605,11 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
     decisions = [item[0] for item in paired]
     outcomes = [item[1] for item in paired]
     sop_predictions: List[Optional[Dict[str, Any]]] = [
-        sop_model.predict(test_features[index]).to_dict()
+        sop_model.predict(
+            numeric_features_from_pack(test_packs[index])
+            if getattr(sop_model, "version", "").startswith("numeric-decision-tree")
+            else test_features[index]
+        ).to_dict()
         if sop_model is not None and test_features is not None
         else None
         for index in range(len(outcomes))
@@ -609,6 +619,17 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
     expert_predictions: List[Optional[Dict[str, Any]]] = [
         expert_calibration.prediction(diagnosis) if expert_calibration is not None else None
         for diagnosis in expert_diagnoses
+    ]
+    causal_expert_assessments = [
+        assess_filtered_rule_expert(
+            expert_group=diagnosis.group,
+            expert_verdict=diagnosis.verdict,
+            symptom_side=diagnosis.sides[0].side if diagnosis.sides else None,
+            tokens=test_features[index].tokens if test_features is not None else (),
+            telemetry=test_packs[index].to_dict().get("telemetry", {}),
+        )
+        if test_packs[index].source_dataset in SOURCE_TOPOLOGIES else None
+        for index, diagnosis in enumerate(expert_diagnoses)
     ]
     final_decisions = decide_many(
         outcomes,
@@ -661,7 +682,11 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
                 outcome,
                 final_decision,
                 sop_version=sop_model.version if sop_model is not None else SOP_VERSION,
-                constraint_library_version=CONSTRAINT_LIBRARY.version,
+                constraint_library_version=(
+                    f"{PHYSICS_LIBRARY.version}+{MEASUREMENT_CONTRACT_LIBRARY.version}"
+                    if test_packs[index].source_dataset in SOURCE_TOPOLOGIES
+                    else CONSTRAINT_LIBRARY.version
+                ),
             )
         report_record = build_report(outcome, final_decision, diagnosis=diagnosis).to_dict()
         feature_record = test_features[index].to_dict() if test_features is not None else None
@@ -673,6 +698,10 @@ def run_policy(policy, graph, train_results, train_packs, train_labels,
             "features": feature_record,
             "sop_prediction": sop_prediction,
             "expert_diagnosis": expert_diagnoses[index].to_dict(),
+            "filtered_rule_expert_assessment": (
+                causal_expert_assessments[index].to_dict()
+                if causal_expert_assessments[index] is not None else None
+            ),
             "expert_prediction": expert_predictions[index],
             "match": match_record(result),
             "routing": routing.to_dict(),
@@ -1007,5 +1036,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

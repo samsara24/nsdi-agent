@@ -68,8 +68,24 @@ def critical_missing(missing: Tuple[str, ...]) -> Tuple[str, ...]:
     return tuple(token for token in missing if physical_key_reasons(token))
 
 
-def calibration_group(result: MatchResult) -> str:
-    return "N5b_critical_gap" if critical_missing(result.missing_evidence) else "N5b_minor_gap"
+def _branch_candidates(result: MatchResult, *, use_dual_similarity: bool) -> Tuple[Any, ...]:
+    if use_dual_similarity and result.dual_top_candidates:
+        return result.dual_top_candidates
+    return result.top_candidates
+
+
+def _missing_for(candidates: Sequence[Any]) -> Tuple[str, ...]:
+    if not candidates:
+        return ()
+    common = set(candidates[0].missing_evidence)
+    for candidate in candidates[1:]:
+        common &= set(candidate.missing_evidence)
+    return tuple(sorted(common))
+
+
+def calibration_group(result: MatchResult, *, use_dual_similarity: bool = False) -> str:
+    missing = _missing_for(_branch_candidates(result, use_dual_similarity=use_dual_similarity))
+    return "N5b_critical_gap" if critical_missing(missing) else "N5b_minor_gap"
 
 
 def handle(
@@ -78,14 +94,15 @@ def handle(
     calibration: BranchCalibration,
     *,
     trace: Optional[Any] = None,
+    use_dual_similarity: bool = False,
 ) -> BranchOutcome:
-    top = result.top_candidates
+    top = _branch_candidates(result, use_dual_similarity=use_dual_similarity)
     labels = [candidate.label for candidate in top if candidate.label is not None]
     verdict = majority_label(labels)
     history_verdict = verdict
-    missing = result.missing_evidence
+    missing = _missing_for(top)
     critical = critical_missing(missing)
-    group = calibration_group(result)
+    group = calibration_group(result, use_dual_similarity=use_dual_similarity)
     confidence = calibration.confidence(group)
     confidence_lower_bound = calibration.lower_bound(group)
     calibration_support = calibration.support(group)
@@ -143,7 +160,8 @@ def handle(
                 source=top[0].case_id,
             )
         )
-    if not result.is_label_pure:
+    label_pure = len(set(labels)) == 1
+    if not label_pure:
         caveats.append("并列候选的历史标签不一致，结论取多数投票")
 
     extra = tuple(top[0].extra_evidence) if top else ()
@@ -157,7 +175,7 @@ def handle(
             )
         )
 
-    arbitration_required = bool(critical) or not result.is_label_pure
+    arbitration_required = bool(critical) or not label_pure
     needs_human = False
     confidence_breakdown = None
     self_reported_confidence = 0.0

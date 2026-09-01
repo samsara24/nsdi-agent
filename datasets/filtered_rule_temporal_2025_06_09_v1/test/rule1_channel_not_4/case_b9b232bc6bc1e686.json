@@ -1,0 +1,197 @@
+{
+  "alarm_ip_interface": "2409:27ff:1013:0000:000f:0000:0000:0008--400GE10/0/31",
+  "alarm_time": "2025-11-10 14:40:46",
+  "region": "cn-east-4",
+  "alarm_name": "接口CRC",
+  "label": "L1",
+  "bias": {
+    "L1": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "L2": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40,
+      "4": -40,
+      "5": -40,
+      "6": -40,
+      "7": -40
+    },
+    "L2": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40,
+      "4": -40,
+      "5": -40,
+      "6": -40,
+      "7": -40
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40,
+      "4": -40,
+      "5": -40,
+      "6": -40,
+      "7": -40
+    },
+    "L2": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40,
+      "4": -40,
+      "5": -40,
+      "6": -40,
+      "7": -40
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40,
+      "4": -40,
+      "5": -40,
+      "6": -40,
+      "7": -40
+    },
+    "L2-L1": {
+      "0": -40,
+      "1": -40,
+      "2": -40,
+      "3": -40,
+      "4": -40,
+      "5": -40,
+      "6": -40,
+      "7": -40
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "L2": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    }
+  },
+  "host_snr": null,
+  "serdes_snr": null,
+  "link_location": "参数面",
+  "link_side_ip_interface_map": {
+    "L1": "2409:27ff:1013:0000:000f:0000:0000:0008--400GE10/0/31",
+    "L2": "2409:27ff:1013:0000:000f:0000:0000:023c--400GE1/1/5"
+  },
+  "vendor": {
+    "L1": "华工光模块",
+    "L2": "华工光模块"
+  },
+  "vendor_sn": {
+    "L1": "7000042060846",
+    "L2": "2000281331270"
+  },
+  "RxLOL": {
+    "L1": "Abnormal",
+    "L2": "Abnormal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Abnormal"
+  },
+  "RxLOS": {
+    "L1": "Abnormal",
+    "L2": "Abnormal"
+  },
+  "Temperature": {
+    "L1": 48.17,
+    "L2": 41.59
+  },
+  "Voltage": {
+    "L1": 3.28,
+    "L2": 3.27
+  },
+  "Lane number": null,
+  "syslog": null,
+  "case_id": "case_b9b232bc6bc1e686",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "local/2835.json",
+    "source_sha256": "652974e7067191a743d5336f21f9888c380e2b1767cd908608b73cb7e1d40d3c",
+    "split": "test/rule1_channel_not_4",
+    "parsed_month": "2025-11",
+    "original_alarm_time": "2025-11-10 14:40:46",
+    "original_label": "l3",
+    "source_adjusted_label": "l3",
+    "unified_label": "L1",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        8
+      ],
+      "l4": [
+        8
+      ]
+    }
+  }
+}

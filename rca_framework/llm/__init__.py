@@ -16,7 +16,15 @@ from .legacy import (
     build_path_prompt,
     parse_llm_json,
 )
-from .prompts import PROMPT_TEMPLATE_VERSION, SOP_VERSION, build_prompt, prompt_template_hash
+from .prompts import (
+    FILTERED_RULE_PROMPT_TEMPLATE_VERSION,
+    LEGACY_PROMPT_TEMPLATE_VERSION,
+    PROMPT_TEMPLATE_VERSION,
+    SOP_VERSION,
+    build_prompt,
+    prompt_template_hash,
+    prompt_template_version_for,
+)
 from .protocol import (
     DIAGNOSIS_OUTPUT_SCHEMA,
     DiagnosisResponse,
@@ -33,6 +41,8 @@ __all__ = [
     "DiagnosisResponse",
     "LLM_OUTPUT_SCHEMA",
     "NoneBackend",
+    "FILTERED_RULE_PROMPT_TEMPLATE_VERSION",
+    "LEGACY_PROMPT_TEMPLATE_VERSION",
     "PROMPT_TEMPLATE_VERSION",
     "SOP_VERSION",
     "PathLLMReasoner",
@@ -46,4 +56,5 @@ __all__ = [
     "parse_llm_json",
     "parse_response",
     "prompt_template_hash",
+    "prompt_template_version_for",
 ]

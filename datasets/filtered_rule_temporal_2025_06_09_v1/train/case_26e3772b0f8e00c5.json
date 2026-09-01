@@ -1,0 +1,197 @@
+{
+  "alarm_ip_interface": null,
+  "alarm_time": "2025-06-17 08:27:00",
+  "region": null,
+  "alarm_name": "频繁升降lane",
+  "label": "fiber",
+  "bias": {
+    "L1": {
+      "0": 7.24,
+      "1": 7.24,
+      "2": 7.24,
+      "3": 7.24,
+      "4": 7.24,
+      "5": 7.24,
+      "6": 7.24,
+      "7": 7.24
+    },
+    "L2": {
+      "0": 7.29,
+      "1": 7.266,
+      "2": 7.266,
+      "3": 7.278,
+      "4": 7.302,
+      "5": 7.266,
+      "6": 7.244,
+      "7": 7.312
+    }
+  },
+  "rxpower": {
+    "L1": {
+      "0": 0.185757,
+      "1": 0.62582,
+      "2": 0.719556,
+      "3": 0.833951,
+      "4": 0.742677,
+      "5": 0.765676,
+      "6": 0.727277,
+      "7": 0.727277
+    },
+    "L2": {
+      "0": 1.179669,
+      "1": 1.407279,
+      "2": 0.907869,
+      "3": 1.615477,
+      "4": 1.589351,
+      "5": 1.109262,
+      "6": 0.437159,
+      "7": 0.709609
+    }
+  },
+  "txpower": {
+    "L1": {
+      "0": 0.595634,
+      "1": 1.145776,
+      "2": 0.915614,
+      "3": 0.85576,
+      "4": 0.775859,
+      "5": 1.035643,
+      "6": 0.865734,
+      "7": 0.875685
+    },
+    "L2": {
+      "0": 0.690017,
+      "1": 0.675916,
+      "2": 0.675916,
+      "3": 0.682972,
+      "4": 0.697051,
+      "5": 0.682972,
+      "6": 0.663259,
+      "7": 0.702965
+    }
+  },
+  "transmission": {
+    "L1-L2": {
+      "0": 0.58,
+      "1": 0.26,
+      "2": -0.01,
+      "3": 0.76,
+      "4": 0.81,
+      "5": 0.07,
+      "6": -0.43,
+      "7": -0.17
+    },
+    "L2-L1": {
+      "0": -0.5,
+      "1": -0.05,
+      "2": 0.04,
+      "3": 0.15,
+      "4": 0.05,
+      "5": 0.08,
+      "6": 0.06,
+      "7": 0.02
+    }
+  },
+  "media_snr": {
+    "L1": {
+      "0": 25.34,
+      "1": 24.09,
+      "2": 24.79,
+      "3": 23.48,
+      "4": 25.34,
+      "5": 24.31,
+      "6": 24.79,
+      "7": 25.06
+    },
+    "L2": {
+      "0": 25.48,
+      "1": 26.11,
+      "2": 25.91,
+      "3": 25.68,
+      "4": 25.42,
+      "5": 25.54,
+      "6": 25.05,
+      "7": 26.38
+    }
+  },
+  "host_snr": null,
+  "serdes_snr": {
+    "L1": {
+      "0": 665173,
+      "1": 181262,
+      "2": 621702,
+      "3": 622925
+    },
+    "L2": {
+      "0": 628709,
+      "1": 756071,
+      "2": 693861,
+      "3": 760515
+    }
+  },
+  "link_location": "超平面",
+  "link_side_ip_interface_map": {
+    "L1": "l1-29.97.140.40--400GHL1/4/6:2",
+    "L2": "l2-29.97.145.17--200GHL1/2/38"
+  },
+  "vendor": null,
+  "vendor_sn": null,
+  "RxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOL": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "TxLOS": {
+    "L1": "Normal",
+    "L2": "Normal"
+  },
+  "RxLOS": null,
+  "Temperature": null,
+  "Voltage": null,
+  "Lane number": null,
+  "syslog": null,
+  "case_id": "case_26e3772b0f8e00c5",
+  "_dataset_contract": {
+    "schema_version": "filtered-rule-temporal-split-v1",
+    "source_dataset": "rule1_channel_not_4",
+    "source_file": "fiber/alarm_45.json",
+    "source_sha256": "ee3ed77ce2221f13a70eabd349c287a26d88a67a0b822504ed9376a07f521073",
+    "split": "train",
+    "parsed_month": "2025-06",
+    "original_alarm_time": "2025-06-17 08:27:00",
+    "original_label": "fiber",
+    "source_adjusted_label": "fiber",
+    "unified_label": "fiber",
+    "endpoint_aliases": {
+      "l3": "L1",
+      "l4": "L2"
+    },
+    "topology_contract_version": "filtered-rule-topology-v1",
+    "topology_id": "400g-400g-logical8",
+    "endpoint_speeds": {
+      "L1": "400G",
+      "L2": "400G"
+    },
+    "lane_alignment": {
+      "same_index_optical_pairing": true,
+      "basis": "source transmission field is computed from same-index far RX minus near TX for non-sentinel readings",
+      "absolute_link_loss_allowed": false,
+      "serdes_to_optical_pairing_allowed": false
+    },
+    "label_status": "unreviewed",
+    "expert_reference_case_ids": [],
+    "measurement_lane_widths": {
+      "l3": [
+        4,
+        8
+      ],
+      "l4": [
+        4,
+        8
+      ]
+    }
+  }
+}

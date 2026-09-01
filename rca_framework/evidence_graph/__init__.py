@@ -7,6 +7,7 @@ legacy 的 `retrieve` 只返回相似度和重叠列表，回答不了这两个�
 """
 
 from .match import (
+    MATCH_ALGORITHM_VERSION,
     Candidate,
     MatchResult,
     match,
@@ -17,6 +18,7 @@ from .router import (
     BRANCHES,
     COVERAGE_POLICY,
     DEFAULT_POLICY,
+    FILTERED_RULE_THREE_CHANNEL_POLICY,
     POLICIES,
     RoutingDecision,
     RoutingPolicy,
@@ -40,6 +42,7 @@ __all__ = [
     "BRANCHES",
     "COVERAGE_POLICY",
     "DEFAULT_POLICY",
+    "FILTERED_RULE_THREE_CHANNEL_POLICY",
     "EVIDENCE_GRAPH_SCHEMA",
     "EVIDENCE_GRAPH_V2_SCHEMA",
     "POLICIES",
@@ -50,6 +53,7 @@ __all__ = [
     "EvidenceGraph",
     "GraphCase",
     "MatchResult",
+    "MATCH_ALGORITHM_VERSION",
     "RoutingDecision",
     "RoutingPolicy",
     "match",

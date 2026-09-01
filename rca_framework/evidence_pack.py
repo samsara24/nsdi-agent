@@ -28,9 +28,10 @@ from .anomaly import (
     safe_float,
 )
 from .types import SIDES
+from .topology import lane_profile_of, lane_widths_of, source_dataset_of, topology_id_of
 
 
-EVIDENCE_PACK_SCHEMA = "evidence-pack-v1"
+EVIDENCE_PACK_SCHEMA = "evidence-pack-v2-topology"
 
 #: 非遥测的上下文字段。它们进 prompt 和报告，但不进 signature——
 #: T1 的家族消融已经证明把它们当特征会把每个 case 推成唯一 signature（见 Progress 9.3）。
@@ -55,6 +56,7 @@ SCALAR_FIELDS: Tuple[str, ...] = ("Temperature", "Voltage")
 
 TELEMETRY_STATUSES: Tuple[str, ...] = ("no_telemetry", "partial_telemetry", "full_telemetry")
 FIELD_STATES: Tuple[str, ...] = ("observed", "missing", "not_applicable", "invalid")
+OPTIONAL_ENHANCEMENT_METRICS: Tuple[str, ...] = ("host_snr",)
 
 
 def _lane_map(case: Dict[str, Any], field_name: str, side: str) -> Dict[str, Optional[float]]:
@@ -119,6 +121,9 @@ class EvidencePack:
     missing_fields: Tuple[str, ...]
     field_states: Dict[str, str] = field(default_factory=dict)
     source_dataset: str = ""
+    topology_id: str = ""
+    lane_profile: str = ""
+    lane_widths: Dict[str, Dict[str, int]] = field(default_factory=dict)
     schema_version: str = EVIDENCE_PACK_SCHEMA
 
     @classmethod
@@ -164,6 +169,7 @@ class EvidencePack:
                 block = telemetry.get(name)
                 scalars[f"{side}.{name}"] = safe_float(block.get(side)) if isinstance(block, dict) else None
 
+        effective_source = source_dataset_of(case, source_dataset)
         return cls(
             case_id=str(case.get("case_id", "unknown")),
             telemetry=telemetry,
@@ -174,7 +180,10 @@ class EvidencePack:
             observed_fields=tuple(sorted(set(observed))),
             missing_fields=tuple(sorted(set(missing))),
             field_states=dict(sorted(field_states.items())),
-            source_dataset=source_dataset,
+            source_dataset=effective_source,
+            topology_id=topology_id_of(case, effective_source),
+            lane_profile=lane_profile_of(case, effective_source),
+            lane_widths=lane_widths_of(case),
         )
 
     @property
@@ -197,6 +206,26 @@ class EvidencePack:
         if not self.observed_fields:
             return "no_telemetry"
         return "full_telemetry" if len(self.observed_fields) >= self.expected_field_count else "partial_telemetry"
+
+    @property
+    def diagnostic_missing_fields(self) -> Tuple[str, ...]:
+        """Return only missing fields that can materially block diagnosis.
+
+        ``host_snr`` is sparse by design in the active data.  When observed it
+        can corroborate a local electrical-chain hypothesis, but its absence is
+        not negative evidence and must not trigger evidence requests.
+        """
+        suffixes = tuple(f".{metric}" for metric in OPTIONAL_ENHANCEMENT_METRICS)
+        return tuple(name for name in self.missing_fields if not name.endswith(suffixes))
+
+    @property
+    def diagnostic_telemetry_status(self) -> str:
+        suffixes = tuple(f".{metric}" for metric in OPTIONAL_ENHANCEMENT_METRICS)
+        expected = max(0, self.expected_field_count - len(SIDES) * len(OPTIONAL_ENHANCEMENT_METRICS))
+        observed = sum(not name.endswith(suffixes) for name in self.observed_fields)
+        if observed <= 0:
+            return "no_telemetry"
+        return "full_telemetry" if observed >= expected else "partial_telemetry"
 
     def reading(self, side: str, metric: str) -> MetricReading:
         for item in self.readings:
@@ -240,6 +269,9 @@ class EvidencePack:
             "schema_version": self.schema_version,
             "case_id": self.case_id,
             "source_dataset": self.source_dataset,
+            "topology_id": self.topology_id,
+            "lane_profile": self.lane_profile,
+            "lane_widths": self.lane_widths,
             "telemetry": self.telemetry,
             "readings": [item.to_dict() for item in self.readings],
             "statuses": dict(self.statuses),
@@ -269,6 +301,12 @@ class EvidencePack:
             missing_fields=tuple(value.get("missing_fields", [])),
             field_states=dict(value.get("field_states", {})),
             source_dataset=value.get("source_dataset", ""),
+            topology_id=value.get("topology_id", ""),
+            lane_profile=value.get("lane_profile", ""),
+            lane_widths={
+                str(metric): {str(side): int(width) for side, width in widths.items()}
+                for metric, widths in value.get("lane_widths", {}).items()
+            },
             schema_version=value.get("schema_version", EVIDENCE_PACK_SCHEMA),
         )
 

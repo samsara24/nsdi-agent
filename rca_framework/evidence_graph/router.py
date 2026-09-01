@@ -43,6 +43,9 @@ class RoutingPolicy:
     #: 全链路遥测失效（约束 C15）的 case 是否直接进 N6。
     #: 这类 case 会产出十几个 token 看起来证据充分，但它们全部来自同一条失效的采集通道。
     abstain_on_optical_blackout: bool = False
+    #: Whether N4 must gate on both explainable-feature and semantic-graph similarity.
+    use_dual_similarity: bool = False
+    graph_partial_similarity: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -53,6 +56,8 @@ class RoutingPolicy:
             "partial_requires_full_coverage": self.partial_requires_full_coverage,
             "abstain_on_empty_evidence": self.abstain_on_empty_evidence,
             "abstain_on_optical_blackout": self.abstain_on_optical_blackout,
+            "use_dual_similarity": self.use_dual_similarity,
+            "graph_partial_similarity": self.graph_partial_similarity,
         }
 
 
@@ -78,11 +83,28 @@ COVERAGE_POLICY = RoutingPolicy(
     abstain_on_optical_blackout=True,
 )
 
+FILTERED_RULE_THREE_CHANNEL_POLICY = RoutingPolicy(
+    name="filtered-rule-three-channel-v2",
+    description=(
+        "活动数据双相似度三通道路由：S_feature=S_graph=1.0 进 N5a；两者均 >=0.70 进 N5b；"
+        "其余（包括零特征和量测 blackout）进 N5c。N6 只在单次推理后执行置信度降级，"
+        "不作为推理前的第四通道。"
+    ),
+    exact_similarity=1.0,
+    partial_similarity=0.7,
+    partial_requires_full_coverage=False,
+    abstain_on_empty_evidence=False,
+    abstain_on_optical_blackout=False,
+    use_dual_similarity=True,
+    graph_partial_similarity=0.7,
+)
+
 DEFAULT_POLICY = COVERAGE_POLICY
 
 POLICIES: Dict[str, RoutingPolicy] = {
     BOARD_POLICY.name: BOARD_POLICY,
     COVERAGE_POLICY.name: COVERAGE_POLICY,
+    FILTERED_RULE_THREE_CHANNEL_POLICY.name: FILTERED_RULE_THREE_CHANNEL_POLICY,
 }
 
 
@@ -104,6 +126,8 @@ class RoutingDecision:
     evidence_coverage: float
     tie_count: int
     missing_evidence: Tuple[str, ...] = ()
+    feature_similarity: float = 0.0
+    graph_similarity: float = 0.0
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -115,6 +139,8 @@ class RoutingDecision:
             "evidence_coverage": self.evidence_coverage,
             "tie_count": self.tie_count,
             "missing_evidence": list(self.missing_evidence),
+            "feature_similarity": self.feature_similarity,
+            "graph_similarity": self.graph_similarity,
         }
 
 
@@ -129,6 +155,8 @@ def route(result: MatchResult, policy: RoutingPolicy = DEFAULT_POLICY) -> Routin
         evidence_coverage=result.evidence_coverage,
         tie_count=len(result.top_candidates),
         missing_evidence=result.missing_evidence,
+        feature_similarity=result.max_feature_similarity,
+        graph_similarity=result.max_graph_similarity,
     )
 
 
@@ -144,6 +172,43 @@ def _decide(result: MatchResult, policy: RoutingPolicy) -> Tuple[str, str]:
             f"两端收发光功率全部处于断光哨兵而 TxLOS 仍报 Normal（约束 C15），"
             f"这 {len(result.query_tokens)} 条特征全部来自同一条失效的采集通道，"
             f"看似证据充分实则无一有效，转人工现场确认"
+        )
+
+    if policy.use_dual_similarity:
+        exact = tuple(
+            item for item in result.retrieval_candidates
+            if item.feature_similarity >= policy.exact_similarity
+            and item.graph_similarity >= policy.exact_similarity
+        )
+        if exact:
+            return "N5a", (
+                f"与 {len(exact)} 条历史 case 的可解释特征和证据图均完全一致"
+                f"（S_feature=1.00，S_graph=1.00），复用历史证据链后独立推理"
+            )
+        feature_floor = policy.partial_similarity or 0.0
+        graph_floor = policy.graph_partial_similarity or feature_floor
+        partial = tuple(
+            item for item in result.retrieval_candidates
+            if item.feature_similarity >= feature_floor
+            and item.graph_similarity >= graph_floor
+        )
+        if partial:
+            best = max(
+                partial,
+                key=lambda item: (
+                    min(item.feature_similarity, item.graph_similarity),
+                    item.feature_similarity + item.graph_similarity,
+                ),
+            )
+            return "N5b", (
+                "可解释特征与证据图均部分命中"
+                f"（S_feature={best.feature_similarity:.2f}，S_graph={best.graph_similarity:.2f}），"
+                "检查共享、缺失和冲突证据后仲裁"
+            )
+        return "N5c", (
+            "双相似度未同时达到部分匹配门槛"
+            f"（最高 S_feature={result.max_feature_similarity:.2f}，"
+            f"最高 S_graph={result.max_graph_similarity:.2f}），走专家 SOP 冷启动推理"
         )
 
     if result.max_similarity >= policy.exact_similarity:
