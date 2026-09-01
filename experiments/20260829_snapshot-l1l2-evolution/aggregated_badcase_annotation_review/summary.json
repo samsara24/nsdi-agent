@@ -1,0 +1,37 @@
+{
+  "schema": "aggregated-monthly-badcase-review-v1",
+  "source_experiment": "20260829_snapshot-l1l2-evolution monthly prequential evaluation",
+  "source_badcase_count": 178,
+  "llm_steps_eligible_source_badcase_count": 149,
+  "filtered_no_llm_steps_count": 29,
+  "filtered_no_explainable_features_count": 29,
+  "filtered_no_direct_llm_explanation_count": 56,
+  "quality_eligible_source_badcase_count": 64,
+  "selected_case_count": 38,
+  "pattern_count": 38,
+  "filtered_duplicate_case_count": 26,
+  "selection_policy": "require explainable features and a nonempty direct LLM explanation, then select one representative per observable error/evidence pattern",
+  "source_distribution": {
+    "all_data": 38
+  },
+  "label_status_distribution": {
+    "unreviewed": 35,
+    "expert_reviewed": 3
+  },
+  "failure_layer_distribution": {
+    "causal_rule_label_conflict": 7,
+    "cross_source_negative_transfer": 8,
+    "fiber_out_of_scope": 7,
+    "mixed_history_vote": 9,
+    "graph_arbitration_error": 4,
+    "weak_no_anomaly_fallback": 2,
+    "graph_coverage_gap": 1
+  },
+  "llm_analysis_source": "artifacts/filtered_rule_full_test_analysis_v3/case_reviews.json",
+  "llm_record_count": 38,
+  "llm_valid_output_count": 24,
+  "llm_nonempty_steps_count": 38,
+  "automatic_relabel": false,
+  "n8_frozen": true,
+  "reference_only": true
+}

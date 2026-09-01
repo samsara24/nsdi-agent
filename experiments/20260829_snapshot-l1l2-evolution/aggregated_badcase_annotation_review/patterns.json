@@ -1,0 +1,639 @@
+{
+  "schema": "aggregated-monthly-badcase-review-v1",
+  "patterns": [
+    {
+      "pattern_id": "PAT-001",
+      "case_count": 12,
+      "representative_case_id": "case_12ec0edba261a380",
+      "member_case_ids": [
+        "case_12ec0edba261a380",
+        "case_2d5e8b410dacd048",
+        "case_3fb368f47d5addf3",
+        "case_8a3fed10bf351b36",
+        "case_90a0a206bd2217fa",
+        "case_95fb50773588abab",
+        "case_aed4a26d6d52fb05",
+        "case_af0467c91574407a",
+        "case_b0cb78ea013d870c",
+        "case_cc836ff272dd1c95",
+        "case_d239bd4d0d5ba510",
+        "case_da98f773e28ae4b4"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_tx_ok_rx_down+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-002",
+      "case_count": 6,
+      "representative_case_id": "case_04c0dff29b836ab6",
+      "member_case_ids": [
+        "case_04c0dff29b836ab6",
+        "case_3d02d117d460b3ea",
+        "case_6d0d47f942fe9b36",
+        "case_76d9837704e8740e",
+        "case_9ace5a3328666648",
+        "case_a41a2e8fee0349ca"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_rxpower"
+    },
+    {
+      "pattern_id": "PAT-003",
+      "case_count": 3,
+      "representative_case_id": "case_0a93e0affe34d129",
+      "member_case_ids": [
+        "case_0a93e0affe34d129",
+        "case_0f8b7551b0a5270e",
+        "case_c9f4c0457bd4f5a4"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_tx_ok_rx_down+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-004",
+      "case_count": 3,
+      "representative_case_id": "case_16e098b80cc25ebb",
+      "member_case_ids": [
+        "case_16e098b80cc25ebb",
+        "case_2a4130f3e0f56a2a",
+        "case_c2841568d3fce230"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_rxpower"
+    },
+    {
+      "pattern_id": "PAT-005",
+      "case_count": 2,
+      "representative_case_id": "case_715443a8e8d107ab",
+      "member_case_ids": [
+        "case_715443a8e8d107ab",
+        "case_f7352e3f03c2cea4"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_tx_ok_rx_down+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-006",
+      "case_count": 2,
+      "representative_case_id": "case_ce39e8eb525b01aa",
+      "member_case_ids": [
+        "case_ce39e8eb525b01aa",
+        "case_e77e111667d003e4"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_rxpower"
+    },
+    {
+      "pattern_id": "PAT-007",
+      "case_count": 2,
+      "representative_case_id": "case_2dbe406db0e0299f",
+      "member_case_ids": [
+        "case_2dbe406db0e0299f",
+        "case_c73bd102a7abb1f4"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "expert:no_anomaly",
+      "terminal_family": "none",
+      "evidence_family": "drop_ratio"
+    },
+    {
+      "pattern_id": "PAT-008",
+      "case_count": 2,
+      "representative_case_id": "case_658add524b261d78",
+      "member_case_ids": [
+        "case_658add524b261d78",
+        "case_70ef775600e155ef"
+      ],
+      "failure_layer": "graph_arbitration_error",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_L2+expert_rxpower+expert_serdes_snr+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-009",
+      "case_count": 2,
+      "representative_case_id": "case_9e3f5ffedef9a5fc",
+      "member_case_ids": [
+        "case_135cb6cf2e5b4f7e",
+        "case_9e3f5ffedef9a5fc"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+expert_serdes_snr+relative_lane+status_RxLOL"
+    },
+    {
+      "pattern_id": "PAT-010",
+      "case_count": 2,
+      "representative_case_id": "case_19af61bfacb0cbf3",
+      "member_case_ids": [
+        "case_19af61bfacb0cbf3",
+        "case_b1a9e301acf08a35"
+      ],
+      "failure_layer": "weak_no_anomaly_fallback",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "expert:no_anomaly",
+      "terminal_family": "none",
+      "evidence_family": "drop_ratio"
+    },
+    {
+      "pattern_id": "PAT-011",
+      "case_count": 1,
+      "representative_case_id": "case_fab2d4005379efdd",
+      "member_case_ids": [
+        "case_fab2d4005379efdd"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN",
+      "evidence_family": "drop_ratio+expert_L2+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_single_lane_outlier+lane_tx_ok_rx_down+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-012",
+      "case_count": 1,
+      "representative_case_id": "case_5424376c707c71c9",
+      "member_case_ids": [
+        "case_5424376c707c71c9"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN",
+      "evidence_family": "drop_ratio+expert_L2+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_tx_ok_rx_down+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-013",
+      "case_count": 1,
+      "representative_case_id": "case_59af277f330fd45d",
+      "member_case_ids": [
+        "case_59af277f330fd45d"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN+TX_FAULT",
+      "evidence_family": "drop_ratio+expert_L1+expert_L2+expert_media_snr+expert_rxpower+expert_serdes_snr+expert_txpower+lane_bidirectional_same_lane+lane_tx_down+lane_tx_ok_rx_down+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-014",
+      "case_count": 1,
+      "representative_case_id": "case_53a318371c658766",
+      "member_case_ids": [
+        "case_53a318371c658766"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN+TX_FAULT",
+      "evidence_family": "drop_ratio+expert_L1+expert_host_snr+expert_media_snr+expert_rxpower+expert_txpower+lane_bidirectional_same_lane+lane_tx_down+lane_tx_ok_rx_down+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-015",
+      "case_count": 1,
+      "representative_case_id": "case_3b1d09ae9911d225",
+      "member_case_ids": [
+        "case_3b1d09ae9911d225"
+      ],
+      "failure_layer": "causal_rule_label_conflict",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN+TX_FAULT",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+expert_rxpower+expert_txpower+lane_bidirectional_same_lane+lane_tx_down+lane_tx_ok_rx_down+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-016",
+      "case_count": 1,
+      "representative_case_id": "case_5218c45be8f90f99",
+      "member_case_ids": [
+        "case_5218c45be8f90f99"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:multi_metric",
+      "terminal_family": "none",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_single_lane_outlier+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-017",
+      "case_count": 1,
+      "representative_case_id": "case_533e4320bd2f788b",
+      "member_case_ids": [
+        "case_533e4320bd2f788b"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:media_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_media_snr+expert_rxpower+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-018",
+      "case_count": 1,
+      "representative_case_id": "case_cfcecc2624fedb48",
+      "member_case_ids": [
+        "case_cfcecc2624fedb48"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_rxpower"
+    },
+    {
+      "pattern_id": "PAT-019",
+      "case_count": 1,
+      "representative_case_id": "case_cbfaf404b1a683dd",
+      "member_case_ids": [
+        "case_cbfaf404b1a683dd"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_rxpower+lane_single_lane_outlier+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-020",
+      "case_count": 1,
+      "representative_case_id": "case_866c50bb1c3d82f9",
+      "member_case_ids": [
+        "case_866c50bb1c3d82f9"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:media_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_media_snr+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-021",
+      "case_count": 1,
+      "representative_case_id": "case_f7c91d1156f28a18",
+      "member_case_ids": [
+        "case_f7c91d1156f28a18"
+      ],
+      "failure_layer": "cross_source_negative_transfer",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_rxpower+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-022",
+      "case_count": 1,
+      "representative_case_id": "case_5f9fb799fec41356",
+      "member_case_ids": [
+        "case_5f9fb799fec41356"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "causal:conflict",
+      "terminal_family": "LOCAL_RX_CHAIN+TX_FAULT",
+      "evidence_family": "drop_ratio+expert_L1+expert_L2+expert_media_snr+expert_rxpower+expert_txpower+lane_tx_down+lane_tx_ok_rx_down+status_RxLOL+status_RxLOS+status_TxLOL+status_TxLOS"
+    },
+    {
+      "pattern_id": "PAT-023",
+      "case_count": 1,
+      "representative_case_id": "case_000f66971449abc2",
+      "member_case_ids": [
+        "case_000f66971449abc2"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_rxpower"
+    },
+    {
+      "pattern_id": "PAT-024",
+      "case_count": 1,
+      "representative_case_id": "case_5e712a8793800332",
+      "member_case_ids": [
+        "case_5e712a8793800332"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_rxpower+status_RxLOL"
+    },
+    {
+      "pattern_id": "PAT-025",
+      "case_count": 1,
+      "representative_case_id": "case_daaa5d12266590bb",
+      "member_case_ids": [
+        "case_daaa5d12266590bb"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_L2+expert_rxpower+expert_serdes_snr+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-026",
+      "case_count": 1,
+      "representative_case_id": "case_609ac28b3d483c0e",
+      "member_case_ids": [
+        "case_609ac28b3d483c0e"
+      ],
+      "failure_layer": "fiber_out_of_scope",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "fiber<-L2",
+      "selected_by": "snapshot_sop",
+      "sop_group": "causal:local_receiver_chain",
+      "terminal_family": "LOCAL_RX_CHAIN",
+      "evidence_family": "drop_ratio+expert_L2+expert_media_snr+expert_rxpower+expert_serdes_snr+lane_tx_ok_rx_down+relative_lane+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-027",
+      "case_count": 1,
+      "representative_case_id": "case_2c7eaaa940aa545b",
+      "member_case_ids": [
+        "case_2c7eaaa940aa545b"
+      ],
+      "failure_layer": "graph_arbitration_error",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_serdes_snr+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-028",
+      "case_count": 1,
+      "representative_case_id": "case_a12277ad39eadc4a",
+      "member_case_ids": [
+        "case_a12277ad39eadc4a"
+      ],
+      "failure_layer": "graph_arbitration_error",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_rxpower+lane_single_lane_outlier+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-029",
+      "case_count": 1,
+      "representative_case_id": "case_d2aa5da6a73defa4",
+      "member_case_ids": [
+        "case_d2aa5da6a73defa4"
+      ],
+      "failure_layer": "graph_arbitration_error",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "drop_ratio+expert_L2+expert_media_snr+expert_serdes_snr+relative_lane+status_RxLOL"
+    },
+    {
+      "pattern_id": "PAT-030",
+      "case_count": 1,
+      "representative_case_id": "case_eb9e305597366168",
+      "member_case_ids": [
+        "case_eb9e305597366168"
+      ],
+      "failure_layer": "graph_coverage_gap",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_rxpower+lane_single_lane_outlier+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-031",
+      "case_count": 1,
+      "representative_case_id": "case_19f74fdd08366ed7",
+      "member_case_ids": [
+        "case_19f74fdd08366ed7"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:media_snr",
+      "terminal_family": "none",
+      "evidence_family": "drop_ratio+expert_L1+expert_media_snr+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-032",
+      "case_count": 1,
+      "representative_case_id": "case_15929d3a28c85daa",
+      "member_case_ids": [
+        "case_15929d3a28c85daa"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:media_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_L2+expert_media_snr+expert_rxpower+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-033",
+      "case_count": 1,
+      "representative_case_id": "case_bc68f08b15dde5f0",
+      "member_case_ids": [
+        "case_bc68f08b15dde5f0"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L1<-L2",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_serdes_snr+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-034",
+      "case_count": 1,
+      "representative_case_id": "case_bfbd80298a3646bc",
+      "member_case_ids": [
+        "case_bfbd80298a3646bc"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "causal:conflict",
+      "terminal_family": "TX_FAULT",
+      "evidence_family": "drop_ratio+expert_L1+expert_L2+expert_media_snr+expert_rxpower+expert_serdes_snr+expert_txpower+lane_bidirectional_same_lane+lane_tx_down+status_RxLOL+status_RxLOS"
+    },
+    {
+      "pattern_id": "PAT-035",
+      "case_count": 1,
+      "representative_case_id": "case_985e86cdb1e07901",
+      "member_case_ids": [
+        "case_985e86cdb1e07901"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:rxpower",
+      "terminal_family": "none",
+      "evidence_family": "expert_L2+expert_rxpower"
+    },
+    {
+      "pattern_id": "PAT-036",
+      "case_count": 1,
+      "representative_case_id": "case_c7950f45ce35f419",
+      "member_case_ids": [
+        "case_c7950f45ce35f419"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_serdes_snr+relative_lane"
+    },
+    {
+      "pattern_id": "PAT-037",
+      "case_count": 1,
+      "representative_case_id": "case_b25e7e7d848f5a3c",
+      "member_case_ids": [
+        "case_b25e7e7d848f5a3c"
+      ],
+      "failure_layer": "mixed_history_vote",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "multiresolution_graph",
+      "sop_group": "expert:single:serdes_snr",
+      "terminal_family": "none",
+      "evidence_family": "expert_L1+expert_serdes_snr+relative_lane+status_RxLOL"
+    },
+    {
+      "pattern_id": "PAT-038",
+      "case_count": 1,
+      "representative_case_id": "case_0828104846e775bd",
+      "member_case_ids": [
+        "case_0828104846e775bd"
+      ],
+      "failure_layer": "weak_no_anomaly_fallback",
+      "source_dataset": "all_data",
+      "topology_id": "400g-200g-logical4",
+      "confusion": "L2<-L1",
+      "selected_by": "snapshot_sop",
+      "sop_group": "expert:no_anomaly",
+      "terminal_family": "none",
+      "evidence_family": "relative_lane"
+    }
+  ]
+}
